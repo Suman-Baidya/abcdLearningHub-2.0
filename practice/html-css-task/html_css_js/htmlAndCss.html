@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programming & Web Development</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#333;
+    line-height:1.7;
+}
+
+/* ===== NAVBAR ===== */
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:white;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    z-index:1000;
+}
+nav ul{
+    display:flex;
+    justify-content:center;
+    list-style:none;
+    padding:15px;
+    flex-wrap:wrap;
+}
+nav ul li a{
+    color:#1f3c88;
+    text-decoration:none;
+    margin:8px 16px;
+    font-weight:600;
+}
+nav ul li a:hover{
+    color:#ff7a18;
+}
+
+/* ===== HERO ===== */
+header{
+    height:100vh;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.401),rgba(255,255,255,.65)),
+      url("https://images.presentationgo.com/2025/04/software-developer-coding-laptop.jpg")
+      center/cover no-repeat;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+}
+
+header h1{
+    font-size:3rem;
+    color:#1f3c88;
+}
+header p{
+    font-size:1.2rem;
+    margin-top:10px;
+    color:#555;
+}
+
+/* ===== SECTIONS ===== */
+section{
+    padding:90px 10%;
+}
+h2{
+    text-align:center;
+    margin-bottom:40px;
+    color:#1f3c88;
+}
+
+/* ===== ABOUT ===== */
+#about{
+    background:white;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:35px;
+    align-items:center;
+}
+#about img{
+    width:100%;
+    border-radius:14px;
+}
+#about ul{
+    margin-top:15px;
+}
+#about li{
+    margin-bottom:10px;
+}
+
+/* ===== COURSES ===== */
+#courses{
+    background:linear-gradient(135deg,#eef3ff,#ffffff);
+}
+.course-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+.course-card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+    transition:.3s;
+}
+.course-card:hover{
+    transform:translateY(-10px);
+}
+.course-card img{
+    width:100%;
+    height:190px;
+    object-fit:cover;
+}
+.course-content{
+    padding:20px;
+}
+.course-content h3{
+    color:#1f3c88;
+}
+.course-content p{
+    font-size:14px;
+    color:#555;
+}
+
+/* ===== FAQ ===== */
+#faq{
+    background:white;
+}
+#faq details{
+    background:#f9fbff;
+    padding:16px;
+    margin-bottom:15px;
+    border-radius:10px;
+    border-left:5px solid #1f3c88;
+}
+#faq summary{
+    cursor:pointer;
+    font-weight:600;
+    color:#1f3c88;
+}
+
+#faq ul{
+    list-style: none;
+}
+
+/* ===== GALLERY ===== */
+#gallery{
+    background:#ffffff;
+}
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+.gallery-item{
+    position:relative;
+    overflow:hidden;
+    border-radius:12px;
+}
+.gallery-item img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    transition:.4s;
+}
+.gallery-item::after{
+    content:"View";
+    position:absolute;
+    inset:0;
+    background:rgba(31,60,136,.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:18px;
+    opacity:0;
+    transition:.4s;
+}
+.gallery-item:hover img{
+    transform:scale(1.1);
+}
+.gallery-item:hover::after{
+    opacity:1;
+}
+
+/* ===== CONTACT ===== */
+#contact{
+    background:#eef3ff;
+}
+.contact-box{
+    max-width:520px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:16px;
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+.contact-box input,
+.contact-box textarea{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+.contact-box button{
+    width:100%;
+    padding:14px;
+    background:#1f3c88;
+    border:none;
+    color:white;
+    font-size:16px;
+    border-radius:8px;
+}
+.contact-box button:hover{
+    background:#162d63;
+}
+
+/* ===== FOOTER ===== */
+footer{
+    background:#1f3c88;
+    color:white;
+    padding:40px 10%;
+}
+.footer-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:25px;
+}
+footer a{
+    color:#ffdd99;
+    text-decoration:none;
+}
+
+/* ===== FLOATING BUTTONS ===== */
+.floating{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+.floating a{
+    padding:12px 18px;
+    border-radius:50px;
+    color:white;
+    text-decoration:none;
+    background:#28a745;
+}
+.floating .web{
+    background:#007bff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:992px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:576px){
+    header h1{font-size:2rem;}
+    section{padding:70px 6%;}
+    .gallery-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#courses">Courses</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+
+<header>
+<div>
+<h1>Learn Programming & Web Development</h1>
+<p>Standard, Practical & Career-Focused Learning</p>
+</div>
+</header>
+
+<section id="about">
+<img src="https://res.cloudinary.com/highereducation/images/f_auto,q_auto/v1662131195/ComputerScience.org/CompSci_Resources_What-Coding-_50339eae3/CompSci_Resources_What-Coding-_50339eae3.jpg?_i=AA">
+<div>
+<h2>About Coding & Software Engineering</h2>
+<p>
+Coding helps you build logical thinking and real-world solutions.
+A software engineer develops websites, apps and business software.
+</p>
+<ul>
+<li>✔ High demand career</li>
+<li>✔ Global job opportunities</li>
+<li>✔ Freelancing & startups</li>
+<li>✔ Strong problem-solving skills</li>
+</ul>
+</div>
+</section>
+
+<section id="courses">
+<h2>Our Courses</h2>
+<div class="course-grid">
+
+<div class="course-card">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYdAdQnrVDOSNpvaWU3ZGrH5gfngFCGZimcQ&s">
+<div class="course-content">
+<h3>Web Development</h3>
+<p>⏳ Duration: 6 Months</p>
+<p>📘 HTML, CSS, Responsive Design</p>
+<p>🛣 Frontend → Backend → Projects</p>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://www.shutterstock.com/image-photo/hands-typing-on-laptop-programming-600nw-2480023489.jpg">
+<div class="course-content">
+<h3>Programming Fundamentals</h3>
+<p>⏳ Duration: 6 Months</p>
+<p>📘 Logic, Algorithms, Data Basics</p>
+<p>🛣 Beginner → Problem Solver</p>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://media.licdn.com/dms/image/v2/D5612AQHXw7Qbzg_WaQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1677943100345?e=2147483647&v=beta&t=1fmPzM-qlZX1U3LTwmsdARgpWsFkhRv39k4SEXe05cA">
+<div class="course-content">
+<h3>Advanced JavaScript</h3>
+<p>⏳ Duration: 6+ Months</p>
+<p>📘 ES6, DOM, Modern JS</p>
+<p>🛣 JS → Frameworks → Career</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<section id="faq">
+<h2>Career & Learning FAQ</h2>
+
+<details open>
+<summary>What career opportunities can I get after learning programming?</summary>
+<p>
+After completing programming or web development courses, students can work as:
+</p>
+<ul>
+<li>💼 Web Developer (Frontend / Backend)</li>
+<li>💼 Software Engineer</li>
+<li>💼 Application Developer</li>
+<li>💼 IT Support & Technical Executive</li>
+<li>💼 Freelancer or Remote Developer</li>
+</ul>
+<p>
+Programming skills are required in almost every industry like education, healthcare,
+banking, e-commerce, and government projects.
+</p>
+</details>
+
+<details>
+<summary>Can I do freelancing or start my own business?</summary>
+<p>
+Yes, programming gives you full freedom to work independently.
+You can:
+</p>
+<ul>
+<li>🌐 Create websites for clients</li>
+<li>📱 Develop applications</li>
+<li>🛒 Build e-commerce platforms</li>
+<li>🚀 Start your own tech startup or service agency</li>
+</ul>
+<p>
+Many developers earn side income or full-time income through freelancing platforms.
+</p>
+</details>
+
+<details>
+<summary>Is coding difficult for beginners?</summary>
+<p>
+No. Coding is not difficult if learned step-by-step with proper guidance.
+We start from:
+</p>
+<ul>
+<li>🧠 Logic building</li>
+<li>🧩 Simple programs</li>
+<li>🖥 Real-life examples</li>
+<li>🛠 Practical projects</li>
+</ul>
+<p>
+Anyone with basic computer knowledge can learn programming successfully.
+</p>
+</details>
+
+<details>
+<summary>How long does it take to become job-ready?</summary>
+<p>
+It depends on learning consistency and practice.
+Generally:
+</p>
+<ul>
+<li>⏳ 3–4 months → Basic understanding</li>
+<li>⏳ 6 months → Internship or junior-level skills</li>
+<li>⏳ 8–12 months → Job-ready with projects</li>
+</ul>
+<p>
+We focus on practical skills, not only theory.
+</p>
+</details>
+
+<details>
+<summary>Is programming a future-proof career?</summary>
+<p>
+Yes. Technology is growing rapidly and programming is the backbone of digital systems.
+</p>
+<p>
+Future demand areas include:
+</p>
+<ul>
+<li>🤖 Artificial Intelligence</li>
+<li>📊 Data Science</li>
+<li>🌐 Web & App Development</li>
+<li>☁ Cloud Computing</li>
+<li>🔐 Cyber Security</li>
+</ul>
+<p>
+Learning programming ensures long-term career stability.
+</p>
+</details>
+
+</section>
+
+
+<section id="gallery">
+<h2>Learning Gallery</h2>
+<div class="gallery-grid">
+<div class="gallery-item"><img src="https://i.insider.com/601441dd6dfbe10018e00c25?width=700"></div>
+<div class="gallery-item"><img src="https://miro.medium.com/v2/resize:fit:1400/1*dfHPzSeBFN7klvNl2tiUtw.jpeg"></div>
+<div class="gallery-item"><img src="https://code.energy/wp-content/uploads/coder-at-night.jpg"></div>
+<div class="gallery-item"><img src="https://pluralsight.imgix.net/course-images/javascript-debugging-applications-v1.jpg"></div>
+</div>
+</section>
+
+<section id="contact">
+<h2>Contact Us</h2>
+<div class="contact-box">
+<input type="text" placeholder="Full Name">
+<input type="email" placeholder="Email Address">
+<input type="text" placeholder="Course Interested">
+<textarea rows="4" placeholder="Your Message"></textarea>
+<button>Submit</button>
+</div>
+</section>
+
+<footer>
+<div class="footer-grid">
+<div>
+<h4>About</h4>
+<p>Professional programming education platform.</p>
+</div>
+<div>
+<h4>Quick Links</h4>
+<p><a href="#courses">Courses</a></p>
+<p><a href="#contact">Contact</a></p>
+</div>
+<div>
+<h4>Creator</h4>
+<p>Designed & Taught by <strong>Suman</strong></p>
+</div>
+</div>
+<p style="text-align:center;margin-top:20px;">© 2026 All Rights Reserved</p>
+</footer>
+
+<div class="floating">
+<a href="tel:1234567890">📞 Call</a>
+<a href="#" class="web">🌐 Website</a>
+</div>
+
+</body>
+</html>

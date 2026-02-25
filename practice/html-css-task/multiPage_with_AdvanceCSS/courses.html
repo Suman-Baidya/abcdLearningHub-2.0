@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Courses</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial;
+}
+
+body {
+    background: linear-gradient(to right, #eef2f3, #ffffff);
+    color: #333;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+}
+
+.hero p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+/* NAVBAR */
+.menu {
+    background: white;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+}
+
+.menu a {
+    text-decoration: none;
+    margin: 8px 14px;
+    font-weight: bold;
+    color: #4a148c;
+}
+
+/* CONTENT */
+.container {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.container p {
+    font-size: 20px;
+    color: #2e7d32;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+/* COURSE CARDS */
+.courses {
+    display: flex;
+    gap: 35px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.course-card {
+    width: 340px;
+    border-radius: 25px;
+    padding: 30px;
+    background: linear-gradient(135deg, #ffffff, #f3f4ff);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    transition: 0.4s;
+}
+
+.course-card:hover {
+    transform: translateY(-15px);
+}
+
+.course-card img {
+    width: 80px;
+    margin-bottom: 15px;
+}
+
+.course-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* DETAILS */
+.details {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.details h4 {
+    color: #4a148c;
+    margin-top: 15px;
+    margin-bottom: 6px;
+}
+
+.details ul {
+    padding-left: 18px;
+    font-size: 15px;
+}
+
+.details li {
+    margin-bottom: 6px;
+}
+
+/* BADGE */
+.badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 16px;
+    background: linear-gradient(to right, #ff9800, #ffc107);
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* FOOTER */
+.footer {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-align: center;
+    padding: 30px;
+    margin-top: 100px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px) {
+    .course-card {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>Our Professional Courses</h1>
+    <p>Learn • Practice • Build • Grow</p>
+</div>
+
+<!-- NAV -->
+<div class="menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="courses.html">Courses</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+    <p>Complete learning roadmap with skills & career growth</p>
+
+    <div class="courses">
+
+        <!-- HTML COURSE -->
+        <div class="course-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968267.png">
+            <h3>HTML</h3>
+            <span class="badge">Beginner • 1 Month</span>
+
+            <div class="details">
+                <h4>📘 Syllabus</h4>
+                <ul>
+                    <li>HTML Structure & Tags</li>
+                    <li>Forms, Tables & Lists</li>
+                    <li>Media & Semantic Elements</li>
+                    <li>Mini Website Project</li>
+                </ul>
+
+                <h4>🚀 Future Roadmap</h4>
+                <ul>
+                    <li>CSS & Responsive Design</li>
+                    <li>JavaScript Basics</li>
+                </ul>
+
+                <h4>🏆 You Will Achieve</h4>
+                <ul>
+                    <li>Create static websites</li>
+                    <li>Strong foundation for web development</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CSS COURSE -->
+        <div class="course-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968242.png">
+            <h3>CSS</h3>
+            <span class="badge">Beginner • 2 Months</span>
+
+            <div class="details">
+                <h4>📘 Syllabus</h4>
+                <ul>
+                    <li>Selectors & Box Model</li>
+                    <li>Flexbox & Grid</li>
+                    <li>Responsive Design</li>
+                    <li>Animations & Effects</li>
+                </ul>
+
+                <h4>🚀 Future Roadmap</h4>
+                <ul>
+                    <li>Advanced JavaScript</li>
+                    <li>UI/UX Design</li>
+                </ul>
+
+                <h4>🏆 You Will Achieve</h4>
+                <ul>
+                    <li>Design modern websites</li>
+                    <li>Mobile-friendly layouts</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- JAVASCRIPT COURSE -->
+        <div class="course-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png">
+            <h3>JavaScript</h3>
+            <span class="badge">Intermediate • 3 Months</span>
+
+            <div class="details">
+                <h4>📘 Syllabus</h4>
+                <ul>
+                    <li>Variables & Functions</li>
+                    <li>DOM Manipulation</li>
+                    <li>Events & Forms</li>
+                    <li>Mini Web Apps</li>
+                </ul>
+
+                <h4>🚀 Future Roadmap</h4>
+                <ul>
+                    <li>React / Next.js</li>
+                    <li>Backend (Node.js)</li>
+                </ul>
+
+                <h4>🏆 You Will Achieve</h4>
+                <ul>
+                    <li>Build dynamic websites</li>
+                    <li>Become frontend developer ready</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Education Center • Skill Development for Future
+</div>
+
+</body>
+</html>

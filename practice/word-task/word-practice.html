@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MS Word Practice Set | ABCD Learning Hub</title>
+<meta name="description" content="Master MS Word with 8 hands-on practice tasks. Available in English and Bengali."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#060810; --bg2:#0b0e1a;
+  --g:rgba(255,255,255,.044); --gh:rgba(255,255,255,.08);
+  --gb:rgba(255,255,255,.07); --gbh:rgba(255,255,255,.18);
+  --ink:#eef0ff; --ink2:#b4b8d8; --muted:#666a94; --dim:#36396a;
+  --a1:#2b7fff; --a2:#1e56d9; --a3:#00e5b0; --a4:#ff5f7e; --a5:#ffcc4d;
+  --asoft:rgba(43,127,255,.12); --aglow:rgba(43,127,255,.35);
+  --font:'Plus Jakarta Sans',sans-serif;
+  --fh:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;
+  --fb:'Noto Sans Bengali','Plus Jakarta Sans',sans-serif;
+  --r:14px; --rl:22px; --pill:999px;
+  --sc:0 4px 28px rgba(0,0,0,.45),0 1px 4px rgba(0,0,0,.35);
+  --sh:0 20px 64px rgba(0,0,0,.55),0 0 50px rgba(43,127,255,.22);
+}
+[data-theme="light"] {
+  --bg:#f0f4ff; --bg2:#e6ecfa;
+  --g:rgba(255,255,255,.78); --gh:rgba(255,255,255,.95);
+  --gb:rgba(43,127,255,.12); --gbh:rgba(43,127,255,.35);
+  --ink:#0c1028; --ink2:#252e5a; --muted:#5c64a0; --dim:#c2c6e2;
+  --asoft:rgba(43,127,255,.08); --aglow:rgba(43,127,255,.2);
+  --sc:0 4px 24px rgba(20,60,180,.08),0 1px 4px rgba(20,60,180,.05);
+  --sh:0 20px 60px rgba(20,60,180,.14),0 0 40px rgba(43,127,255,.12);
+}
+[data-lang="bn"] { --font:var(--fb); }
+[data-lang="bn"] .fh-el { font-family:var(--fb) !important; }
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);
+  min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font);cursor:pointer;border:none;background:none}
+[data-lang="bn"] { font-family:var(--fb); }
+
+/* canvas & mesh */
+#cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.45}
+[data-theme="light"] #cvs{opacity:.18}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.mb{position:absolute;border-radius:50%;filter:blur(120px);animation:mf 20s ease-in-out infinite}
+.mb1{width:700px;height:700px;background:radial-gradient(rgba(43,127,255,.22),transparent 65%);top:-200px;left:-140px}
+.mb2{width:500px;height:500px;background:radial-gradient(rgba(30,86,217,.18),transparent 65%);bottom:-100px;right:-60px;animation-delay:-8s}
+.mb3{width:350px;height:350px;background:radial-gradient(rgba(0,229,176,.1),transparent 65%);top:45%;left:50%;animation-delay:-14s}
+[data-theme="light"] .mb{opacity:.5}
+@keyframes mf{0%,100%{transform:translate(0,0) scale(1)}38%{transform:translate(30px,-40px) scale(1.06)}70%{transform:translate(-22px,28px) scale(.95)}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:500;
+  backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);
+  background:rgba(6,8,16,.78);border-bottom:1px solid var(--gb);transition:background .4s}
+[data-theme="light"] nav{background:rgba(240,244,255,.86)}
+.nw{display:flex;align-items:center;max-width:1340px;margin:0 auto;padding:0 24px;height:64px;gap:12px}
+.nlogo{display:flex;align-items:center;gap:9px;font-family:var(--fh);font-weight:700;font-size:1.05rem;color:var(--ink);flex-shrink:0}
+.nlm{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--a1),var(--a2));
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  box-shadow:0 0 22px var(--aglow),0 3px 10px rgba(0,0,0,.3);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.nlogo:hover .nlm{transform:rotate(-10deg) scale(1.12)}
+.nac{color:var(--a1)}
+.nbread{display:flex;align-items:center;gap:7px;flex:1;font-size:.8rem;color:var(--muted)}
+.nbread a:hover{color:var(--ink)}
+.nbread span{color:var(--dim)}
+.nbread strong{color:var(--ink2);font-weight:600}
+.nright{display:flex;align-items:center;gap:7px;flex-shrink:0}
+
+/* Language switcher */
+.lang-sw{
+  display:flex;align-items:center;
+  background:var(--g);border:1px solid var(--gb);border-radius:10px;overflow:hidden;
+  height:36px;
+}
+.lang-btn{
+  height:100%;padding:0 13px;font-size:.76rem;font-weight:800;color:var(--muted);
+  background:none;border:none;cursor:pointer;transition:color .18s,background .18s;
+  letter-spacing:.5px;
+}
+.lang-btn.active{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff}
+.lang-btn:first-child{border-right:1px solid var(--gb)}
+
+.tbtn{width:36px;height:36px;border-radius:10px;background:var(--g);border:1px solid var(--gb);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s}
+.tbtn:hover{background:var(--gh);border-color:var(--gbh);transform:scale(1.08)}
+
+@media(max-width:640px){
+  .nbread{display:none}
+  .nw{padding:0 14px;gap:8px}
+}
+
+/* HERO BANNER */
+.hero{position:relative;z-index:5;padding:56px 24px 44px;max-width:1340px;margin:0 auto}
+.hero-inner{
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:36px;
+  background:var(--g);border:1px solid var(--gb);backdrop-filter:blur(20px);
+  border-radius:var(--rl);padding:36px 40px;
+  box-shadow:var(--sc),inset 0 1px 0 rgba(255,255,255,.06);
+  overflow:hidden;position:relative;
+}
+[data-theme="light"] .hero-inner{background:rgba(255,255,255,.72)}
+.hero-inner::before{content:'';position:absolute;top:0;left:0;bottom:0;width:5px;
+  background:linear-gradient(180deg,var(--a1),var(--a2),#a78bfa)}
+.hero-inner::after{content:'';position:absolute;top:-50%;left:-100%;width:50%;height:200%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.03),transparent);
+  transform:skewX(-15deg);animation:shimmer 6s ease-in-out infinite 2s}
+@keyframes shimmer{0%{left:-100%}50%{left:160%}100%{left:160%}}
+
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:var(--pill);
+  background:var(--asoft);border:1px solid rgba(43,127,255,.25);
+  font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--a1);margin-bottom:14px}
+.htdot{width:7px;height:7px;border-radius:50%;background:var(--a1);box-shadow:0 0 7px var(--a1);animation:pp 2s ease infinite}
+@keyframes pp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+
+.hero-h{font-family:var(--fh);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
+  line-height:1.1;letter-spacing:-.3px;margin-bottom:12px}
+[data-lang="bn"] .hero-h{font-family:var(--fb);font-size:clamp(1.6rem,3.5vw,2.4rem)}
+.hero-h span{background:linear-gradient(90deg,var(--a1),#5b9fff,var(--a3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% auto;animation:gs 4s ease-in-out infinite}
+@keyframes gs{0%,100%{background-position:0%}50%{background-position:100%}}
+.hero-p{font-size:.9rem;color:var(--muted);line-height:1.75;max-width:500px;margin-bottom:20px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:7px}
+.hpill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--pill);
+  background:var(--g);border:1px solid var(--gb);font-size:.73rem;font-weight:700;color:var(--ink2)}
+
+/* Doc illustration */
+.hero-doc{flex-shrink:0;width:160px;animation:docFloat 4s ease-in-out infinite}
+@keyframes docFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.doc-mock{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:14px 12px;
+  box-shadow:0 8px 36px rgba(0,0,0,.4),0 0 28px rgba(43,127,255,.14);backdrop-filter:blur(10px)}
+[data-theme="light"] .doc-mock{background:rgba(255,255,255,.9);border-color:rgba(43,127,255,.15)}
+.doc-bar{height:7px;border-radius:3px;margin-bottom:9px;background:linear-gradient(90deg,var(--a1),#5b9fff)}
+.doc-line{height:4px;border-radius:2px;margin-bottom:5px;background:rgba(255,255,255,.08)}
+[data-theme="light"] .doc-line{background:rgba(20,60,180,.1)}
+.dl60{width:60%}.dl80{width:80%}.dl45{width:45%}.dl70{width:70%}.dl90{width:90%}.dl55{width:55%}
+.doc-div{height:1px;background:rgba(255,255,255,.06);margin:8px 0}
+[data-theme="light"] .doc-div{background:rgba(43,127,255,.1)}
+.doc-tbl{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:7px}
+.doc-cell{height:10px;border-radius:2px;background:rgba(43,127,255,.14);border:1px solid rgba(43,127,255,.2)}
+.doc-badge{position:absolute;top:-8px;right:-8px;width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+  box-shadow:0 4px 14px rgba(43,127,255,.5);animation:bp .5s .3s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes bp{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@media(max-width:580px){.hero-inner{grid-template-columns:1fr}.hero-doc{display:none}.hero-inner{padding:24px 20px}}
+
+/* PROGRESS */
+.prog-zone{position:relative;z-index:5;max-width:1340px;margin:0 auto;padding:0 24px 32px}
+.prog-card{background:var(--g);border:1px solid var(--gb);backdrop-filter:blur(16px);
+  border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  box-shadow:var(--sc),inset 0 1px 0 rgba(255,255,255,.05)}
+[data-theme="light"] .prog-card{background:rgba(255,255,255,.72)}
+.prog-label{font-size:.78rem;font-weight:700;color:var(--ink2);white-space:nowrap}
+.prog-track{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:var(--pill);overflow:hidden;min-width:100px}
+[data-theme="light"] .prog-track{background:rgba(43,127,255,.1)}
+.prog-fill{height:100%;border-radius:var(--pill);background:linear-gradient(90deg,var(--a1),#5b9fff);
+  box-shadow:0 0 10px rgba(43,127,255,.5);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.prog-pct{font-family:var(--fh);font-size:.95rem;font-weight:800;
+  background:linear-gradient(90deg,var(--a1),#5b9fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.prog-chips{display:flex;gap:7px;flex-wrap:wrap}
+.lvl-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--pill);
+  font-size:.68rem;font-weight:800;letter-spacing:.3px;text-transform:uppercase}
+
+/* SECTION HDR */
+.shdr{display:flex;align-items:center;gap:14px;max-width:1340px;margin:0 auto 24px;padding:0 24px;position:relative;z-index:5}
+.stit{font-family:var(--fh);font-size:.74rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.sln{flex:1;height:1px;background:linear-gradient(90deg,var(--gb),transparent)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 290px;gap:24px;
+  max-width:1340px;margin:0 auto;padding:0 24px 100px;position:relative;z-index:5}
+@media(max-width:960px){.layout{grid-template-columns:1fr;padding:0 16px 60px}}
+
+/* TASK LIST */
+.tlist{display:flex;flex-direction:column;gap:16px}
+
+/* TASK CARD */
+.tcard{
+  background:var(--g);border:1px solid var(--gb);
+  border-radius:var(--rl);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  overflow:hidden;box-shadow:var(--sc),inset 0 1px 0 rgba(255,255,255,.06);
+  transition:border-color .25s,box-shadow .25s;
+  animation:cr .5s ease both;position:relative;
+}
+.tcard:hover{border-color:var(--gbh);box-shadow:var(--sh)}
+[data-theme="light"] .tcard{background:rgba(255,255,255,.76);box-shadow:0 4px 24px rgba(20,60,180,.07),inset 0 1px 0 rgba(255,255,255,.9)}
+.tcard::after{content:'';position:absolute;top:-50%;left:-100%;width:55%;height:200%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.032),transparent);
+  transform:skewX(-15deg);transition:left .6s ease;pointer-events:none}
+.tcard:hover::after{left:160%}
+.tcard.done{border-color:rgba(6,214,160,.3) !important}
+@keyframes cr{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+/* Card head */
+.tc-head{display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:16px;
+  padding:24px 24px 0;cursor:pointer}
+.tc-num{width:46px;height:46px;border-radius:13px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fh);font-size:1.05rem;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  box-shadow:0 0 18px rgba(43,127,255,.35),0 3px 10px rgba(0,0,0,.3);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;flex-shrink:0}
+.tcard:hover .tc-num{transform:scale(1.08) rotate(-4deg);box-shadow:0 0 26px rgba(43,127,255,.5)}
+.tcard.done .tc-num{background:linear-gradient(135deg,#06d6a0,#059669);box-shadow:0 0 18px rgba(6,214,160,.4)}
+.tc-meta{min-width:0}
+.tc-row1{display:flex;align-items:center;gap:7px;margin-bottom:6px;flex-wrap:wrap}
+.tc-lvl{display:inline-flex;align-items:center;gap:3px;font-size:.63rem;font-weight:800;
+  letter-spacing:.5px;text-transform:uppercase;padding:2px 9px;border-radius:var(--pill)}
+.tc-badge{font-size:.6rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:var(--pill)}
+.b-New{background:rgba(43,127,255,.14);color:var(--a1);border:1px solid rgba(43,127,255,.25)}
+.b-Hot{background:rgba(255,95,126,.12);color:#ff5f7e;border:1px solid rgba(255,95,126,.25)}
+.b-Updated{background:rgba(255,204,77,.12);color:var(--a5);border:1px solid rgba(255,204,77,.25)}
+.tc-est{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:3px}
+.tc-title{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--ink);line-height:1.22;margin-bottom:5px}
+[data-lang="bn"] .tc-title{font-family:var(--fb);font-size:1rem}
+.tc-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+[data-lang="bn"] .tc-desc{font-family:var(--fb)}
+.tc-skills{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.tskill{font-size:.68rem;font-weight:600;color:var(--ink2);padding:2px 9px;border-radius:7px;
+  background:var(--asoft);border:1px solid rgba(43,127,255,.18)}
+.tc-tog{width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  background:var(--g);border:1px solid var(--gb);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--muted);cursor:pointer;margin-top:3px;
+  transition:background .2s,border-color .2s,transform .25s,color .2s}
+.tc-head:hover .tc-tog{background:var(--gh);border-color:var(--gbh);color:var(--ink)}
+.tc-tog.open{transform:rotate(180deg);background:var(--asoft);border-color:rgba(43,127,255,.3);color:var(--a1)}
+
+/* Card body */
+.tc-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0}
+.tc-body.open{max-height:3000px;opacity:1}
+.tc-sep{height:1px;background:linear-gradient(90deg,var(--gb),transparent);margin:0 24px}
+.tc-body-inner{padding:22px 24px 24px}
+
+/* task content grid */
+.tcontent{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.tcontent{grid-template-columns:1fr}}
+
+/* blocks */
+.block{background:var(--bg2);border:1px solid var(--gb);border-radius:13px;padding:18px}
+[data-theme="light"] .block{background:rgba(230,236,250,.5)}
+.block-tag{display:inline-flex;align-items:center;gap:6px;
+  font-size:.67rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--a1);margin-bottom:13px}
+.bico{width:20px;height:20px;border-radius:6px;background:var(--asoft);border:1px solid rgba(43,127,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:9px}
+.step{display:flex;gap:11px;align-items:flex-start}
+.step-n{width:24px;height:24px;border-radius:7px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:800;
+  background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;
+  box-shadow:0 0 8px rgba(43,127,255,.3);margin-top:2px}
+.step-t{font-size:.82rem;color:var(--ink2);line-height:1.6}
+[data-lang="bn"] .step-t{font-family:var(--fb);font-size:.85rem}
+.step-t strong{color:var(--ink);font-weight:700}
+.step-t code{font-size:.76rem;font-family:'Courier New',monospace;
+  background:rgba(43,127,255,.12);color:var(--a1);padding:1px 6px;border-radius:4px;border:1px solid rgba(43,127,255,.2)}
+
+/* tips */
+.tips{display:flex;flex-direction:column;gap:7px}
+.tip{display:flex;gap:9px;align-items:flex-start;
+  padding:9px 11px;border-radius:9px;
+  background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.055)}
+[data-theme="light"] .tip{background:rgba(43,127,255,.04);border-color:rgba(43,127,255,.1)}
+.tip-ic{font-size:.9rem;flex-shrink:0;margin-top:1px}
+.tip-t{font-size:.8rem;color:var(--ink2);line-height:1.55}
+[data-lang="bn"] .tip-t{font-family:var(--fb);font-size:.82rem}
+
+/* submit */
+.sub-block{grid-column:1/-1}
+.sub-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.sub-item{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:10px;
+  background:rgba(43,127,255,.06);border:1px solid rgba(43,127,255,.15);
+  font-size:.8rem;font-weight:600;color:var(--ink2)}
+[data-lang="bn"] .sub-item{font-family:var(--fb);font-size:.82rem}
+.sub-chk{width:20px;height:20px;border-radius:6px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;
+  box-shadow:0 0 8px rgba(43,127,255,.3)}
+
+/* card footer */
+.tc-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 24px 18px;flex-wrap:wrap;gap:10px}
+.tag-row{display:flex;gap:5px;flex-wrap:wrap}
+.done-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:11px;
+  background:linear-gradient(90deg,var(--a1),var(--a2));
+  color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;border:none;
+  font-family:var(--font);box-shadow:0 4px 18px rgba(43,127,255,.38);
+  transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.done-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);transition:left .4s}
+.done-btn:hover::before{left:100%}
+.done-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(43,127,255,.52)}
+.done-btn:disabled{background:linear-gradient(90deg,#06d6a0,#059669);box-shadow:0 4px 18px rgba(6,214,160,.38);cursor:default;transform:none}
+[data-lang="bn"] .done-btn{font-family:var(--fb)}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:80px;height:fit-content;display:flex;flex-direction:column;gap:14px}
+@media(max-width:960px){.sidebar{position:static}}
+.scard{background:var(--g);border:1px solid var(--gb);backdrop-filter:blur(16px);
+  border-radius:14px;padding:18px;box-shadow:var(--sc),inset 0 1px 0 rgba(255,255,255,.05)}
+[data-theme="light"] .scard{background:rgba(255,255,255,.76)}
+.scard-tit{font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted);margin-bottom:13px}
+.snav{display:flex;flex-direction:column;gap:4px}
+.snav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;
+  cursor:pointer;border:1px solid transparent;
+  transition:background .18s,border-color .18s;font-size:.8rem;font-weight:600;color:var(--ink2)}
+.snav-item:hover{background:var(--g);border-color:var(--gb)}
+.snav-item.active{background:var(--asoft);border-color:rgba(43,127,255,.25);color:var(--a1)}
+.snav-item.done-nav{opacity:.7}
+.sn{width:22px;height:22px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;
+  background:var(--g);border:1px solid var(--gb);color:var(--muted);transition:all .18s}
+.snav-item.active .sn{background:var(--a1);border-color:var(--a1);color:#fff}
+.snav-item.done-nav .sn{background:linear-gradient(135deg,#06d6a0,#059669);border-color:#06d6a0;color:#fff}
+.snav-lbl{margin-left:auto;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:var(--pill);flex-shrink:0}
+.qrow{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.qstat{padding:11px;border-radius:9px;background:var(--asoft);border:1px solid rgba(43,127,255,.15);text-align:center}
+.qs-n{font-family:var(--fh);font-size:1.25rem;font-weight:800;
+  background:linear-gradient(135deg,var(--a1),#5b9fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.qs-l{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
+.trow{display:flex;gap:7px;font-size:.78rem;color:var(--ink2);line-height:1.55;
+  padding:7px 9px;border-radius:7px;background:rgba(255,255,255,.025);border:1px solid var(--gb)}
+[data-theme="light"] .trow{background:rgba(43,127,255,.04);border-color:rgba(43,127,255,.1)}
+[data-lang="bn"] .trow{font-family:var(--fb);font-size:.8rem}
+code.kc{font-size:.73rem;font-family:'Courier New',monospace;
+  background:var(--asoft);color:var(--a1);padding:1px 6px;border-radius:4px;border:1px solid rgba(43,127,255,.2)}
+
+.back-btn{display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px;border-radius:12px;
+  background:linear-gradient(90deg,var(--a1),var(--a2));color:#fff;
+  font-size:.86rem;font-weight:800;font-family:var(--font);
+  box-shadow:0 4px 18px rgba(43,127,255,.35);
+  transition:transform .2s,box-shadow .2s}
+.back-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(43,127,255,.5)}
+[data-lang="bn"] .back-btn{font-family:var(--fb)}
+
+/* FOOTER */
+footer{position:relative;z-index:5;border-top:1px solid var(--gb);padding:32px 24px;
+  background:rgba(0,0,0,.18);backdrop-filter:blur(10px)}
+[data-theme="light"] footer{background:rgba(255,255,255,.25)}
+.fw{max-width:1340px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.flogo{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px}
+.flm{width:27px;height:27px;border-radius:8px;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:.82rem}
+.flinks{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 16px}
+.flnk{font-size:.77rem;font-weight:600;color:var(--muted);transition:color .15s}
+.flnk:hover{color:var(--a1)}
+.fcopy{font-size:.7rem;color:var(--dim)}
+
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+
+<body>
+<canvas id="cvs"></canvas>
+<div class="mesh" aria-hidden="true">
+  <div class="mb mb1"></div><div class="mb mb2"></div><div class="mb mb3"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nw">
+    <a href="../../index.html" class="nlogo">
+      <div class="nlm">📚</div>
+      <span><span class="nac">ABCD</span> Learning Hub</span>
+    </a>
+    <div class="nbread">
+      <a href="../index.html" data-i="nav-practice">Practice</a>
+      <span>/</span>
+      <strong data-i="nav-word">MS Word</strong>
+    </div>
+    <div class="nright">
+      <!-- Language Switcher -->
+      <div class="lang-sw">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-bn" onclick="setLang('bn')">বাং</button>
+      </div>
+      <button class="tbtn" id="tbtn" title="Toggle theme">🌙</button>
+      <div id="nav-auth"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner" style="animation:fu .55s ease both">
+    <div>
+      <div class="hero-tag"><div class="htdot"></div><span data-i="hero-tag">MS Word Practice Set</span></div>
+      <h1 class="hero-h fh-el">
+        <span data-i="hero-h1">Master</span> <span data-i="hero-h2">Microsoft Word</span><br>
+        <span data-i="hero-h3">Like a Professional</span>
+      </h1>
+      <p class="hero-p" data-i="hero-p">8 carefully crafted tasks taking you from basic formatting to advanced Mail Merge and a professional CV. Learn by doing.</p>
+      <div class="hero-pills">
+        <span class="hpill" data-i="pill1">📝 8 Tasks</span>
+        <span class="hpill" data-i="pill2">⏱ ~3.5 Hours</span>
+        <span class="hpill" data-i="pill3">🟢 Beginner Friendly</span>
+        <span class="hpill" data-i="pill4">🚀 Ends with a Project</span>
+        <span class="hpill" data-i="pill5">🇧🇩 বাংলায় পড়ুন</span>
+      </div>
+    </div>
+    <div class="hero-doc" style="position:relative">
+      <div class="doc-badge">📝</div>
+      <div class="doc-mock">
+        <div class="doc-bar"></div>
+        <div class="doc-line dl80"></div><div class="doc-line dl60"></div>
+        <div class="doc-line dl90"></div><div class="doc-line dl45"></div>
+        <div class="doc-div"></div>
+        <div class="doc-line dl70"></div><div class="doc-line dl55"></div>
+        <div class="doc-line dl80"></div><div class="doc-line dl60"></div>
+        <div class="doc-div"></div>
+        <div class="doc-tbl">
+          <div class="doc-cell"></div><div class="doc-cell"></div><div class="doc-cell"></div>
+          <div class="doc-cell"></div><div class="doc-cell"></div><div class="doc-cell"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-zone">
+  <div class="prog-card" style="animation:fu .55s .1s ease both">
+    <span class="prog-label" data-i="prog-label">📊 Progress</span>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <span class="prog-pct" id="prog-pct">0 / 8</span>
+    <div class="prog-chips">
+      <span class="lvl-chip" style="background:rgba(6,214,160,.12);color:#06d6a0;border:1px solid rgba(6,214,160,.25)" data-i="chip-beg">🟢 4 Beginner</span>
+      <span class="lvl-chip" style="background:rgba(255,209,102,.12);color:#ffd166;border:1px solid rgba(255,209,102,.25)" data-i="chip-int">🟡 3 Intermediate</span>
+      <span class="lvl-chip" style="background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.25)" data-i="chip-proj">🚀 1 Project</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION HDR -->
+<div class="shdr"><span class="stit" data-i="sec-title">All Tasks</span><div class="sln"></div></div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+  <div class="tlist" id="tlist">
+    <!-- Tasks rendered by JS -->
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="scard" style="animation:fu .5s .12s ease both">
+      <div class="scard-tit" data-i="sb-nav">Jump to Task</div>
+      <div class="snav" id="snav"></div>
+    </div>
+    <div class="scard" style="animation:fu .5s .2s ease both">
+      <div class="scard-tit" data-i="sb-info">Practice Set Info</div>
+      <div class="qrow">
+        <div class="qstat"><div class="qs-n">8</div><div class="qs-l" data-i="qs-tasks">Tasks</div></div>
+        <div class="qstat"><div class="qs-n">~3.5h</div><div class="qs-l" data-i="qs-time">Total Time</div></div>
+        <div class="qstat"><div class="qs-n">3</div><div class="qs-l" data-i="qs-levels">Levels</div></div>
+        <div class="qstat"><div class="qs-n">📝</div><div class="qs-l">MS Word</div></div>
+      </div>
+    </div>
+    <div class="scard" style="animation:fu .5s .26s ease both">
+      <div class="scard-tit" data-i="sb-ribbon">Ribbon Quick Ref</div>
+      <div style="display:flex;flex-direction:column;gap:6px" id="ribbon-ref"></div>
+    </div>
+    <div class="scard" style="animation:fu .5s .32s ease both">
+      <div class="scard-tit" data-i="sb-keys">Key Shortcuts</div>
+      <div style="display:flex;flex-direction:column;gap:5px" id="shortcuts-ref"></div>
+    </div>
+    <a href="../index.html" class="back-btn" style="animation:fu .5s .38s ease both" data-i="back-btn">← Back to Practice Hub</a>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fw">
+    <div class="flogo"><div class="flm">📚</div><span><span style="color:var(--a1)">ABCD</span> Learning Hub</span></div>
+    <div class="flinks">
+      <a href="../../index.html" class="flnk" data-i="f-home">Home</a>
+      <a href="../index.html" class="flnk" data-i="f-practice">Practice</a>
+      <a href="../../doc/index.html" class="flnk" data-i="f-docs">Docs</a>
+      <a href="../../all-courses/index.html" class="flnk" data-i="f-courses">Courses</a>
+    </div>
+    <div class="fcopy">© 2025 ABCD Learning Hub · West Bengal, India</div>
+  </div>
+</footer>
+
+<script src="../../auth.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   TRANSLATIONS
+═══════════════════════════════════════════════════════ */
+const T = {
+  en: {
+    /* nav */
+    "nav-practice":"Practice","nav-word":"MS Word",
+    /* hero */
+    "hero-tag":"MS Word Practice Set","hero-h1":"Master","hero-h2":"Microsoft Word","hero-h3":"Like a Professional",
+    "hero-p":"8 carefully crafted tasks taking you from basic formatting to advanced Mail Merge and a professional CV. Learn by doing.",
+    "pill1":"📝 8 Tasks","pill2":"⏱ ~3.5 Hours","pill3":"🟢 Beginner Friendly","pill4":"🚀 Ends with a Project","pill5":"🇧🇩 বাংলায় পড়ুন",
+    /* progress */
+    "prog-label":"📊 Practice Set Progress",
+    "chip-beg":"🟢 4 Beginner","chip-int":"🟡 3 Intermediate","chip-proj":"🚀 1 Project",
+    /* section */
+    "sec-title":"All Tasks",
+    /* sidebar */
+    "sb-nav":"Jump to Task","sb-info":"Practice Set Info","sb-ribbon":"Ribbon Quick Ref","sb-keys":"Essential Shortcuts",
+    "qs-tasks":"Tasks","qs-time":"Total Time","qs-levels":"Levels",
+    "back-btn":"← Back to Practice Hub",
+    /* footer */
+    "f-home":"Home","f-practice":"Practice","f-docs":"Docs","f-courses":"Courses",
+    /* tasks */
+    "mark-complete":"✓ Mark Complete","completed":"✓ Completed!",
+    /* card labels */
+    "instructions":"Task Instructions","tips-label":"Tips & Shortcuts","submit-label":"What to Submit / Check",
+  },
+  bn: {
+    /* nav */
+    "nav-practice":"অনুশীলন","nav-word":"এমএস ওয়ার্ড",
+    /* hero */
+    "hero-tag":"এমএস ওয়ার্ড প্র্যাকটিস সেট","hero-h1":"দক্ষ হোন","hero-h2":"মাইক্রোসফট ওয়ার্ডে","hero-h3":"পেশাদারভাবে",
+    "hero-p":"৮টি হাতে-কলমে কাজ — সাধারণ ফরম্যাটিং থেকে মেইল মার্জ ও পেশাদার সিভি পর্যন্ত। করে করে শেখো।",
+    "pill1":"📝 ৮টি টাস্ক","pill2":"⏱ প্রায় ৩.৫ ঘণ্টা","pill3":"🟢 শিক্ষার্থীবান্ধব","pill4":"🚀 প্রজেক্ট দিয়ে শেষ","pill5":"🇬🇧 Switch to English",
+    /* progress */
+    "prog-label":"📊 অগ্রগতি",
+    "chip-beg":"🟢 ৪ বিগিনার","chip-int":"🟡 ৩ ইন্টারমিডিয়েট","chip-proj":"🚀 ১ প্রজেক্ট",
+    /* section */
+    "sec-title":"সব টাস্ক",
+    /* sidebar */
+    "sb-nav":"টাস্কে যান","sb-info":"প্র্যাকটিস সেটের তথ্য","sb-ribbon":"রিবন কুইক রেফারেন্স","sb-keys":"গুরুত্বপূর্ণ শর্টকাট",
+    "qs-tasks":"টাস্ক","qs-time":"মোট সময়","qs-levels":"স্তর",
+    "back-btn":"← প্র্যাকটিস হাবে ফিরে যাও",
+    /* footer */
+    "f-home":"হোম","f-practice":"অনুশীলন","f-docs":"ডকুমেন্টস","f-courses":"কোর্স",
+    /* tasks */
+    "mark-complete":"✓ সম্পন্ন করুন","completed":"✓ সম্পন্ন হয়েছে!",
+    /* card labels */
+    "instructions":"কাজের নির্দেশনা","tips-label":"টিপস ও শর্টকাট","submit-label":"কী জমা / চেক করবে",
+  }
+};
+
+let lang = localStorage.getItem('abcd-lang') || 'en';
+
+function t(key){ return (T[lang] && T[lang][key]) || T.en[key] || key; }
+
+function applyLang(l){
+  lang = l;
+  localStorage.setItem('abcd-lang', l);
+  document.documentElement.setAttribute('data-lang', l);
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  document.getElementById('btn-bn').classList.toggle('active', l==='bn');
+  // Update all data-i elements
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const key = el.getAttribute('data-i');
+    el.textContent = t(key);
+  });
+  // Re-render tasks
+  renderAll();
+}
+function setLang(l){ applyLang(l); }
+
+/* ═══════════════════════════════════════════════════════
+   TASK DATA
+═══════════════════════════════════════════════════════ */
+const TASKS = [
+  {
+    id:1, time:"10 min", level:"Beginner", badge:"",
+    levelStyle:"background:rgba(6,214,160,.12);color:#06d6a0;border:1px solid rgba(6,214,160,.28)",
+    numStyle:"background:linear-gradient(135deg,#2b7fff,#1e56d9)",
+    title:{ en:"Paragraph & Text Formatting", bn:"প্যারাগ্রাফ ও টেক্সট ফরম্যাটিং" },
+    desc:{ en:"Learn fonts, bold/italic/underline, alignment and line spacing — the absolute foundation of every Word document.", bn:"ফন্ট, বোল্ড/ইটালিক/আন্ডারলাইন, অ্যালাইনমেন্ট এবং লাইন স্পেসিং শিখুন — প্রতিটি Word ডকুমেন্টের মূল ভিত্তি।" },
+    skills:["Font Family","Font Size","Bold / Italic","Text Align","Line Spacing"],
+    steps:{
+      en:["Open Word and create a <strong>new blank document</strong>. Save as <code>Task01_Name.docx</code>","Type: <strong>\"The quick brown fox jumps over the lazy dog.\"</strong>","Format it: font <code>Calibri</code>, size <code>14pt</code>, <strong>Bold</strong>, colour <strong>Dark Blue</strong>","Add a second paragraph in <code>Times New Roman</code> <code>12pt</code>, <em>Italic</em>, colour <strong>Dark Red</strong>","Add a <strong>title</strong> above both: <strong>\"Text Formatting Practice\"</strong> — centred, <code>18pt</code>, Underlined","Set line spacing to <code>1.5</code> and paragraph spacing <code>6pt</code> After"],
+      bn:["Word খুলুন এবং একটি <strong>নতুন ফাঁকা ডকুমেন্ট</strong> তৈরি করুন। <code>Task01_Name.docx</code> নামে সেভ করুন","টাইপ করুন: <strong>\"The quick brown fox jumps over the lazy dog.\"</strong>","ফরম্যাট করুন: ফন্ট <code>Calibri</code>, সাইজ <code>14pt</code>, <strong>Bold</strong>, রঙ <strong>Dark Blue</strong>","দ্বিতীয় প্যারাগ্রাফ যোগ করুন <code>Times New Roman</code> <code>12pt</code>, <em>Italic</em>, রঙ <strong>Dark Red</strong>","একটি <strong>শিরোনাম</strong> যোগ করুন: <strong>\"Text Formatting Practice\"</strong> — মাঝখানে, <code>18pt</code>, আন্ডারলাইন","লাইন স্পেসিং <code>1.5</code> এবং প্যারাগ্রাফ স্পেসিং After <code>6pt</code> সেট করুন"]
+    },
+    tips:{
+      en:["⌨️ <strong>Ctrl+B</strong> = Bold, <strong>Ctrl+I</strong> = Italic, <strong>Ctrl+U</strong> = Underline — faster than the ribbon","🖱️ Triple-click anywhere in a paragraph to select the whole paragraph","📐 Line spacing is in Home → Paragraph. Click the small corner arrow for the full dialog","🎨 Font colour arrow opens the full colour palette","✅ Use <strong>Format Painter</strong> to copy formatting from one text to another"],
+      bn:["⌨️ <strong>Ctrl+B</strong> = বোল্ড, <strong>Ctrl+I</strong> = ইটালিক, <strong>Ctrl+U</strong> = আন্ডারলাইন","🖱️ প্যারাগ্রাফের মধ্যে তিনবার ক্লিক করলে পুরো প্যারাগ্রাফ সিলেক্ট হয়","📐 লাইন স্পেসিং Home → Paragraph-এ আছে। কোণার ছোট তীর ক্লিক করলে পুরো ডায়ালগ খুলবে","🎨 ফন্ট কালারের তীর ক্লিক করলে পুরো কালার প্যালেট দেখাবে","✅ <strong>Format Painter</strong> ব্যবহার করে এক টেক্সটের ফরম্যাট অন্যটিতে কপি করুন"]
+    },
+    checks:{
+      en:["Title centred, 18pt, underlined","First para bold, dark blue, Calibri 14pt","Second para italic, dark red, TNR 12pt","Line spacing set to 1.5","File saved as .docx"],
+      bn:["শিরোনাম কেন্দ্রিত, 18pt, আন্ডারলাইন","প্রথম প্যারা বোল্ড, ডার্ক ব্লু, Calibri 14pt","দ্বিতীয় প্যারা ইটালিক, ডার্ক রেড, TNR 12pt","লাইন স্পেসিং 1.5 সেট করা হয়েছে","ফাইল .docx হিসেবে সেভ করা হয়েছে"]
+    },
+    tags:["Home Ribbon","Font Group","Paragraph Group"]
+  },
+  {
+    id:2, time:"15 min", level:"Beginner", badge:"",
+    levelStyle:"background:rgba(6,214,160,.12);color:#06d6a0;border:1px solid rgba(6,214,160,.28)",
+    numStyle:"background:linear-gradient(135deg,#2b7fff,#1e56d9)",
+    title:{ en:"Styles & Headings + Auto TOC", bn:"স্টাইল ও শিরোনাম + স্বয়ংক্রিয় বিষয়সূচি" },
+    desc:{ en:"Use Word's built-in Heading styles to structure a document and auto-generate a Table of Contents.", bn:"Word-এর বিল্ট-ইন Heading স্টাইল ব্যবহার করে ডকুমেন্ট সাজান এবং স্বয়ংক্রিয়ভাবে বিষয়সূচি তৈরি করুন।" },
+    skills:["Heading 1/2/3","Styles Pane","Auto TOC","Page Break","Normal Style"],
+    steps:{
+      en:["Create new doc. Type title <strong>\"Annual Report 2024\"</strong> — apply the <code>Title</code> style","Go to <strong>References → Table of Contents → Automatic Table 1</strong>","Insert <strong>Page Break</strong> (Ctrl+Enter), add heading <strong>\"Introduction\"</strong> with <code>Heading 1</code>","Add body text below (Normal style), then a sub-heading <strong>\"Background\"</strong> with <code>Heading 2</code>","Repeat for 2 more H1 sections: <strong>Key Findings</strong> and <strong>Conclusion</strong>","Right-click TOC → <strong>Update Field → Update entire table</strong>"],
+      bn:["নতুন ডকুমেন্ট তৈরি করুন। শিরোনাম টাইপ করুন <strong>\"Annual Report 2024\"</strong> — <code>Title</code> স্টাইল প্রয়োগ করুন","<strong>References → Table of Contents → Automatic Table 1</strong> যান","<strong>Page Break</strong> দিন (Ctrl+Enter), <strong>\"Introduction\"</strong> শিরোনাম যোগ করুন <code>Heading 1</code> দিয়ে","নিচে বডি টেক্সট যোগ করুন (Normal স্টাইল), তারপর <strong>\"Background\"</strong> সাব-হেডিং <code>Heading 2</code> দিয়ে","আরও ২টি H1 সেকশন যোগ করুন: <strong>Key Findings</strong> এবং <strong>Conclusion</strong>","TOC-তে রাইট-ক্লিক → <strong>Update Field → Update entire table</strong>"]
+    },
+    tips:{
+      en:["🏗️ Apply heading styles <em>before</em> generating TOC — Word reads them to build entries","🔑 <strong>Ctrl+Alt+1</strong> = Heading 1, <strong>Ctrl+Alt+2</strong> = Heading 2, very fast shortcut","👁️ Enable <strong>Navigation Pane</strong> (View tab) to see all headings in a left-side tree","🎨 Right-click any style in the gallery → Modify — changes apply everywhere that style is used"],
+      bn:["🏗️ TOC তৈরির <em>আগে</em> Heading স্টাইল প্রয়োগ করুন — Word এগুলো পড়ে তালিকা তৈরি করে","🔑 <strong>Ctrl+Alt+1</strong> = Heading 1, <strong>Ctrl+Alt+2</strong> = Heading 2","👁️ <strong>Navigation Pane</strong> চালু করুন (View ট্যাব) — বাম দিকে সব শিরোনাম দেখাবে","🎨 স্টাইলে রাইট-ক্লিক → Modify — যেখানেই ব্যবহার হয়েছে সেখানে পরিবর্তন হবে"]
+    },
+    checks:{
+      en:["Title style applied","At least 3 Heading 1 sections","At least 1 Heading 2 sub-section","Auto TOC on page 1, updated","Page breaks between sections"],
+      bn:["Title স্টাইল প্রয়োগ করা হয়েছে","কমপক্ষে ৩টি Heading 1 সেকশন","কমপক্ষে ১টি Heading 2 সাব-সেকশন","পৃষ্ঠা ১-এ স্বয়ংক্রিয় বিষয়সূচি আপডেট করা হয়েছে","সেকশনের মাঝে Page Break আছে"]
+    },
+    tags:["Home → Styles","References → TOC","Navigation Pane"]
+  },
+  {
+    id:3, time:"20 min", level:"Beginner", badge:"",
+    levelStyle:"background:rgba(6,214,160,.12);color:#06d6a0;border:1px solid rgba(6,214,160,.28)",
+    numStyle:"background:linear-gradient(135deg,#2b7fff,#1e56d9)",
+    title:{ en:"Tables & Borders", bn:"টেবিল ও বর্ডার" },
+    desc:{ en:"Build a formatted data table — merging cells, styling borders, adding shading and adjusting column widths.", bn:"ফরম্যাটেড ডেটা টেবিল তৈরি করুন — সেল মার্জ, বর্ডার স্টাইল, শেডিং এবং কলামের প্রস্থ নির্ধারণ করুন।" },
+    skills:["Insert Table","Merge Cells","Cell Shading","Border Styles","Column Width"],
+    steps:{
+      en:["Insert a <strong>5×4 table</strong>: Insert → Table → 5×4","<strong>Merge all Row 1 cells</strong> → type title <strong>\"Monthly Sales Q1 2024\"</strong>, centred, bold","Row 2 headers: <strong>Month | Product | Units | Price | Total</strong> — blue background, white bold text","Fill rows 3–4 with sales data (January & February laptop sales)","Apply <strong>light blue shading</strong> to alternate data rows. Set all borders to <strong>1pt dark blue</strong>","Set column widths precisely. <strong>Centre-align</strong> the whole table on the page"],
+      bn:["একটি <strong>5×4 টেবিল</strong> যোগ করুন: Insert → Table → 5×4","<strong>Row 1-এর সব সেল মার্জ করুন</strong> → শিরোনাম টাইপ করুন <strong>\"Monthly Sales Q1 2024\"</strong>, কেন্দ্রিত, বোল্ড","Row 2-এর হেডার: <strong>Month | Product | Units | Price | Total</strong> — নীল ব্যাকগ্রাউন্ড, সাদা বোল্ড","Row 3–4-এ বিক্রয় ডেটা পূরণ করুন (জানুয়ারি ও ফেব্রুয়ারি ল্যাপটপ বিক্রয়)","বিকল্প সারিতে <strong>হালকা নীল শেডিং</strong> প্রয়োগ করুন। সব বর্ডার <strong>1pt গাঢ় নীল</strong>","কলামের প্রস্থ নির্ধারণ করুন। পুরো টেবিল পৃষ্ঠার মাঝে <strong>সেন্টার করুন</strong>"]
+    },
+    tips:{
+      en:["🖱️ Right-click → Table Properties for exact column widths in cm — more precise than dragging","🎨 Shading: select cells → Table Design tab → Shading dropdown","🔲 Borders: Table Design → Borders and Shading dialog for full control","⌨️ Press <strong>Tab</strong> to move to next cell. Tab in last cell adds a new row"],
+      bn:["🖱️ রাইট-ক্লিক → Table Properties-এ সেন্টিমিটারে কলামের প্রস্থ নির্ধারণ করুন","🎨 শেডিং: সেল সিলেক্ট করুন → Table Design ট্যাব → Shading ড্রপডাউন","🔲 বর্ডার: Table Design → Borders and Shading ডায়ালগ","⌨️ <strong>Tab</strong> চাপলে পরের সেলে যাওয়া যায়। শেষ সেলে Tab চাপলে নতুন সারি যোগ হয়"]
+    },
+    checks:{
+      en:["Row 1 merged with centred title","Header row with blue bg + white text","Alternate row shading applied","Custom borders on all cells","Column widths set, table centred"],
+      bn:["Row 1 মার্জ করা, কেন্দ্রিত শিরোনাম","হেডার সারিতে নীল ব্যাকগ্রাউন্ড + সাদা টেক্সট","বিকল্প সারিতে শেডিং","সব সেলে কাস্টম বর্ডার","কলামের প্রস্থ নির্ধারিত, টেবিল কেন্দ্রিত"]
+    },
+    tags:["Insert → Table","Table Design","Layout Tab"]
+  },
+  {
+    id:4, time:"25 min", level:"Intermediate", badge:"Hot",
+    levelStyle:"background:rgba(255,209,102,.12);color:#ffd166;border:1px solid rgba(255,209,102,.28)",
+    numStyle:"background:linear-gradient(135deg,#fbbf24,#f59e0b)",
+    title:{ en:"Headers, Footers & Page Numbers", bn:"হেডার, ফুটার ও পৃষ্ঠা নম্বর" },
+    desc:{ en:"Add professional headers with your company name, footers with page numbers, and learn to use different first-page headers.", bn:"কোম্পানির নাম সহ পেশাদার হেডার, পৃষ্ঠা নম্বর সহ ফুটার যোগ করুন এবং প্রথম পৃষ্ঠার আলাদা হেডার ব্যবহার করতে শিখুন।" },
+    skills:["Insert Header","Insert Footer","Page Numbers","Different First Page","Section Breaks"],
+    steps:{
+      en:["Create a 3-page document (add content/page breaks). Go to <strong>Insert → Header → Edit Header</strong>","Type your company name on the left. Press Tab twice to go to the right, add today's date","Go to <strong>Insert → Footer → Edit Footer</strong>. Centre it and add <strong>Insert → Page Number → Current Position → Plain Number</strong>","Check <strong>\"Different First Page\"</strong> in Header & Footer Tools → leave the first page header blank","Add the document title on the right side of the header from page 2 onwards","<strong>Close Header and Footer</strong>. Check every page looks correct"],
+      bn:["৩ পৃষ্ঠার একটি ডকুমেন্ট তৈরি করুন। <strong>Insert → Header → Edit Header</strong>-এ যান","বাম দিকে কোম্পানির নাম টাইপ করুন। দুইবার Tab চেপে ডান দিকে যান, আজকের তারিখ যোগ করুন","<strong>Insert → Footer → Edit Footer</strong>-এ যান। মাঝখানে রেখে <strong>Insert → Page Number → Current Position → Plain Number</strong> যোগ করুন","Header & Footer Tools-এ <strong>\"Different First Page\"</strong> চেক করুন — প্রথম পৃষ্ঠার হেডার ফাঁকা রাখুন","২য় পৃষ্ঠা থেকে হেডারের ডান দিকে ডকুমেন্টের শিরোনাম যোগ করুন","<strong>Close Header and Footer</strong> ক্লিক করুন। প্রতিটি পৃষ্ঠা সঠিক দেখাচ্ছে কিনা পরীক্ষা করুন"]
+    },
+    tips:{
+      en:["📌 Double-click in the header/footer area to enter edit mode at any time","🔢 To start page numbers from 2, go to Insert → Page Number → Format Page Numbers → Start at: 0","📄 Section Breaks (Layout tab) let you have completely different headers/footers in different parts of the document","⚠️ Always check Print Preview before printing — headers/footers can shift on different printers"],
+      bn:["📌 যেকোনো সময় হেডার/ফুটার এলাকায় ডাবল-ক্লিক করলে এডিট মোডে প্রবেশ করা যায়","🔢 পৃষ্ঠা নম্বর ২ থেকে শুরু করতে: Insert → Page Number → Format Page Numbers → Start at: 0","📄 Section Breaks (Layout ট্যাব) দিয়ে ডকুমেন্টের ভিন্ন অংশে আলাদা হেডার/ফুটার রাখা যায়","⚠️ প্রিন্টের আগে সবসময় Print Preview চেক করুন"]
+    },
+    checks:{
+      en:["Header with company name + date","Footer with centred page number","First page has no header","Header differs from page 2 onwards","All 3 pages display correctly"],
+      bn:["কোম্পানির নাম + তারিখ সহ হেডার","কেন্দ্রিত পৃষ্ঠা নম্বর সহ ফুটার","প্রথম পৃষ্ঠায় হেডার নেই","২য় পৃষ্ঠা থেকে আলাদা হেডার","৩টি পৃষ্ঠাই সঠিকভাবে দেখাচ্ছে"]
+    },
+    tags:["Insert → Header/Footer","Page Numbers","Section Breaks"]
+  },
+  {
+    id:5, time:"30 min", level:"Intermediate", badge:"",
+    levelStyle:"background:rgba(255,209,102,.12);color:#ffd166;border:1px solid rgba(255,209,102,.28)",
+    numStyle:"background:linear-gradient(135deg,#fbbf24,#f59e0b)",
+    title:{ en:"Mail Merge — Personalised Letters", bn:"মেইল মার্জ — ব্যক্তিগতকৃত চিঠি" },
+    desc:{ en:"Use Mail Merge to generate personalised letters for multiple recipients from a single Word template and Excel data source.", bn:"একটি Word টেমপ্লেট ও Excel ডেটা সোর্স ব্যবহার করে একাধিক প্রাপকের জন্য ব্যক্তিগতকৃত চিঠি তৈরি করুন।" },
+    skills:["Mailings Tab","Data Source","Merge Fields","Preview Results","Finish & Merge"],
+    steps:{
+      en:["Create Excel file with columns: <code>FirstName</code>, <code>LastName</code>, <code>City</code>, <code>CourseName</code>. Add 4+ rows. Save as <code>students.xlsx</code>","New Word doc → <strong>Mailings → Start Mail Merge → Letters</strong>","Click <strong>Select Recipients → Use an Existing List</strong> → browse to <code>students.xlsx</code>","Write letter: <em>\"Dear «FirstName» «LastName», your enrollment for «CourseName» in «City» is confirmed.\"</em>","Click <strong>Preview Results</strong> and use arrows to check each letter","<strong>Finish & Merge → Edit Individual Documents → All</strong>"],
+      bn:["Excel ফাইল তৈরি করুন: <code>FirstName</code>, <code>LastName</code>, <code>City</code>, <code>CourseName</code> কলাম সহ। ৪+ সারি যোগ করুন। <code>students.xlsx</code> সেভ করুন","নতুন Word doc → <strong>Mailings → Start Mail Merge → Letters</strong>","<strong>Select Recipients → Use an Existing List</strong> → <code>students.xlsx</code> ব্রাউজ করুন","চিঠি লিখুন: <em>\"প্রিয় «FirstName» «LastName», «City»-তে «CourseName»-এর জন্য আপনার নিবন্ধন নিশ্চিত হয়েছে।\"</em>","<strong>Preview Results</strong> ক্লিক করুন এবং তীর দিয়ে প্রতিটি চিঠি চেক করুন","<strong>Finish & Merge → Edit Individual Documents → All</strong>"]
+    },
+    tips:{
+      en:["📊 Excel first row must be headers — no spaces in names: use <code>FirstName</code> not <code>First Name</code>","🔍 Use <strong>Edit Recipient List</strong> to filter which records are included","📝 Rules → If…Then…Else lets you add conditional text based on data","💾 Save your template separately from the merged output for reuse"],
+      bn:["📊 Excel-এর প্রথম সারি অবশ্যই হেডার হতে হবে — নামে স্পেস নয়: <code>FirstName</code> ব্যবহার করুন","🔍 <strong>Edit Recipient List</strong> ব্যবহার করে কোন রেকর্ড অন্তর্ভুক্ত হবে তা ফিল্টার করুন","📝 Rules → If…Then…Else দিয়ে ডেটার উপর ভিত্তি করে শর্তসাপেক্ষ টেক্সট যোগ করুন","💾 টেমপ্লেট আলাদাভাবে সেভ করুন — ভবিষ্যতে পুনরায় ব্যবহার করা যাবে"]
+    },
+    checks:{
+      en:["Excel data source with 4+ rows","All 4 merge fields inserted","Preview shows correct names","Merged doc with 4+ letters","Each letter on its own page"],
+      bn:["৪+ সারি সহ Excel ডেটা সোর্স","৪টি মার্জ ফিল্ড ঢোকানো হয়েছে","প্রিভিউতে সঠিক নাম দেখাচ্ছে","৪+ চিঠি সহ মার্জড ডকুমেন্ট","প্রতিটি চিঠি আলাদা পৃষ্ঠায়"]
+    },
+    tags:["Mailings Tab","Excel + Word","Merge Fields"]
+  },
+  {
+    id:6, time:"25 min", level:"Intermediate", badge:"New",
+    levelStyle:"background:rgba(255,209,102,.12);color:#ffd166;border:1px solid rgba(255,209,102,.28)",
+    numStyle:"background:linear-gradient(135deg,#fbbf24,#f59e0b)",
+    title:{ en:"Track Changes & Comments", bn:"পরিবর্তন ট্র্যাক ও মন্তব্য" },
+    desc:{ en:"Enable Track Changes to collaborate on documents, add comments, accept/reject edits — essential for office and academic proofreading.", bn:"Track Changes চালু করে ডকুমেন্টে সহযোগিতা করুন, মন্তব্য যোগ করুন, সম্পাদনা গ্রহণ/প্রত্যাখ্যান করুন।" },
+    skills:["Track Changes","Comments","Accept/Reject","Reviewing Pane","Final View"],
+    steps:{
+      en:["Open any multi-paragraph document. Go to <strong>Review → Track Changes → Track Changes</strong> (toggle it on)","Make 5 edits: change words, delete sentences, add new text — notice coloured markup appears","Add 3 comments: select a phrase → <strong>Review → New Comment</strong> → type your feedback","Switch to <strong>Simple Markup</strong> view and then <strong>All Markup</strong> — understand the difference","Use <strong>Review → Accept → Accept All Changes</strong> to accept everything","Then <strong>Reject</strong> a few specific changes manually. Delete all resolved comments"],
+      bn:["যেকোনো বহু-অনুচ্ছেদ ডকুমেন্ট খুলুন। <strong>Review → Track Changes → Track Changes</strong> চালু করুন (টগল করুন)","৫টি পরিবর্তন করুন: শব্দ পরিবর্তন, বাক্য মুছুন, নতুন টেক্সট যোগ করুন — রঙিন মার্কআপ দেখুন","৩টি মন্তব্য যোগ করুন: একটি বাক্যাংশ সিলেক্ট করুন → <strong>Review → New Comment</strong> → মতামত টাইপ করুন","<strong>Simple Markup</strong> ভিউ তারপর <strong>All Markup</strong> — পার্থক্য বুঝুন","<strong>Review → Accept → Accept All Changes</strong> দিয়ে সব পরিবর্তন গ্রহণ করুন","তারপর কিছু নির্দিষ্ট পরিবর্তন ম্যানুয়ালি <strong>Reject</strong> করুন। সব সমাধান হওয়া মন্তব্য মুছুন"]
+    },
+    tips:{
+      en:["👥 Track Changes is essential in professional environments — editors use it for every document","🎨 Each reviewer gets a different colour automatically — useful when multiple people edit","🔒 Protect Document (Review tab) can force all editors to use Track Changes","💡 Use keyboard shortcut <strong>Ctrl+Shift+E</strong> to toggle Track Changes on/off quickly"],
+      bn:["👥 পেশাদার পরিবেশে Track Changes অপরিহার্য — সম্পাদকরা প্রতিটি ডকুমেন্টে এটি ব্যবহার করেন","🎨 প্রতিটি পর্যালোচক স্বয়ংক্রিয়ভাবে আলাদা রঙ পায় — একাধিক ব্যক্তি সম্পাদনা করলে উপকারী","🔒 Protect Document (Review ট্যাব) দিয়ে সব সম্পাদককে Track Changes ব্যবহার করতে বাধ্য করা যায়","💡 <strong>Ctrl+Shift+E</strong> শর্টকাট দিয়ে দ্রুত Track Changes চালু/বন্ধ করুন"]
+    },
+    checks:{
+      en:["Track Changes toggled on","At least 5 edits visible in markup","3 comments added with text","Accepted all changes in one step","Manually rejected 2+ specific edits"],
+      bn:["Track Changes চালু করা হয়েছে","মার্কআপে কমপক্ষে ৫টি পরিবর্তন দৃশ্যমান","৩টি মন্তব্য টেক্সট সহ যোগ করা হয়েছে","এক ধাপে সব পরিবর্তন গ্রহণ করা হয়েছে","ম্যানুয়ালি ২+ নির্দিষ্ট পরিবর্তন প্রত্যাখ্যান করা হয়েছে"]
+    },
+    tags:["Review Tab","Track Changes","Comments"]
+  },
+  {
+    id:7, time:"35 min", level:"Intermediate", badge:"",
+    levelStyle:"background:rgba(255,209,102,.12);color:#ffd166;border:1px solid rgba(255,209,102,.28)",
+    numStyle:"background:linear-gradient(135deg,#fbbf24,#f59e0b)",
+    title:{ en:"Images, Shapes & SmartArt", bn:"ছবি, আকৃতি ও SmartArt" },
+    desc:{ en:"Insert and format images with text wrapping, create shapes with custom fills, and build a SmartArt process diagram.", bn:"টেক্সট র‍্যাপিং সহ ছবি সন্নিবেশ ও ফরম্যাট করুন, কাস্টম ফিল সহ আকৃতি তৈরি করুন এবং SmartArt প্রক্রিয়া চিত্র তৈরি করুন।" },
+    skills:["Insert Image","Text Wrapping","Shapes","SmartArt","Picture Format"],
+    steps:{
+      en:["Insert any image: <strong>Insert → Pictures → This Device</strong>. Resize to approx. 6cm wide","Change text wrapping to <strong>Square</strong> (Picture Format → Wrap Text → Square). Move image beside text","Insert a <strong>Rounded Rectangle</strong> shape: Insert → Shapes. Set fill to blue gradient, white border","Add text inside the shape: right-click → <strong>Add Text</strong>. Type a label","Insert SmartArt: <strong>Insert → SmartArt → Process → Basic Chevron Process</strong>","Add 4 process steps: <em>Plan → Design → Build → Review</em>. Format with blue colour scheme"],
+      bn:["যেকোনো ছবি যোগ করুন: <strong>Insert → Pictures → This Device</strong>। প্রস্থ প্রায় ৬ সেমি করুন","টেক্সট র‍্যাপিং পরিবর্তন করুন <strong>Square</strong>-এ (Picture Format → Wrap Text → Square)। ছবি টেক্সটের পাশে নিন","একটি <strong>Rounded Rectangle</strong> আকৃতি যোগ করুন: Insert → Shapes। নীল গ্রেডিয়েন্ট ফিল, সাদা বর্ডার","আকৃতির মধ্যে টেক্সট যোগ করুন: রাইট-ক্লিক → <strong>Add Text</strong>","SmartArt যোগ করুন: <strong>Insert → SmartArt → Process → Basic Chevron Process</strong>","৪টি প্রক্রিয়া ধাপ যোগ করুন: <em>Plan → Design → Build → Review</em>। নীল রঙ প্রকল্পে ফরম্যাট করুন"]
+    },
+    tips:{
+      en:["🖼️ <strong>Tight</strong> wrapping lets text hug the image shape; <strong>Through</strong> goes inside transparent areas","📐 Hold <strong>Shift</strong> while resizing to maintain aspect ratio of images and shapes","🎨 Shape Fill → Gradient lets you create professional-looking buttons and banners","🔗 Group multiple shapes (select all → right-click → Group) to move them as one object"],
+      bn:["🖼️ <strong>Tight</strong> র‍্যাপিং ছবির আকৃতি অনুসরণ করে; <strong>Through</strong> স্বচ্ছ এলাকার মধ্য দিয়ে যায়","📐 আকার পরিবর্তন করার সময় <strong>Shift</strong> ধরে রাখলে অনুপাত বজায় থাকে","🎨 Shape Fill → Gradient দিয়ে পেশাদার বোতাম ও ব্যানার তৈরি করা যায়","🔗 একাধিক আকৃতি গ্রুপ করুন (সব সিলেক্ট → রাইট-ক্লিক → Group) — একসাথে সরানো যাবে"]
+    },
+    checks:{
+      en:["Image inserted, resized to ~6cm","Text wrapping set to Square","Shape with blue gradient and text","SmartArt with 4 process steps","SmartArt formatted with colour scheme"],
+      bn:["ছবি সন্নিবেশিত, ~৬ সেমি প্রস্থ","টেক্সট র‍্যাপিং Square-এ সেট","নীল গ্রেডিয়েন্ট ও টেক্সট সহ আকৃতি","৪ ধাপ সহ SmartArt","SmartArt রঙ প্রকল্পে ফরম্যাট করা হয়েছে"]
+    },
+    tags:["Insert → Pictures","Shapes","SmartArt"]
+  },
+  {
+    id:8, time:"45 min", level:"Project", badge:"New",
+    levelStyle:"background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.28)",
+    numStyle:"background:linear-gradient(135deg,#a78bfa,#7c3aed);box-shadow:0 0 18px rgba(167,139,250,.4),0 3px 10px rgba(0,0,0,.3)",
+    doneStyle:"background:linear-gradient(135deg,#06d6a0,#059669)",
+    btnStyle:"background:linear-gradient(90deg,#a78bfa,#7c3aed);box-shadow:0 4px 18px rgba(167,139,250,.4)",
+    title:{ en:"Professional CV / Résumé", bn:"পেশাদার সিভি / রেজুমে" },
+    desc:{ en:"Put everything together: build a job-ready CV from scratch using styles, tables, columns, consistent formatting and PDF export.", bn:"সব কিছু একত্রে ব্যবহার করুন: স্টাইল, টেবিল, কলাম, সামঞ্জস্যপূর্ণ ফরম্যাটিং এবং PDF এক্সপোর্ট দিয়ে চাকরির উপযোগী সিভি তৈরি করুন।" },
+    skills:["Narrow Margins","2-Column Table","Heading Styles","Page Numbers","PDF Export","Text Boxes"],
+    steps:{
+      en:["<strong>Page Setup:</strong> Layout → Margins → Narrow. A4 portrait. Save as <code>CV_YourName.docx</code>","<strong>Header section:</strong> Name in <code>28pt Calibri Light Bold</code>, role below in <code>14pt</code>. Add thick horizontal rule (Borders → Bottom Border)","<strong>Two-column layout:</strong> Insert a borderless 2-column table. Left = 5cm (sidebar), right = remaining","<strong>Sidebar:</strong> Contact info, Skills list (bullets), Languages. Apply light blue background shading","<strong>Main column:</strong> Sections — Objective, Work Experience (2 entries), Education (2 entries). Use Heading 2 for section titles","<strong>Polish + Export:</strong> Consistent fonts throughout, page number in footer. File → Save As → PDF"],
+      bn:["<strong>পৃষ্ঠা সেটআপ:</strong> Layout → Margins → Narrow। A4 পোর্ট্রেট। <code>CV_YourName.docx</code> সেভ করুন","<strong>হেডার:</strong> নাম <code>28pt Calibri Light Bold</code>-এ, নিচে ভূমিকা <code>14pt</code>-এ। পুরু অনুভূমিক রেখা যোগ করুন (Borders → Bottom Border)","<strong>দুই-কলাম লেআউট:</strong> বর্ডারবিহীন ২-কলাম টেবিল যোগ করুন। বাম = ৫ সেমি (সাইডবার), ডান = বাকি","<strong>সাইডবার:</strong> যোগাযোগের তথ্য, দক্ষতার তালিকা (বুলেট), ভাষা। হালকা নীল শেডিং প্রয়োগ করুন","<strong>মূল কলাম:</strong> সেকশন — উদ্দেশ্য, কর্মসংস্থান (২টি এন্ট্রি), শিক্ষা (২টি এন্ট্রি)। সেকশন শিরোনামে Heading 2 ব্যবহার করুন","<strong>পরিমার্জন + রপ্তানি:</strong> সব জায়গায় সামঞ্জস্যপূর্ণ ফন্ট, ফুটারে পৃষ্ঠা নম্বর। File → Save As → PDF"]
+    },
+    tips:{
+      en:["📐 Narrow margins give more space. Go to Layout → Margins → Narrow or set Custom","🎨 Stick to 2 fonts max: Calibri Light for headings, Calibri for body — the golden rule","📏 Ctrl+A then adjust line spacing to 1.15 with 3pt before — makes CV fill the page perfectly","💾 Always check the PDF output — what looks good in Word can shift slightly when printed"],
+      bn:["📐 Narrow মার্জিনে বেশি জায়গা পাওয়া যায়। Layout → Margins → Narrow বা Custom","🎨 সর্বোচ্চ ২টি ফন্ট: শিরোনামে Calibri Light, বডিতে Calibri — সোনার নিয়ম","📏 Ctrl+A তারপর লাইন স্পেসিং 1.15 এবং আগে 3pt — CV পৃষ্ঠা পূরণ করবে","💾 সবসময় PDF আউটপুট চেক করুন — Word-এ ভালো দেখালেও প্রিন্টে সামান্য পরিবর্তন হতে পারে"]
+    },
+    checks:{
+      en:["Narrow margins, A4 page","Name + role header with rule","2-col layout (sidebar + main)","Sidebar shaded, skills bulleted","Work Exp + Education sections","Exported as clean PDF"],
+      bn:["Narrow মার্জিন, A4 পৃষ্ঠা","নাম + ভূমিকা হেডার রেখা সহ","২-কলাম লেআউট (সাইডবার + মূল)","সাইডবার শেডিং, দক্ষতা বুলেট","কর্মসংস্থান + শিক্ষা সেকশন","পরিষ্কার PDF হিসেবে রপ্তানি"]
+    },
+    tags:["Full Word Toolkit","Real-World Output","PDF Export"]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════ */
+const STORE = 'abcd_word_done';
+let done = JSON.parse(localStorage.getItem(STORE) || '[]');
+let openTask = 1;
+
+function renderAll(){
+  renderTasks();
+  renderSidebar();
+  restoreState();
+}
+
+function renderTasks(){
+  const list = document.getElementById('tlist');
+  list.innerHTML = '';
+  TASKS.forEach((task, idx) => {
+    const isDone = done.includes(task.id);
+    const card = document.createElement('div');
+    card.className = 'tcard' + (isDone ? ' done' : '');
+    card.setAttribute('data-task', task.id);
+    card.style.animationDelay = (idx * 60) + 'ms';
+
+    const levelLabelEn = task.level;
+    const levelLabelBn = {Beginner:'বিগিনার',Intermediate:'ইন্টারমিডিয়েট',Project:'প্রজেক্ট'}[task.level] || task.level;
+    const levelLabel = lang === 'bn' ? levelLabelBn : levelLabelEn;
+    const numStyle = isDone ? 'background:linear-gradient(135deg,#06d6a0,#059669);box-shadow:0 0 18px rgba(6,214,160,.4),0 3px 10px rgba(0,0,0,.3)' : (task.numStyle || '');
+    const numContent = isDone ? '✓' : String(task.id).padStart(2,'0');
+
+    const stepsHTML = (task.steps[lang] || task.steps.en).map((s,i) =>
+      `<div class="step"><div class="step-n">${i+1}</div><div class="step-t">${s}</div></div>`
+    ).join('');
+
+    const tipsHTML = (task.tips[lang] || task.tips.en).map(t =>
+      `<div class="tip"><span class="tip-ic">${t.slice(0,2)}</span><span class="tip-t">${t.slice(2).trim()}</span></div>`
+    ).join('');
+
+    const checksHTML = (task.checks[lang] || task.checks.en).map(c =>
+      `<div class="sub-item"><div class="sub-chk">✓</div>${c}</div>`
+    ).join('');
+
+    const tagsHTML = task.tags.map(tg => `<span class="tskill">${tg}</span>`).join('');
+    const skillsHTML = task.skills.map(s => `<span class="tskill">${s}</span>`).join('');
+
+    const btnLabel = isDone ? t('completed') : t('mark-complete');
+    const btnStyle = isDone
+      ? 'background:linear-gradient(90deg,#06d6a0,#059669);box-shadow:0 4px 18px rgba(6,214,160,.38)'
+      : (task.btnStyle || '');
+
+    const badgeHTML = task.badge ? `<span class="tc-badge b-${task.badge}">${task.badge}</span>` : '';
+
+    card.innerHTML = `
+      <div class="tc-head" onclick="toggleTask(${task.id})">
+        <div class="tc-num" style="${numStyle}">${numContent}</div>
+        <div class="tc-meta">
+          <div class="tc-row1">
+            <span class="tc-lvl" style="${task.levelStyle}">${levelLabel}</span>
+            ${badgeHTML}
+            <span class="tc-est">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              ${task.time}
+            </span>
+          </div>
+          <div class="tc-title">${task.title[lang] || task.title.en}</div>
+          <div class="tc-desc">${task.desc[lang] || task.desc.en}</div>
+          <div class="tc-skills">${skillsHTML}</div>
+        </div>
+        <div class="tc-tog${openTask === task.id ? ' open' : ''}" id="tog-${task.id}">▼</div>
+      </div>
+      <div class="tc-body${openTask === task.id ? ' open' : ''}" id="body-${task.id}">
+        <div class="tc-sep"></div>
+        <div class="tc-body-inner">
+          <div class="tcontent">
+            <div class="block">
+              <div class="block-tag"><div class="bico">📋</div>${t('instructions')}</div>
+              <div class="steps">${stepsHTML}</div>
+            </div>
+            <div class="block">
+              <div class="block-tag"><div class="bico">💡</div>${t('tips-label')}</div>
+              <div class="tips">${tipsHTML}</div>
+            </div>
+            <div class="block sub-block">
+              <div class="block-tag"><div class="bico">📤</div>${t('submit-label')}</div>
+              <div class="sub-items">${checksHTML}</div>
+            </div>
+          </div>
+        </div>
+        <div class="tc-foot">
+          <div class="tag-row">${tagsHTML}</div>
+          <button class="done-btn" style="${btnStyle}" onclick="markDone(${task.id},this)" ${isDone?'disabled':''}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            ${btnLabel}
+          </button>
+        </div>
+      </div>`;
+
+    list.appendChild(card);
+  });
+}
+
+function renderSidebar(){
+  const nav = document.getElementById('snav');
+  nav.innerHTML = '';
+  TASKS.forEach(task => {
+    const isDone = done.includes(task.id);
+    const levelLabelBn = {Beginner:'বিগিনার',Intermediate:'মধ্যবর্তী',Project:'প্রজেক্ট'}[task.level] || task.level;
+    const lbl = lang === 'bn' ? levelLabelBn : task.level;
+    const lvlClr = task.level==='Beginner' ? 'rgba(6,214,160,.12);color:#06d6a0;border:1px solid rgba(6,214,160,.25)' :
+                   task.level==='Intermediate' ? 'rgba(255,209,102,.12);color:#ffd166;border:1px solid rgba(255,209,102,.25)' :
+                   'rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.25)';
+    const item = document.createElement('a');
+    item.href = '#';
+    item.className = 'snav-item' + (isDone ? ' done-nav' : '') + (openTask === task.id ? ' active' : '');
+    item.onclick = (e) => { e.preventDefault(); scrollTo(task.id); };
+    item.innerHTML = `
+      <div class="sn">${isDone ? '✓' : task.id}</div>
+      <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${task.title[lang]||task.title.en}</span>
+      <span class="snav-lbl" style="background:${lvlClr}">${lbl}</span>`;
+    nav.appendChild(item);
+  });
+
+  // Ribbon ref
+  const ribbonData = lang === 'bn' ? [
+    ['🏠','Home','ফন্ট, প্যারাগ্রাফ, স্টাইল'],
+    ['➕','Insert','টেবিল, ছবি, আকৃতি, হেডার'],
+    ['📐','Layout','মার্জিন, কলাম, পৃষ্ঠা বিরতি'],
+    ['📚','References','বিষয়সূচি, ফুটনোট'],
+    ['📬','Mailings','মেইল মার্জ, লেবেল'],
+    ['✏️','Review','বানান, ট্র্যাক পরিবর্তন'],
+  ] : [
+    ['🏠','Home','Font, Paragraph, Styles, Clipboard'],
+    ['➕','Insert','Tables, Pictures, Shapes, Header'],
+    ['📐','Layout','Margins, Columns, Page Size, Breaks'],
+    ['📚','References','TOC, Footnotes, Citations'],
+    ['📬','Mailings','Mail Merge, Envelopes, Labels'],
+    ['✏️','Review','Spell Check, Track Changes'],
+  ];
+  document.getElementById('ribbon-ref').innerHTML = ribbonData.map(([ic,name,desc]) =>
+    `<div class="trow"><span>${ic}</span><span><strong>${name}</strong> — ${desc}</span></div>`
+  ).join('');
+
+  // Shortcuts
+  const shortcuts = [
+    ['Ctrl+S', lang==='bn'?'সেভ করুন':'Save document'],
+    ['Ctrl+Z', lang==='bn'?'পূর্বাবস্থায় ফেরান':'Undo last action'],
+    ['Ctrl+A', lang==='bn'?'সব সিলেক্ট করুন':'Select all text'],
+    ['Ctrl+Enter', lang==='bn'?'পৃষ্ঠা বিরতি':'Page break'],
+    ['Ctrl+Alt+1', lang==='bn'?'Heading 1 স্টাইল':'Apply Heading 1'],
+    ['F7', lang==='bn'?'বানান পরীক্ষা':'Spell check'],
+    ['Ctrl+P', lang==='bn'?'প্রিন্ট / PDF রপ্তানি':'Print / Export PDF'],
+  ];
+  document.getElementById('shortcuts-ref').innerHTML = shortcuts.map(([k,d]) =>
+    `<div class="trow"><code class="kc">${k}</code><span>${d}</span></div>`
+  ).join('');
+}
+
+function restoreState(){
+  updateProgress();
+}
+
+function updateProgress(){
+  const pct = Math.round((done.length / TASKS.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = done.length + ' / ' + TASKS.length;
+  if(done.length === TASKS.length) setTimeout(celebrate, 400);
+}
+
+function markDone(id, btn){
+  if(!done.includes(id)){ done.push(id); localStorage.setItem(STORE, JSON.stringify(done)); }
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> ${t('completed')}`;
+  btn.style.background = 'linear-gradient(90deg,#06d6a0,#059669)';
+  btn.style.boxShadow = '0 4px 18px rgba(6,214,160,.38)';
+  btn.disabled = true;
+  const card = document.querySelector(`.tcard[data-task="${id}"]`);
+  if(card){ card.classList.add('done'); card.querySelector('.tc-num').style.background = 'linear-gradient(135deg,#06d6a0,#059669)'; card.querySelector('.tc-num').textContent = '✓'; }
+  renderSidebar();
+  updateProgress();
+}
+
+function toggleTask(id){
+  const wasOpen = openTask === id;
+  openTask = wasOpen ? null : id;
+  document.querySelectorAll('.tc-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.tc-tog').forEach(t => t.classList.remove('open'));
+  if(!wasOpen){
+    const b = document.getElementById('body-' + id);
+    const tog = document.getElementById('tog-' + id);
+    if(b){ b.classList.add('open'); }
+    if(tog){ tog.classList.add('open'); }
+    setTimeout(() => { document.querySelector(`.tcard[data-task="${id}"]`)?.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 60);
+  }
+  // Update sidebar active
+  document.querySelectorAll('.snav-item').forEach((item, i) => {
+    item.classList.toggle('active', TASKS[i].id === openTask);
+  });
+}
+
+function scrollTo(id){
+  const card = document.querySelector(`.tcard[data-task="${id}"]`);
+  if(card) card.scrollIntoView({behavior:'smooth',block:'start'});
+  if(openTask !== id) toggleTask(id);
+}
+
+/* ═══════════════════════════════════════════════════════
+   PARTICLES
+═══════════════════════════════════════════════════════ */
+(() => {
+  const cv = document.getElementById('cvs'), x = cv.getContext('2d');
+  let W, H;
+  const cols = ['#2b7fff','#1e56d9','#5b9fff','#00e5b0'];
+  function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const pts = Array.from({length:55}, () => ({
+    x:Math.random()*1920, y:Math.random()*1080,
+    r:Math.random()*1.3+.3,
+    vx:(Math.random()-.5)*.2, vy:(Math.random()-.5)*.2,
+    o:Math.random()*.45+.1, c:cols[Math.floor(Math.random()*cols.length)]
+  }));
+  function tick(){
+    x.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ x.beginPath(); x.strokeStyle=`rgba(43,127,255,${(1-d/110)*.1})`; x.lineWidth=.5; x.moveTo(pts[i].x,pts[i].y); x.lineTo(pts[j].x,pts[j].y); x.stroke(); }
+    }
+    pts.forEach(p => {
+      x.beginPath(); x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle = p.c + Math.floor(p.o*255).toString(16).padStart(2,'0'); x.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1; if(p.y<0||p.y>H) p.vy*=-1;
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* THEME */
+const html = document.documentElement, tbtn = document.getElementById('tbtn');
+function applyTheme(t){ html.setAttribute('data-theme',t); tbtn.textContent=t==='dark'?'☀️':'🌙'; localStorage.setItem('abcd-theme',t); }
+const saved = localStorage.getItem('abcd-theme');
+applyTheme(saved||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+tbtn.addEventListener('click',()=>applyTheme(html.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+/* CONFETTI */
+function celebrate(){
+  const colors=['#2b7fff','#a78bfa','#06d6a0','#ffd166','#ff5f7e'];
+  for(let i=0;i<80;i++){
+    const d=document.createElement('div');
+    d.style.cssText=`position:fixed;z-index:99999;pointer-events:none;
+      width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      left:${10+Math.random()*80}vw;top:-20px;
+      animation:cfall ${1.5+Math.random()*2}s ease-in ${Math.random()*.8}s forwards`;
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),4000);
+  }
+  if(!document.getElementById('cfall-style')){
+    const s=document.createElement('style');s.id='cfall-style';
+    s.textContent='@keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}';
+    document.head.appendChild(s);
+  }
+}
+
+/* INIT */
+applyLang(lang);
+renderAll();
+toggleTask(1);
+</script>
+</body>
+</html>

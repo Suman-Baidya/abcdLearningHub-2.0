@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevMastery | Future of Coding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Modern Color Palette */
+      --primary-gradient: linear-gradient(135deg, #FF6B00, #FF9900);
+      --accent-gradient: linear-gradient(135deg, #00C6FF, #0072FF);
+      --bg-dark: #050505;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-muted: #a0a0a0;
+      --glass-blur: blur(16px);
+      --primary-color: #ff7a18;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+      cursor: none; /* Custom cursor handling */
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      color: var(--text-main);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* === UTILITIES === */
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    
+    .gradient-text {
+      background: var(--primary-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* === CUSTOM CURSOR === */
+    #cursor-dot, #cursor-outline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    #cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: white;
+    }
+    #cursor-outline {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: width 0.2s, height 0.2s, background-color 0.2s;
+    }
+    /* Hover state for cursor */
+    body.hovering #cursor-outline {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 122, 24, 0.1);
+      border-color: var(--primary-color);
+    }
+
+    /* === NAVBAR === */
+    nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1200px;
+      background: rgba(15, 15, 15, 0.8);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--card-border);
+      border-radius: 50px;
+      padding: 15px 30px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    nav .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -1px;
+    }
+
+    /* Desktop Menu */
+    nav ul {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      color: white;
+    }
+    
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: var(--primary-gradient);
+      transition: width 0.3s;
+    }
+    
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* === MOBILE MENU TOGGLE === */
+    .menu-toggle {
+      display: none; /* Hidden on desktop */
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Animation for X shape */
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* === HERO === */
+    header {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding-top: 80px; /* Offset for nav */
+    }
+
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.4);
+      z-index: -2;
+      transition: transform 0.1s;
+    }
+    
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 0%, var(--bg-dark) 100%);
+      z-index: -1;
+    }
+
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+
+    header h1 {
+      font-size: 4.5rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      font-weight: 800;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    header p {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s ease 0.2s forwards;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--primary-gradient);
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.4s forwards;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(255, 107, 0, 0.5);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === SECTIONS === */
+    section { padding: 100px 8%; }
+    
+    .section-header { margin-bottom: 60px; text-align: center; }
+    .section-header h2 { font-size: 2.5rem; margin-bottom: 10px; }
+    .section-header span { color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; font-weight: 600; }
+
+    /* === ABOUT === */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about-img-wrapper { border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .about-img-wrapper img { width: 100%; display: block; transition: transform 0.5s; }
+    .about-img-wrapper:hover img { transform: scale(1.05); }
+    .features-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .features-list li { display: flex; align-items: center; gap: 10px; color: white; }
+    .features-list li::before { content: '✓'; color: #00ff88; font-weight: bold; }
+
+    /* === COURSES === */
+    .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .course-card { background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); border-radius: 24px; overflow: hidden; transition: all 0.4s ease; }
+    .course-card:hover { transform: translateY(-10px); border-color: rgba(255, 122, 24, 0.4); }
+    .course-card img { width: 100%; height: 200px; object-fit: cover; }
+    .course-content { padding: 25px; }
+    .tag { background: rgba(255, 255, 255, 0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; display: inline-block; }
+
+    /* === FAQ === */
+    #faq details { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 20px; overflow: hidden; }
+    #faq summary { padding: 25px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; }
+    #faq summary::after { content: '+'; color: var(--primary-color); font-size: 1.5rem; }
+    #faq details[open] summary::after { content: '-'; }
+    #faq p { padding: 0 25px 25px; color: var(--text-muted); }
+
+    /* === GALLERY === */
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+    .gallery-item { border-radius: 20px; overflow: hidden; height: 250px; cursor: none; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .gallery-item:hover img { transform: scale(1.15); }
+
+    /* === CONTACT === */
+    .contact-container { max-width: 600px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 30px; border: 1px solid var(--card-border); }
+    input, textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); padding: 15px; border-radius: 10px; color: white; margin-bottom: 15px; outline: none; }
+    input:focus, textarea:focus { border-color: var(--primary-color); }
+    button.submit-btn { width: 100%; padding: 15px; background: var(--primary-gradient); border: none; border-radius: 10px; color: white; font-weight: 700; cursor: none; }
+
+    /* === FOOTER === */
+    footer { border-top: 1px solid var(--card-border); padding: 60px 8% 40px; background: #020202; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+    .footer-grid a { display: block; margin-bottom: 10px; color: var(--text-muted); }
+    .footer-grid a:hover { color: var(--primary-color); }
+
+    /* === MOBILE RESPONSIVENESS === */
+    @media (max-width: 900px) {
+      /* General Adjustments */
+      header h1 { font-size: 3rem; }
+      #about { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+      
+      /* Disable Custom Cursor on Touch */
+      #cursor-dot, #cursor-outline { display: none; }
+      * { cursor: auto; }
+
+      /* Mobile Navbar Styles */
+      nav {
+        border-radius: 15px; /* Less rounded on mobile to fit menu */
+      }
+      
+      .menu-toggle {
+        display: flex; /* Show hamburger */
+      }
+
+      nav ul {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: rgba(15, 15, 15, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        margin-top: 10px;
+        border-radius: 15px;
+        border: 1px solid var(--card-border);
+        
+        /* Hidden State */
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      /* Active State (When menu is open) */
+      nav ul.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      nav ul li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding-bottom: 10px;
+      }
+      
+      nav ul li:last-child { border-bottom: none; }
+      
+      nav ul li a {
+        font-size: 1.1rem;
+        display: block;
+      }
+    }
+
+    @media (max-width: 500px) {
+      header h1 { font-size: 2.2rem; }
+      header p { font-size: 1rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Lightbox */
+    #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    #lightbox.show { opacity: 1; pointer-events: auto; }
+    #lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; }
+
+  </style>
+</head>
+
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-outline"></div>
+
+  <nav id="navbar">
+    <div class="logo"><span class="gradient-text">DevMastery</span></div>
+    
+    <div class="menu-toggle" id="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul id="nav-links">
+      <li><a href="#hero" class="hover-trigger">Home</a></li>
+      <li><a href="#about" class="hover-trigger">About</a></li>
+      <li><a href="#courses" class="hover-trigger">Courses</a></li>
+      <li><a href="#gallery" class="hover-trigger">Gallery</a></li>
+      <li><a href="#contact" class="hover-trigger">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header id="hero">
+    <div id="hero-bg"></div>
+    <canvas id="particles"></canvas>
+    
+    <div class="hero-content">
+      <h1 id="hero-title" class="gradient-text">Loading...</h1>
+      <p id="hero-subtitle">Loading...</p>
+      <a href="#courses" class="cta-button hover-trigger">Explore Courses</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="about-img-wrapper hover-trigger">
+      <img id="about-img" src="" alt="About Us">
+    </div>
+    <div class="about-content">
+      <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+        <span>DISCOVER</span>
+        <h2 id="about-title">About Us</h2>
+      </div>
+      <p id="about-text"></p>
+      <ul class="features-list" id="about-list"></ul>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="section-header">
+      <span>UPGRADE SKILLS</span>
+      <h2>Featured <span class="gradient-text">Courses</span></h2>
+    </div>
+    <div class="course-grid" id="courses-grid"></div>
+  </section>
+
+  <section id="faq">
+    <div class="section-header">
+      <span>COMMON QUESTIONS</span>
+      <h2>FAQ</h2>
+    </div>
+    <div id="faq-container" style="max-width: 800px; margin: 0 auto;"></div>
+  </section>
+
+  <section id="gallery">
+    <div class="section-header">
+      <span>OUR WORLD</span>
+      <h2>Student <span class="gradient-text">Gallery</span></h2>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </section>
+
+  <section id="contact">
+    <div class="section-header">
+      <span>GET IN TOUCH</span>
+      <h2>Start Your Journey</h2>
+    </div>
+    <div class="contact-container">
+      <div class="input-group"><input type="text" placeholder="Your Name" class="hover-trigger"></div>
+      <div class="input-group"><input type="email" placeholder="Email Address" class="hover-trigger"></div>
+      <div class="input-group"><textarea rows="5" placeholder="How can we help?" class="hover-trigger"></textarea></div>
+      <button class="submit-btn hover-trigger">Send Message</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 class="gradient-text">DevMastery</h4>
+        <p>Empowering the next generation of developers with modern skills, real-world projects, and career guidance.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Links</h4>
+        <a href="#courses" class="hover-trigger">All Courses</a>
+        <a href="#about" class="hover-trigger">About Us</a>
+        <a href="#contact" class="hover-trigger">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <p>support@devmastery.com</p>
+        <p>+91 </p>
+        <p>West Bengal, India</p>
+      </div>
+    </div>
+    <div class="copyright" style="text-align:center; padding-top:20px; color:#666; font-size:0.9rem;">
+      &copy; 2026 DevMastery. Designed by <strong>Suman</strong>
+    </div>
+  </footer>
+
+  <div id="lightbox"><img src="" alt="Zoomed"></div>
+
+  <script>
+    // ===== DATA SOURCE =====
+    const data = {
+      hero: [
+        { title: "Master Web Development", subtitle: "Build Modern, Scalable & Beautiful Websites", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop" },
+        { title: "Coding is the Future", subtitle: "Unlock High-Paying Global Careers", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" },
+        { title: "Zero to Hero Journey", subtitle: "From Logic Building to Full Stack Apps", image: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2031&auto=format&fit=crop" }
+      ],
+      about: {
+        img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop",
+        title: "Why Learn With Us?",
+        text: "We don't just teach syntax; we teach you how to think like an engineer. Our curriculum is designed by industry experts to bridge the gap between academic theory and real-world application. Whether you want to freelance, start a business, or get hired by top tech giants, your journey starts here.",
+        list: ["Live Project Training", "Freelance Guidance", "1-on-1 Mentorship", "Job Assistance"]
+      },
+      courses: [
+        { title: "Full Stack Web Dev", duration: "12 Months", tag: "Bestseller", syllabus: "MERN Stack (MongoDB, Express, React, Node)", img: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop" },
+        { title: "Python & Logic", duration: "6 Months", tag: "Beginner", syllabus: "Algorithms, Data Structures, Automation", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop" },
+        { title: "UI/UX Design", duration: "9 Months", tag: "Creative", syllabus: "Figma, Wireframing, User Research", img: "https://img.freepik.com/free-vector/gradient-ui-ux-elements-background_23-2149056159.jpg?semt=ais_hybrid&w=740&q=80" }
+      ],
+      faq: [
+        { q: "Do I need a CS degree?", a: "Not at all. Companies today care about your skills and portfolio, not your degree." },
+        { q: "How much time should I dedicate?", a: "We recommend 1-2 hours daily for consistent progress. Consistency > Intensity." },
+        { q: "Will I get a certificate?", a: "Yes, upon completion of the capstone project, you will receive an industry-recognized certification." }
+      ],
+      gallery: [
+        "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=2069&auto=format&fit=crop",
+        "https://www.southernct.edu/sites/default/files/styles/max_2600x2600/public/media-hero-sliders/2025-05/hero-user-research-ux-and-user-interface-ui-design-ms.jpg",
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+      ]
+    };
+
+    // ===== MOBILE MENU LOGIC =====
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-links');
+    const links = document.querySelectorAll('#nav-links li a');
+
+    // Toggle Menu
+    mobileMenu.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // ===== CUSTOM CURSOR LOGIC =====
+    const cursorDot = document.getElementById("cursor-dot");
+    const cursorOutline = document.getElementById("cursor-outline");
+
+    window.addEventListener("mousemove", (e) => {
+      const posX = e.clientX;
+      const posY = e.clientY;
+      cursorDot.style.left = `${posX}px`;
+      cursorDot.style.top = `${posY}px`;
+      cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+    });
+
+    document.querySelectorAll(".hover-trigger, a, button, summary").forEach(el => {
+      el.addEventListener("mouseenter", () => document.body.classList.add("hovering"));
+      el.addEventListener("mouseleave", () => document.body.classList.remove("hovering"));
+    });
+
+    // ===== HERO SLIDER =====
+    let slideIndex = 0;
+    const heroBg = document.getElementById("hero-bg");
+    const heroTitle = document.getElementById("hero-title");
+    const heroSub = document.getElementById("hero-subtitle");
+
+    function updateHero() {
+      const slide = data.hero[slideIndex];
+      heroBg.style.backgroundImage = `url(${slide.image})`;
+      
+      heroTitle.style.animation = 'none';
+      heroSub.style.animation = 'none';
+      heroTitle.offsetHeight; 
+      
+      heroTitle.textContent = slide.title;
+      heroSub.textContent = slide.subtitle;
+      
+      heroTitle.style.animation = 'fadeUp 1s ease forwards';
+      heroSub.style.animation = 'fadeUp 1s ease 0.1s forwards';
+      
+      slideIndex = (slideIndex + 1) % data.hero.length;
+    }
+    updateHero();
+    setInterval(updateHero, 5000);
+
+    // ===== POPULATE CONTENT =====
+    // About
+    document.getElementById("about-img").src = data.about.img;
+    document.getElementById("about-text").textContent = data.about.text;
+    const aboutList = document.getElementById("about-list");
+    data.about.list.forEach(item => { let li = document.createElement("li"); li.textContent = item; aboutList.appendChild(li); });
+
+    // Courses
+    const coursesGrid = document.getElementById("courses-grid");
+    data.courses.forEach(c => {
+      let card = document.createElement("div");
+      card.className = "course-card hover-trigger";
+      card.innerHTML = `<img src="${c.img}"><div class="course-content"><span class="tag">${c.tag}</span><h3>${c.title}</h3><p style="color:#aaa; font-size:0.9rem;">${c.syllabus}</p><div class="course-meta" style="margin-top:15px;color:#888;">⏱ ${c.duration}</div></div>`;
+      coursesGrid.appendChild(card);
+    });
+
+    // FAQ
+    const faqContainer = document.getElementById("faq-container");
+    data.faq.forEach(f => {
+      const detail = document.createElement("details");
+      detail.className = "hover-trigger";
+      detail.innerHTML = `<summary>${f.q}</summary><p>${f.a}</p>`;
+      faqContainer.appendChild(detail);
+    });
+
+    // Gallery
+    const galleryGrid = document.getElementById("gallery-grid");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = lightbox.querySelector("img");
+    data.gallery.forEach(src => {
+      const div = document.createElement("div");
+      div.className = "gallery-item hover-trigger";
+      div.innerHTML = `<img src="${src}">`;
+      div.onclick = () => { lightboxImg.src = src; lightbox.classList.add("show"); };
+      galleryGrid.appendChild(div);
+    });
+    lightbox.onclick = () => lightbox.classList.remove("show");
+
+    // ===== PARTICLES =====
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    let particlesArray = [];
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speedX = (Math.random() * 1) - 0.5;
+        this.speedY = (Math.random() * 1) - 0.5;
+      }
+      update() { this.x += this.speedX; this.y += this.speedY; if (this.x > canvas.width) this.x = 0; else if (this.x < 0) this.x = canvas.width; if (this.y > canvas.height) this.y = 0; else if (this.y < 0) this.y = canvas.height; }
+      draw() { ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    }
+    function initParticles() { particlesArray = []; for (let i = 0; i < 80; i++) particlesArray.push(new Particle()); }
+    function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
+    initParticles(); animateParticles();
+
+    // ===== SCROLL REVEAL =====
+    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = "1"; entry.target.style.transform = "translateY(0)"; } }); });
+    document.querySelectorAll("section").forEach(sec => { sec.style.opacity = "0"; sec.style.transform = "translateY(50px)"; sec.style.transition = "all 0.8s ease-out"; observer.observe(sec); });
+
+  </script>
+</body>
+</html>

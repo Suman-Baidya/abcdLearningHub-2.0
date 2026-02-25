@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML vs CSS vs JavaScript - Complete Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        nav button.active {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        nav button:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        nav button:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== COMPARISON CARDS ===== */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+        }
+
+        .card-icon.html { color: #ff6b6b; }
+        .card-icon.css { color: #4ecdc4; }
+        .card-icon.js { color: #ffd93d; }
+
+        .card h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin: 15px 0;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #555;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* ===== COMPARISON TABLE ===== */
+        .table-wrapper {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f0f0ff;
+        }
+
+        .comparison-aspect {
+            font-weight: 600;
+            color: #333;
+            min-width: 150px;
+        }
+
+        .html-cell { color: #ff6b6b; font-weight: 500; }
+        .css-cell { color: #4ecdc4; font-weight: 500; }
+        .js-cell { color: #ffd93d; font-weight: 500; }
+
+        /* ===== EXAMPLES SECTION ===== */
+        .examples-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .examples-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .example-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .example-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .example {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .example.active {
+            display: block;
+        }
+
+        .example-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .code-block code {
+            font-size: 0.95rem;
+        }
+
+        .code-explanation {
+            background: #f0f0ff;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ===== INTERACTIVE DEMO ===== */
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .demo-box {
+            background: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-box:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .demo-button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .demo-text {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .output-box {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #333;
+            font-family: monospace;
+            text-align: left;
+            min-height: 80px;
+        }
+
+        /* ===== PROGRESSION TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 100px;
+            width: 2px;
+            height: 50px;
+            background: #667eea;
+        }
+
+        .timeline-dot {
+            width: 100px;
+            height: 100px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .timeline-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        footer h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                grid-template-columns: 80px 1fr;
+                gap: 20px;
+            }
+
+            .timeline-dot {
+                width: 80px;
+                height: 80px;
+                font-size: 1.8rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 12px 15px;
+            }
+
+            nav {
+                gap: 8px;
+            }
+
+            nav button {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .examples-tabs {
+                gap: 5px;
+            }
+
+            .example-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .demo-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ===== SPECIAL EFFECTS ===== */
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <header>
+            <h1>🚀 HTML vs CSS vs JavaScript</h1>
+            <p>Understanding the Three Pillars of Web Development</p>
+        </header>
+
+        <!-- ===== NAVIGATION ===== -->
+        <nav>
+            <button class="active" onclick="switchSection('overview')">📊 Overview</button>
+            <button onclick="switchSection('comparison')">⚖️ Comparison</button>
+            <button onclick="switchSection('progression')">📈 Progression</button>
+            <button onclick="switchSection('examples')">💻 Examples</button>
+            <button onclick="switchSection('demo')">🎮 Interactive Demo</button>
+        </nav>
+
+        <!-- ===== SECTION 1: OVERVIEW ===== -->
+        <section id="overview" class="section active">
+            <div class="comparison-grid">
+                <!-- HTML Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon html">🏗️</span>
+                    </div>
+                    <h2>HTML</h2>
+                    <p><strong>HyperText Markup Language</strong></p>
+                    <p>HTML is the <span class="highlight">structure and foundation</span> of every webpage. It provides semantic meaning to content using elements and tags.</p>
+                    <ul class="feature-list">
+                        <li>Creates page structure</li>
+                        <li>Defines content elements</li>
+                        <li>Provides semantic meaning</li>
+                        <li>No styling or interactivity</li>
+                        <li>Search engine friendly</li>
+                    </ul>
+                </div>
+
+                <!-- CSS Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon css">🎨</span>
+                    </div>
+                    <h2>CSS</h2>
+                    <p><strong>Cascading Style Sheets</strong></p>
+                    <p>CSS is responsible for <span class="highlight">styling and layout</span>. It makes HTML look beautiful with colors, fonts, spacing, and design.</p>
+                    <ul class="feature-list">
+                        <li>Controls visual appearance</li>
+                        <li>Manages layout & positioning</li>
+                        <li>Creates animations & transitions</li>
+                        <li>Responsive design</li>
+                        <li>No functionality changes</li>
+                    </ul>
+                </div>
+
+                <!-- JavaScript Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon js">⚡</span>
+                    </div>
+                    <h2>JavaScript</h2>
+                    <p><strong>Programming Language</strong></p>
+                    <p>JavaScript adds <span class="highlight">interactivity and functionality</span>. It makes websites dynamic and responsive to user actions.</p>
+                    <ul class="feature-list">
+                        <li>Adds interactivity</li>
+                        <li>Handles user events</li>
+                        <li>Manipulates DOM</li>
+                        <li>Manages data & logic</li>
+                        <li>Communicates with servers</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 2: COMPARISON TABLE ===== -->
+        <section id="comparison" class="section">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th><span style="color: #ff6b6b;">HTML</span></th>
+                            <th><span style="color: #4ecdc4;">CSS</span></th>
+                            <th><span style="color: #ffd93d;">JavaScript</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="comparison-aspect">Purpose</td>
+                            <td class="html-cell">Structure & Content</td>
+                            <td class="css-cell">Styling & Layout</td>
+                            <td class="js-cell">Functionality & Logic</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Type</td>
+                            <td class="html-cell">Markup Language</td>
+                            <td class="css-cell">Style Sheet Language</td>
+                            <td class="js-cell">Programming Language</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">File Extension</td>
+                            <td class="html-cell">.html</td>
+                            <td class="css-cell">.css</td>
+                            <td class="js-cell">.js</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Creates</td>
+                            <td class="html-cell">Elements (tags)</td>
+                            <td class="css-cell">Rules & Selectors</td>
+                            <td class="js-cell">Functions & Events</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">View Source</td>
+                            <td class="html-cell">In browser DevTools</td>
+                            <td class="css-cell">In browser DevTools</td>
+                            <td class="js-cell">Run in Console</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Can Work Alone?</td>
+                            <td class="html-cell">✓ Yes</td>
+                            <td class="css-cell">✗ Needs HTML</td>
+                            <td class="js-cell">✗ Needs HTML</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Affects Functionality</td>
+                            <td class="html-cell">✗ No</td>
+                            <td class="css-cell">✗ No</td>
+                            <td class="js-cell">✓ Yes</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Affects Appearance</td>
+                            <td class="html-cell">✓ Slightly</td>
+                            <td class="css-cell">✓ Yes, Fully</td>
+                            <td class="js-cell">✗ Indirectly</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Example Command</td>
+                            <td class="html-cell">&lt;button&gt;</td>
+                            <td class="css-cell">button { color: red; }</td>
+                            <td class="js-cell">onclick="function()"</td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-aspect">Performance Impact</td>
+                            <td class="html-cell">Minimal</td>
+                            <td class="css-cell">Moderate</td>
+                            <td class="js-cell">High</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 3: PROGRESSION ===== -->
+        <section id="progression" class="section">
+            <h2 style="text-align: center; color: white; margin-bottom: 40px; font-size: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                How They Work Together
+            </h2>
+
+            <div class="timeline">
+                <!-- Step 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">1️⃣</div>
+                    <div class="timeline-content">
+                        <h3>🏗️ HTML: Build the Foundation</h3>
+                        <p><strong>First Step:</strong> Create the basic structure and content.</p>
+                        <p>HTML provides the skeletal framework - headings, paragraphs, buttons, forms, images, etc. Without HTML, there's nothing to display.</p>
+                        <p><span class="badge">Raw & Unstyled</span></p>
+                        <p style="color: #999; font-size: 0.9rem;">See: <strong>htmlOnly.html</strong></p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">2️⃣</div>
+                    <div class="timeline-content">
+                        <h3>🎨 CSS: Make It Beautiful</h3>
+                        <p><strong>Second Step:</strong> Apply styling and create attractive layouts.</p>
+                        <p>CSS transforms the plain HTML structure into a beautiful, professional website. Colors, fonts, spacing, animations happen here. Still static though!</p>
+                        <p><span class="badge">Styled & Organized</span></p>
+                        <p style="color: #999; font-size: 0.9rem;">See: <strong>htmlAndCss.html</strong></p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">3️⃣</div>
+                    <div class="timeline-content">
+                        <h3>⚡ JavaScript: Add Interactivity</h3>
+                        <p><strong>Third Step:</strong> Make it interactive and functional.</p>
+                        <p>JavaScript brings the website to life! Click buttons, validate forms, fetch data, show/hide elements, create smooth animations. Now it responds to user actions.</p>
+                        <p><span class="badge">Dynamic & Interactive</span></p>
+                        <p style="color: #999; font-size: 0.9rem;">See: <strong>html_css_javaScript.html</strong></p>
+                    </div>
+                </div>
+
+                <!-- Final -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">🎯</div>
+                    <div class="timeline-content">
+                        <h3>Complete Modern Website</h3>
+                        <p><strong>Result:</strong> A fully functional, beautiful, and interactive website!</p>
+                        <p>All three technologies work together seamlessly:</p>
+                        <ul class="feature-list">
+                            <li><strong>HTML</strong> = What the content is</li>
+                            <li><strong>CSS</strong> = How it looks</li>
+                            <li><strong>JavaScript</strong> = What it does</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 4: CODE EXAMPLES ===== -->
+        <section id="examples" class="section">
+            <div class="examples-container">
+                <h2 style="margin-bottom: 25px; color: #333;">Code Examples</h2>
+
+                <div class="examples-tabs">
+                    <button class="example-btn active" onclick="switchExample('button')">Button Element</button>
+                    <button class="example-btn" onclick="switchExample('form')">Form Input</button>
+                    <button class="example-btn" onclick="switchExample('navigation')">Navigation Menu</button>
+                </div>
+
+                <!-- Example 1: Button -->
+                <div id="button" class="example active">
+                    <div class="example-title">📌 Simple Button Example</div>
+
+                    <h4 style="color: #ff6b6b; margin: 20px 0 10px;">Step 1: HTML Only (Basic Button)</h4>
+                    <div class="code-block"><code>&lt;button&gt;Click Me&lt;/button&gt;</code></div>
+                    <p style="color: #666; margin-bottom: 15px;">Result: A plain, unstyled button. Ugly but functional!</p>
+
+                    <h4 style="color: #4ecdc4; margin: 20px 0 10px;">Step 2: HTML + CSS (Styled Button)</h4>
+                    <div class="code-block"><code>button {
+    padding: 12px 30px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+}</code></div>
+                    <p style="color: #666; margin-bottom: 15px;">Result: Beautiful, attractive button with hover effects!</p>
+
+                    <h4 style="color: #ffd93d; margin: 20px 0 10px;">Step 3: HTML + CSS + JavaScript (Interactive Button)</h4>
+                    <div class="code-block"><code>&lt;button id="myBtn"&gt;Click Me&lt;/button&gt;
+
+&lt;script&gt;
+document.getElementById('myBtn').addEventListener('click', function() {
+    alert('Button was clicked!');
+    console.log('Button clicked at ' + new Date());
+});
+&lt;/script&gt;</code></div>
+                    <p style="color: #666; margin-bottom: 15px;">Result: Button with actual functionality - it does something when clicked!</p>
+                </div>
+
+                <!-- Example 2: Form -->
+                <div id="form" class="example">
+                    <div class="example-title">📝 Form Input Example</div>
+
+                    <h4 style="color: #ff6b6b; margin: 20px 0 10px;">Step 1: HTML Only</h4>
+                    <div class="code-block"><code>&lt;input type="text" placeholder="Enter name"&gt;
+&lt;input type="email" placeholder="Enter email"&gt;
+&lt;button&gt;Submit&lt;/button&gt;</code></div>
+
+                    <h4 style="color: #4ecdc4; margin: 20px 0 10px;">Step 2: Add CSS for Better Look</h4>
+                    <div class="code-block"><code>input {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin: 10px 0;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 5px #667eea;
+}</code></div>
+
+                    <h4 style="color: #ffd93d; margin: 20px 0 10px;">Step 3: Add JavaScript for Validation</h4>
+                    <div class="code-block"><code>&lt;script&gt;
+const nameInput = document.querySelector('input[type="text"]');
+const emailInput = document.querySelector('input[type="email"]');
+
+document.querySelector('button').addEventListener('click', function() {
+    if(nameInput.value === '') {
+        alert('Please enter your name!');
+    } else if(emailInput.value === '') {
+        alert('Please enter your email!');
+    } else {
+        alert('Form submitted: ' + nameInput.value);
+    }
+});
+&lt;/script&gt;</code></div>
+                </div>
+
+                <!-- Example 3: Navigation -->
+                <div id="navigation" class="example">
+                    <div class="example-title">🧭 Navigation Menu Example</div>
+
+                    <h4 style="color: #ff6b6b; margin: 20px 0 10px;">Step 1: HTML Structure</h4>
+                    <div class="code-block"><code>&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/services"&gt;Services&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</code></div>
+
+                    <h4 style="color: #4ecdc4; margin: 20px 0 10px;">Step 2: CSS for Styling</h4>
+                    <div class="code-block"><code>nav {
+    background: #667eea;
+    padding: 15px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    color: #ffd93d;
+    text-decoration: underline;
+}</code></div>
+
+                    <h4 style="color: #ffd93d; margin: 20px 0 10px;">Step 3: JavaScript for Mobile Menu</h4>
+                    <div class="code-block"><code">&lt;script&gt;
+const menuToggle = document.querySelector('.menu-toggle');
+const navMenu = document.querySelector('nav ul');
+
+menuToggle.addEventListener('click', function() {
+    navMenu.classList.toggle('active');
+});
+
+// Close menu when a link is clicked
+document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+&lt;/script&gt;</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 5: INTERACTIVE DEMO ===== -->
+        <section id="demo" class="section">
+            <div class="demo-section">
+                <h2 class="demo-title">🎮 Interactive Demo</h2>
+                <p style="color: #666; margin-bottom: 30px;">Click the buttons below to see the difference in action!</p>
+
+                <!-- HTML Only Demo -->
+                <div>
+                    <h3 style="color: #ff6b6b; margin-bottom: 15px;">📌 HTML Only</h3>
+                    <div class="demo-box">
+                        <p class="demo-text">This is plain HTML - no styling, no interactivity.</p>
+                        <input type="text" placeholder="Just a plain input" style="padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                        <button style="padding: 5px 15px; margin-top: 10px; background: #ccc; border: 1px solid #999; cursor: pointer;">Plain Button</button>
+                        <p style="color: #999; font-size: 0.85rem; margin-top: 15px;">Notice: Boring and unfunctional!</p>
+                    </div>
+                </div>
+
+                <!-- CSS Demo -->
+                <div>
+                    <h3 style="color: #4ecdc4; margin-bottom: 15px; margin-top: 30px;">🎨 HTML + CSS</h3>
+                    <div class="demo-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
+                        <p class="demo-text" style="color: white; font-size: 1.2rem; font-weight: 600;">Now it looks beautiful!</p>
+                        <input type="text" placeholder="Styled input field" style="padding: 12px; border: 2px solid white; border-radius: 5px; font-size: 1rem; width: 100%; max-width: 300px; background: rgba(255,255,255,0.9);">
+                        <button class="demo-button" style="margin-top: 20px;">Styled Button</button>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin-top: 15px;">Notice: Beautiful design with gradient background!</p>
+                    </div>
+                </div>
+
+                <!-- JavaScript Demo -->
+                <div>
+                    <h3 style="color: #ffd93d; margin-bottom: 15px; margin-top: 30px;">⚡ HTML + CSS + JavaScript</h3>
+                    <div class="demo-box">
+                        <p class="demo-text">Click the button below and watch the magic happen!</p>
+                        <div id="demo-output" style="font-size: 1.1rem; color: #667eea; margin: 20px 0; min-height: 40px;"></div>
+
+                        <button class="demo-button" onclick="demoClickCount()">Click Counter</button>
+                        <button class="demo-button" onclick="demoColorChange()">Change Color</button>
+                        <button class="demo-button" onclick="demoShowAlert()">Show Alert</button>
+                        <button class="demo-button" onclick="demoReset()">Reset</button>
+
+                        <div class="output-box" id="demo-log">
+                            <div style="color: #999; font-size: 0.9rem;">Event log will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer style="margin-top: 40px;">
+        <h3>🎓 Key Takeaways</h3>
+        <p style="margin: 15px 0; line-height: 1.8;">
+            <strong>HTML</strong> is the content and structure - without it, nothing exists.<br>
+            <strong>CSS</strong> is the presentation and styling - it makes everything look great.<br>
+            <strong>JavaScript</strong> is the behavior and interaction - it makes everything work.<br><br>
+            Together, they create modern, interactive, beautiful websites! 🚀
+        </p>
+        <p style="margin-top: 20px; color: #999;">© 2026 - Learning Hub by Suman</p>
+    </footer>
+
+    <script>
+        // ===== SECTION SWITCHING =====
+        function switchSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Remove active from all buttons
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            // Highlight selected button
+            event.target.classList.add('active');
+        }
+
+        // ===== EXAMPLE SWITCHING =====
+        function switchExample(exampleName) {
+            // Hide all examples
+            document.querySelectorAll('.example').forEach(example => {
+                example.classList.remove('active');
+            });
+            // Remove active from all buttons
+            document.querySelectorAll('.example-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Show selected example
+            document.getElementById(exampleName).classList.add('active');
+            // Highlight selected button
+            event.target.classList.add('active');
+        }
+
+        // ===== DEMO FUNCTIONS =====
+        let clickCount = 0;
+        let colorIndex = 0;
+
+        function demoClickCount() {
+            clickCount++;
+            const output = document.getElementById('demo-output');
+            output.textContent = `Button clicked ${clickCount} times!`;
+            logEvent(`Button clicked (Total: ${clickCount})`);
+        }
+
+        function demoColorChange() {
+            const colors = ['#667eea', '#ff6b6b', '#4ecdc4', '#ffd93d', '#764ba2'];
+            const demoBox = document.querySelector('.demo-box');
+            demoBox.style.background = colors[colorIndex];
+            logEvent(`Color changed to ${colors[colorIndex]}`);
+            colorIndex = (colorIndex + 1) % colors.length;
+        }
+
+        function demoShowAlert() {
+            const message = `This is JavaScript in action! You've clicked this button to see interactivity.`;
+            alert(message);
+            logEvent('Alert displayed');
+        }
+
+        function demoReset() {
+            clickCount = 0;
+            colorIndex = 0;
+            document.getElementById('demo-output').textContent = '';
+            document.querySelector('.demo-box').style.background = '#f5f5f5';
+            document.getElementById('demo-log').innerHTML = '<div style="color: #999; font-size: 0.9rem;">Event log cleared!</div>';
+            logEvent('Demo reset');
+        }
+
+        function logEvent(message) {
+            const logBox = document.getElementById('demo-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const newLog = document.createElement('div');
+            newLog.style.padding = '5px 0';
+            newLog.style.borderBottom = '1px solid #eee';
+            newLog.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+            logBox.appendChild(newLog);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>

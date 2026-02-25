@@ -89,24 +89,24 @@ const DOC_CONFIG = {
     //   ],
     // },
 
-    // {
-    //   id:          "programming",
-    //   title:       "Programming",
-    //   icon:        "💻",
-    //   color:       "#10b981",
-    //   gradient:    ["#10b981", "#14b8a6"],
-    //   description: "HTML, CSS, JavaScript, Python and full-stack web development.",
-    //   folder:      "programming/",
-    //   docs: [
-    //     { title: "HTML Fundamentals",       file: "html.html",         badge: ""        },
-    //     { title: "CSS Styling & Layouts",   file: "css.html",          badge: ""        },
-    //     { title: "JavaScript Basics",       file: "js-basics.html",    badge: ""        },
-    //     { title: "JavaScript Advanced",     file: "js-advanced.html",  badge: "Updated" },
-    //     { title: "Python Fundamentals",     file: "python.html",       badge: ""        },
-    //     { title: "Git & GitHub",            file: "git.html",          badge: ""        },
-    //     { title: "Responsive Web Design",   file: "responsive.html",   badge: ""        },
-    //   ],
-    // },
+    {
+      id:          "programming",
+      title:       "Programming",
+      icon:        "💻",
+      color:       "#10b981",
+      gradient:    ["#10b981", "#14b8a6"],
+      description: "HTML, CSS, JavaScript, Python and full-stack web development.",
+      folder:      "programming/",
+      docs: [
+        { title: "HTML Fundamentals",       file: "learn-html.html",         badge: ""        },
+        { title: "CSS Styling & Layouts",   file: "learn-css.html",          badge: ""        },
+        // { title: "JavaScript Basics",       file: "js-basics.html",    badge: ""        },
+        // { title: "JavaScript Advanced",     file: "js-advanced.html",  badge: "Updated" },
+        // { title: "Python Fundamentals",     file: "python.html",       badge: ""        },
+        // { title: "Git & GitHub",            file: "git.html",          badge: ""        },
+        // { title: "Responsive Web Design",   file: "responsive.html",   badge: ""        },
+      ],
+    },
 
     {
       id:          "ai-learning",

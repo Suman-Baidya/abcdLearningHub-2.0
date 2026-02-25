@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Portfolio | Educational Consultant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- PROFESSIONAL CSS VARIABLES --- */
+        :root {
+            --primary: #2563eb;
+            --primary-glow: rgba(37, 99, 235, 0.2);
+            --bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --card-bg: #f8fafc;
+            --border: #e2e8f0;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --text-dark: #f1f5f9;
+            --text-light: #94a3b8;
+            --card-bg: #1e293b;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-dark); transition: var(--transition); line-height: 1.7; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 8%; position: fixed; width: 100%; top: 0;
+            background: var(--bg); border-bottom: 1px solid var(--border); z-index: 2000;
+        }
+        .nav-links { display: flex; list-style: none; gap: 2.5rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.9rem; }
+        
+        #theme-toggle {
+            cursor: pointer; padding: 8px 15px; border-radius: 20px;
+            border: 1px solid var(--border); background: var(--card-bg); color: var(--text-dark);
+        }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            padding: 180px 8% 100px; display: grid; grid-template-columns: 1.2fr 0.8fr; align-items: center; gap: 50px;
+        }
+        .hero-text h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px; }
+        .hero-text p { font-size: 1.25rem; color: var(--text-light); margin-bottom: 40px; }
+        .badge { background: var(--primary-glow); color: var(--primary); padding: 6px 16px; border-radius: 50px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
+
+        .hero-image-container { position: relative; }
+        .hero-image { width: 100%; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .floating-card {
+            position: absolute; bottom: 20px; left: -20px; background: var(--bg);
+            padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        /* --- SECTION STYLING --- */
+        section { padding: 100px 8%; }
+        .tagline { color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 15px; }
+        h2 { font-size: 2.8rem; margin-bottom: 50px; }
+
+        /* --- GRID CARDS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .glass-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 40px; border-radius: 30px; transition: var(--transition);
+        }
+        .glass-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); border-color: var(--primary); }
+
+        /* --- PROJECTS --- */
+        .project-card { position: relative; border-radius: 25px; overflow: hidden; height: 350px; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .project-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0; padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white;
+        }
+        .project-card:hover .project-img { transform: scale(1.1); }
+
+        /* --- FOOTER --- */
+        footer { background: var(--card-bg); padding: 80px 8% 30px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+
+        /* --- BUTTONS --- */
+        .btn { padding: 15px 35px; border-radius: 12px; text-decoration: none; font-weight: 700; transition: var(--transition); display: inline-block; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; box-shadow: 0 10px 20px var(--primary-glow); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo" style="font-size: 1.5rem; font-weight: 800;">RK<span style="color: var(--primary);">.</span></div>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button id="theme-toggle">🌓 Mode</button></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-text">
+            <span class="badge">Available for Collaboration</span>
+            <h1 id="hero-title">Crafting Digital <br>Learning Experiences</h1>
+            <p id="hero-desc">Professional Computer Trainer & Full-Stack Developer helping students and brands bridge the gap between idea and execution.</p>
+            <div class="cta-group">
+                <a href="#portfolio" class="btn btn-primary">View Portfolio</a>
+                <a href="#contact" class="btn" style="color: var(--text-dark);">Contact Me &rarr;</a>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800" class="hero-image" alt="Workspace">
+            <div class="floating-card">
+                <h4 style="color: var(--primary);">500+ Students</h4>
+                <p style="font-size: 0.8rem; color: var(--text-light);">Trained in 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <span class="tagline">Expertise</span>
+        <h2>What I Do Best</h2>
+        <div class="grid" id="services-grid">
+            </div>
+    </section>
+
+    <section id="portfolio">
+        <span class="tagline">Showcase</span>
+        <h2>Recent Projects</h2>
+        <div class="grid" id="project-grid">
+            </div>
+    </section>
+
+    <section id="education">
+        <span class="tagline">Qualifications</span>
+        <h2>Professional Background</h2>
+        <div class="grid" id="edu-grid">
+            </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Rajeev Kumar</h3>
+                <p style="color: var(--text-light); margin-top: 15px;">Transforming technical education through modern design and automation.</p>
+            </div>
+            <div>
+                <h4>Explore</h4>
+                <p><a href="#hero">Home</a></p>
+                <p><a href="#services">Services</a></p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p id="footer-email"></p>
+                <p id="footer-loc"></p>
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 20px;">
+        <p style="text-align: center; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 RK Design Studio. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- DATA HUB ---
+        const portalData = {
+            services: [
+                { title: "Corporate Training", desc: "Digital literacy programs for staff and youth organizations.", icon: "💎" },
+                { title: "Web Architecture", desc: "Custom Next.js applications with SEO optimization.", icon: "🌐" },
+                { title: "Automation", desc: "Reducing manual workload using n8n and AI workflows.", icon: "⚡" }
+            ],
+            projects: [
+                { title: "Edu-Master LMS", category: "Web App", img: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=500" },
+                { title: "Gen-Z Ecom", category: "Design", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500" },
+                { title: "DeSEP Portal", category: "Education", img: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=500" }
+            ],
+            edu: [
+                { year: "2024", title: "B.A. Graduate", sub: "Arts & Humanities" },
+                { year: "2022", title: "Computer Diploma", sub: "Vocational Education" }
+            ],
+            contact: { email: "hello@rajeev.com", loc: "New Delhi, India" }
+        };
+
+        // --- RENDER FUNCTIONS ---
+        function loadServices() {
+            const container = document.getElementById('services-grid');
+            portalData.services.forEach(s => {
+                container.innerHTML += `
+                    <div class="glass-card">
+                        <div style="font-size: 2rem; margin-bottom: 20px;">${s.icon}</div>
+                        <h3>${s.title}</h3>
+                        <p style="color: var(--text-light); margin-top: 10px;">${s.desc}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function loadProjects() {
+            const container = document.getElementById('project-grid');
+            portalData.projects.forEach(p => {
+                container.innerHTML += `
+                    <div class="project-card">
+                        <img src="${p.img}" class="project-img">
+                        <div class="project-overlay">
+                            <small>${p.category}</small>
+                            <h3>${p.title}</h3>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function loadEducation() {
+            const container = document.getElementById('edu-grid');
+            portalData.edu.forEach(e => {
+                container.innerHTML += `
+                    <div class="glass-card">
+                        <span class="badge" style="margin-bottom: 15px; display: inline-block;">Class of ${e.year}</span>
+                        <h3>${e.title}</h3>
+                        <p>${e.sub}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // --- THEME TOGGLE ---
+        const toggle = document.getElementById('theme-toggle');
+        toggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', targetTheme);
+        });
+
+        // Initialize
+        window.onload = () => {
+            loadServices();
+            loadProjects();
+            loadEducation();
+            document.getElementById('footer-email').innerText = portalData.contact.email;
+            document.getElementById('footer-loc').innerText = portalData.contact.location;
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Tech Launchpad</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --html: #e34c26;
+            --css: #264de4;
+            --js: #f7df1e;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        p { color: #94a3b8; margin-bottom: 40px; }
+
+        .launch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .launch-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .launch-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-text {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* Border colors for distinction */
+        .html-card:hover { box-shadow: 0 10px 30px -10px var(--html); border-bottom: 4px solid var(--html); }
+        .css-card:hover { box-shadow: 0 10px 30px -10px var(--css); border-bottom: 4px solid var(--css); }
+        .js-card:hover { box-shadow: 0 10px 30px -10px var(--js); border-bottom: 4px solid var(--js); }
+
+        .compare-link{
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--html), var(--css), var(--js));
+            color: white;
+            font-weight: bold;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a class="compare-link" href="comparison.html">HTML vs CSS vs JavaScript</a>
+        <h1>Web Technology Lab</h1>
+        <p>Click a card below to open the specific stage in a <strong>new blank tab</strong> for comparison.</p>
+
+        <div class="launch-grid">
+            
+            <a href="htmlOnly.html" target="_blank" class="launch-card html-card">
+                <div class="icon">🏗️</div>
+                <div class="btn-text" style="color: var(--html);">Stage 1: HTML</div>
+                <div class="description">Pure Structure (Skeleton)</div>
+            </a>
+
+            <a href="htmlAndCss.html" target="_blank" class="launch-card css-card">
+                <div class="icon">🎨</div>
+                <div class="btn-text" style="color: var(--css);">Stage 2: CSS</div>
+                <div class="description">Added Design (Skin)</div>
+            </a>
+
+            <a href="html_css_javaScript.html" target="_blank" class="launch-card js-card">
+                <div class="icon">⚡</div>
+                <div class="btn-text" style="color: var(--js);">Stage 3: JavaScript</div>
+                <div class="description">Added Logic (Brain)</div>
+            </a>
+
+        </div>
+    </div>
+    
+
+</body>
+</html>

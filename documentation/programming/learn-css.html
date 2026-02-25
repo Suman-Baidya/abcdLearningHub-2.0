@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS3 Master Course | Ultimate Documentation</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #09090b;
+            --bg-sidebar: #0c0c0e;
+            --bg-card: #18181b;
+            --border: #27272a;
+            --primary: #3b82f6;      
+            --secondary: #8b5cf6;    
+            --accent: #06b6d4;       
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-main: #e2e8f0;
+            --text-muted: #a1a1aa;
+            --code-bg: #161b22;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; color: white; }
+        h1 { margin-bottom: 20px; }
+        h3 { margin-top: 40px; margin-bottom: 15px; color: var(--accent); border-left: 3px solid var(--accent); padding-left: 15px; }
+        p { margin-bottom: 20px; color: var(--text-muted); font-size: 1.05rem; }
+        li { margin-bottom: 10px; color: var(--text-muted); }
+        strong { color: #fff; font-weight: 600; }
+        
+        /* Code Snippets */
+        code { font-family: 'Fira Code', monospace; background: rgba(59, 130, 246, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: var(--accent); border: 1px solid rgba(59, 130, 246, 0.2); }
+        pre { padding: 25px; overflow-x: auto; color: #e6edf3; font-size: 0.9rem; line-height: 1.6; }
+        pre code { background: none; padding: 0; border: none; color: inherit; }
+
+        /* Syntax Highlighting */
+        .sel { color: #d2a8ff; } 
+        .prop { color: #79c0ff; } 
+        .val { color: #a5d6ff; }  
+        .str { color: #a5d6ff; }  
+        .comment { color: #8b949e; font-style: italic; }
+        .num { color: #79c0ff; }
+
+        /* === HEADER === */
+        header {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(9, 9, 11, 0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 4%;
+        }
+
+        .logo { 
+            font-weight: 800; font-size: 1.4rem; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+
+        .home-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 50px; color: white; font-size: 0.9rem;
+            text-decoration: none; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .home-btn:hover { background: var(--primary); border-color: var(--primary); }
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: white; margin-right: 15px; }
+
+        /* === LAYOUT === */
+        .doc-container {
+            display: grid; grid-template-columns: 300px 1fr;
+            max-width: 1600px; margin: 70px auto 0; min-height: 100vh;
+        }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            position: sticky; top: 70px; height: calc(100vh - 70px);
+            background: var(--bg-sidebar); border-right: 1px solid var(--border);
+            overflow-y: auto; padding: 20px 15px 80px 15px;
+        }
+
+        .module-header {
+            font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted);
+            margin: 30px 0 10px 10px; letter-spacing: 1px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; padding-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: block; padding: 9px 15px; color: #888; text-decoration: none;
+            font-size: 0.9rem; border-radius: 6px; transition: 0.2s; border-left: 3px solid transparent;
+            margin-bottom: 2px;
+        }
+        .nav-link:hover { color: white; background: rgba(255,255,255,0.05); }
+        .nav-link.active { color: white; background: rgba(59, 130, 246, 0.15); border-left-color: var(--primary); }
+
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* === CONTENT === */
+        .content { padding: 60px 8%; max-width: 1100px; }
+
+        .chapter { 
+            margin-bottom: 100px; scroll-margin-top: 100px;
+            border-bottom: 1px solid var(--border); padding-bottom: 60px;
+        }
+        
+        .chapter-badge { 
+            background: rgba(59, 130, 246, 0.1); color: var(--primary); 
+            padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; font-family: 'Fira Code';
+            display: inline-block; margin-bottom: 15px; border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .chapter-title { font-size: 2.8rem; margin-bottom: 25px; line-height: 1.1; }
+
+        /* Components */
+        .code-window {
+            background: var(--code-bg); border-radius: 8px; overflow: hidden;
+            margin: 30px 0; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .code-header {
+            background: #0d1117; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.8rem; color: #7d8590; border-bottom: 1px solid #30363d; font-family: 'Fira Code';
+        }
+        .dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+
+        .callout { padding: 25px; border-radius: 8px; margin: 30px 0; border-left: 4px solid; background: rgba(255,255,255,0.02); }
+        .callout-info { border-color: var(--accent); }
+        .callout-warn { border-color: var(--warning); }
+        .callout h4 { margin-bottom: 10px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; color: white; }
+
+        table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.95rem; }
+        th, td { border: 1px solid var(--border); padding: 15px; text-align: left; }
+        th { background: #202022; color: white; }
+        tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+        @media (max-width: 900px) {
+            .doc-container { grid-template-columns: 1fr; }
+            .sidebar { position: fixed; left: -100%; top: 70px; width: 85%; z-index: 999; transition: 0.3s; box-shadow: 10px 0 50px rgba(0,0,0,0.8); }
+            .sidebar.active { left: 0; }
+            .mobile-toggle { display: block; }
+            .content { padding: 40px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="display:flex; align-items:center;">
+            <div class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')"><i class="fas fa-bars"></i></div>
+            <div class="logo">CSS Masterclass</div>
+        </div>
+        <a href="../index.html" class="home-btn"><i class="fas fa-home"></i>Home</a>
+    </header>
+
+    <div class="doc-container">
+        
+        <aside class="sidebar">
+            <div class="module-header">Module 1: Foundations</div>
+            <a href="#ch1" class="nav-link active">1. Intro to CSS</a>
+            <a href="#ch2" class="nav-link">2. Ways to Apply CSS</a>
+            <a href="#ch3" class="nav-link">3. Selectors (Deep Dive)</a>
+            <a href="#ch4" class="nav-link">4. Comments & Units</a>
+            <a href="#ch5" class="nav-link">5. Colors & Backgrounds</a>
+            <a href="#ch6" class="nav-link">6. Typography Mastery</a>
+
+            <div class="module-header">Module 2: The Core</div>
+            <a href="#ch7" class="nav-link">7. The Box Model</a>
+            <a href="#ch8" class="nav-link">8. Display & Visibility</a>
+            <a href="#ch9" class="nav-link">9. Dimensions & Overflow</a>
+            <a href="#ch10" class="nav-link">10. Positioning</a>
+            <a href="#ch11" class="nav-link">11. Float & Clear</a>
+
+            <div class="module-header">Module 3: Layouts</div>
+            <a href="#ch12" class="nav-link">12. Flexbox Guide</a>
+            <a href="#ch13" class="nav-link">13. CSS Grid</a>
+            <a href="#ch14" class="nav-link">14. Responsive Design</a>
+
+            <div class="module-header">Module 4: Visuals</div>
+            <a href="#ch15" class="nav-link">15. Transitions</a>
+            <a href="#ch16" class="nav-link">16. Animations</a>
+            <a href="#ch17" class="nav-link">17. Transforms</a>
+            <a href="#ch18" class="nav-link">18. Advanced Visuals</a>
+
+            <div class="module-header">Module 5: Modern CSS</div>
+            <a href="#ch19" class="nav-link">19. CSS Variables</a>
+            <a href="#ch20" class="nav-link">20. Modern Features</a>
+            <a href="#ch21" class="nav-link">21. Styling Forms</a>
+            <a href="#ch22" class="nav-link">22. Styling Tables</a>
+
+            <div class="module-header">Module 6: Professional</div>
+            <a href="#ch23" class="nav-link">23. Architecture</a>
+            <a href="#ch24" class="nav-link">24. Performance</a>
+            <a href="#ch25" class="nav-link">25. Cross-Browser</a>
+            <a href="#ch26" class="nav-link">26. CSS & JavaScript</a>
+            <a href="#ch27" class="nav-link">27. Frameworks</a>
+            <a href="#ch28" class="nav-link">28. Tools & Preprocessors</a>
+            <a href="#ch29" class="nav-link">29. Real World Projects</a>
+            <a href="#ch30" class="nav-link">30. Final Checklist</a>
+        </aside>
+
+        <main class="content">
+
+            <section id="ch1" class="chapter">
+                <span class="chapter-badge">Chapter 01</span>
+                <h1 class="chapter-title">Introduction to CSS</h1>
+                <p><strong>CSS (Cascading Style Sheets)</strong> is a stylesheet language used to describe the presentation of a document written in HTML or XML. If HTML is the skeleton of a website, CSS is the skin, makeup, and clothing.</p>
+                <p>Without CSS, websites would look like plain Word documents from the 90s. CSS allows you to control the layout, color, fonts, and responsiveness of a web page.</p>
+                
+                <h3>How CSS Works</h3>
+                <p>When a browser displays a document, it must combine the document's content with its style information. It processes the document in two stages:</p>
+                <ol>
+                    <li>The browser converts HTML and CSS into the DOM (Document Object Model).</li>
+                    <li>The browser displays the contents of the DOM.</li>
+                </ol>
+
+                <h3>Syntax Anatomy</h3>
+                <p>A CSS rule-set consists of a <strong>selector</strong> and a <strong>declaration block</strong>.</p>
+                <div class="code-window">
+                    <div class="code-header"><div class="dots"><div class="dot red"></div><div class="dot yellow"></div></div> style.css</div>
+                    <pre><code><span class="comment">/* Selector { Property: Value; } */</span>
+<span class="sel">h1</span> {
+  <span class="prop">color</span>: <span class="val">blue</span>;
+  <span class="prop">font-size</span>: <span class="num">24px</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch2" class="chapter">
+                <span class="chapter-badge">Chapter 02</span>
+                <h1 class="chapter-title">Ways to Apply CSS</h1>
+                
+                <h3>1. External CSS (Industry Standard)</h3>
+                <p>This involves creating a separate file with a <code>.css</code> extension. This is the most efficient method because the browser caches the file, speeding up page load times on subsequent visits.</p>
+                <div class="code-window">
+                    <pre><code><span class="comment">&lt;!-- In HTML Head --&gt;</span>
+&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+                </div>
+
+                <h3>2. Internal CSS</h3>
+                <p>Internal styles are defined within the <code>&lt;style&gt;</code> element, inside the head section of an HTML page. This is often used for single-page websites.</p>
+
+                <h3>3. Inline CSS</h3>
+                <p>Inline styles are used to apply a unique style for a single element. <strong>Warning:</strong> This has the highest specificity and is hard to override later. Avoid using this in production.</p>
+                <div class="code-window">
+                    <pre><code>&lt;h1 style="color: blue; text-align: center;"&gt;Hello World&lt;/h1&gt;</code></pre>
+                </div>
+            </section>
+
+            <section id="ch3" class="chapter">
+                <span class="chapter-badge">Chapter 03</span>
+                <h1 class="chapter-title">CSS Selectors (Deep Dive)</h1>
+                <p>Selectors are patterns used to select the element(s) you want to style. Understanding specificity is key to mastering CSS.</p>
+
+                <h3>The Specificity Hierarchy</h3>
+                <p>When multiple rules apply to the same element, the one with higher specificity wins. It is calculated as a 4-column value: <code>(Inline, ID, Class, Tag)</code>.</p>
+                <ul>
+                    <li><strong>Inline Style:</strong> <code>(1, 0, 0, 0)</code> - Most specific.</li>
+                    <li><strong>ID Selector (#header):</strong> <code>(0, 1, 0, 0)</code>.</li>
+                    <li><strong>Class (.btn), Attribute, Pseudo-class:</strong> <code>(0, 0, 1, 0)</code>.</li>
+                    <li><strong>Element (div), Pseudo-element:</strong> <code>(0, 0, 0, 1)</code>.</li>
+                </ul>
+
+                <h3>Advanced Combinators</h3>
+                <div class="code-window">
+                    <pre><code><span class="comment">/* Descendant: Any p inside div */</span>
+<span class="sel">div p</span> { <span class="prop">color</span>: <span class="val">red</span>; }
+
+<span class="comment">/* Child: Only direct children p */</span>
+<span class="sel">div > p</span> { <span class="prop">color</span>: <span class="val">blue</span>; }
+
+<span class="comment">/* Adjacent Sibling: P immediately after div */</span>
+<span class="sel">div + p</span> { <span class="prop">color</span>: <span class="val">green</span>; }
+
+<span class="comment">/* General Sibling: All P after div */</span>
+<span class="sel">div ~ p</span> { <span class="prop">color</span>: <span class="val">yellow</span>; }</code></pre>
+                </div>
+            </section>
+
+            <section id="ch4" class="chapter">
+                <span class="chapter-badge">Chapter 04</span>
+                <h1 class="chapter-title">Comments & Units</h1>
+                
+                <h3>Absolute vs Relative Units</h3>
+                <p><strong>Absolute (px):</strong> Fixed units. <code>20px</code> will always be 20 pixels regardless of screen size. Good for borders, bad for responsive text.</p>
+                <p><strong>Relative (%, em, rem):</strong> These scale based on something else.</p>
+                
+                <div class="callout callout-info">
+                    <h4><i class="fas fa-lightbulb"></i> REM vs EM</h4>
+                    <p><strong>REM (Root EM):</strong> Relative to the <code>html</code> font size (default 16px). If user changes browser font size, REM scales. Use this for font-sizes and margins.</p>
+                    <p><strong>EM:</strong> Relative to the parent element's font size. Good for padding inside buttons where padding should scale with the button text.</p>
+                </div>
+
+                <h3>Viewport Units</h3>
+                <ul>
+                    <li><code>100vw</code> = 100% of Viewport Width.</li>
+                    <li><code>100vh</code> = 100% of Viewport Height.</li>
+                    <li><code>vmin</code> = Smaller of vw or vh.</li>
+                </ul>
+            </section>
+
+            <section id="ch5" class="chapter">
+                <span class="chapter-badge">Chapter 05</span>
+                <h1 class="chapter-title">Colors & Backgrounds</h1>
+                
+                <h3>Modern Color Formats</h3>
+                <p>While Hex and RGB are common, modern CSS prefers <strong>HSL</strong> (Hue, Saturation, Lightness) because it is intuitive to adjust.</p>
+                <pre><code><span class="prop">color</span>: <span class="val">hsl(200, 100%, 50%)</span>; <span class="comment">/* Base Blue */</span>
+<span class="prop">color</span>: <span class="val">hsl(200, 100%, 30%)</span>; <span class="comment">/* Darker Blue */</span></code></pre>
+
+                <h3>Gradients</h3>
+                <p>CSS allows linear and radial gradients.</p>
+                <div class="code-window">
+                    <pre><code><span class="sel">.hero</span> {
+  <span class="prop">background</span>: <span class="val">linear-gradient(45deg, #ff0000, #0000ff)</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch6" class="chapter">
+                <span class="chapter-badge">Chapter 06</span>
+                <h1 class="chapter-title">Typography Mastery</h1>
+                
+                <h3>Web Fonts</h3>
+                <p>Use Google Fonts or locally hosted fonts via <code>@font-face</code>.</p>
+                <div class="code-window">
+                    <pre><code><span class="sel">@import</span> <span class="val">url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')</span>;
+
+<span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="val">'Roboto', sans-serif</span>;
+  <span class="prop">line-height</span>: <span class="val">1.6</span>; <span class="comment">/* Gold standard for readability */</span>
+  <span class="prop">letter-spacing</span>: <span class="val">0.5px</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch7" class="chapter">
+                <span class="chapter-badge">Chapter 07</span>
+                <h1 class="chapter-title">The Box Model (Vital)</h1>
+                <p>The CSS Box Model is essentially a box that wraps around every HTML element. It consists of: margins, borders, padding, and the actual content.</p>
+                
+
+[Image of Box Model]
+
+                
+                <h3>Box Sizing Issue</h3>
+                <p>By default, if you set width to 100px and padding to 20px, the actual width becomes 140px (100 + 20 left + 20 right). This breaks layouts.</p>
+                
+                <div class="callout callout-warn">
+                    <h4><i class="fas fa-magic"></i> The Universal Fix</h4>
+                    <p>Always use the following snippet at the top of your CSS file. It forces padding and border to be included <em>inside</em> the width.</p>
+                </div>
+                <div class="code-window">
+                    <pre><code><span class="sel">*, *::before, *::after</span> {
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch8" class="chapter">
+                <span class="chapter-badge">Chapter 08</span>
+                <h1 class="chapter-title">Display & Visibility</h1>
+                <p>The <code>display</code> property is the most important CSS property for controlling layout.</p>
+                
+                <table>
+                    <tr><th>Value</th><th>Behavior</th></tr>
+                    <tr><td><code>block</code></td><td>Takes full width, starts on new line (div, p, h1).</td></tr>
+                    <tr><td><code>inline</code></td><td>Takes only content width, stays on same line (span, a). Margin-top/bottom doesn't work.</td></tr>
+                    <tr><td><code>inline-block</code></td><td>Stays on same line, but respects height/width/margins.</td></tr>
+                    <tr><td><code>none</code></td><td>Removes element from DOM flow completely.</td></tr>
+                </table>
+            </section>
+
+            <section id="ch9" class="chapter">
+                <span class="chapter-badge">Chapter 09</span>
+                <h1 class="chapter-title">Dimensions & Overflow</h1>
+                <p>Controlling size and scrolling behavior.</p>
+                
+                <h3>Max-Width</h3>
+                <p>Using <code>max-width: 100%</code> ensures images never overflow their container on mobile screens.</p>
+
+                <h3>Overflow</h3>
+                <ul>
+                    <li><code>visible</code>: Default. Content spills out.</li>
+                    <li><code>hidden</code>: Clips content. Useful for clearing floats.</li>
+                    <li><code>scroll</code>: Always shows scrollbar.</li>
+                    <li><code>auto</code>: Shows scrollbar only if needed.</li>
+                </ul>
+            </section>
+
+            <section id="ch10" class="chapter">
+                <span class="chapter-badge">Chapter 10</span>
+                <h1 class="chapter-title">Positioning & Z-Index</h1>
+                <p>The <code>position</code> property takes elements out of the normal document flow.</p>
+                
+                <h3>Types</h3>
+                <ol>
+                    <li><strong>Static:</strong> Default.</li>
+                    <li><strong>Relative:</strong> Positioned relative to itself. Unlocks z-index.</li>
+                    <li><strong>Absolute:</strong> Positioned relative to the nearest <em>positioned</em> ancestor.</li>
+                    <li><strong>Fixed:</strong> Sticks to the viewport (screen). Good for navbars.</li>
+                    <li><strong>Sticky:</strong> Acts like relative until scrolled to a point, then becomes fixed.</li>
+                </ol>
+
+                <div class="callout callout-info">
+                    <h4><i class="fas fa-layer-group"></i> Z-Index</h4>
+                    <p>Z-index only works on positioned elements (relative, absolute, fixed, sticky). Higher numbers go on top.</p>
+                </div>
+            </section>
+
+            <section id="ch11" class="chapter">
+                <span class="chapter-badge">Chapter 11</span>
+                <h1 class="chapter-title">Float & Clear</h1>
+                <p><strong>Historical Note:</strong> Floats were originally for wrapping text around images. Before Flexbox/Grid, they were used for layout hacks. Today, rely on Flex/Grid.</p>
+                <p>If you use float, you must use <code>clear: both</code> or a "clearfix" hack to prevent the parent container from collapsing height.</p>
+            </section>
+
+            <section id="ch12" class="chapter">
+                <span class="chapter-badge">Chapter 12</span>
+                <h1 class="chapter-title">Flexbox Guide</h1>
+                <p>Flexbox is a layout module designed for laying out items in a single dimension (row OR column).</p>
+
+                <h3>Container Properties</h3>
+                <div class="code-window">
+                    <pre><code><span class="sel">.flex-container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">row | column</span>;
+  <span class="prop">justify-content</span>: <span class="val">center | space-between</span>; <span class="comment">/* Main Axis */</span>
+  <span class="prop">align-items</span>: <span class="val">center | stretch</span>; <span class="comment">/* Cross Axis */</span>
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">gap</span>: <span class="val">20px</span>;
+}</code></pre>
+                </div>
+
+                <h3>Item Properties</h3>
+                <ul>
+                    <li><code>flex-grow</code>: How much the item grows to fill space.</li>
+                    <li><code>flex-shrink</code>: How much it shrinks if space is tight.</li>
+                    <li><code>flex-basis</code>: Initial size before growing/shrinking.</li>
+                </ul>
+            </section>
+
+            <section id="ch13" class="chapter">
+                <span class="chapter-badge">Chapter 13</span>
+                <h1 class="chapter-title">CSS Grid</h1>
+                <p>Grid is the most powerful layout system in CSS. It handles both rows and columns simultaneously.</p>
+
+                <div class="code-window">
+                    <pre><code><span class="sel">.grid-container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="comment">/* 3 columns: 1st is 100px, 2nd is flexible, 3rd is 200px */</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">100px 1fr 200px</span>; 
+  <span class="prop">gap</span>: <span class="val">20px</span>;
+}</code></pre>
+                </div>
+
+                <h3>Fraction Unit (fr)</h3>
+                <p>The <code>fr</code> unit represents a fraction of the available space in the grid container.</p>
+            </section>
+
+            <section id="ch14" class="chapter">
+                <span class="chapter-badge">Chapter 14</span>
+                <h1 class="chapter-title">Responsive Design</h1>
+                <p>Responsive Web Design (RWD) makes web pages render well on a variety of devices. We primarily use <strong>Media Queries</strong>.</p>
+
+                <h3>Standard Breakpoints</h3>
+                <div class="code-window">
+                    <pre><code><span class="comment">/* Mobile First (Base styles are mobile) */</span>
+<span class="sel">body</span> { <span class="prop">font-size</span>: <span class="val">14px</span>; }
+
+<span class="comment">/* Tablet */</span>
+<span class="sel">@media</span> (<span class="prop">min-width</span>: <span class="val">768px</span>) {
+  <span class="sel">body</span> { <span class="prop">font-size</span>: <span class="val">16px</span>; }
+}
+
+<span class="comment">/* Desktop */</span>
+<span class="sel">@media</span> (<span class="prop">min-width</span>: <span class="val">1024px</span>) {
+  <span class="sel">body</span> { <span class="prop">font-size</span>: <span class="val">18px</span>; }
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch15" class="chapter">
+                <span class="chapter-badge">Chapter 15</span>
+                <h1 class="chapter-title">Transitions</h1>
+                <p>CSS transitions allows you to change property values smoothly, over a given duration.</p>
+                <p>Required properties: <code>transition-property</code> (what to animate) and <code>transition-duration</code> (how long).</p>
+                
+                <div class="code-window">
+                    <pre><code><span class="sel">.btn</span> {
+  <span class="prop">background</span>: <span class="val">blue</span>;
+  <span class="prop">transition</span>: <span class="val">background 0.3s ease-in-out</span>;
+}
+<span class="sel">.btn:hover</span> {
+  <span class="prop">background</span>: <span class="val">green</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch16" class="chapter">
+                <span class="chapter-badge">Chapter 16</span>
+                <h1 class="chapter-title">Animations</h1>
+                <p>Animations allow an element to change from one style to another. You can change as many CSS properties you want, as many times as you want.</p>
+                
+                <div class="code-window">
+                    <pre><code><span class="sel">@keyframes</span> <span class="val">slideIn</span> {
+  <span class="val">0%</span> { <span class="prop">transform</span>: <span class="val">translateX(-100%)</span>; <span class="prop">opacity</span>: <span class="val">0</span>; }
+  <span class="val">100%</span> { <span class="prop">transform</span>: <span class="val">translateX(0)</span>; <span class="prop">opacity</span>: <span class="val">1</span>; }
+}
+
+<span class="sel">.box</span> {
+  <span class="prop">animation</span>: <span class="val">slideIn 1s ease forwards</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch17" class="chapter">
+                <span class="chapter-badge">Chapter 17</span>
+                <h1 class="chapter-title">Transforms</h1>
+                <p>Transforms allow you to modify the coordinate space of the CSS visual formatting model. Using it, elements can be translated, rotated, scaled, and skewed.</p>
+                <ul>
+                    <li><code>translate(x, y)</code>: Moves element (Performance friendly).</li>
+                    <li><code>scale(1.5)</code>: Zooms in/out.</li>
+                    <li><code>rotate(45deg)</code>: Rotates element.</li>
+                </ul>
+            </section>
+
+            <section id="ch18" class="chapter">
+                <span class="chapter-badge">Chapter 18</span>
+                <h1 class="chapter-title">Advanced Visuals</h1>
+                
+                <h3>Box Shadow</h3>
+                <p>Adds shadow effects around an element's frame.</p>
+                <code>box-shadow: 10px 10px 5px rgba(0,0,0,0.5);</code> (x-offset, y-offset, blur, color).
+
+                <h3>Glassmorphism (Backdrop Filter)</h3>
+                <div class="code-window">
+                    <pre><code><span class="sel">.glass</span> {
+  <span class="prop">background</span>: <span class="val">rgba(255, 255, 255, 0.1)</span>;
+  <span class="prop">backdrop-filter</span>: <span class="val">blur(10px)</span>;
+  <span class="prop">border</span>: <span class="val">1px solid rgba(255,255,255,0.2)</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch19" class="chapter">
+                <span class="chapter-badge">Chapter 19</span>
+                <h1 class="chapter-title">CSS Variables</h1>
+                <p>Also known as Custom Properties. They allow you to define a value once and reuse it throughout the document. This is critical for <strong>Dark Mode</strong> implementations.</p>
+                
+                <div class="code-window">
+                    <pre><code><span class="sel">:root</span> {
+  <span class="prop">--primary-color</span>: <span class="val">#3498db</span>;
+}
+
+<span class="sel">body</span> {
+  <span class="prop">background-color</span>: <span class="val">var(--primary-color)</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="ch20" class="chapter">
+                <span class="chapter-badge">Chapter 20</span>
+                <h1 class="chapter-title">Modern Features</h1>
+                <p>CSS3 is constantly evolving. Here are powerful new tools:</p>
+                <ul>
+                    <li><code>calc()</code>: Perform math in CSS. <code>width: calc(100% - 50px);</code></li>
+                    <li><code>clamp(min, val, max)</code>: Responsive text sizes. <code>font-size: clamp(1rem, 2.5vw, 2rem);</code></li>
+                    <li><code>aspect-ratio</code>: Define strict width-to-height ratio. <code>aspect-ratio: 16 / 9;</code></li>
+                    <li><code>scroll-behavior: smooth;</code>: Enables smooth scrolling on anchors.</li>
+                </ul>
+            </section>
+
+            <section id="ch21" class="chapter">
+                <span class="chapter-badge">Chapter 21</span>
+                <h1 class="chapter-title">Styling Forms</h1>
+                <p>Default browser inputs look ugly. Use CSS to strip defaults and style them.</p>
+                <ul>
+                    <li>Use <code>appearance: none;</code> to remove default OS styling.</li>
+                    <li>Style <code>:focus</code> states for accessibility (outline or box-shadow).</li>
+                    <li>Use <code>::placeholder</code> pseudo-element to style placeholder text.</li>
+                </ul>
+            </section>
+
+            <section id="ch22" class="chapter">
+                <span class="chapter-badge">Chapter 22</span>
+                <h1 class="chapter-title">Styling Tables</h1>
+                <p>Make data easy to read.</p>
+                <ul>
+                    <li><code>border-collapse: collapse;</code> is essential to remove double borders.</li>
+                    <li>Use <code>tr:nth-child(even)</code> for zebra striping rows.</li>
+                </ul>
+            </section>
+
+            <section id="ch23" class="chapter">
+                <span class="chapter-badge">Chapter 23</span>
+                <h1 class="chapter-title">CSS Architecture (BEM)</h1>
+                <p>Writing maintainable CSS is hard. <strong>BEM (Block Element Modifier)</strong> is a naming convention that helps.</p>
+                <ul>
+                    <li><strong>Block:</strong> <code>.card</code> (Standalone entity)</li>
+                    <li><strong>Element:</strong> <code>.card__title</code> (Part of the block)</li>
+                    <li><strong>Modifier:</strong> <code>.card--featured</code> (Variation of the block)</li>
+                </ul>
+            </section>
+
+            <section id="ch24" class="chapter">
+                <span class="chapter-badge">Chapter 24</span>
+                <h1 class="chapter-title">Performance</h1>
+                <div class="callout callout-warn">
+                    <h4><i class="fas fa-tachometer-alt"></i> Speed Tips</h4>
+                    <ul>
+                        <li>Minify CSS files (remove whitespace) for production.</li>
+                        <li>Avoid <code>@import</code> inside CSS files (blocks loading). Use <code>&lt;link&gt;</code> instead.</li>
+                        <li>Avoid animating expensive properties like <code>width</code>, <code>height</code>, or <code>top</code>. Animate <code>transform</code> and <code>opacity</code> instead.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="ch25" class="chapter">
+                <span class="chapter-badge">Chapter 25</span>
+                <h1 class="chapter-title">Cross-Browser Compatibility</h1>
+                <p>Not all browsers (Chrome, Safari, Firefox) support all features instantly. Use <strong>Vendor Prefixes</strong> to ensure support.</p>
+                <pre><code><span class="sel">.box</span> {
+  <span class="prop">-webkit-transform</span>: <span class="val">rotate(45deg)</span>; <span class="comment">/* Chrome/Safari */</span>
+  <span class="prop">-ms-transform</span>: <span class="val">rotate(45deg)</span>;     <span class="comment">/* IE */</span>
+  <span class="prop">transform</span>: <span class="val">rotate(45deg)</span>;         <span class="comment">/* Standard */</span>
+}</code></pre>
+            </section>
+
+            <section id="ch26" class="chapter">
+                <span class="chapter-badge">Chapter 26</span>
+                <h1 class="chapter-title">CSS with JavaScript</h1>
+                <p>You rarely write inline CSS with JS. Instead, use JS to <strong>toggle classes</strong>.</p>
+                <div class="code-window">
+                    <pre><code><span class="comment">// Good Practice</span>
+<span class="val">element</span>.<span class="prop">classList</span>.<span class="prop">add</span>(<span class="str">'active'</span>);
+
+<span class="comment">// Bad Practice</span>
+<span class="val">element</span>.<span class="prop">style</span>.<span class="prop">backgroundColor</span> = <span class="str">'red'</span>;</code></pre>
+                </div>
+            </section>
+
+            <section id="ch27" class="chapter">
+                <span class="chapter-badge">Chapter 27</span>
+                <h1 class="chapter-title">CSS Frameworks</h1>
+                <p>Frameworks speed up development by providing pre-written CSS.</p>
+                <ul>
+                    <li><strong>Bootstrap:</strong> Component-based (buttons, navbars). Good for beginners.</li>
+                    <li><strong>Tailwind CSS:</strong> Utility-first. You write classes like <code>flex p-4 bg-red-500</code>. Used by pros.</li>
+                </ul>
+            </section>
+
+            <section id="ch28" class="chapter">
+                <span class="chapter-badge">Chapter 28</span>
+                <h1 class="chapter-title">Tools & Preprocessors</h1>
+                <p><strong>Sass (Syntactically Awesome Style Sheets)</strong> extends CSS with variables, nesting, and mixins.</p>
+                <pre><code><span class="comment">/* SCSS Nesting Example */</span>
+<span class="sel">nav</span> {
+  <span class="prop">ul</span> {
+    <span class="prop">margin</span>: <span class="val">0</span>;
+    <span class="sel">li</span> { <span class="prop">display</span>: <span class="val">inline-block</span>; }
+  }
+}</code></pre>
+            </section>
+
+            <section id="ch29" class="chapter">
+                <span class="chapter-badge">Chapter 29</span>
+                <h1 class="chapter-title">Real World Projects</h1>
+                <p>To master CSS, you must build things. Here are 3 standard projects:</p>
+                <ol>
+                    <li><strong>Portfolio:</strong> Focus on Typography, Colors, and Flexbox for the nav.</li>
+                    <li><strong>Landing Page:</strong> Focus on Hero Image (background-size: cover) and Grid layout for features.</li>
+                    <li><strong>Dashboard:</strong> Focus on Sidebar Layout (Fixed position) and Tables.</li>
+                </ol>
+            </section>
+
+            <section id="ch30" class="chapter">
+                <span class="chapter-badge">Chapter 30</span>
+                <h1 class="chapter-title">Final Checklist</h1>
+                <div class="callout callout-warn">
+                    <h4><i class="fas fa-check-circle"></i> Before You Publish</h4>
+                    <ul>
+                        <li>Did you add <code>box-sizing: border-box</code>?</li>
+                        <li>Is your website responsive on mobile?</li>
+                        <li>Did you check contrast ratios for accessibility?</li>
+                        <li>Are you using semantic HTML elements?</li>
+                        <li>Is your CSS file minified?</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Sidebar active link logic
+        const sections = document.querySelectorAll('.chapter');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

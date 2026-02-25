@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Contact Us</title>
+
+    <!-- IN-PAGE CSS -->
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #eef2f7;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        p {
+            font-size: 22px;
+            text-align: center;
+            margin: 25px;
+            color: rgb(0, 33, 133);
+            font-weight: bold;
+        }
+
+        /* Navigation menu */
+        .menu {
+            text-align: center;
+            background-color: lightblue;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .menu a:hover {
+            color: red;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            width: 380px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;            /* Rounded corners */
+            box-shadow: 0 4px 10px #cccccc; /* Shadow */
+        }
+
+        .contact-card h2 {
+            text-align: center;
+            color: darkgreen;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 94%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+            font-size: 14px;
+        }
+
+        /* Focus (active) effect */
+        input:focus, textarea:focus {
+            border-color: darkblue;
+            background-color: #f0f8ff;
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        /* Button */
+        input[type="submit"] {
+            background-color: darkblue;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: green;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Contact Us</h1>
+
+    <hr>
+
+    <!-- Navigation -->
+    <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <hr>
+
+    <p>We would love to hear from you</p>
+
+    <!-- Contact Card -->
+    <div class="contact-card">
+        <h2>Send a Message</h2>
+
+        <form>
+
+            <label>Name</label>
+            <input type="text" placeholder="Enter your name">
+
+            <br><br>
+
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email">
+
+            <br><br>
+
+            <label>Message</label>
+            <textarea rows="4" placeholder="Write your message here"></textarea>
+
+            <input type="submit" value="Send Message">
+
+        </form>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <p class="footer">
+        © 2026 Education Center. All Rights Reserved.
+    </p>
+
+</body>
+
+</html>

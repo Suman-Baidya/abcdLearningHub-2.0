@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #eef2f3, #ffffff);
+            color: #333;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        /* MENU */
+        .menu {
+            background: white;
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu a {
+            text-decoration: none;
+            margin: 10px 14px;
+            font-weight: bold;
+            color: #4a148c;
+        }
+
+        .menu a:hover {
+            color: #ff5722;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 70px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1b5e20;
+            margin-bottom: 40px;
+        }
+
+        /* GALLERY GRID */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* GRADIENT BORDER CARD */
+        .gallery-card {
+            padding: 4px;
+            border-radius: 20px;
+            background: linear-gradient(270deg, #667eea, #ff6a00, #764ba2);
+            background-size: 600% 600%;
+            animation: borderMove 6s linear infinite;
+            transition: 0.4s;
+        }
+
+        @keyframes borderMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gallery-inner {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        /* IMAGE ANIMATION */
+        .gallery-inner img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            animation: imagePan 12s infinite alternate;
+            transition: 0.5s;
+        }
+
+        @keyframes imagePan {
+            from {
+                transform: scale(1) translateX(0);
+            }
+            to {
+                transform: scale(1.08) translateX(10px);
+            }
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.12);
+        }
+
+        /* CAPTION */
+        .caption {
+            padding: 14px;
+            font-weight: 600;
+            background: linear-gradient(to right, #f3f4f6, #ffffff);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 90px;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .gallery-inner img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>Our Gallery</h1>
+        <p>Learning • Practice • Success</p>
+    </div>
+
+    <!-- MENU -->
+    <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+        <p>Some memorable moments from our classrooms</p>
+
+        <div class="gallery">
+
+            <div class="gallery-card">
+                <div class="gallery-inner">
+                    <img src="https://algocademy.com/blog/wp-content/uploads/2024/09/51df8d23thumbnail.jpeg">
+                    <div class="caption">Practical Coding Session</div>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="gallery-inner">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgTcL3x1eRwsShjxsrtNCsjxvx3BYBVsl_Jw&s">
+                    <div class="caption">Student Learning Time</div>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="gallery-inner">
+                    <img src="https://potomac.edu/wp-content/uploads/2020/12/benefits-of-coding-e1606911064541.jpg">
+                    <div class="caption">Modern Computer Lab</div>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="gallery-inner">
+                    <img src="https://www.accesscreative.ac.uk/wp-content/uploads/2025/01/T-Level-Software-Development-student-coding.jpg">
+                    <div class="caption">Focused Development</div>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="gallery-inner">
+                    <img src="https://www.springboard.com/blog/wp-content/uploads/2022/08/coding-courses.png">
+                    <div class="caption">Skill Based Training</div>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="gallery-inner">
+                    <img src="https://blog.stoneriverelearning.com/wp-content/uploads/2017/04/CAPTURE111111ee.png">
+                    <div class="caption">Project Based Learning</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2026 Education Center • Learning Beyond Books
+    </div>
+
+</body>
+</html>

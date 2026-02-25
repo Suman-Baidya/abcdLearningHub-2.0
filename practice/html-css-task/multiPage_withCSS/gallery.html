@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gallery</title>
+
+    <!-- IN-PAGE CSS -->
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f3f6fa;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        p {
+            font-size: 22px;
+            text-align: center;
+            margin: 25px;
+            color: rgb(0, 33, 133);
+            font-weight: bold;
+        }
+
+        /* Navigation menu */
+        .menu {
+            text-align: center;
+            background-color: lightblue;
+            padding: 10px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .menu a:hover {
+            color: red;
+        }
+
+        /* Gallery section */
+        .gallery {
+            text-align: center;
+        }
+
+        /* Same height images */
+        .gallery img {
+            height: 200px;          /* SAME HEIGHT */
+            width: auto;            /* keep original width ratio */
+            margin: 10px;
+            border: 3px solid #ccc;
+            padding: 5px;
+            background-color: white;
+            transition: 0.3s;       /* smooth hover effect */
+        }
+
+        /* Simple hover effect */
+        .gallery img:hover {
+            transform: scale(1.05); /* small zoom */
+            border-color: darkblue;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Our Gallery</h1>
+
+    <hr>
+
+    <!-- Navigation -->
+    <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <hr>
+
+    <p>Some moments from our classes:</p>
+
+    <!-- Gallery Images -->
+    <div class="gallery">
+        <img src="https://algocademy.com/blog/wp-content/uploads/2024/09/51df8d23thumbnail.jpeg" alt="Class Image">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgTcL3x1eRwsShjxsrtNCsjxvx3BYBVsl_Jw&s" alt="Class Image">
+        <img src="https://potomac.edu/wp-content/uploads/2020/12/benefits-of-coding-e1606911064541.jpg" alt="Class Image">
+
+        <br>
+
+        <img src="https://www.accesscreative.ac.uk/wp-content/uploads/2025/01/T-Level-Software-Development-student-coding.jpg" alt="Class Image">
+        <img src="https://www.springboard.com/blog/wp-content/uploads/2022/08/coding-courses.png" alt="Class Image">
+        <img src="https://blog.stoneriverelearning.com/wp-content/uploads/2017/04/CAPTURE111111ee.png" alt="Class Image">
+    </div>
+
+    <br><br>
+    <hr>
+
+    <!-- Footer -->
+    <p class="footer">
+        © 2026 Education Center. All Rights Reserved.
+    </p>
+
+</body>
+
+</html>

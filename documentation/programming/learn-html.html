@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Comprehensive Documentation | Master Course</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #09090b;
+            --bg-sidebar: #0f0f0f;
+            --bg-card: #18181b;
+            --border: #27272a;
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-main: #e2e8f0;
+            --text-muted: #a1a1aa;
+            --code-bg: #1e1e1e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; color: white; }
+        code { font-family: 'Fira Code', monospace; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: var(--accent); border: 1px solid rgba(255,255,255,0.1); }
+        pre code { background: none; padding: 0; color: inherit; border: none; }
+        strong { color: white; font-weight: 600; }
+
+        /* === HEADER === */
+        header {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(9, 9, 11, 0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 4%;
+        }
+
+        .logo { 
+            font-weight: 800; font-size: 1.4rem; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+
+        .home-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 50px;
+            color: white; font-size: 0.9rem; text-decoration: none;
+            transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .home-btn:hover { background: var(--primary); border-color: var(--primary); }
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: white; margin-right: 15px; }
+
+        /* === LAYOUT === */
+        .doc-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            max-width: 1600px;
+            margin: 70px auto 0;
+            min-height: 100vh;
+        }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 20px 15px 50px 15px;
+        }
+
+        .module-header {
+            font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted);
+            margin: 25px 0 10px 10px; letter-spacing: 1.2px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .module-header i { color: var(--primary); font-size: 0.8rem; }
+
+        .nav-link {
+            display: block; padding: 10px 15px;
+            color: #888; text-decoration: none;
+            font-size: 0.9rem; border-radius: 6px;
+            transition: 0.2s; border-left: 2px solid transparent;
+            margin-bottom: 2px;
+        }
+
+        .nav-link:hover { color: white; background: rgba(255,255,255,0.05); }
+        .nav-link.active {
+            color: white; background: rgba(99, 102, 241, 0.1);
+            border-left-color: var(--primary);
+        }
+
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* === MAIN CONTENT === */
+        .content { padding: 60px 8%; max-width: 1100px; }
+
+        .chapter { 
+            margin-bottom: 80px; 
+            scroll-margin-top: 100px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 60px;
+        }
+        
+        .chapter-badge { 
+            background: rgba(99, 102, 241, 0.1); color: var(--primary); 
+            padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; font-family: 'Fira Code';
+            display: inline-block; margin-bottom: 10px; border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        .chapter-title { font-size: 2.5rem; margin-bottom: 25px; line-height: 1.2; }
+
+        /* Content Styling */
+        .content ul, .content ol { margin-bottom: 25px; padding-left: 25px; color: var(--text-muted); }
+        .content li { margin-bottom: 10px; }
+        .content p { margin-bottom: 20px; font-size: 1.05rem; }
+
+        /* Code Window */
+        .code-window {
+            background: var(--code-bg); border-radius: 8px; overflow: hidden;
+            margin: 30px 0; border: 1px solid var(--border);
+        }
+        .code-header {
+            background: #202022; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.85rem; color: #777; border-bottom: 1px solid var(--border); font-family: 'Fira Code';
+        }
+        .dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+        pre { padding: 25px; overflow-x: auto; color: #d4d4d4; font-size: 0.95rem; }
+
+        /* Syntax Highlighting */
+        .tag { color: #569cd6; } .attr { color: #9cdcfe; } .str { color: #ce9178; } .comment { color: #6a9955; font-style: italic; } .keyword { color: #c586c0; }
+
+        /* Callout Boxes */
+        .callout { padding: 25px; border-radius: 8px; margin: 30px 0; border-left: 4px solid; background: rgba(255,255,255,0.02); }
+        .callout-info { border-color: var(--accent); }
+        .callout-warn { border-color: var(--warning); }
+        .callout-tip { border-color: var(--success); }
+        
+        .callout h4 { margin-bottom: 10px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .callout-info h4 { color: var(--accent); }
+        .callout-warn h4 { color: var(--warning); }
+        .callout-tip h4 { color: var(--success); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.95rem; }
+        th, td { border: 1px solid var(--border); padding: 15px; text-align: left; }
+        th { background: #202022; color: white; }
+        tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+        /* Interview Question Box */
+        .interview-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 25px; border-radius: 12px; margin-top: 40px;
+        }
+        .interview-box h3 { color: white; font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .q-item { margin-bottom: 15px; }
+        .q-q { color: var(--accent); font-weight: 600; margin-bottom: 5px; }
+        .q-a { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .doc-container { grid-template-columns: 1fr; }
+            .sidebar { position: fixed; left: -100%; top: 70px; width: 85%; z-index: 999; transition: 0.3s; box-shadow: 10px 0 50px rgba(0,0,0,0.8); }
+            .sidebar.active { left: 0; }
+            .mobile-toggle { display: block; }
+            .content { padding: 40px 5%; }
+            .chapter-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="display:flex; align-items:center;">
+            <div class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="logo">HTML5 Docs</div>
+        </div>
+        <a href="../index.html" class="home-btn"><i class="fas fa-home"></i> Home</a>
+    </header>
+
+    <div class="doc-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="module-header"><i class="fas fa-cube"></i> Module 1: The Basics</div>
+            <a href="#ch1" class="nav-link active">1. Intro to HTML</a>
+            <a href="#ch2" class="nav-link">2. Document Structure</a>
+            <a href="#ch3" class="nav-link">3. Text Formatting</a>
+            <a href="#ch4" class="nav-link">4. Global Attributes</a>
+
+            <div class="module-header"><i class="fas fa-layer-group"></i> Module 2: Content</div>
+            <a href="#ch5" class="nav-link">5. Links & Navigation</a>
+            <a href="#ch6" class="nav-link">6. Images & Media</a>
+            <a href="#ch7" class="nav-link">7. Lists</a>
+            <a href="#ch8" class="nav-link">8. Tables</a>
+
+            <div class="module-header"><i class="fas fa-edit"></i> Module 3: Forms</div>
+            <a href="#ch9" class="nav-link">9. Forms & Input</a>
+
+            <div class="module-header"><i class="fas fa-rocket"></i> Module 4: Modern HTML5</div>
+            <a href="#ch10" class="nav-link">10. Semantic HTML</a>
+            <a href="#ch11" class="nav-link">11. Layout Techniques</a>
+            <a href="#ch12" class="nav-link">12. Linking Resources</a>
+            <a href="#ch13" class="nav-link">13. Entities</a>
+            <a href="#ch14" class="nav-link">14. Iframes</a>
+
+            <div class="module-header"><i class="fas fa-cogs"></i> Module 5: Advanced</div>
+            <a href="#ch15" class="nav-link">15. Meta & SEO</a>
+            <a href="#ch16" class="nav-link">16. Accessibility</a>
+            <a href="#ch17" class="nav-link">17. HTML APIs</a>
+            <a href="#ch18" class="nav-link">18. Canvas & SVG</a>
+            <a href="#ch19" class="nav-link">19. Performance</a>
+
+            <div class="module-header"><i class="fas fa-lock"></i> Module 6: Final</div>
+            <a href="#ch20" class="nav-link">20. Security</a>
+            <a href="#ch21" class="nav-link">21. Deprecated Tags</a>
+            <a href="#ch22" class="nav-link">22. Project Ideas</a>
+        </aside>
+
+        <main class="content">
+
+            <section id="ch1" class="chapter">
+                <span class="chapter-badge">Chapter 01</span>
+                <h1 class="chapter-title">Introduction to HTML</h1>
+                <p><strong>HTML (HyperText Markup Language)</strong> is the standard markup language for creating Web pages. It describes the structure of a web page semantically and originally included cues for the appearance of the document.</p>
+                <p>HTML elements are the building blocks of HTML pages. With HTML constructs, images and other objects, such as interactive forms, may be embedded into the rendered page.</p>
+                
+                <div class="callout callout-info">
+                    <h4><i class="fas fa-info-circle"></i> Key Concepts</h4>
+                    <ul>
+                        <li><strong>HyperText:</strong> Refers to links that connect web pages to one another.</li>
+                        <li><strong>Markup:</strong> HTML uses "tags" to annotate text, images, and other content for display in a Web browser.</li>
+                        <li><strong>Language:</strong> It has a specific syntax and rules.</li>
+                    </ul>
+                </div>
+
+                <h3>Version History</h3>
+                <table>
+                    <tr><th>Version</th><th>Year</th><th>Key Features</th></tr>
+                    <tr><td>HTML 1.0</td><td>1991</td><td>Basic text structuring.</td></tr>
+                    <tr><td>HTML 4.01</td><td>1999</td><td>Separated styling (CSS) from structure.</td></tr>
+                    <tr><td><strong>HTML5</strong></td><td><strong>2014</strong></td><td>Added Video, Audio, Semantics, LocalStorage.</td></tr>
+                </table>
+            </section>
+
+            <section id="ch2" class="chapter">
+                <span class="chapter-badge">Chapter 02</span>
+                <h1 class="chapter-title">Document Structure</h1>
+                <p>An HTML document must follow a specific structure to be valid. The browser reads this structure from top to bottom.</p>
+
+                <div class="code-window">
+                    <div class="code-header"><div class="dots"><div class="dot red"></div><div class="dot yellow"></div></div>boilerplate.html</div>
+                    <pre><code><span class="tag">&lt;!DOCTYPE html&gt;</span> <span class="comment">&lt;!-- 1. Declaration --&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="str">"en"</span><span class="tag">&gt;</span> <span class="comment">&lt;!-- 2. Root Element --&gt;</span>
+  
+  <span class="tag">&lt;head&gt;</span> <span class="comment">&lt;!-- 3. Information for Browser --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="str">"UTF-8"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"viewport"</span> <span class="attr">content</span>=<span class="str">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span>Page Title<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+
+  <span class="tag">&lt;body&gt;</span> <span class="comment">&lt;!-- 4. Visible Content --&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hello World<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>This is my first website.<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+
+<span class="tag">&lt;/html&gt;</span></code></pre>
+                </div>
+
+                <h3>Element Breakdown</h3>
+                <ul>
+                    <li><code>&lt;!DOCTYPE html&gt;</code>: Tells the browser "This is an HTML5 document".</li>
+                    <li><code>&lt;html&gt;</code>: The root element wrapping everything.</li>
+                    <li><code>&lt;head&gt;</code>: Contains meta-data, title, styles, scripts (not visible on page).</li>
+                    <li><code>&lt;body&gt;</code>: Contains text, images, videos (visible to user).</li>
+                </ul>
+            </section>
+
+            <section id="ch3" class="chapter">
+                <span class="chapter-badge">Chapter 03</span>
+                <h1 class="chapter-title">Text Formatting</h1>
+                <p>HTML provides tags to structure text content. These tags provide visual formatting but also semantic meaning to search engines.</p>
+
+                <h3>Headings & Paragraphs</h3>
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;h1&gt;</span>Main Title (Use Once)<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span>Section Title<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span>Sub-section<span class="tag">&lt;/h3&gt;</span>
+<span class="tag">&lt;p&gt;</span>This is a standard paragraph block.<span class="tag">&lt;/p&gt;</span></code></pre>
+                </div>
+
+                <h3>Inline Formatting</h3>
+                <table>
+                    <tr><th>Tag</th><th>Purpose</th><th>Result</th></tr>
+                    <tr><td><code>&lt;strong&gt;</code></td><td>Important text</td><td><strong>Bold</strong></td></tr>
+                    <tr><td><code>&lt;em&gt;</code></td><td>Emphasized text</td><td><em>Italic</em></td></tr>
+                    <tr><td><code>&lt;mark&gt;</code></td><td>Highlighted text</td><td><mark>Yellow BG</mark></td></tr>
+                    <tr><td><code>&lt;del&gt;</code></td><td>Deleted/Wrong text</td><td><del>Strike</del></td></tr>
+                    <tr><td><code>&lt;ins&gt;</code></td><td>Inserted/New text</td><td><ins>Underline</ins></td></tr>
+                    <tr><td><code>&lt;sub&gt;</code></td><td>Subscript</td><td>H<sub>2</sub>O</td></tr>
+                    <tr><td><code>&lt;sup&gt;</code></td><td>Superscript</td><td>x<sup>2</sup></td></tr>
+                </table>
+            </section>
+
+            <section id="ch4" class="chapter">
+                <span class="chapter-badge">Chapter 04</span>
+                <h1 class="chapter-title">HTML Attributes</h1>
+                <p>Attributes provide additional information about elements. They are always specified in the <strong>start tag</strong> and usually come in name/value pairs.</p>
+
+                <h3>Global Attributes (Work on any tag)</h3>
+                <ul>
+                    <li><code>id="unique"</code>: Used to identify a single element (for CSS/JS).</li>
+                    <li><code>class="group"</code>: Used to identify a group of elements.</li>
+                    <li><code>style="..."</code>: Inline CSS styling (Avoid if possible).</li>
+                    <li><code>title="text"</code>: Shows a tooltip on mouse hover.</li>
+                    <li><code>hidden</code>: Hides the element from view.</li>
+                    <li><code>tabindex="0"</code>: Controls tab order for keyboard navigation.</li>
+                </ul>
+
+                <div class="callout callout-warn">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                    <p>IDs must be unique on a page. Classes can be reused on multiple elements.</p>
+                </div>
+            </section>
+
+            <section id="ch5" class="chapter">
+                <span class="chapter-badge">Chapter 05</span>
+                <h1 class="chapter-title">Links & Navigation</h1>
+                <p>The <code>&lt;a&gt;</code> (Anchor) tag creates hyperlinks. The <code>href</code> attribute determines the destination.</p>
+
+                <div class="code-window">
+                    <pre><code><span class="comment">&lt;!-- Absolute URL (External Site) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"https://google.com"</span> <span class="attr">target</span>=<span class="str">"_blank"</span><span class="tag">&gt;</span>Open Google<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Relative URL (Internal Page) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"/about.html"</span><span class="tag">&gt;</span>About Us<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- ID Link (Jump to section) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#contact"</span><span class="tag">&gt;</span>Go to Contact<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Email & Phone --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"mailto:test@test.com"</span><span class="tag">&gt;</span>Email Me<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"tel:+1234567890"</span><span class="tag">&gt;</span>Call Me<span class="tag">&lt;/a&gt;</span></code></pre>
+                </div>
+
+                <div class="callout callout-tip">
+                    <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                    <p>Use <code>target="_blank"</code> to open links in a new tab, but for security, browsers often add <code>rel="noopener noreferrer"</code> automatically.</p>
+                </div>
+            </section>
+
+            <section id="ch6" class="chapter">
+                <span class="chapter-badge">Chapter 06</span>
+                <h1 class="chapter-title">Images & Media</h1>
+                
+                <h3>Images</h3>
+                <p>The <code>&lt;img&gt;</code> tag embeds an image. It is a <strong>void element</strong> (no closing tag). The <code>alt</code> attribute is required for screen readers and SEO.</p>
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"images/logo.png"</span> <span class="attr">alt</span>=<span class="str">"Company Logo"</span> <span class="attr">width</span>=<span class="str">"300"</span><span class="tag">&gt;</span></code></pre>
+                </div>
+
+                <h3>Figure & Figcaption</h3>
+                <p>Use this for images with captions.</p>
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;figure&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"chart.jpg"</span> <span class="attr">alt</span>=<span class="str">"Sales Chart"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;figcaption&gt;</span>Figure 1: Sales Growth 2025<span class="tag">&lt;/figcaption&gt;</span>
+<span class="tag">&lt;/figure&gt;</span></code></pre>
+                </div>
+
+                <h3>Video & Audio (HTML5)</h3>
+                <p>Native support for media without Flash player.</p>
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;video</span> <span class="attr">controls</span> <span class="attr">autoplay</span> <span class="attr">muted</span> <span class="attr">loop</span> <span class="attr">poster</span>=<span class="str">"thumb.jpg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="str">"movie.mp4"</span> <span class="attr">type</span>=<span class="str">"video/mp4"</span><span class="tag">&gt;</span>
+  Your browser does not support the video tag.
+<span class="tag">&lt;/video&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <section id="ch7" class="chapter">
+                <span class="chapter-badge">Chapter 07</span>
+                <h1 class="chapter-title">Lists</h1>
+                
+                <h3>1. Unordered List</h3>
+                <p>Use <code>&lt;ul&gt;</code> for items where order doesn't matter (bullet points).</p>
+                <pre><code><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>HTML<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>CSS<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>JS<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></code></pre>
+
+                <h3>2. Ordered List</h3>
+                <p>Use <code>&lt;ol&gt;</code> for numbered steps.</p>
+                <pre><code><span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Boil water<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Add Tea<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span></code></pre>
+
+                <h3>3. Description List</h3>
+                <p>Use <code>&lt;dl&gt;</code> for terms and definitions.</p>
+                <pre><code><span class="tag">&lt;dl&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>HTML<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>HyperText Markup Language<span class="tag">&lt;/dd&gt;</span>
+<span class="tag">&lt;/dl&gt;</span></code></pre>
+            </section>
+
+            <section id="ch8" class="chapter">
+                <span class="chapter-badge">Chapter 08</span>
+                <h1 class="chapter-title">Tables</h1>
+                <p>Tables allow you to arrange data into rows and columns. They consist of <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code> (row), <code>&lt;th&gt;</code> (header), and <code>&lt;td&gt;</code> (data).</p>
+                
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;table</span> <span class="attr">border</span>=<span class="str">"1"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Name<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Role<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Alice<span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Developer<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Bob<span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Designer<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span></code></pre>
+                </div>
+                
+                <div class="callout callout-warn">
+                    <h4><i class="fas fa-ban"></i> Important</h4>
+                    <p>Do NOT use tables for page layout. They are strictly for tabular data.</p>
+                </div>
+            </section>
+
+            <section id="ch9" class="chapter">
+                <span class="chapter-badge">Chapter 09</span>
+                <h1 class="chapter-title">Forms & Input (Crucial)</h1>
+                <p>Forms are used to collect user input. The <code>&lt;form&gt;</code> element wraps various input controls.</p>
+
+                <h3>Input Types</h3>
+                <ul>
+                    <li><code>text</code>: Single line text.</li>
+                    <li><code>password</code>: Masked characters.</li>
+                    <li><code>email</code>: Validates email addresses.</li>
+                    <li><code>radio</code>: Select ONE from a group.</li>
+                    <li><code>checkbox</code>: Select MULTIPLE options.</li>
+                    <li><code>date</code>: Date picker.</li>
+                    <li><code>file</code>: File upload.</li>
+                </ul>
+
+                <h3>Real World Example: Registration</h3>
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="str">"/submit"</span> <span class="attr">method</span>=<span class="str">"POST"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;fieldset&gt;</span>
+    <span class="tag">&lt;legend&gt;</span>Personal Info<span class="tag">&lt;/legend&gt;</span>
+    
+    <span class="tag">&lt;label&gt;</span>Username:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"text"</span> <span class="attr">required</span> <span class="attr">placeholder</span>=<span class="str">"Enter name"</span><span class="tag">&gt;</span>
+    
+    <span class="tag">&lt;label&gt;</span>Skill:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;select</span> <span class="attr">name</span>=<span class="str">"skill"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;option&gt;</span>HTML<span class="tag">&lt;/option&gt;</span>
+      <span class="tag">&lt;option&gt;</span>CSS<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;/select&gt;</span>
+    
+    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="str">"submit"</span><span class="tag">&gt;</span>Register<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/fieldset&gt;</span>
+<span class="tag">&lt;/form&gt;</span></code></pre>
+                </div>
+
+                <div class="interview-box">
+                    <h3><i class="fas fa-question-circle"></i> Interview Questions</h3>
+                    <div class="q-item">
+                        <div class="q-q">Q: Difference between GET and POST?</div>
+                        <div class="q-a">A: GET sends data in the URL (visible, limited size). POST sends data in the HTTP body (hidden, secure, unlimited size).</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ch10" class="chapter">
+                <span class="chapter-badge">Chapter 10</span>
+                <h1 class="chapter-title">Semantic HTML</h1>
+                <p>Semantic tags describe their meaning to both the browser and the developer. This is crucial for SEO and Accessibility.</p>
+                
+                <ul>
+                    <li><code>&lt;header&gt;</code>: Introductory content, logo, navigation.</li>
+                    <li><code>&lt;nav&gt;</code>: Set of navigation links.</li>
+                    <li><code>&lt;main&gt;</code>: The dominant content of the body (use once).</li>
+                    <li><code>&lt;section&gt;</code>: A thematic grouping of content.</li>
+                    <li><code>&lt;article&gt;</code>: Independent, self-contained content (Blog post, News).</li>
+                    <li><code>&lt;aside&gt;</code>: Content aside from the content (Sidebar).</li>
+                    <li><code>&lt;footer&gt;</code>: Footer for a document or section.</li>
+                </ul>
+            </section>
+
+            <section id="ch11" class="chapter">
+                <span class="chapter-badge">Chapter 11</span>
+                <h1 class="chapter-title">Layout Techniques</h1>
+                <p>HTML creates the structure. CSS creates the layout. However, how you structure HTML affects the layout.</p>
+                
+                <h3>Block vs. Inline</h3>
+                <ul>
+                    <li><strong>Block Elements:</strong> Start on a new line and take full width. (<code>div</code>, <code>h1</code>, <code>p</code>, <code>section</code>).</li>
+                    <li><strong>Inline Elements:</strong> Do not start on a new line, take only necessary width. (<code>span</code>, <code>a</code>, <code>img</code>, <code>strong</code>).</li>
+                </ul>
+                <p>In modern web dev, we wrap content in Semantic Tags or <code>div</code>s and use CSS Grid/Flexbox to arrange them.</p>
+            </section>
+
+            <section id="ch12" class="chapter">
+                <span class="chapter-badge">Chapter 12</span>
+                <h1 class="chapter-title">Connecting Resources</h1>
+                <p>Your HTML file is the central hub. You must link external files here.</p>
+                
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;head&gt;</span>
+  <span class="comment">&lt;!-- Link External CSS --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"style.css"</span><span class="tag">&gt;</span>
+  
+  <span class="comment">&lt;!-- Link External JavaScript --&gt;</span>
+  <span class="comment">&lt;!-- 'defer' means load JS after HTML is parsed --&gt;</span>
+  <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"app.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/head&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <section id="ch13" class="chapter">
+                <span class="chapter-badge">Chapter 13</span>
+                <h1 class="chapter-title">HTML Entities</h1>
+                <p>Some characters are reserved (like <code>&lt;</code> and <code>&gt;</code>). If you type them in text, the browser thinks it's a tag. Use Entity Codes instead.</p>
+                
+                <table>
+                    <tr><th>Symbol</th><th>Entity Name</th><th>Description</th></tr>
+                    <tr><td>&lt;</td><td><code>&amp;lt;</code></td><td>Less than</td></tr>
+                    <tr><td>&gt;</td><td><code>&amp;gt;</code></td><td>Greater than</td></tr>
+                    <tr><td>&amp;</td><td><code>&amp;amp;</code></td><td>Ampersand</td></tr>
+                    <tr><td>&copy;</td><td><code>&amp;copy;</code></td><td>Copyright</td></tr>
+                    <tr><td>&nbsp;</td><td><code>&amp;nbsp;</code></td><td>Non-breaking space</td></tr>
+                    <tr><td>&#128512;</td><td><code>&amp;#128512;</code></td><td>Emoji</td></tr>
+                </table>
+            </section>
+
+            <section id="ch14" class="chapter">
+                <span class="chapter-badge">Chapter 14</span>
+                <h1 class="chapter-title">Iframe & Embeds</h1>
+                <p>The <code>&lt;iframe&gt;</code> tag specifies an inline frame. It is used to embed another document within the current HTML document (e.g., YouTube videos, Maps).</p>
+                
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;iframe</span> 
+  <span class="attr">src</span>=<span class="str">"https://www.google.com/maps/embed?..."</span> 
+  <span class="attr">width</span>=<span class="str">"600"</span> 
+  <span class="attr">height</span>=<span class="str">"450"</span> 
+  <span class="attr">style</span>=<span class="str">"border:0;"</span> 
+  <span class="attr">allowfullscreen</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/iframe&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <section id="ch15" class="chapter">
+                <span class="chapter-badge">Chapter 15</span>
+                <h1 class="chapter-title">Meta Tags & SEO</h1>
+                <p>SEO (Search Engine Optimization) relies heavily on the <code>&lt;head&gt;</code> section.</p>
+                
+                <h3>Essential Meta Tags</h3>
+                <ul>
+                    <li><code>charset="UTF-8"</code>: Ensures special characters display correctly.</li>
+                    <li><code>viewport</code>: Makes the site responsive on mobile phones.</li>
+                    <li><code>description</code>: The snippet shown in Google search results.</li>
+                    <li><code>keywords</code>: (Obsolete for Google, but used by some engines).</li>
+                </ul>
+
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"viewport"</span> <span class="attr">content</span>=<span class="str">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"description"</span> <span class="attr">content</span>=<span class="str">"Learn HTML5 from scratch completely free."</span><span class="tag">&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <section id="ch16" class="chapter">
+                <span class="chapter-badge">Chapter 16</span>
+                <h1 class="chapter-title">Accessibility (A11Y)</h1>
+                <p>Web accessibility means that websites, tools, and technologies are designed and developed so that people with disabilities can use them.</p>
+                
+                <div class="callout callout-tip">
+                    <h4><i class="fas fa-check"></i> Checklist</h4>
+                    <ul>
+                        <li>Use <code>alt</code> text on all images.</li>
+                        <li>Ensure forms have associated <code>labels</code>.</li>
+                        <li>Use correct heading hierarchy (H1 -> H2 -> H3). Do not skip levels.</li>
+                        <li>Ensure keyboard navigability using <code>tabindex</code> correctly.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="ch17" class="chapter">
+                <span class="chapter-badge">Chapter 17</span>
+                <h1 class="chapter-title">HTML APIs</h1>
+                <p>HTML5 brought powerful APIs that interact with JavaScript to add advanced functionality.</p>
+                
+                <h3>1. Geolocation API</h3>
+                <p>Allows the user to provide their location to the web application.</p>
+                
+                <h3>2. Drag and Drop API</h3>
+                <p>Allows elements to be draggable.</p>
+                
+                <h3>3. Web Storage API</h3>
+                <p>More secure and larger than cookies.</p>
+                <ul>
+                    <li><code>localStorage</code>: Data persists even after the browser is closed.</li>
+                    <li><code>sessionStorage</code>: Data is lost when the browser tab is closed.</li>
+                </ul>
+            </section>
+
+            <section id="ch18" class="chapter">
+                <span class="chapter-badge">Chapter 18</span>
+                <h1 class="chapter-title">Canvas & SVG</h1>
+                <p>HTML5 allows you to draw graphics on the web page.</p>
+                
+                <h3>SVG (Scalable Vector Graphics)</h3>
+                <p>XML-based. Great for logos and icons because they scale without losing quality.</p>
+                <div class="code-window">
+                    <pre><code><span class="tag">&lt;svg</span> <span class="attr">width</span>=<span class="str">"100"</span> <span class="attr">height</span>=<span class="str">"100"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;circle</span> <span class="attr">cx</span>=<span class="str">"50"</span> <span class="attr">cy</span>=<span class="str">"50"</span> <span class="attr">r</span>=<span class="str">"40"</span> <span class="attr">fill</span>=<span class="str">"red"</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/svg&gt;</span></code></pre>
+                </div>
+
+                <h3>Canvas</h3>
+                <p>JavaScript-based drawing. Great for games and complex animations.</p>
+                <pre><code><span class="tag">&lt;canvas</span> <span class="attr">id</span>=<span class="str">"myGame"</span><span class="tag">&gt;&lt;/canvas&gt;</span></code></pre>
+            </section>
+
+            <section id="ch19" class="chapter">
+                <span class="chapter-badge">Chapter 19</span>
+                <h1 class="chapter-title">Performance</h1>
+                <p>Writing clean HTML can speed up your website.</p>
+                <ul>
+                    <li><strong>Lazy Loading:</strong> Use <code>loading="lazy"</code> on images. The browser only downloads them when the user scrolls near them.</li>
+                    <li><strong>Minification:</strong> Removing comments and white space from code before publishing.</li>
+                    <li><strong>Script Placement:</strong> Put scripts at the bottom of the body or use <code>defer</code> to prevent blocking rendering.</li>
+                </ul>
+            </section>
+
+            <section id="ch20" class="chapter">
+                <span class="chapter-badge">Chapter 20</span>
+                <h1 class="chapter-title">Security Basics</h1>
+                <p>HTML is just markup, but it's the entry point for many attacks.</p>
+                
+                <div class="callout callout-warn">
+                    <h4><i class="fas fa-shield-alt"></i> Security Tips</h4>
+                    <ul>
+                        <li><strong>Cross-Site Scripting (XSS):</strong> Never trust user input. Always sanitize data before displaying it.</li>
+                        <li><strong>Phishing via Links:</strong> When using <code>target="_blank"</code>, always add <code>rel="noopener noreferrer"</code>.</li>
+                        <li><strong>HTTPS:</strong> Always serve your website over HTTPS.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="ch21" class="chapter">
+                <span class="chapter-badge">Chapter 21</span>
+                <h1 class="chapter-title">Deprecated Tags</h1>
+                <p>The web evolves. Some tags are obsolete and should <strong>never</strong> be used in modern development. Use CSS instead.</p>
+                <table>
+                    <tr><th>Old Tag</th><th>New Way (CSS)</th></tr>
+                    <tr><td><del>&lt;center&gt;</del></td><td><code>text-align: center;</code></td></tr>
+                    <tr><td><del>&lt;font&gt;</del></td><td><code>color: red; font-family: arial;</code></td></tr>
+                    <tr><td><del>&lt;marquee&gt;</del></td><td>CSS Animations</td></tr>
+                    <tr><td><del>&lt;bgcolor&gt;</del></td><td><code>background-color: blue;</code></td></tr>
+                    <tr><td><del>&lt;strike&gt;</del></td><td><code>text-decoration: line-through;</code></td></tr>
+                </table>
+            </section>
+
+            <section id="ch22" class="chapter">
+                <span class="chapter-badge">Chapter 22</span>
+                <h1 class="chapter-title">Project Ideas</h1>
+                <p>The best way to learn is by doing. Here are 3 projects you can build with pure HTML (and a little CSS).</p>
+
+                <div class="interview-box">
+                    <h3>1. Personal Portfolio</h3>
+                    <p>Create a homepage about yourself.</p>
+                    <ul>
+                        <li>Use <code>header</code> for your name and logo.</li>
+                        <li>Use an <code>img</code> for your photo.</li>
+                        <li>Use <code>ul</code> for your skills.</li>
+                        <li>Use a <code>form</code> for people to contact you.</li>
+                    </ul>
+                </div>
+
+                <div class="interview-box">
+                    <h3>2. Blog Page Layout</h3>
+                    <p>Practice semantics.</p>
+                    <ul>
+                        <li>Use <code>article</code> for blog posts.</li>
+                        <li>Use <code>aside</code> for a sidebar with links.</li>
+                        <li>Use <code>details</code> and <code>summary</code> for FAQs.</li>
+                    </ul>
+                </div>
+
+                <div class="interview-box">
+                    <h3>3. Registration Form</h3>
+                    <p>Master inputs.</p>
+                    <ul>
+                        <li>Create fields for Name, Email, Password, Birthday.</li>
+                        <li>Use <code>required</code> validation.</li>
+                        <li>Use <code>radio</code> buttons for gender.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Toggle Sidebar on Mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Active Link Highlighting
+        const sections = document.querySelectorAll('.chapter');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
