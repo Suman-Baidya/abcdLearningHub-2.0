@@ -535,7 +535,7 @@ nav{
   -webkit-backdrop-filter:blur(22px) saturate(130%);
   background:rgba(6,8,16,.72);animation:gi .4s ease;
 }
-[data-theme="light"] .page-gate{background:rgba(242,245,255,.78)}
+[data-theme="dark"] .page-gate{background:rgba(242,245,255,.78)}
 @keyframes gi{from{opacity:0}to{opacity:1}}
 
 .gcard{
@@ -663,6 +663,13 @@ footer{
 @media(max-width:480px){
   .hero-h{font-size:2.1rem}
   .nw{padding:0 16px}
+}
+
+.gate-title{
+  font-family:var(--fh);font-size:1.3rem;font-weight:800;
+  background:linear-gradient(90deg,var(--a1),var(--a2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1;
 }
 </style>
 </head>

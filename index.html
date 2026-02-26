@@ -477,8 +477,10 @@ footer{background:#030609;border-top:1px solid rgba(201,151,42,.1);padding:68px 
   #nav{padding:13px 5%;} #nav.solid{padding:10px 5%;}
   .sec{padding:68px 5%;}
   .h-cont h1{font-size:clamp(2.1rem,7vw,3rem);}
-  .h-stats{gap:22px;}.hst h3{font-size:1.75rem;}
-  .h-btns{flex-direction:column;align-items:center;}
+  .h-stats{gap:22px;}.hst h3{font-size:1rem;}
+  .tw-wrap{margin-bottom: 20px;}
+  
+  .h-btns{flex-direction:column;align-items:center;margin-bottom: 25px;}
   .c-grid{grid-template-columns:1fr 1fr;gap:10px;}
   .cc{height:242px;}
   .cc-desc{max-height:68px!important;opacity:1!important;}.cc-link{opacity:1!important;transform:none!important;}
@@ -500,7 +502,13 @@ footer{background:#030609;border-top:1px solid rgba(201,151,42,.1);padding:68px 
   .ac-tabs{gap:6px;}
   .ac-tab{padding:7px 13px;font-size:.72rem;}
 }
-@media(max-width:480px){.c-grid{grid-template-columns:1fr;}.cc{height:232px;}.h-stats{flex-direction:column;gap:14px;}.tcard{min-width:calc(100vw - 60px);max-width:calc(100vw - 60px);}.modal-box{padding:30px 20px;}}
+@media(max-width:480px){.c-grid{grid-template-columns:1fr;}.cc{height:232px;}.h-stats{gap:10px;}.hst p{font-size: 0.35rem;}.h-badge{font-size: 0.5rem;}.tcard{min-width:calc(100vw - 60px);max-width:calc(100vw - 60px);}.modal-box{padding:30px 20px;}}
+.mobile-menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
 </style>
 </head>
 <body>
@@ -517,7 +525,7 @@ footer{background:#030609;border-top:1px solid rgba(201,151,42,.1);padding:68px 
 </nav>
 <div class="mob-menu" id="mobMenu">
   <span class="mob-close" id="mobClose"><i class="fas fa-times"></i></span>
-  <div id="mobLinks"></div>
+  <div id="mobLinks" class="mobile-menu"></div>
   <div class="mob-special">
     <a class="mob-prac-btn" href="#" onclick="openModal('practice');closeMob()"><i class="fas fa-flask"></i> Practice</a>
     <a class="mob-doc-btn"  href="#" onclick="openModal('documentation');closeMob()"><i class="fas fa-lock"></i> Documentation</a>
