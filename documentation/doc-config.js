@@ -80,7 +80,8 @@ const DOC_CONFIG = {
       description: "Graphic design principles, Canva, Photoshop, Illustrator and UI/UX.",
       folder:      "designing/",
       docs: [
-    //     { title: "Design Principles & Colour Theory", file: "design-basics.html", badge: ""    },
+        // { title: "Design Principles & Colour Theory", file: "design-basics.html", badge: ""    },
+        { title: "Photoshop & Bengali Typer",        file: "photoshop-docs.html", badge: ""    },
         { title: "Canva — Complete Guide",             file: "canva-docs.html",         badge: "New"    },
     //     { title: "Adobe Photoshop Basics",             file: "photoshop.html",     badge: ""    },
     //     { title: "Adobe Illustrator Basics",           file: "illustrator.html",   badge: ""    },

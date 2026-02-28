@@ -195,23 +195,23 @@ const PRACTICE_CONFIG = {
     // },
 
     // ── MS Excel ─────────────────────────────────────────────────────
-    // {
-    //   id:          "ms-excel",
-    //   title:       "MS Excel",
-    //   icon:        "📊",
-    //   color:       "#10b981",
-    //   gradient:    ["#10b981", "#059669"],
-    //   description: "Formulas, charts, pivot tables, VLOOKUP and real data analysis tasks.",
-    //   folder:      "excel-task/",
-    //   tasks: [
-        // { title: "Basic Formulas — SUM, AVG",     file: "task-01.html", level: "Beginner",     badge: "",        est: "15 min" },
-        // { title: "Conditional Formatting",        file: "task-02.html", level: "Beginner",     badge: "",        est: "20 min" },
+    {
+      id:          "ms-excel",
+      title:       "MS Excel",
+      icon:        "📊",
+      color:       "#10b981",
+      gradient:    ["#10b981", "#059669"],
+      description: "Formulas, charts, pivot tables, VLOOKUP and real data analysis tasks.",
+      folder:      "excel-task/",
+      tasks: [
+        { title: "Basic Formulas — SUM, AVG",     file: "excel-beginner-bengali.html", level: "Beginner",     badge: "",        est: "15 min" },
+        { title: "Biginer to Advanced Formulas",        file: "excel-practice.html", level: "Medium",     badge: "",        est: "20 min" },
         // { title: "VLOOKUP & HLOOKUP",             file: "task-03.html", level: "Intermediate", badge: "Hot",     est: "30 min" },
         // { title: "Pivot Tables & Charts",         file: "task-04.html", level: "Intermediate", badge: "",        est: "35 min" },
         // { title: "Advanced IF & Nested Formulas", file: "task-05.html", level: "Advanced",     badge: "",        est: "40 min" },
         // { title: "Sales Dashboard Project",       file: "task-06.html", level: "Project",      badge: "New",     est: "90 min" },
-    //   ],
-    // },
+      ],
+    },
 
     // ── MS Word ──────────────────────────────────────────────────────
     {
@@ -225,6 +225,24 @@ const PRACTICE_CONFIG = {
       tasks: [
         { title: "Paragraph & Text Formatting",   file: "word-practice.html", level: "Beginner",     badge: "",        est: "10 min" },
         // { title: "Styles & Headings",             file: "task-02.html", level: "Beginner",     badge: "",        est: "15 min" },
+        // { title: "Tables & Borders",              file: "task-03.html", level: "Intermediate", badge: "",        est: "20 min" },
+        // { title: "Mail Merge",                    file: "task-04.html", level: "Intermediate", badge: "Hot",     est: "30 min" },
+        // { title: "Professional CV / Resume",      file: "task-05.html", level: "Project",      badge: "New",     est: "45 min" },
+      ],
+    },
+
+    // ── MS Power Point ──────────────────────────────────────────────────────
+    {
+      id:          "ms-powerpoint",
+      title:       "MS Power Point",
+      icon:        "💽",
+      color:       "#f59e0b",
+      gradient:    ["#f59e0b", "#fbbf24"],
+      description: "Presentation design, slide transitions, animations and storytelling with PowerPoint.",
+      folder:      "powerpoint-task/",
+      tasks: [
+        { title: "PPT question with Bengali Lang",   file: "ppt-beginner-bengali.html", level: "Beginner",     badge: "",        est: "10 min" },
+        { title: "Make professional slides",             file: "ppt-practice.html", level: "Medium",     badge: "",        est: "15 min" },
         // { title: "Tables & Borders",              file: "task-03.html", level: "Intermediate", badge: "",        est: "20 min" },
         // { title: "Mail Merge",                    file: "task-04.html", level: "Intermediate", badge: "Hot",     est: "30 min" },
         // { title: "Professional CV / Resume",      file: "task-05.html", level: "Project",      badge: "New",     est: "45 min" },
@@ -270,15 +288,15 @@ const PRACTICE_CONFIG = {
 
     // ── Typing Speed ─────────────────────────────────────────────────
     {
-      id:          "typing",
-      title:       "Typing Speed",
+      id:          "kids-practice",
+      title:       "Kids Practice",
       icon:        "⌨️",
       color:       "#06d6a0",
       gradient:    ["#06d6a0", "#0ea5a0"],
-      description: "Improve typing accuracy, WPM speed and keyboard shortcut mastery.",
-      folder:      "typing-task/",
+      description: "Improve typing knowledge and speed for kids.",
+      folder:      "kids-practice/",
       tasks: [
-        // { title: "Home Row Keys Practice",        file: "task-01.html", level: "Beginner",     badge: "",        est: "10 min" },
+        { title: "Play Interesting Games",        file: "index.html", level: "Beginner",     badge: "",        est: "10 min" },
         // { title: "Numbers & Symbols Row",         file: "task-02.html", level: "Beginner",     badge: "",        est: "10 min" },
         // { title: "Speed Test — 30 WPM Target",    file: "task-03.html", level: "Intermediate", badge: "",        est: "15 min" },
         // { title: "Speed Test — 50 WPM Target",    file: "task-04.html", level: "Advanced",     badge: "Hot",     est: "15 min" },

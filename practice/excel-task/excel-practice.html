@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExcelMaster — Practice Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #111720;
+    --surface2: #1a2330;
+    --border: #1e2d3d;
+    --accent: #00e5a0;
+    --accent2: #0090ff;
+    --accent3: #ff6b35;
+    --warn: #ffd60a;
+    --text: #cdd6e0;
+    --muted: #4a6070;
+    --white: #f0f4f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 0 48px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,14,20,0.9);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+    background: var(--accent);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 4px;
+  }
+
+  .logo-cell {
+    background: var(--bg);
+    border-radius: 1px;
+  }
+
+  .logo-cell.green { background: var(--accent); }
+
+  .header-stats {
+    display: flex;
+    gap: 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    transition: all 0.2s;
+  }
+
+  .stat-pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 80px 48px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    line-height: 0.95;
+    color: var(--white);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  h1 span {
+    color: var(--accent);
+    -webkit-text-stroke: 1px var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Level tabs */
+  .level-nav {
+    position: relative;
+    z-index: 1;
+    padding: 0 48px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .level-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .level-btn:hover { color: var(--white); border-color: var(--muted); }
+
+  .level-btn.active {
+    color: var(--bg);
+    border-color: transparent;
+  }
+
+  .level-btn[data-level="beginner"].active { background: var(--accent); }
+  .level-btn[data-level="intermediate"].active { background: var(--accent2); }
+  .level-btn[data-level="advanced"].active { background: var(--accent3); }
+  .level-btn[data-level="expert"].active { background: var(--warn); color: var(--bg); }
+
+  .level-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .level-btn.active .level-badge { background: rgba(0,0,0,0.2); }
+
+  /* Content */
+  .content {
+    position: relative;
+    z-index: 1;
+    padding: 0 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .level-section { display: none; }
+  .level-section.active { display: block; }
+
+  .section-header {
+    margin-bottom: 32px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .section-header[data-color="blue"] { border-left-color: var(--accent2); }
+  .section-header[data-color="orange"] { border-left-color: var(--accent3); }
+  .section-header[data-color="yellow"] { border-left-color: var(--warn); }
+
+  .section-icon {
+    font-size: 36px;
+    line-height: 1;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 2px;
+  }
+
+  /* Questions grid */
+  .questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+    transform-origin: bottom;
+  }
+
+  .question-card:hover::before,
+  .question-card.open::before { transform: scaleY(1); }
+  .question-card:hover { border-color: rgba(0,229,160,0.3); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .q-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .q-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .q-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+  }
+
+  .q-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .q-scenario {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* Answer area */
+  .answer-area {
+    display: none;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .question-card.open .answer-area { display: block; }
+
+  .answer-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .formula-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    word-break: break-all;
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .answer-explanation {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .answer-explanation strong {
+    color: var(--text);
+  }
+
+  .tip-box {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: rgba(0,229,160,0.05);
+    border: 1px solid rgba(0,229,160,0.15);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .tip-box::before { content: '💡 TIP: '; font-weight: 600; }
+
+  .toggle-icon {
+    font-size: 16px;
+    transition: transform 0.2s;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .question-card.open .toggle-icon { transform: rotate(45deg); color: var(--accent); }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    height: 2px;
+    background: var(--surface2);
+    border-radius: 1px;
+    margin: 8px 0 0;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    header, .hero, .level-nav, .content { padding-left: 20px; padding-right: 20px; }
+    .questions-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <div class="logo-cell green"></div><div class="logo-cell"></div><div class="logo-cell green"></div>
+      <div class="logo-cell"></div><div class="logo-cell green"></div><div class="logo-cell"></div>
+      <div class="logo-cell green"></div><div class="logo-cell"></div><div class="logo-cell"></div>
+    </div>
+    ExcelMaster
+  </div>
+  <div class="header-stats">
+    <div class="stat-pill"><span class="dot" style="background:var(--accent)"></span><span id="solved-count">0</span> SOLVED</div>
+    <div class="stat-pill"><span class="dot" style="background:var(--accent2)"></span>40 TOTAL</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">Real-World Excel Training</div>
+  <h1>MASTER<br><span>EXCEL</span></h1>
+  <p class="hero-desc">Practice with realistic workplace scenarios. From basic data entry to complex financial modeling — level up your spreadsheet skills.</p>
+</div>
+
+<div class="level-nav">
+  <button class="level-btn active" data-level="beginner" onclick="showLevel('beginner', this)">
+    🟢 Beginner <span class="level-badge">10 Qs</span>
+  </button>
+  <button class="level-btn" data-level="intermediate" onclick="showLevel('intermediate', this)">
+    🔵 Intermediate <span class="level-badge">10 Qs</span>
+  </button>
+  <button class="level-btn" data-level="advanced" onclick="showLevel('advanced', this)">
+    🔴 Advanced <span class="level-badge">10 Qs</span>
+  </button>
+  <button class="level-btn" data-level="expert" onclick="showLevel('expert', this)">
+    🟡 Expert <span class="level-badge">10 Qs</span>
+  </button>
+</div>
+
+<div class="content">
+
+  <!-- ===================== BEGINNER ===================== -->
+  <div class="level-section active" id="beginner">
+    <div class="section-header" data-color="green">
+      <div class="section-icon">🟢</div>
+      <div>
+        <div class="section-title">Beginner Level</div>
+        <div class="section-subtitle">Basic formulas, formatting, and everyday spreadsheet tasks</div>
+      </div>
+    </div>
+    <div class="questions-grid">
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q01</span>
+          <div class="q-tags"><span class="q-tag">SUM</span><span class="q-tag">Basic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Calculate Total Monthly Sales</div>
+        <div class="q-scenario">You have daily sales figures in cells B2:B32. Your manager wants a total for the month.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=SUM(B2:B32)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>SUM</strong> adds all values in a range. Select the range B2:B32 to cover all 31 days. Place this in cell B33 for a clean total row.</div>
+          <div class="tip-box">Press Alt+= to auto-insert SUM for selected range above.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q02</span>
+          <div class="q-tags"><span class="q-tag">AVERAGE</span><span class="q-tag">Basic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Find Average Employee Score</div>
+        <div class="q-scenario">HR has performance review scores in C2:C50. Find the department average for the annual report.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=AVERAGE(C2:C50)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>AVERAGE</strong> calculates the arithmetic mean. It automatically ignores empty cells but includes zeros, so ensure blank cells aren't entered as 0.</div>
+          <div class="tip-box">Use AVERAGEIF to average only scores above a threshold, e.g., passing scores.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q03</span>
+          <div class="q-tags"><span class="q-tag">IF</span><span class="q-tag">Logic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Pass/Fail Student Results</div>
+        <div class="q-scenario">Exam scores are in column D. Students pass if they score 40 or above. Show "Pass" or "Fail" in column E.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in E2)</div>
+          <div class="formula-box">=IF(D2>=40,"Pass","Fail")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>IF(condition, value_if_true, value_if_false)</strong>. If D2 is 40 or more → "Pass", otherwise → "Fail". Drag down to apply to all students.</div>
+          <div class="tip-box">Drag the fill handle (bottom-right corner) down to copy the formula to all rows.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q04</span>
+          <div class="q-tags"><span class="q-tag">COUNTA</span><span class="q-tag">Count</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Count How Many Employees Submitted Timesheets</div>
+        <div class="q-scenario">Column A has employee names. Column B has submission dates (some blank for those who haven't submitted). Count how many submitted.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=COUNTA(B2:B100)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>COUNTA</strong> counts non-empty cells. Unlike COUNT (which only counts numbers), COUNTA counts text, dates, and any non-blank value.</div>
+          <div class="tip-box">Use COUNTBLANK to count how many have NOT submitted yet.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q05</span>
+          <div class="q-tags"><span class="q-tag">CONCATENATE</span><span class="q-tag">Text</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Combine First and Last Names</div>
+        <div class="q-scenario">First names are in column A, last names in column B. Create a full name column with proper spacing for mailing labels.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in C2)</div>
+          <div class="formula-box">=A2&" "&B2<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">The <strong>&amp;</strong> operator joins text strings. The <strong>" "</strong> adds a space between first and last name. Modern Excel also supports <code>=TEXTJOIN(" ",TRUE,A2,B2)</code>.</div>
+          <div class="tip-box">Use =PROPER(A2&" "&B2) to auto-capitalize names if data is inconsistent.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q06</span>
+          <div class="q-tags"><span class="q-tag">MAX/MIN</span><span class="q-tag">Basic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Find Highest and Lowest Product Price</div>
+        <div class="q-scenario">You manage a product list. Prices are in column C. Find both the most expensive and cheapest product price.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formulas</div>
+          <div class="formula-box">=MAX(C2:C200) &nbsp; / &nbsp; =MIN(C2:C200)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>MAX</strong> returns the largest value; <strong>MIN</strong> returns the smallest. Put each in separate cells — e.g., F1 for highest price, F2 for lowest.</div>
+          <div class="tip-box">Combine with INDEX/MATCH to also return the product name for the max/min price.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q07</span>
+          <div class="q-tags"><span class="q-tag">TODAY</span><span class="q-tag">Date</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Flag Overdue Invoices</div>
+        <div class="q-scenario">Invoice due dates are in column D. You need to highlight which invoices are past today's date.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in E2)</div>
+          <div class="formula-box">=IF(D2&lt;TODAY(),"OVERDUE","OK")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>TODAY()</strong> returns today's date dynamically — it updates every time the file opens. Comparing D2 (due date) to TODAY() flags past-due invoices automatically.</div>
+          <div class="tip-box">Apply Conditional Formatting with this formula to highlight overdue rows in red.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q08</span>
+          <div class="q-tags"><span class="q-tag">ROUND</span><span class="q-tag">Math</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Round Tax Calculations to 2 Decimal Places</div>
+        <div class="q-scenario">Tax amounts in column E are showing many decimal places. Finance needs clean 2-decimal figures for reports.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in F2)</div>
+          <div class="formula-box">=ROUND(E2,2)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>ROUND(number, digits)</strong> rounds to the specified decimal places. ROUND(E2,2) gives 2 decimal places. Use ROUNDUP or ROUNDDOWN for ceiling/floor rounding.</div>
+          <div class="tip-box">Use INT() to round down to the nearest whole number — useful for floor calculations.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q09</span>
+          <div class="q-tags"><span class="q-tag">Percentage</span><span class="q-tag">Basic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Calculate % Change in Monthly Revenue</div>
+        <div class="q-scenario">Last month revenue is in B2, this month in C2. Calculate the percentage growth or decline.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in D2)</div>
+          <div class="formula-box">=(C2-B2)/B2<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">Standard percentage change formula: <strong>(New - Old) / Old</strong>. Format the cell as Percentage (Ctrl+Shift+%) to see it as 12.5% instead of 0.125.</div>
+          <div class="tip-box">Wrap in IFERROR to handle cases where last month's value is 0: =IFERROR((C2-B2)/B2,"N/A")</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q10</span>
+          <div class="q-tags"><span class="q-tag">TRIM</span><span class="q-tag">Clean</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Clean Up Customer Names from Import</div>
+        <div class="q-scenario">Customer data imported from a CRM has extra spaces in names (column A). Clean them before mail merge.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in B2)</div>
+          <div class="formula-box">=TRIM(PROPER(A2))<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>TRIM</strong> removes leading, trailing, and double spaces. <strong>PROPER</strong> capitalizes the first letter of each word. Combining both gives clean, formatted names.</div>
+          <div class="tip-box">After cleaning, paste as Values (Ctrl+Shift+V) over column A to replace originals, then delete column B.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== INTERMEDIATE ===================== -->
+  <div class="level-section" id="intermediate">
+    <div class="section-header" data-color="blue">
+      <div class="section-icon">🔵</div>
+      <div>
+        <div class="section-title">Intermediate Level</div>
+        <div class="section-subtitle">VLOOKUP, COUNTIF, pivot logic, and multi-condition formulas</div>
+      </div>
+    </div>
+    <div class="questions-grid">
+
+      <div class="question-card" onclick="toggleCard(this)" style="--accent: #0090ff">
+        <div class="card-top">
+          <span class="q-number">Q11</span>
+          <div class="q-tags"><span class="q-tag">VLOOKUP</span><span class="q-tag">Lookup</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Fetch Employee Department from HR Table</div>
+        <div class="q-scenario">Employee IDs are in column A of your sheet. The HR master table (Sheet2, A:C) has ID, Name, Department. Pull the department into your report.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=VLOOKUP(A2,Sheet2!$A:$C,3,FALSE)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">VLOOKUP(lookup_value, table, col_index, [exact_match]). <strong>A2</strong> = ID to find, <strong>Sheet2!$A:$C</strong> = the lookup table, <strong>3</strong> = return the 3rd column (Department), <strong>FALSE</strong> = exact match.</div>
+          <div class="tip-box">Always use FALSE for exact matches. TRUE does approximate match, suitable only for sorted numeric data.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q12</span>
+          <div class="q-tags"><span class="q-tag">COUNTIF</span><span class="q-tag">Count</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Count Orders by Region</div>
+        <div class="q-scenario">Sales orders have a "Region" column (column C). Count how many orders came from the "North" region.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=COUNTIF(C2:C500,"North")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>COUNTIF(range, criteria)</strong> counts cells matching a condition. The criteria "North" is case-insensitive. You can also reference a cell: =COUNTIF(C2:C500,F1) where F1 contains "North".</div>
+          <div class="tip-box">Use wildcards: "North*" matches "North", "Northeast", "Northwest" etc.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q13</span>
+          <div class="q-tags"><span class="q-tag">SUMIF</span><span class="q-tag">Conditional</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Total Sales for One Salesperson</div>
+        <div class="q-scenario">Column B has salesperson names, column D has order values. Sum all sales made by "Priya Sharma".</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=SUMIF(B2:B500,"Priya Sharma",D2:D500)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>SUMIF(range, criteria, sum_range)</strong> — checks column B for the name, then sums the corresponding values in column D. The sum_range must align row-by-row with the range.</div>
+          <div class="tip-box">Reference a cell instead of hardcoding the name to make the formula dynamic: =SUMIF(B:B,G1,D:D)</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q14</span>
+          <div class="q-tags"><span class="q-tag">SUMIFS</span><span class="q-tag">Multi</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Sales for One Salesperson in One Region</div>
+        <div class="q-scenario">Filter sales by BOTH salesperson (col B) AND region (col C) to get a specific total for quarterly review.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=SUMIFS(D2:D500,B2:B500,"Priya Sharma",C2:C500,"North")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>SUMIFS(sum_range, range1, criteria1, range2, criteria2, ...)</strong> supports multiple conditions (up to 127). All conditions must be true for the row to be included in the sum.</div>
+          <div class="tip-box">SUMIFS is the multi-condition upgrade of SUMIF — use it whenever you need 2+ filters.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q15</span>
+          <div class="q-tags"><span class="q-tag">INDEX/MATCH</span><span class="q-tag">Lookup</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Look Up Price by Product Code (Left Lookup)</div>
+        <div class="q-scenario">Your price table has Product Code in column C, Price in column A. VLOOKUP can't look left — use INDEX/MATCH instead.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=INDEX(A2:A200,MATCH(G2,C2:C200,0))<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>MATCH(G2,C2:C200,0)</strong> finds the row position of the code. <strong>INDEX(A2:A200,...)</strong> returns the value at that row from column A. This works for lookups in any direction.</div>
+          <div class="tip-box">In Excel 365/2021, use XLOOKUP instead — it's simpler and more powerful than both VLOOKUP and INDEX/MATCH.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q16</span>
+          <div class="q-tags"><span class="q-tag">IFERROR</span><span class="q-tag">Error</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Hide #N/A Errors in Lookup Results</div>
+        <div class="q-scenario">Your VLOOKUP returns #N/A for missing products. Replace error with "Not Found" for a cleaner report.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=IFERROR(VLOOKUP(A2,Sheet2!$A:$C,3,FALSE),"Not Found")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>IFERROR(value, value_if_error)</strong> wraps any formula and returns a custom value instead of any error (#N/A, #DIV/0!, #VALUE!, etc.).</div>
+          <div class="tip-box">Use "" as the error value to show a blank cell, which looks cleaner than "Not Found" in some reports.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q17</span>
+          <div class="q-tags"><span class="q-tag">TEXT</span><span class="q-tag">Format</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Display Date as "January 2024" in Reports</div>
+        <div class="q-scenario">Dates in column A are standard date format. You need them displayed as "Month Year" text for presentation headers.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in B2)</div>
+          <div class="formula-box">=TEXT(A2,"MMMM YYYY")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>TEXT(value, format)</strong> converts a number/date to formatted text. "MMMM" = full month name, "YYYY" = 4-digit year, "DD/MM/YYYY" = formatted date string.</div>
+          <div class="tip-box">TEXT returns text, not a date — don't use it when you need to sort or do date math.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q18</span>
+          <div class="q-tags"><span class="q-tag">LEFT/MID/RIGHT</span><span class="q-tag">Text</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Extract Department Code from Employee ID</div>
+        <div class="q-scenario">Employee IDs like "MUM-FIN-0042" have the city (first 3 chars) and department (chars 5-7). Extract the department code.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (extract "FIN")</div>
+          <div class="formula-box">=MID(A2,5,3)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>MID(text, start_num, num_chars)</strong> extracts text from the middle. Start at position 5 (after "MUM-"), extract 3 characters. Use LEFT(A2,3) for "MUM", RIGHT(A2,4) for "0042".</div>
+          <div class="tip-box">Combine with FIND() to extract text dynamically without hardcoding positions.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q19</span>
+          <div class="q-tags"><span class="q-tag">DAYS</span><span class="q-tag">Date</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Calculate Employee Tenure in Years</div>
+        <div class="q-scenario">Joining dates are in column B. Calculate how long each employee has worked at the company (in complete years).</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in C2)</div>
+          <div class="formula-box">=DATEDIF(B2,TODAY(),"Y")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>DATEDIF(start, end, unit)</strong> calculates date differences. "Y" = complete years, "M" = complete months, "D" = days. Note: DATEDIF is an undocumented but reliable function in all Excel versions.</div>
+          <div class="tip-box">For years AND months: =DATEDIF(B2,TODAY(),"Y")&" yrs "&DATEDIF(B2,TODAY(),"YM")&" mo"</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q20</span>
+          <div class="q-tags"><span class="q-tag">RANK</span><span class="q-tag">Stats</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Rank Sales Reps by Revenue</div>
+        <div class="q-scenario">Revenue figures for 20 sales reps are in column C. Create a rank column (1 = highest) for the leaderboard.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in D2)</div>
+          <div class="formula-box">=RANK(C2,$C$2:$C$21,0)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>RANK(number, ref, order)</strong> — order 0 = descending (largest = rank 1), order 1 = ascending. The <strong>$</strong> locks the reference so it doesn't shift when you drag the formula down.</div>
+          <div class="tip-box">Use RANK.EQ for ties (same number gets same rank) or RANK.AVG which averages tied ranks.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== ADVANCED ===================== -->
+  <div class="level-section" id="advanced">
+    <div class="section-header" data-color="orange">
+      <div class="section-icon">🔴</div>
+      <div>
+        <div class="section-title">Advanced Level</div>
+        <div class="section-subtitle">Array formulas, dynamic functions, and complex business logic</div>
+      </div>
+    </div>
+    <div class="questions-grid">
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q21</span>
+          <div class="q-tags"><span class="q-tag">XLOOKUP</span><span class="q-tag">365</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Two-Way Product-Price Matrix Lookup</div>
+        <div class="q-scenario">You have a pricing matrix: products in rows (A2:A20), customer tiers in columns (B1:F1). Find the price for a specific product + tier combo.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=XLOOKUP(H1,A2:A20,XLOOKUP(H2,B1:F1,B2:F20))<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">Nested XLOOKUP: the inner XLOOKUP matches the column (tier), returning a range. The outer XLOOKUP matches the row (product) in that range. Elegant two-dimensional lookup with no helper formulas.</div>
+          <div class="tip-box">XLOOKUP supports search from last (order=−1), wildcard matching, and returns entire rows or columns.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q22</span>
+          <div class="q-tags"><span class="q-tag">UNIQUE</span><span class="q-tag">Dynamic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Extract Unique Customer List from Orders</div>
+        <div class="q-scenario">Column A has 500 rows of customer names with many duplicates. Produce a clean unique list for the CRM import.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (in C2)</div>
+          <div class="formula-box">=UNIQUE(A2:A500)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>UNIQUE</strong> (Excel 365/2021) spills a deduplicated list automatically. It updates when source data changes. The result is a dynamic array — no manual maintenance needed.</div>
+          <div class="tip-box">Sort the unique list: =SORT(UNIQUE(A2:A500)) for an alphabetical, deduplicated list in one formula.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q23</span>
+          <div class="q-tags"><span class="q-tag">FILTER</span><span class="q-tag">Dynamic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Pull All Orders Above ₹50,000 Dynamically</div>
+        <div class="q-scenario">You want a live filtered view of high-value orders (>50000 in column D) for executive review — without a Pivot Table.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=FILTER(A2:E500,D2:D500>50000,"No records")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>FILTER(array, include, [if_empty])</strong> returns rows where the condition is TRUE. This spills all matching rows including all columns (A:E). Updates live as data changes.</div>
+          <div class="tip-box">Chain conditions: D2:D500>50000 * (C2:C500="North") for AND logic (multiply), + for OR logic.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q24</span>
+          <div class="q-tags"><span class="q-tag">ARRAY</span><span class="q-tag">SUMPRODUCT</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Weighted Average Score Across KPIs</div>
+        <div class="q-scenario">KPI scores are in B2:B8, their weights (as decimals summing to 1) are in C2:C8. Calculate the weighted average performance score.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=SUMPRODUCT(B2:B8,C2:C8)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>SUMPRODUCT</strong> multiplies corresponding elements of arrays and sums the results. For weighted average where weights don't sum to 1: =SUMPRODUCT(B2:B8,C2:C8)/SUM(C2:C8).</div>
+          <div class="tip-box">SUMPRODUCT is extremely versatile — it can replace SUMIFS, COUNTIFS, and perform complex array operations without Ctrl+Shift+Enter.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q25</span>
+          <div class="q-tags"><span class="q-tag">INDIRECT</span><span class="q-tag">Dynamic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Pull Data from Different Sheet Based on Dropdown</div>
+        <div class="q-scenario">You have 12 monthly sheets (Jan, Feb, ...). Cell A1 has a dropdown to select the month. Pull total sales from the selected sheet dynamically.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=INDIRECT("'"&A1&"'!B50")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>INDIRECT</strong> converts a text string to a cell reference. As A1 changes, the formula points to a different sheet's cell. The single quotes handle sheet names with spaces.</div>
+          <div class="tip-box">INDIRECT is volatile (recalculates constantly) — avoid in large spreadsheets. Use XLOOKUP with consolidated data instead when possible.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q26</span>
+          <div class="q-tags"><span class="q-tag">NESTED IF</span><span class="q-tag">Logic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Grade Students Based on Score Range</div>
+        <div class="q-scenario">Scores in column B: 90+ = A, 75-89 = B, 60-74 = C, 45-59 = D, below 45 = F. Build a grade formula.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (Clean version)</div>
+          <div class="formula-box">=IFS(B2>=90,"A",B2>=75,"B",B2>=60,"C",B2>=45,"D",TRUE,"F")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>IFS</strong> evaluates conditions in order and returns the first TRUE. <strong>TRUE</strong> as the last condition acts as the default "else". Much cleaner than deeply nested IF statements.</div>
+          <div class="tip-box">Alternative: =CHOOSE(MATCH(B2,{0,45,60,75,90},1),"F","D","C","B","A") — array-based approach.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q27</span>
+          <div class="q-tags"><span class="q-tag">NETWORKDAYS</span><span class="q-tag">Date</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Calculate Working Days for Project Timeline</div>
+        <div class="q-scenario">Project start date is in A2, end date in B2. Calculate actual working days excluding weekends and public holidays (listed in H2:H20).</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=NETWORKDAYS(A2,B2,$H$2:$H$20)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>NETWORKDAYS</strong> counts workdays (Mon–Fri) between two dates, excluding a list of holidays. The $ locks the holiday list so it doesn't shift when copied.</div>
+          <div class="tip-box">Use WORKDAY(start_date, days, holidays) to find the date that is N working days from a start date.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q28</span>
+          <div class="q-tags"><span class="q-tag">PMT</span><span class="q-tag">Finance</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Calculate Monthly Loan EMI</div>
+        <div class="q-scenario">Home loan: ₹50 lakh principal, 8.5% annual interest, 20-year tenure. Calculate the monthly EMI for the customer.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=PMT(8.5%/12, 20*12, -5000000)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>PMT(rate, nper, pv)</strong> — rate is monthly (annual/12), nper is total payments (years×12), pv is loan amount (negative as it's money borrowed). Result is the fixed monthly payment.</div>
+          <div class="tip-box">Use related functions: PPMT for principal portion per payment, IPMT for interest portion — essential for amortization schedules.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q29</span>
+          <div class="q-tags"><span class="q-tag">PIVOT</span><span class="q-tag">Analysis</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Build a Sales Summary Pivot Table</div>
+        <div class="q-scenario">Raw sales data has columns: Date, Region, Salesperson, Product, Quantity, Revenue. Create a pivot showing Revenue by Region and Salesperson.</div>
+        <div class="answer-area">
+          <div class="answer-label">Steps (No formula — use the ribbon)</div>
+          <div class="formula-box">Insert → PivotTable → Select range → OK → Drag Region to Rows → Salesperson to Rows → Revenue to Values<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">Pivot Tables summarize large datasets without formulas. Place <strong>Region</strong> above <strong>Salesperson</strong> in Rows for a grouped hierarchy. Set Revenue aggregation to Sum. Use Slicers for interactive filtering.</div>
+          <div class="tip-box">Right-click any value → Show Values As → % of Column Total to instantly see revenue share by region.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q30</span>
+          <div class="q-tags"><span class="q-tag">CONDITIONAL FORMAT</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Highlight Entire Rows Where Stock is Below Reorder Level</div>
+        <div class="q-scenario">Column E has current stock, column F has reorder level. Highlight the entire product row red when stock ≤ reorder level.</div>
+        <div class="answer-area">
+          <div class="answer-label">Steps + Formula</div>
+          <div class="formula-box">Select A2:F200 → Home → Conditional Formatting → New Rule → Use a formula: =$E2<=$F2<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">The <strong>$</strong> before E (not the row) locks the column but lets the row change. This checks each row's stock vs reorder level. The entire row highlights because the selected range covers all columns.</div>
+          <div class="tip-box">Add a second rule with a yellow fill for stock within 20% of reorder level as an early warning.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== EXPERT ===================== -->
+  <div class="level-section" id="expert">
+    <div class="section-header" data-color="yellow">
+      <div class="section-icon">🟡</div>
+      <div>
+        <div class="section-title">Expert Level</div>
+        <div class="section-subtitle">Power Query, VBA concepts, financial modeling, and automation</div>
+      </div>
+    </div>
+    <div class="questions-grid">
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q31</span>
+          <div class="q-tags"><span class="q-tag">LAMBDA</span><span class="q-tag">365</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Create a Custom Reusable Tax Calculator Function</div>
+        <div class="q-scenario">Your team needs a named function TAX_CALC that takes gross income and tax rate, returning net after tax. Make it reusable across the workbook.</div>
+        <div class="answer-area">
+          <div class="answer-label">Define in Name Manager</div>
+          <div class="formula-box">=LAMBDA(income, rate, income * (1 - rate))<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">Go to Formulas → Name Manager → New → Name: TAX_CALC → paste the LAMBDA. Then use <strong>=TAX_CALC(B2, 0.3)</strong> anywhere in the workbook. LAMBDA lets you build custom functions without VBA.</div>
+          <div class="tip-box">Add helper text: =LAMBDA(income, rate, LET(net, income*(1-rate), ROUND(net,2))). LET inside LAMBDA allows naming intermediate values.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q32</span>
+          <div class="q-tags"><span class="q-tag">LET</span><span class="q-tag">Performance</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Optimize Complex Bonus Calculation</div>
+        <div class="q-scenario">Bonus = (Sales − Target) × Rate × Multiplier. Sales in B2, Target in C2, Rate in D2, Multiplier based on region in E2. Build a clean, readable formula.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula using LET</div>
+          <div class="formula-box">=LET(surplus,B2-C2, rate,D2, mult,E2, IF(surplus>0, surplus*rate*mult, 0))<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>LET</strong> defines named variables inside a formula, improving readability and performance (each value is calculated once, not repeated). Available in Excel 365/2021.</div>
+          <div class="tip-box">LET makes previously unmaintainable mega-formulas readable. Name variables descriptively for future-proof spreadsheets.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q33</span>
+          <div class="q-tags"><span class="q-tag">POWER QUERY</span><span class="q-tag">ETL</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Combine 12 Monthly CSV Files into One Table</div>
+        <div class="q-scenario">You receive monthly sales CSVs from 12 branches. Combine them all into a single consolidated table that refreshes automatically.</div>
+        <div class="answer-area">
+          <div class="answer-label">Power Query M Code (step)</div>
+          <div class="formula-box">Data → Get Data → From Folder → Select folder → Combine & Transform → Remove helper columns → Load<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">Power Query's "From Folder" connector loads all files matching a pattern. It appends them automatically. When new monthly files are added to the folder, click <strong>Refresh</strong> to update. No VBA needed.</div>
+          <div class="tip-box">Add a custom column with the source file name to track which branch each row came from: [Source.Name]</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q34</span>
+          <div class="q-tags"><span class="q-tag">NPV/IRR</span><span class="q-tag">Finance</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Evaluate Project Viability with NPV and IRR</div>
+        <div class="q-scenario">Initial investment: -₹1,00,000 in B1. Cash flows for years 1–5 in B2:B6. Discount rate: 10%. Calculate NPV and IRR for board presentation.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formulas</div>
+          <div class="formula-box">NPV: =B1+NPV(10%,B2:B6)  &nbsp;|&nbsp;  IRR: =IRR(B1:B6)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>NPV</strong> discounts future cash flows at the given rate (add B1 separately as it's Year 0). <strong>IRR</strong> finds the rate that makes NPV=0. If IRR > cost of capital → invest. If NPV > 0 → value-adding.</div>
+          <div class="tip-box">XNPV and XIRR use actual dates for uneven payment periods — more accurate for real projects.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q35</span>
+          <div class="q-tags"><span class="q-tag">SEQUENCE</span><span class="q-tag">Dynamic</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Generate Automatic Project Timeline Dates</div>
+        <div class="q-scenario">Project starts on a date in A1, runs for 52 weeks. Auto-generate all Monday dates for the project calendar header row.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (spills 52 dates)</div>
+          <div class="formula-box">=A1+SEQUENCE(1,52,0,7)<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>SEQUENCE(rows, cols, start, step)</strong> generates a series. 1 row, 52 columns, starting at 0 with step 7 creates weekly offsets. Adding the base date gives 52 Monday dates automatically.</div>
+          <div class="tip-box">Wrap in TEXT() for display: =TEXT(A1+SEQUENCE(1,52,0,7),"DD-MMM") for compact column headers.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q36</span>
+          <div class="q-tags"><span class="q-tag">VBA</span><span class="q-tag">Automation</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Auto-Send Report Email When Data is Refreshed</div>
+        <div class="q-scenario">Each morning after Power Query refresh, auto-email the summary report to your manager via Outlook using VBA.</div>
+        <div class="answer-area">
+          <div class="answer-label">VBA Snippet (Alt+F11 → Module)</div>
+          <div class="formula-box">Sub SendReport()
+  Dim ol As Object, mail As Object
+  Set ol = CreateObject("Outlook.Application")
+  Set mail = ol.CreateItem(0)
+  mail.To = "manager@company.com"
+  mail.Subject = "Daily Sales Report - " & Format(Date,"DD-MMM-YYYY")
+  mail.Body = "Please find attached today's report."
+  mail.Attachments.Add ThisWorkbook.FullName
+  mail.Send
+End Sub<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">This VBA macro creates an Outlook mail object, sets recipient/subject/body, attaches the current workbook, and sends it. Trigger via a button or link to the Workbook_Open event for automation.</div>
+          <div class="tip-box">Use .Display instead of .Send to preview before sending — safer during testing.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q37</span>
+          <div class="q-tags"><span class="q-tag">GETPIVOTDATA</span><span class="q-tag">Pivot</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Pull Dynamic Values from Pivot Table into Dashboard</div>
+        <div class="q-scenario">Your pivot table shows sales by region. Pull the "North" region total into a KPI card on your dashboard sheet dynamically.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula</div>
+          <div class="formula-box">=GETPIVOTDATA("Revenue",PivotSheet!$A$3,"Region","North")<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>GETPIVOTDATA</strong> extracts specific values from a pivot table by field names — it's robust to pivot layout changes. Reference the pivot's top-left cell (A3), specify the value field ("Revenue") and filter field+item.</div>
+          <div class="tip-box">Replace "North" with a cell reference to make the dashboard card change based on a dropdown slicer selection.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q38</span>
+          <div class="q-tags"><span class="q-tag">SCENARIO</span><span class="q-tag">What-If</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Build a What-If Scenario Model for Pricing</div>
+        <div class="q-scenario">You want to show how changing price (₹100–₹200), units sold (500–2000), and cost (₹50–₹80) affects profit in a sensitivity analysis.</div>
+        <div class="answer-area">
+          <div class="answer-label">Use Data Table (2-variable)</div>
+          <div class="formula-box">Set up profit formula → Select range → Data → What-If Analysis → Data Table → Row input: Price cell, Column input: Units cell<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">A <strong>2-variable Data Table</strong> creates a matrix showing profit at every combination of two inputs. Apply color scales (Conditional Formatting) to the results to visually highlight optimal pricing zones.</div>
+          <div class="tip-box">Use Scenario Manager (Data → What-If → Scenario Manager) to save and compare named scenarios like "Best Case", "Base Case", "Worst Case".</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q39</span>
+          <div class="q-tags"><span class="q-tag">SOLVER</span><span class="q-tag">Optimization</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Optimize Product Mix to Maximize Profit</div>
+        <div class="q-scenario">You make 4 products. Each has different profit margins and consumes different amounts of 3 limited resources. Find the optimal production quantities.</div>
+        <div class="answer-area">
+          <div class="answer-label">Using Excel Solver</div>
+          <div class="formula-box">Data → Solver → Set Objective: Profit cell (Max) → By Changing: Quantity cells → Add Constraints: Resource usage ≤ capacity, Quantities ≥ 0 → Solve<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation">Solver uses linear programming to find the optimal solution. Set the <strong>objective</strong> (maximize profit), <strong>variables</strong> (production quantities), and <strong>constraints</strong> (resource limits, non-negative quantities). Enable via File → Options → Add-ins → Solver Add-in.</div>
+          <div class="tip-box">Select "Simplex LP" method for linear models. Use "GRG Nonlinear" for curved relationships like revenue with price elasticity.</div>
+        </div>
+      </div>
+
+      <div class="question-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <span class="q-number">Q40</span>
+          <div class="q-tags"><span class="q-tag">BYROW</span><span class="q-tag">365</span></div>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="q-title">Score Each Salesperson Row Across Multiple KPIs</div>
+        <div class="q-scenario">20 salespersons, 5 KPIs (B2:F21). Score each salesperson as the average of their normalized KPI scores in one formula without helper columns.</div>
+        <div class="answer-area">
+          <div class="answer-label">Formula (spills 20 results)</div>
+          <div class="formula-box">=BYROW(B2:F21, LAMBDA(row, AVERAGE(row)/MAX(B2:F21)))<button class="copy-btn" onclick="copyFormula(event, this)">Copy</button></div>
+          <div class="answer-explanation"><strong>BYROW</strong> applies a LAMBDA function to each row of a range, returning one result per row. Combined with LAMBDA, it's extremely powerful for row-wise calculations that previously required helper columns or array formulas.</div>
+          <div class="tip-box">Companion function BYCOL does the same column-wise — useful for per-KPI analysis across all employees.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  EXCELMASTER © 2024 &nbsp;·&nbsp; 40 REAL-WORLD QUESTIONS &nbsp;·&nbsp; BEGINNER → EXPERT
+</footer>
+
+<script>
+  let solvedCards = new Set();
+
+  function showLevel(level, btn) {
+    document.querySelectorAll('.level-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(level).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleCard(card) {
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    if (!wasOpen) {
+      solvedCards.add(card.querySelector('.q-number').textContent);
+      document.getElementById('solved-count').textContent = solvedCards.size;
+    }
+  }
+
+  function copyFormula(e, btn) {
+    e.stopPropagation();
+    const box = btn.parentElement;
+    const text = box.textContent.replace('Copy', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.style.color = 'var(--accent)';
+      setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

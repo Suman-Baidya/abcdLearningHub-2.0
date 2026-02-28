@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>স্লাইড শিক্ষা — PPT Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Hind+Siliguri:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #faf6f0;
+  --surface:  #ffffff;
+  --warm:     #f3ede3;
+  --warm2:    #ece4d6;
+  --border:   #e0d8cc;
+  --coral:    #d95f43;
+  --coral-s:  #fdf0ec;
+  --teal:     #2b7a78;
+  --teal-s:   #e4f3f2;
+  --amber:    #d4860b;
+  --amber-s:  #fef5e4;
+  --plum:     #7c3f6e;
+  --plum-s:   #f5eaf3;
+  --navy:     #1e3a5f;
+  --navy-s:   #e8eef6;
+  --ink:      #1c1917;
+  --text:     #2d2926;
+  --mid:      #6b6259;
+  --muted:    #9e9488;
+  --white:    #fffdf9;
+  --r:        14px;
+  --r-sm:     8px;
+  --shadow:   0 2px 16px rgba(28,25,23,.07);
+  --shadow-h: 0 8px 40px rgba(28,25,23,.13);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Hind Siliguri', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── TEXTURE ── */
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 900px 700px at 5% 15%, rgba(217,95,67,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 500px at 95% 85%, rgba(43,122,120,.05) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+body::after {
+  content:'';
+  position:fixed;inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d95f43' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.6;
+}
+
+/* ── HEADER ── */
+header {
+  position:sticky;top:0;z-index:200;
+  background:rgba(250,246,240,.93);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.hdr {
+  max-width:1000px;margin:0 auto;
+  padding:0 28px;height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+.brand {
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+}
+.brand-icon {
+  width:38px;height:38px;
+  background:var(--coral);
+  border-radius:10px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;padding:8px;
+}
+.brand-icon span {
+  display:block;height:3px;width:100%;
+  background:#fff;border-radius:2px;
+  opacity:.9;
+}
+.brand-icon span:nth-child(2){width:70%;opacity:.6;}
+.brand-icon span:nth-child(3){width:50%;opacity:.4;}
+
+.brand-name {
+  font-family:'Playfair Display',serif;
+  font-weight:700;font-size:19px;
+  color:var(--ink);letter-spacing:-.3px;
+}
+.brand-name em{font-style:italic;color:var(--coral);}
+
+.hdr-right{display:flex;align-items:center;gap:12px;}
+
+/* Language toggle */
+.lang-sw {
+  display:flex;gap:0;
+  background:var(--warm);
+  border:1.5px solid var(--border);
+  border-radius:30px;padding:4px;
+}
+.lang-sw button {
+  padding:6px 16px;border-radius:24px;
+  font-size:13px;font-weight:600;
+  border:none;background:transparent;
+  cursor:pointer;color:var(--muted);
+  font-family:'Hind Siliguri',sans-serif;
+  transition:all .2s;
+}
+.lang-sw button.on {
+  background:var(--coral);color:#fff;
+  box-shadow:0 2px 8px rgba(217,95,67,.3);
+}
+
+/* Progress pill */
+.prog-pill {
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:20px;padding:6px 14px;
+  font-size:12px;font-weight:500;color:var(--muted);
+  box-shadow:var(--shadow);
+}
+.prog-mini {width:48px;height:4px;background:var(--warm2);border-radius:2px;overflow:hidden;}
+.prog-mini-fill {height:100%;width:0%;background:linear-gradient(90deg,var(--coral),var(--amber));border-radius:2px;transition:width .5s cubic-bezier(.34,1.56,.64,1);}
+
+/* ── HERO ── */
+.hero {
+  position:relative;z-index:1;
+  max-width:1000px;margin:0 auto;
+  padding:56px 28px 44px;
+}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.hero-left{flex:1;min-width:260px;}
+
+.hero-badge {
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--coral-s);
+  border:1px solid rgba(217,95,67,.25);
+  color:var(--coral);padding:5px 14px;
+  border-radius:20px;font-size:12px;font-weight:600;
+  margin-bottom:18px;letter-spacing:.3px;
+}
+.hero-badge .blink{width:6px;height:6px;border-radius:50%;background:var(--coral);animation:bl 2s infinite;}
+@keyframes bl{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(1.3);}}
+
+h1 {
+  font-family:'Tiro Bangla',serif;
+  font-size:clamp(30px,5.5vw,52px);
+  font-weight:400;line-height:1.2;
+  color:var(--ink);margin-bottom:14px;
+  letter-spacing:-.3px;
+}
+h1 strong{font-weight:700;}
+h1 .hl{color:var(--coral);font-style:italic;}
+
+.hero-sub {
+  font-size:15px;color:var(--mid);
+  line-height:1.75;font-weight:300;
+  max-width:480px;margin-bottom:28px;
+}
+
+/* Hero slide deco */
+.hero-deco {
+  width:220px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:8px;
+  opacity:.85;
+}
+.deco-slide {
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:10px;padding:14px;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.deco-slide::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px;
+}
+.deco-slide.c1::before{background:var(--coral);}
+.deco-slide.c2::before{background:var(--teal);}
+.deco-slide.c3::before{background:var(--amber);}
+.ds-title{height:8px;border-radius:2px;margin-bottom:7px;width:70%;}
+.deco-slide.c1 .ds-title{background:var(--coral);opacity:.6;}
+.deco-slide.c2 .ds-title{background:var(--teal);opacity:.6;}
+.deco-slide.c3 .ds-title{background:var(--amber);opacity:.6;}
+.ds-line{height:4px;background:var(--warm2);border-radius:2px;margin-bottom:4px;}
+.ds-line.w80{width:80%;} .ds-line.w60{width:60%;} .ds-line.w45{width:45%;}
+
+/* Stats */
+.stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}
+.stat {
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-sm);
+  padding:12px 18px;
+  box-shadow:var(--shadow);
+  text-align:center;
+  transition:all .2s;min-width:80px;
+}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-h);}
+.stat-n{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--coral);}
+.stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+
+/* ── TOPIC FILTERS ── */
+.filters {
+  position:relative;z-index:1;
+  max-width:1000px;margin:0 auto;
+  padding:0 28px 24px;
+  display:flex;gap:8px;flex-wrap:wrap;
+  border-bottom:1px solid var(--border);
+  margin-bottom:32px;
+}
+.ftab {
+  padding:7px 18px;border-radius:30px;
+  font-size:12px;font-weight:600;
+  border:1.5px solid var(--border);
+  background:var(--surface);color:var(--muted);
+  cursor:pointer;transition:all .2s;
+  font-family:'Hind Siliguri',sans-serif;
+  display:flex;align-items:center;gap:6px;
+}
+.ftab:hover{border-color:var(--coral);color:var(--coral);}
+.ftab.on{background:var(--coral);border-color:var(--coral);color:#fff;}
+.ftab .fc{font-size:10px;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.2);font-weight:700;}
+.ftab:not(.on) .fc{background:var(--warm);color:var(--muted);}
+
+/* ── QUESTIONS WRAP ── */
+.qwrap {
+  position:relative;z-index:1;
+  max-width:1000px;margin:0 auto;
+  padding:0 28px 80px;
+}
+
+.topic-divider {
+  display:flex;align-items:center;gap:10px;
+  margin:32px 0 14px;
+  font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);
+}
+.topic-divider::before{content:attr(data-icon);font-size:16px;}
+.topic-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── QUESTION CARD ── */
+.qcard {
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  margin-bottom:12px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:all .3s cubic-bezier(.34,1.2,.64,1);
+}
+.qcard:hover{box-shadow:var(--shadow-h);transform:translateY(-2px);}
+.qcard.open{border-color:var(--coral);box-shadow:0 0 0 3px rgba(217,95,67,.1),var(--shadow-h);transform:translateY(-2px);}
+.qcard.done-card{border-color:var(--teal);}
+.qcard.done-card .qcard-header{background:var(--teal-s);}
+
+/* Card header */
+.qcard-header {
+  padding:20px 22px;
+  display:flex;align-items:flex-start;gap:14px;
+  cursor:pointer;
+  transition:background .2s;
+}
+.qcard:hover .qcard-header{background:var(--warm);}
+.qcard.open .qcard-header{background:var(--coral-s);}
+
+.q-emoji {
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;margin-top:1px;
+}
+
+.q-info{flex:1;}
+.q-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.q-no{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+.q-tag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px;}
+.q-diff{display:flex;gap:3px;margin-left:auto;}
+.q-diff span{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--border);}
+.q-diff span.f{border-color:transparent;}
+
+.q-title{font-size:16px;font-weight:600;color:var(--ink);line-height:1.45;margin-bottom:5px;font-family:'Hind Siliguri',sans-serif;}
+.q-scene{font-size:13px;color:var(--mid);line-height:1.65;font-weight:300;}
+
+.q-toggle {
+  width:30px;height:30px;border-radius:50%;
+  background:var(--warm);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:16px;color:var(--muted);
+  transition:all .25s;margin-top:4px;
+}
+.qcard.open .q-toggle{background:var(--coral);border-color:var(--coral);color:#fff;transform:rotate(180deg);}
+
+/* ── ANSWER SECTION ── */
+.q-answer {
+  display:none;
+  border-top:1px solid var(--border);
+  background:var(--warm);
+  animation:aIn .25s ease;
+}
+@keyframes aIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.qcard.open .q-answer{display:block;}
+
+.ans-inner{padding:24px 22px;}
+
+/* Scene box */
+.scene-box {
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-sm);
+  padding:16px;margin-bottom:18px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.scene-emo{font-size:26px;flex-shrink:0;line-height:1;}
+.scene-txt{font-size:13px;color:var(--mid);line-height:1.7;}
+.scene-txt strong{color:var(--ink);font-weight:600;}
+
+/* Slide blueprint visual */
+.slide-bp {
+  background:var(--navy);
+  border-radius:var(--r-sm);
+  padding:16px 20px;
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:16px;
+  position:relative;overflow:hidden;
+}
+.slide-bp::after{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,.03);
+}
+.bp-left{flex:1;}
+.bp-num{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.bp-heading{font-size:13px;font-weight:600;color:#fff;margin-bottom:8px;}
+.bp-line{height:3px;border-radius:1px;background:rgba(255,255,255,.15);margin-bottom:4px;}
+.bp-line.w80{width:80%;} .bp-line.w65{width:65%;} .bp-line.w50{width:50%;}
+.bp-right{flex-shrink:0;width:60px;display:flex;flex-direction:column;gap:6px;}
+.bp-box{border-radius:4px;background:rgba(255,255,255,.08);}
+
+/* Slide structure grid */
+.slide-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;
+}
+@media(max-width:500px){.slide-grid{grid-template-columns:1fr;}}
+.sg-item {
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:10px 14px;
+  font-size:12px;color:var(--mid);line-height:1.5;
+  display:flex;gap:8px;align-items:flex-start;
+  transition:border-color .2s;
+}
+.sg-item:hover{border-color:var(--coral);}
+.sg-item strong{color:var(--ink);display:block;font-size:12px;margin-bottom:2px;}
+
+/* Steps */
+.ans-label {
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.ans-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.steps{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px;counter-reset:sc;}
+.steps li{
+  counter-increment:sc;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  font-size:13px;color:var(--mid);line-height:1.65;
+  display:flex;gap:12px;align-items:flex-start;
+  transition:border-color .2s;
+}
+.steps li:hover{border-color:var(--coral);}
+.steps li::before{
+  content:counter(sc);min-width:24px;height:24px;
+  border-radius:50%;background:var(--coral);color:#fff;
+  font-size:11px;font-weight:700;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;
+}
+.steps li strong{color:var(--ink);}
+
+/* Tips */
+.tips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.tip{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-left:3px solid var(--amber);
+  border-radius:var(--r-sm);padding:11px 13px;
+  font-size:12px;color:var(--mid);line-height:1.6;
+  flex:1;min-width:200px;display:flex;gap:7px;
+}
+.tip .ti{font-size:15px;flex-shrink:0;margin-top:1px;}
+
+/* Shortcuts */
+.shortcut-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.sc-item{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:7px 12px;
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--mid);
+}
+.kbd{
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  background:var(--ink);color:#fff;
+  padding:2px 8px;border-radius:5px;
+}
+
+/* Checklist */
+.checklist{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
+.cl-item{
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:10px 14px;
+  font-size:13px;color:var(--mid);cursor:pointer;
+  transition:all .2s;user-select:none;line-height:1.5;
+}
+.cl-item:hover{border-color:var(--teal);}
+.cl-item.ck{background:var(--teal-s);border-color:var(--teal);color:var(--ink);}
+.cl-box{
+  width:20px;height:20px;border-radius:5px;flex-shrink:0;margin-top:1px;
+  border:2px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:transparent;transition:all .2s;
+}
+.cl-item.ck .cl-box{background:var(--teal);border-color:var(--teal);color:#fff;}
+
+/* Done button */
+.done-btn {
+  width:100%;padding:12px;border-radius:10px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  border:2px solid var(--coral);background:var(--coral);color:#fff;
+  font-family:'Hind Siliguri',sans-serif;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:4px;
+}
+.done-btn:hover{background:#fff;color:var(--coral);}
+.done-btn.done{background:var(--teal);border-color:var(--teal);}
+
+/* ── COLOR THEMES ── */
+.t-coral .q-emoji{background:var(--coral-s);}
+.t-coral .q-tag{background:var(--coral-s);color:var(--coral);}
+.t-coral .q-diff span.f{background:var(--coral);}
+
+.t-teal .q-emoji{background:var(--teal-s);}
+.t-teal .q-tag{background:var(--teal-s);color:var(--teal);}
+.t-teal .q-diff span.f{background:var(--teal);}
+.t-teal.qcard.open{border-color:var(--teal);box-shadow:0 0 0 3px rgba(43,122,120,.1),var(--shadow-h);}
+.t-teal.qcard.open .qcard-header{background:var(--teal-s);}
+.t-teal .q-toggle{} .t-teal.qcard.open .q-toggle{background:var(--teal);border-color:var(--teal);}
+.t-teal .steps li::before{background:var(--teal);}
+.t-teal .done-btn{border-color:var(--teal);background:var(--teal);}
+.t-teal .done-btn:hover{background:#fff;color:var(--teal);}
+
+.t-amber .q-emoji{background:var(--amber-s);}
+.t-amber .q-tag{background:var(--amber-s);color:var(--amber);}
+.t-amber .q-diff span.f{background:var(--amber);}
+.t-amber.qcard.open{border-color:var(--amber);box-shadow:0 0 0 3px rgba(212,134,11,.1),var(--shadow-h);}
+.t-amber.qcard.open .qcard-header{background:var(--amber-s);}
+.t-amber.qcard.open .q-toggle{background:var(--amber);border-color:var(--amber);}
+.t-amber .steps li::before{background:var(--amber);}
+.t-amber .done-btn{border-color:var(--amber);background:var(--amber);}
+.t-amber .done-btn:hover{background:#fff;color:var(--amber);}
+.t-amber .tip{border-left-color:var(--amber);}
+
+.t-plum .q-emoji{background:var(--plum-s);}
+.t-plum .q-tag{background:var(--plum-s);color:var(--plum);}
+.t-plum .q-diff span.f{background:var(--plum);}
+.t-plum.qcard.open{border-color:var(--plum);box-shadow:0 0 0 3px rgba(124,63,110,.1),var(--shadow-h);}
+.t-plum.qcard.open .qcard-header{background:var(--plum-s);}
+.t-plum.qcard.open .q-toggle{background:var(--plum);border-color:var(--plum);}
+.t-plum .steps li::before{background:var(--plum);}
+.t-plum .done-btn{border-color:var(--plum);background:var(--plum);}
+.t-plum .done-btn:hover{background:#fff;color:var(--plum);}
+
+.t-navy .q-emoji{background:var(--navy-s);}
+.t-navy .q-tag{background:var(--navy-s);color:var(--navy);}
+.t-navy .q-diff span.f{background:var(--navy);}
+.t-navy.qcard.open{border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,58,95,.1),var(--shadow-h);}
+.t-navy.qcard.open .qcard-header{background:var(--navy-s);}
+.t-navy.qcard.open .q-toggle{background:var(--navy);border-color:var(--navy);}
+.t-navy .steps li::before{background:var(--navy);}
+.t-navy .done-btn{border-color:var(--navy);background:var(--navy);}
+.t-navy .done-btn:hover{background:#fff;color:var(--navy);}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  background:var(--ink);
+  padding:44px 28px;text-align:center;
+}
+.ft-brand{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;}
+.ft-brand em{font-style:italic;color:var(--coral);}
+footer p{font-size:13px;color:rgba(255,255,255,.35);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .hdr,.hero,.filters,.qwrap{padding-left:16px;padding-right:16px;}
+  .hero-deco{display:none;}
+  .slide-grid{grid-template-columns:1fr;}
+  h1{font-size:28px;}
+}
+
+/* hidden */
+.qcard.hide{display:none;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a class="brand" href="#">
+      <div class="brand-icon">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="brand-name" id="brand-text"><em>স্লাইড</em> শিক্ষা</span>
+    </a>
+    <div class="hdr-right">
+      <div class="prog-pill">
+        <div class="prog-mini"><div class="prog-mini-fill" id="progFill"></div></div>
+        <span id="progLabel">০ / ১৫</span>
+      </div>
+      <div class="lang-sw">
+        <button id="btn-bn" class="on" onclick="setLang('bn')">বাংলা</button>
+        <button id="btn-en" onclick="setLang('en')">English</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="blink"></span>
+        <span data-bn="নতুনদের জন্য বিনামূল্যে" data-en="Free for Beginners">নতুনদের জন্য বিনামূল্যে</span>
+      </div>
+      <h1>
+        <span data-bn="PowerPoint শিখুন<br><strong>বাস্তব <span class='hl'>জীবনের</span> উদাহরণে</strong>" 
+              data-en="Learn PowerPoint<br><strong>With <span class='hl'>Real Life</span> Examples</strong>">
+          PowerPoint শিখুন<br><strong>বাস্তব <span class="hl">জীবনের</span> উদাহরণে</strong>
+        </span>
+      </h1>
+      <p class="hero-sub" data-bn="স্কুল প্রজেক্ট থেকে শুরু করে অফিস প্রেজেন্টেশন — ধাপে ধাপে সহজ বাংলায় শিখুন কীভাবে সুন্দর স্লাইড তৈরি করতে হয়।" data-en="From school projects to office presentations — learn step by step how to create beautiful slides in simple, clear language.">
+        স্কুল প্রজেক্ট থেকে শুরু করে অফিস প্রেজেন্টেশন — ধাপে ধাপে সহজ বাংলায় শিখুন কীভাবে সুন্দর স্লাইড তৈরি করতে হয়।
+      </p>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-n">১৫</div><div class="stat-l" data-bn="অনুশীলন" data-en="Exercises">অনুশীলন</div></div>
+        <div class="stat"><div class="stat-n" id="doneCount">০</div><div class="stat-l" data-bn="সম্পন্ন" data-en="Done">সম্পন্ন</div></div>
+        <div class="stat"><div class="stat-n">৫</div><div class="stat-l" data-bn="বিষয়" data-en="Topics">বিষয়</div></div>
+        <div class="stat"><div class="stat-n">🟢</div><div class="stat-l" data-bn="শুরু স্তর" data-en="Beginner">শুরু স্তর</div></div>
+      </div>
+    </div>
+    <div class="hero-deco">
+      <div class="deco-slide c1">
+        <div class="ds-title"></div>
+        <div class="ds-line w80"></div><div class="ds-line w60"></div><div class="ds-line w45"></div>
+      </div>
+      <div class="deco-slide c2" style="margin-left:24px;">
+        <div class="ds-title"></div>
+        <div class="ds-line w80"></div><div class="ds-line w45"></div>
+      </div>
+      <div class="deco-slide c3" style="margin-left:12px;">
+        <div class="ds-title"></div>
+        <div class="ds-line w60"></div><div class="ds-line w80"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <button class="ftab on" onclick="filter('all',this)">
+    <span data-bn="সব" data-en="All">সব</span> <span class="fc">১৫</span>
+  </button>
+  <button class="ftab" onclick="filter('slide',this)">
+    🎨 <span data-bn="স্লাইড ডিজাইন" data-en="Slide Design">স্লাইড ডিজাইন</span> <span class="fc">3</span>
+  </button>
+  <button class="ftab" onclick="filter('text',this)">
+    ✍️ <span data-bn="টেক্সট ও ফন্ট" data-en="Text & Font">টেক্সট ও ফন্ট</span> <span class="fc">3</span>
+  </button>
+  <button class="ftab" onclick="filter('image',this)">
+    🖼️ <span data-bn="ছবি ও আকার" data-en="Image & Shape">ছবি ও আকার</span> <span class="fc">3</span>
+  </button>
+  <button class="ftab" onclick="filter('present',this)">
+    📊 <span data-bn="উপস্থাপনা" data-en="Presentation">উপস্থাপনা</span> <span class="fc">3</span>
+  </button>
+  <button class="ftab" onclick="filter('anim',this)">
+    ✨ <span data-bn="অ্যানিমেশন" data-en="Animation">অ্যানিমেশন</span> <span class="fc">3</span>
+  </button>
+</div>
+
+<!-- QUESTIONS -->
+<div class="qwrap">
+
+  <!-- ══ TOPIC 1: SLIDE DESIGN ══ -->
+  <div class="topic-divider" data-icon="🎨" data-bn="স্লাইড ডিজাইনের শুরু" data-en="Starting with Slide Design">স্লাইড ডিজাইনের শুরু</div>
+
+  <!-- Q1 -->
+  <div class="qcard t-coral" id="q1" data-cat="slide">
+    <div class="qcard-header" onclick="toggle('q1')">
+      <div class="q-emoji">📄</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 01</span>
+          <span class="q-tag" data-bn="নতুন স্লাইড" data-en="New Slide">নতুন স্লাইড</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="প্রথম স্লাইড তৈরি করো ও থিম বেছে নাও" data-en="Create Your First Slide and Choose a Theme">প্রথম স্লাইড তৈরি করো ও থিম বেছে নাও</div>
+        <div class="q-scene" data-bn="তোমার স্কুলের বার্ষিক অনুষ্ঠানের প্রজেক্ট আছে। প্রথমবার PowerPoint খুলে একটি সুন্দর থিম দিয়ে শুরু করো।" data-en="You have a school annual project. Open PowerPoint for the first time and start with a beautiful theme.">তোমার স্কুলের বার্ষিক অনুষ্ঠানের প্রজেক্ট আছে। প্রথমবার PowerPoint খুলে একটি সুন্দর থিম দিয়ে শুরু করো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🏫</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" রিমা ক্লাস ৯-এর ছাত্রী। বিজ্ঞান প্রজেক্টের জন্য প্রথমবার PowerPoint খুলেছে। কোথা থেকে শুরু করবে বুঝতে পারছে না।" data-en=" Rima is a class 9 student. She opened PowerPoint for the first time for her science project. She doesn't know where to start."> রিমা ক্লাস ৯-এর ছাত্রী। বিজ্ঞান প্রজেক্টের জন্য প্রথমবার PowerPoint খুলেছে। কোথা থেকে শুরু করবে বুঝতে পারছে না।</span>
+          </div>
+        </div>
+        <div class="ans-label" data-bn="ধাপে ধাপে শেখো" data-en="Step by Step">ধাপে ধাপে শেখো</div>
+        <ul class="steps">
+          <li data-bn="PowerPoint খোলো → <strong>File → New</strong> → 'New Presentation' বা 'Blank Presentation' বেছে নাও।" data-en="Open PowerPoint → <strong>File → New</strong> → Select 'New Presentation' or 'Blank Presentation'.">PowerPoint খোলো → <strong>File → New</strong> → 'New Presentation' বা 'Blank Presentation' বেছে নাও।</li>
+          <li data-bn="থিম বেছে নিতে → উপরে <strong>Design</strong> ট্যাবে ক্লিক করো → অনেক থিম দেখতে পাবে। যেটা সুন্দর লাগে সেটায় ক্লিক করো।" data-en="To choose a theme → click the <strong>Design</strong> tab at the top → you'll see many themes. Click the one you like.">থিম বেছে নিতে → উপরে <strong>Design</strong> ট্যাবে ক্লিক করো → অনেক থিম দেখতে পাবে।</li>
+          <li data-bn="রঙ বদলাতে চাইলে → <strong>Design → Variants</strong> → পাশের তীর চিহ্নে ক্লিক করো → Colors বেছে নাও।" data-en="To change colors → <strong>Design → Variants</strong> → click the side arrow → select Colors.">রঙ বদলাতে → <strong>Design → Variants → Colors</strong> বেছে নাও।</li>
+          <li data-bn="সেভ করতে → <strong>Ctrl+S</strong> চাপো → ফাইলের নাম দাও → Save করো। এখন থেকে প্রতি কিছুক্ষণ পরপর Save করার অভ্যাস করো।" data-en="To save → press <strong>Ctrl+S</strong> → give the file a name → Save. Make it a habit to save frequently.">সেভ করতে → <strong>Ctrl+S</strong> চাপো → ফাইলের নাম দাও → Save করো।</li>
+        </ul>
+        <div class="ans-label" data-bn="💡 টিপস" data-en="💡 Tips">💡 টিপস</div>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">🎨</span><span data-bn="সহজ ও পরিষ্কার থিম বেছে নাও — বেশি রঙিন থিম পড়তে কষ্ট হয়।" data-en="Choose a simple, clean theme — overly colorful themes are hard to read.">সহজ ও পরিষ্কার থিম বেছে নাও — বেশি রঙিন থিম পড়তে কষ্ট হয়।</span></div>
+          <div class="tip"><span class="ti">💾</span><span data-bn="ফাইল .pptx ফরম্যাটে সেভ করো — এটা সব জায়গায় খোলা যায়।" data-en="Save the file in .pptx format — it opens everywhere.">ফাইল .pptx ফরম্যাটে সেভ করো — এটা সব জায়গায় খোলা যায়।</span></div>
+        </div>
+        <div class="ans-label" data-bn="⌨️ শর্টকাট" data-en="⌨️ Shortcuts">⌨️ শর্টকাট</div>
+        <div class="shortcut-row">
+          <div class="sc-item"><span class="kbd">Ctrl+S</span> <span data-bn="সেভ" data-en="Save">সেভ</span></div>
+          <div class="sc-item"><span class="kbd">Ctrl+Z</span> <span data-bn="পূর্বাবস্থা" data-en="Undo">পূর্বাবস্থা</span></div>
+          <div class="sc-item"><span class="kbd">Ctrl+N</span> <span data-bn="নতুন ফাইল" data-en="New File">নতুন ফাইল</span></div>
+        </div>
+        <button class="done-btn" id="done-q1" onclick="markDone(event,'q1')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qcard t-coral" id="q2" data-cat="slide">
+    <div class="qcard-header" onclick="toggle('q2')">
+      <div class="q-emoji">➕</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 02</span>
+          <span class="q-tag" data-bn="স্লাইড যোগ" data-en="Add Slide">স্লাইড যোগ</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="নতুন স্লাইড যোগ করো ও লেআউট বেছে নাও" data-en="Add New Slides and Choose Layouts">নতুন স্লাইড যোগ করো ও লেআউট বেছে নাও</div>
+        <div class="q-scene" data-bn="তোমার প্রেজেন্টেশনে ৫টি স্লাইড দরকার। প্রতিটিতে আলাদা লেআউট ব্যবহার করো।" data-en="Your presentation needs 5 slides. Use a different layout for each one.">তোমার প্রেজেন্টেশনে ৫টি স্লাইড দরকার। প্রতিটিতে আলাদা লেআউট ব্যবহার করো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">📚</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" করিম তার পরিবার পরিচিতির জন্য PPT বানাচ্ছে। প্রথম স্লাইডে শিরোনাম, পরেরটায় ছবি ও লেখা, আরেকটায় শুধু ছবি চাই।" data-en=" Karim is making a PPT about his family. He wants a title on slide 1, image + text on slide 2, and just an image on another."> করিম তার পরিবার পরিচিতির জন্য PPT বানাচ্ছে। প্রতিটি স্লাইডে আলাদা ধরন দরকার।</span>
+          </div>
+        </div>
+        <div class="slide-grid">
+          <div class="sg-item"><strong data-bn="Title Slide" data-en="Title Slide">Title Slide</strong><span data-bn="শুধু শিরোনাম ও উপশিরোনামের জন্য" data-en="For title and subtitle only">শুধু শিরোনাম ও উপশিরোনামের জন্য</span></div>
+          <div class="sg-item"><strong data-bn="Title and Content" data-en="Title and Content">Title and Content</strong><span data-bn="শিরোনাম + বুলেট পয়েন্ট" data-en="Title + bullet points">শিরোনাম + বুলেট পয়েন্ট</span></div>
+          <div class="sg-item"><strong data-bn="Two Content" data-en="Two Content">Two Content</strong><span data-bn="দুই পাশে আলাদা বক্স" data-en="Two separate boxes side by side">দুই পাশে আলাদা বক্স</span></div>
+          <div class="sg-item"><strong data-bn="Blank" data-en="Blank">Blank</strong><span data-bn="সম্পূর্ণ ফাঁকা — নিজের ইচ্ছামতো সাজাও" data-en="Completely blank — arrange as you like">সম্পূর্ণ ফাঁকা — নিজের ইচ্ছামতো সাজাও</span></div>
+        </div>
+        <div class="ans-label" data-bn="ধাপে ধাপে শেখো" data-en="Step by Step">ধাপে ধাপে শেখো</div>
+        <ul class="steps">
+          <li data-bn="নতুন স্লাইড যোগ করতে → বাম পাশের স্লাইড প্যানেলে যেকোনো স্লাইডে <strong>ডান ক্লিক → New Slide</strong>।" data-en="To add a new slide → right-click any slide in the left panel → <strong>New Slide</strong>.">নতুন স্লাইড যোগ করতে → বাম পাশে <strong>ডান ক্লিক → New Slide</strong>।</li>
+          <li data-bn="লেআউট বদলাতে → স্লাইডের উপরে <strong>Home ট্যাব → Layout</strong> → পছন্দের লেআউট বেছে নাও।" data-en="To change layout → <strong>Home tab → Layout</strong> → choose your preferred layout.">লেআউট বদলাতে → <strong>Home → Layout</strong> বেছে নাও।</li>
+          <li data-bn="স্লাইড সরাতে → বাম প্যানেলে স্লাইড ধরে উপরে বা নিচে টেনে নাও (drag & drop)।" data-en="To move slides → drag and drop them up or down in the left panel.">স্লাইড সরাতে → বাম প্যানেলে drag & drop করো।</li>
+          <li data-bn="স্লাইড কপি করতে → <strong>ডান ক্লিক → Duplicate Slide</strong> — একই লেআউটের নতুন স্লাইড পাবে।" data-en="To copy a slide → <strong>Right-click → Duplicate Slide</strong> — you get a new slide with the same layout.">স্লাইড কপি করতে → <strong>ডান ক্লিক → Duplicate Slide</strong></li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">📐</span><span data-bn="'Title and Content' লেআউটটি সবচেয়ে বেশি ব্যবহার হয় — এটা দিয়ে শুরু করো।" data-en="'Title and Content' layout is used the most — start with that.">'Title and Content' লেআউটটি সবচেয়ে বেশি ব্যবহার হয়।</span></div>
+          <div class="tip"><span class="ti">🔢</span><span data-bn="একটি প্রেজেন্টেশনে ৬–১০টি স্লাইডের বেশি না রাখাই ভালো।" data-en="It's best not to have more than 6–10 slides in a presentation.">একটি প্রেজেন্টেশনে ৬–১০টি স্লাইডের বেশি না রাখাই ভালো।</span></div>
+        </div>
+        <div class="shortcut-row">
+          <div class="sc-item"><span class="kbd">Ctrl+M</span> <span data-bn="নতুন স্লাইড" data-en="New Slide">নতুন স্লাইড</span></div>
+          <div class="sc-item"><span class="kbd">Ctrl+D</span> <span data-bn="ডুপ্লিকেট" data-en="Duplicate">ডুপ্লিকেট</span></div>
+        </div>
+        <button class="done-btn" id="done-q2" onclick="markDone(event,'q2')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qcard t-coral" id="q3" data-cat="slide">
+    <div class="qcard-header" onclick="toggle('q3')">
+      <div class="q-emoji">🎨</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 03</span>
+          <span class="q-tag" data-bn="পটভূমি" data-en="Background">পটভূমি</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="স্লাইডের পটভূমির রঙ ও ছবি পরিবর্তন করো" data-en="Change Slide Background Color and Image">স্লাইডের পটভূমির রঙ ও ছবি পরিবর্তন করো</div>
+        <div class="q-scene" data-bn="তোমার বিজ্ঞান প্রেজেন্টেশনের শিরোনাম স্লাইডে আকাশের ছবি ব্যাকগ্রাউন্ড হিসেবে ব্যবহার করো।" data-en="Use a sky image as the background for your science presentation's title slide.">তোমার বিজ্ঞান প্রেজেন্টেশনের শিরোনাম স্লাইডে আকাশের ছবি ব্যাকগ্রাউন্ড হিসেবে ব্যবহার করো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🌤️</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" নাফিসা 'মহাকাশ আবিষ্কার' নিয়ে প্রেজেন্টেশন বানাচ্ছে। প্রথম স্লাইডে তারার ছবি ব্যাকগ্রাউন্ড দিতে চায় — কিন্তু লেখা যেন স্পষ্ট থাকে।" data-en=" Nafisa is making a presentation about 'Space Exploration'. She wants a starry background on the first slide — but the text must stay readable."> নাফিসা 'মহাকাশ আবিষ্কার' নিয়ে প্রেজেন্টেশন বানাচ্ছে। প্রথম স্লাইডে তারার ছবি ব্যাকগ্রাউন্ড দিতে চায়।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="<strong>শুধু রঙ দিতে:</strong> স্লাইডের ফাঁকা জায়গায় ডান ক্লিক → <strong>Format Background</strong> → Solid Fill → রঙ বেছে নাও।" data-en="<strong>For solid color:</strong> Right-click empty area → <strong>Format Background</strong> → Solid Fill → choose color."><strong>শুধু রঙ দিতে:</strong> ডান ক্লিক → <strong>Format Background → Solid Fill</strong></li>
+          <li data-bn="<strong>ছবি দিতে:</strong> Format Background → Picture or texture fill → Insert → কম্পিউটার থেকে ছবি বেছে নাও।" data-en="<strong>For image:</strong> Format Background → Picture or texture fill → Insert → choose image from computer."><strong>ছবি দিতে:</strong> Format Background → Picture or texture fill → Insert</li>
+          <li data-bn="ছবি যদি অনেক উজ্জ্বল হয় → <strong>Transparency</strong> স্লাইডার টেনে ৪০–৬০% করো। লেখা স্পষ্ট হবে।" data-en="If image is too bright → drag the <strong>Transparency</strong> slider to 40–60%. Text will be clearer.">ছবি উজ্জ্বল হলে → <strong>Transparency</strong> ৪০–৬০% করো।</li>
+          <li data-bn="সব স্লাইডে একই ব্যাকগ্রাউন্ড দিতে → নিচে <strong>'Apply to All'</strong> বোতামে ক্লিক করো।" data-en="To apply to all slides → click <strong>'Apply to All'</strong> at the bottom.">সব স্লাইডে একসাথে দিতে → <strong>'Apply to All'</strong> ক্লিক করো।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">✍️</span><span data-bn="ব্যাকগ্রাউন্ড গাঢ় হলে সাদা লেখা ব্যবহার করো — পড়তে সহজ হয়।" data-en="If background is dark, use white text — it's easier to read.">ব্যাকগ্রাউন্ড গাঢ় হলে সাদা লেখা ব্যবহার করো।</span></div>
+          <div class="tip"><span class="ti">🌈</span><span data-bn="Gradient Fill ব্যবহার করলে প্রেজেন্টেশন আরও সুন্দর দেখায় — দুটো রঙ ধীরে মেশে।" data-en="Using Gradient Fill makes presentations look more beautiful — two colors blend gradually.">Gradient Fill দিয়ে দুটো রঙ মেশাও।</span></div>
+        </div>
+        <button class="done-btn" id="done-q3" onclick="markDone(event,'q3')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOPIC 2: TEXT & FONT ══ -->
+  <div class="topic-divider" data-icon="✍️" data-bn="টেক্সট ও ফন্ট" data-en="Text & Font">টেক্সট ও ফন্ট</div>
+
+  <!-- Q4 -->
+  <div class="qcard t-teal" id="q4" data-cat="text">
+    <div class="qcard-header" onclick="toggle('q4')">
+      <div class="q-emoji">🔤</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 04</span>
+          <span class="q-tag" data-bn="ফন্ট স্টাইল" data-en="Font Style">ফন্ট স্টাইল</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="শিরোনামে বড় ও আকর্ষণীয় ফন্ট ব্যবহার করো" data-en="Use Big and Attractive Fonts for Titles">শিরোনামে বড় ও আকর্ষণীয় ফন্ট ব্যবহার করো</div>
+        <div class="q-scene" data-bn="তোমার প্রেজেন্টেশনের প্রথম স্লাইডে কোম্পানির নাম 'FreshBite' বড় ও সুন্দরভাবে লেখো।" data-en="Write the company name 'FreshBite' large and beautifully on your presentation's first slide.">তোমার প্রেজেন্টেশনের প্রথম স্লাইডে কোম্পানির নাম বড় ও সুন্দরভাবে লেখো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🏢</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" আরিফ তার নতুন ব্যবসার পরিচিতি স্লাইড বানাচ্ছে। শিরোনামটি এমন হওয়া দরকার যাতে মানুষ প্রথম দেখায় মনে রাখে।" data-en=" Arif is making an introduction slide for his new business. The title needs to be memorable at first glance."> আরিফ তার নতুন ব্যবসার পরিচিতি স্লাইড বানাচ্ছে। শিরোনাম প্রথম দেখায় মনে রাখার মতো হওয়া দরকার।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="Title বক্সে ক্লিক করো → লেখা টাইপ করো। তারপর সব লেখা <strong>Ctrl+A</strong> দিয়ে সিলেক্ট করো।" data-en="Click the title box → type your text. Then select all text with <strong>Ctrl+A</strong>.">Title বক্সে ক্লিক করো → লেখো → <strong>Ctrl+A</strong> দিয়ে সব সিলেক্ট।</li>
+          <li data-bn="ফন্ট পরিবর্তন: <strong>Home ট্যাবে</strong> Font বক্সে ক্লিক → 'Calibri' মুছে 'Georgia' বা 'Cambria' লেখো → Enter।" data-en="Change font: In <strong>Home tab</strong> click Font box → delete 'Calibri' and type 'Georgia' or 'Cambria' → Enter.">ফন্ট বদলাতে: Home → Font বক্সে 'Georgia' বা 'Cambria' লেখো।</li>
+          <li data-bn="আকার বড় করতে: Font Size বক্সে ক্লিক → '44' বা '54' টাইপ করো। শিরোনাম সাধারণত ৩৬–৫৪pt হয়।" data-en="To make size bigger: click Font Size box → type '44' or '54'. Titles are usually 36–54pt.">আকার বাড়াতে: Font Size বক্সে '44' বা '54' লেখো।</li>
+          <li data-bn="লেখা Bold করতে <strong>Ctrl+B</strong>, Italic করতে <strong>Ctrl+I</strong>, Underline করতে <strong>Ctrl+U</strong> চাপো।" data-en="Bold: <strong>Ctrl+B</strong>, Italic: <strong>Ctrl+I</strong>, Underline: <strong>Ctrl+U</strong>.">Bold: <strong>Ctrl+B</strong> · Italic: <strong>Ctrl+I</strong> · Underline: <strong>Ctrl+U</strong></li>
+          <li data-bn="লেখার রঙ বদলাতে → লেখা সিলেক্ট করো → <strong>Font Color</strong> (A চিহ্নের নিচে রঙের বার) ক্লিক করো।" data-en="To change text color → select text → click <strong>Font Color</strong> (colored bar under the A symbol).">রঙ বদলাতে → <strong>Font Color</strong> (A চিহ্নের নিচে) ক্লিক করো।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">📏</span><span data-bn="শিরোনাম: ৩৬–৪৮pt। মূল লেখা: ২০–২৪pt। কখনো ১৮pt-এর নিচে যাবে না।" data-en="Title: 36–48pt. Body text: 20–24pt. Never go below 18pt.">শিরোনাম: ৩৬–৪৮pt। মূল লেখা: ২০–২৪pt।</span></div>
+          <div class="tip"><span class="ti">🔠</span><span data-bn="একটি স্লাইডে সর্বোচ্চ ২টি ফন্ট ব্যবহার করো — একটি শিরোনামের জন্য, একটি মূল লেখার জন্য।" data-en="Use maximum 2 fonts per slide — one for titles, one for body text.">একটি স্লাইডে সর্বোচ্চ ২টি ফন্ট।</span></div>
+        </div>
+        <div class="shortcut-row">
+          <div class="sc-item"><span class="kbd">Ctrl+B</span> <span data-bn="বোল্ড" data-en="Bold">বোল্ড</span></div>
+          <div class="sc-item"><span class="kbd">Ctrl+I</span> <span data-bn="ইটালিক" data-en="Italic">ইটালিক</span></div>
+          <div class="sc-item"><span class="kbd">Ctrl+E</span> <span data-bn="মাঝখানে" data-en="Center">মাঝখানে</span></div>
+        </div>
+        <button class="done-btn" id="done-q4" onclick="markDone(event,'q4')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qcard t-teal" id="q5" data-cat="text">
+    <div class="qcard-header" onclick="toggle('q5')">
+      <div class="q-emoji">📝</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 05</span>
+          <span class="q-tag" data-bn="বুলেট পয়েন্ট" data-en="Bullet Points">বুলেট পয়েন্ট</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="পরিষ্কার বুলেট পয়েন্ট তৈরি করো" data-en="Create Clean Bullet Points">পরিষ্কার বুলেট পয়েন্ট তৈরি করো</div>
+        <div class="q-scene" data-bn="তোমার পণ্যের ৫টি বৈশিষ্ট্য স্লাইডে তালিকা আকারে সুন্দর করে লেখো।" data-en="Write 5 features of your product as a clean list on a slide.">তোমার পণ্যের ৫টি বৈশিষ্ট্য স্লাইডে তালিকা আকারে সুন্দর করে লেখো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🍃</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" সুমাইয়া তার নতুন হার্বাল চায়ের ব্র্যান্ডের পরিচিতি দিচ্ছে। সে পণ্যের গুণাগুণগুলো এমনভাবে দেখাতে চায় যাতে সবাই সহজে পড়তে ও মনে রাখতে পারে।" data-en=" Sumaiya is presenting her new herbal tea brand. She wants to show the product's qualities in a way that's easy to read and remember."> সুমাইয়া তার নতুন হার্বাল চায়ের ব্র্যান্ডের পরিচিতি দিচ্ছে। পণ্যের গুণাগুণ সহজে পড়ার মতো করে দেখাতে চায়।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="Content বক্সে ক্লিক করো → প্রতিটি পয়েন্ট লিখে <strong>Enter</strong> চাপো। স্বয়ংক্রিয়ভাবে বুলেট যুক্ত হবে।" data-en="Click the content box → type each point and press <strong>Enter</strong>. Bullets will be added automatically.">Content বক্সে ক্লিক করো → লেখো → <strong>Enter</strong> দাও।</li>
+          <li data-bn="বুলেটের ধরন বদলাতে → <strong>Home → Bullets</strong> ড্রপডাউন → বিভিন্ন স্টাইল দেখতে পাবে।" data-en="To change bullet style → <strong>Home → Bullets</strong> dropdown → see different styles.">বুলেট স্টাইল বদলাতে → <strong>Home → Bullets</strong> ড্রপডাউন।</li>
+          <li data-bn="<strong>৬×৬ নিয়ম:</strong> প্রতি বুলেটে সর্বোচ্চ ৬টি শব্দ, এবং এক স্লাইডে সর্বোচ্চ ৬টি বুলেট পয়েন্ট।" data-en="<strong>6×6 Rule:</strong> Maximum 6 words per bullet, and maximum 6 bullet points per slide."><strong>৬×৬ নিয়ম:</strong> প্রতি বুলেটে ৬ শব্দ, স্লাইডে ৬টি পয়েন্ট।</li>
+          <li data-bn="লাইনের মাঝে ফাঁকা জায়গা বাড়াতে → লেখা সিলেক্ট করো → Home → <strong>Line Spacing → 1.5</strong>।" data-en="To increase space between lines → select text → Home → <strong>Line Spacing → 1.5</strong>.">লাইনের ফাঁকা বাড়াতে → <strong>Line Spacing → 1.5</strong></li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">📌</span><span data-bn="বুলেট পয়েন্টে পুরো বাক্য লেখার দরকার নেই — শুধু মূল শব্দগুলো লেখো, বিস্তারিত বলো মুখে।" data-en="No need to write full sentences in bullets — just key words, explain verbally.">বুলেটে পুরো বাক্য নয় — শুধু মূল শব্দ।</span></div>
+          <div class="tip"><span class="ti">🎯</span><span data-bn="ইমোজি বুলেট হিসেবে ব্যবহার করা যায় — ✅ ☕ 🌿 এগুলো লেখার আগে টাইপ করো।" data-en="Emojis can be used as bullets — type ✅ ☕ 🌿 before the text.">ইমোজি বুলেট হিসেবে ব্যবহার করা যায় ✅</span></div>
+        </div>
+        <button class="done-btn" id="done-q5" onclick="markDone(event,'q5')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="qcard t-teal" id="q6" data-cat="text">
+    <div class="qcard-header" onclick="toggle('q6')">
+      <div class="q-emoji">🎯</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 06</span>
+          <span class="q-tag" data-bn="টেক্সটবক্স" data-en="Text Box">টেক্সটবক্স</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="স্লাইডের যেকোনো জায়গায় টেক্সটবক্স তৈরি করো" data-en="Create a Text Box Anywhere on the Slide">স্লাইডের যেকোনো জায়গায় টেক্সটবক্স তৈরি করো</div>
+        <div class="q-scene" data-bn="একটি ছবির উপরে বা নিচে তোমার পছন্দমতো জায়গায় একটি ক্যাপশন লেখো।" data-en="Write a caption wherever you like on top of or below an image.">একটি ছবির উপরে বা নিচে তোমার পছন্দমতো জায়গায় একটি ক্যাপশন লেখো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🖼️</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" তানভীর একটি পণ্যের ছবি স্লাইডে দিয়েছে। এখন ছবির নিচে ছোট করে দাম ও বিবরণ লিখতে চায় — কিন্তু কিছুতেই সঠিক জায়গায় লেখা আসছে না।" data-en=" Tanvir has placed a product image on a slide. He wants to write the price and description below the image — but he can't get the text in the right place."> তানভীর একটি পণ্যের ছবির নিচে দাম ও বিবরণ ঠিক জায়গায় লিখতে চায়।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="<strong>Insert ট্যাব → Text Box</strong> ক্লিক করো। মাউস কার্সার '+' চিহ্নে পরিণত হবে।" data-en="Click <strong>Insert tab → Text Box</strong>. The mouse cursor will turn into a '+' sign."><strong>Insert → Text Box</strong> ক্লিক করো।</li>
+          <li data-bn="স্লাইডের যেখানে লেখা চাও সেখানে মাউস চেপে ধরে টেনে একটি বক্স তৈরি করো।" data-en="Click and drag on the slide where you want text to create a box.">যেখানে চাও সেখানে মাউস দিয়ে বক্স তৈরি করো।</li>
+          <li data-bn="বক্সের ভিতরে টাইপ করো। লেখা শেষ হলে বক্সের বাইরে ক্লিক করো।" data-en="Type inside the box. Click outside when done.">বক্সে টাইপ করো → বাইরে ক্লিক করো।</li>
+          <li data-bn="বক্স সরাতে → বক্সের কিনারায় মাউস নিয়ে গেলে চার দিক তীর দেখাবে → তখন টেনে সরাও।" data-en="To move the box → hover over the edge until you see a 4-way arrow → then drag.">বক্স সরাতে → কিনারায় মাউস রেখে টেনে নিয়ে যাও।</li>
+          <li data-bn="বক্সের বর্ডার যোগ করতে → বক্স সিলেক্ট → <strong>Shape Format → Shape Outline</strong> → রঙ বেছে নাও।" data-en="To add a border → select box → <strong>Shape Format → Shape Outline</strong> → choose color.">বর্ডার দিতে → <strong>Shape Format → Shape Outline</strong></li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">🔒</span><span data-bn="একাধিক জিনিস একসাথে সরাতে → Ctrl চেপে সব ক্লিক করো → তারপর একটিকে টানলে সব যাবে।" data-en="To move multiple objects together → hold Ctrl and click each → then drag one and all will move.">Ctrl চেপে সব সিলেক্ট করো → একসাথে সরাও।</span></div>
+          <div class="tip"><span class="ti">📐</span><span data-bn="সব টেক্সটবক্স সোজা রাখতে → সিলেক্ট করো → <strong>Shape Format → Align → Align Left</strong>।" data-en="To keep all text boxes aligned → select them → <strong>Shape Format → Align → Align Left</strong>.">সোজা রাখতে → <strong>Align → Align Left</strong></span></div>
+        </div>
+        <button class="done-btn" id="done-q6" onclick="markDone(event,'q6')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOPIC 3: IMAGE & SHAPE ══ -->
+  <div class="topic-divider" data-icon="🖼️" data-bn="ছবি ও আকার যোগ করা" data-en="Adding Images & Shapes">ছবি ও আকার যোগ করা</div>
+
+  <!-- Q7 -->
+  <div class="qcard t-amber" id="q7" data-cat="image">
+    <div class="qcard-header" onclick="toggle('q7')">
+      <div class="q-emoji">📷</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 07</span>
+          <span class="q-tag" data-bn="ছবি যোগ" data-en="Insert Image">ছবি যোগ</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="স্লাইডে ছবি ঢোকাও ও সঠিক আকারে সাজাও" data-en="Insert an Image and Resize it on the Slide">স্লাইডে ছবি ঢোকাও ও সঠিক আকারে সাজাও</div>
+        <div class="q-scene" data-bn="তোমার পরিবারের একটি ছবি বা পণ্যের ছবি স্লাইডে যোগ করো ও সুন্দরভাবে সাজাও।" data-en="Add a family photo or product image to your slide and arrange it nicely.">তোমার পরিবারের একটি ছবি বা পণ্যের ছবি স্লাইডে যোগ করো ও সুন্দরভাবে সাজাও।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🛒</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" মিতা একটি ছোট দোকানের জন্য পণ্য প্রেজেন্টেশন বানাচ্ছে। প্রতিটি স্লাইডে পণ্যের ছবি বাম দিকে ও বিবরণ ডান দিকে থাকবে।" data-en=" Mita is making a product presentation for a small shop. Each slide will have the product image on the left and description on the right."> মিতা পণ্য প্রেজেন্টেশন বানাচ্ছে। প্রতিটি স্লাইডে পণ্যের ছবি বাম দিকে ও বিবরণ ডান দিকে।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="<strong>Insert ট্যাব → Pictures → This Device</strong> → কম্পিউটার থেকে ছবি খুঁজে বেছে নাও → Insert।" data-en="<strong>Insert tab → Pictures → This Device</strong> → find your image on the computer → Insert."><strong>Insert → Pictures → This Device</strong> → ছবি বেছে নাও।</li>
+          <li data-bn="ছবির আকার বদলাতে → ছবির কোণায় ছোট সাদা বিন্দুতে মাউস নিয়ে যাও → <strong>Shift চেপে ধরে টানো</strong> (অনুপাত ঠিক থাকবে)।" data-en="To resize → hover over corner white dots → <strong>hold Shift and drag</strong> (maintains proportions).">আকার বদলাতে → কোণায় <strong>Shift চেপে টানো</strong>।</li>
+          <li data-bn="ছবি সরাতে → ছবির মাঝখানে ক্লিক করো → টেনে পছন্দের জায়গায় নিয়ে যাও।" data-en="To move the image → click the center of the image → drag to the desired position.">ছবি সরাতে → মাঝখানে ক্লিক করো → টেনে নাও।</li>
+          <li data-bn="ছবি ছাঁটতে (crop) → ছবি সিলেক্ট করো → <strong>Picture Format → Crop</strong> → কালো হ্যান্ডেল টেনে ছাঁটো।" data-en="To crop image → select image → <strong>Picture Format → Crop</strong> → drag the black handles to crop.">ছবি ছাঁটতে → <strong>Picture Format → Crop</strong></li>
+          <li data-bn="ছবিতে বর্ডার/ছায়া দিতে → <strong>Picture Format → Picture Styles</strong> → পছন্দের স্টাইল বেছে নাও।" data-en="For border/shadow → <strong>Picture Format → Picture Styles</strong> → choose a style you like.">বর্ডার বা ছায়া → <strong>Picture Styles</strong> থেকে বেছে নাও।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">📐</span><span data-bn="Shift ছাড়া টানলে ছবি বেঁকে যায় — সবসময় Shift চেপে আকার বদলাও।" data-en="Dragging without Shift distorts the image — always hold Shift when resizing.">Shift ছাড়া টানলে ছবি বেঁকে যায়।</span></div>
+          <div class="tip"><span class="ti">🌐</span><span data-bn="বিনামূল্যে ছবি পেতে: Insert → Online Pictures → Bing Image Search ব্যবহার করো।" data-en="For free images: Insert → Online Pictures → use Bing Image Search.">বিনামূল্যে ছবি: <strong>Insert → Online Pictures</strong></span></div>
+        </div>
+        <button class="done-btn" id="done-q7" onclick="markDone(event,'q7')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="qcard t-amber" id="q8" data-cat="image">
+    <div class="qcard-header" onclick="toggle('q8')">
+      <div class="q-emoji">🔷</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 08</span>
+          <span class="q-tag" data-bn="আকার" data-en="Shapes">আকার</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="আকার (Shape) দিয়ে সুন্দর ডিজাইন তৈরি করো" data-en="Create Beautiful Designs with Shapes">আকার (Shape) দিয়ে সুন্দর ডিজাইন তৈরি করো</div>
+        <div class="q-scene" data-bn="তোমার স্লাইডে তিনটি আলাদা রঙের বাক্স তৈরি করো যেখানে প্রতিটিতে একটি করে মূল তথ্য থাকবে।" data-en="Create three different colored boxes on your slide, each containing one key piece of information.">তোমার স্লাইডে তিনটি আলাদা রঙের বাক্স তৈরি করো যেখানে প্রতিটিতে একটি মূল তথ্য থাকবে।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">📊</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" রাহেলা একটি অফিসের KPI স্লাইড বানাচ্ছে। তিনটি আলাদা বাক্সে: মোট বিক্রয়, নতুন গ্রাহক, এবং গ্রাহক সন্তুষ্টি দেখাতে চান।" data-en=" Rahela is making an office KPI slide. She wants to show in three separate boxes: Total Sales, New Customers, and Customer Satisfaction."> রাহেলা অফিসের KPI স্লাইডে তিনটি বাক্সে আলাদা তথ্য দেখাতে চান।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="<strong>Insert ট্যাব → Shapes</strong> → Rectangles থেকে 'Rounded Rectangle' বেছে নাও।" data-en="<strong>Insert tab → Shapes</strong> → from Rectangles choose 'Rounded Rectangle'."><strong>Insert → Shapes → Rounded Rectangle</strong> বেছে নাও।</li>
+          <li data-bn="স্লাইডে মাউস দিয়ে টেনে একটি বাক্স তৈরি করো। তারপর একই বাক্স <strong>Ctrl+D</strong> দিয়ে ২ বার কপি করো।" data-en="Draw a box on the slide. Then copy the same box 2 times using <strong>Ctrl+D</strong>.">বাক্স তৈরি করো → <strong>Ctrl+D</strong> দিয়ে ২ বার কপি করো।</li>
+          <li data-bn="তিনটি বাক্স পাশাপাশি সাজাও। সব সিলেক্ট করো → <strong>Shape Format → Align → Distribute Horizontally</strong> — সমান দূরত্বে সাজাবে।" data-en="Arrange three boxes side by side. Select all → <strong>Shape Format → Align → Distribute Horizontally</strong> — evenly spaced.">সমান দূরত্বে সাজাতে → <strong>Align → Distribute Horizontally</strong></li>
+          <li data-bn="প্রতিটি বাক্সে আলাদা রঙ দাও: বাক্স সিলেক্ট → <strong>Shape Format → Shape Fill</strong> → রঙ বেছে নাও।" data-en="Give each box a different color: select box → <strong>Shape Format → Shape Fill</strong> → choose color.">প্রতিটি বাক্সে রঙ → <strong>Shape Fill</strong> থেকে বেছে নাও।</li>
+          <li data-bn="বাক্সে লেখা যোগ করতে → বাক্সে <strong>ডাবল ক্লিক</strong> করো → সরাসরি টাইপ করো।" data-en="To add text to a box → <strong>double-click</strong> the box → type directly.">লেখা যোগ করতে → বাক্সে <strong>ডাবল ক্লিক</strong> করো।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">✨</span><span data-bn="Shape-এ ছায়া দিতে → Shape Format → Shadow Effects → Outer Shadow — পেশাদার দেখায়।" data-en="To add shadow to shape → Shape Format → Shadow Effects → Outer Shadow — looks professional.">Shape-এ ছায়া দিতে → Shadow Effects</span></div>
+          <div class="tip"><span class="ti">🔁</span><span data-bn="Shape ঘোরাতে → সিলেক্ট করো → উপরে গোলাকার তীরে টানো → ১৫° করে ঘুরবে।" data-en="To rotate shape → select it → drag the circular arrow at top → rotates by 15°.">Shape ঘোরাতে → উপরের গোলাকার তীর টানো।</span></div>
+        </div>
+        <button class="done-btn" id="done-q8" onclick="markDone(event,'q8')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="qcard t-amber" id="q9" data-cat="image">
+    <div class="qcard-header" onclick="toggle('q9')">
+      <div class="q-emoji">🔗</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 09</span>
+          <span class="q-tag" data-bn="SmartArt" data-en="SmartArt">SmartArt</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="SmartArt দিয়ে প্রক্রিয়া চিত্র তৈরি করো" data-en="Create a Process Diagram with SmartArt">SmartArt দিয়ে প্রক্রিয়া চিত্র তৈরি করো</div>
+        <div class="q-scene" data-bn="তোমার ব্যবসার অর্ডার প্রক্রিয়া ৪টি ধাপে (অর্ডার → প্রস্তুতি → ডেলিভারি → পেমেন্ট) স্লাইডে দেখাও।" data-en="Show your business order process in 4 steps (Order → Preparation → Delivery → Payment) on a slide.">তোমার ব্যবসার ৪ ধাপের অর্ডার প্রক্রিয়া SmartArt দিয়ে দেখাও।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🚚</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" জামিল তার ই-কমার্স ব্যবসার কাজের ধারা নতুন কর্মীদের বোঝাতে চান। একটি চিত্রের মাধ্যমে দেখালে সবাই সহজে বুঝবে।" data-en=" Jamil wants to explain his e-commerce workflow to new employees. Showing it visually will help everyone understand easily."> জামিল তার ই-কমার্সের কাজের ধারা নতুন কর্মীদের বোঝাতে চান।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="<strong>Insert ট্যাব → SmartArt</strong> ক্লিক করো → একটি ডায়ালগ বক্স খুলবে।" data-en="Click <strong>Insert tab → SmartArt</strong> → a dialog box will open."><strong>Insert → SmartArt</strong> ক্লিক করো।</li>
+          <li data-bn="বাম দিক থেকে <strong>Process</strong> বেছে নাও → ডানদিকে 'Basic Chevron Process' বা 'Step Up Process' বেছে → OK।" data-en="From the left choose <strong>Process</strong> → on the right select 'Basic Chevron Process' or 'Step Up Process' → OK."><strong>Process → Basic Chevron Process</strong> বেছে → OK।</li>
+          <li data-bn="প্রতিটি বক্সে ক্লিক করে লেখো: অর্ডার, প্রস্তুতি, ডেলিভারি, পেমেন্ট।" data-en="Click each box and type: Order, Preparation, Delivery, Payment.">প্রতিটি বক্সে লেখো: অর্ডার, প্রস্তুতি, ডেলিভারি, পেমেন্ট।</li>
+          <li data-bn="রঙ পরিবর্তন: SmartArt সিলেক্ট → <strong>SmartArt Design → Change Colors</strong> → পছন্দের রঙ বেছে নাও।" data-en="Change colors: select SmartArt → <strong>SmartArt Design → Change Colors</strong> → choose your preference.">রঙ বদলাতে → <strong>SmartArt Design → Change Colors</strong></li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">🔄</span><span data-bn="SmartArt-এর ধরন পরিবর্তন করা যায় — যেকোনো সময় অন্য ধরন বেছে নেওয়া যাবে।" data-en="You can change the SmartArt type — switch to another style at any time.">SmartArt-এর ধরন যেকোনো সময় পরিবর্তন করা যায়।</span></div>
+          <div class="tip"><span class="ti">➕</span><span data-bn="বাড়তি ধাপ যোগ করতে → বাম পাশের টেক্সট প্যানেলে Enter চাপো → নতুন বক্স আসবে।" data-en="To add extra steps → press Enter in the left text panel → a new box will appear.">বাড়তি ধাপ → বাম প্যানেলে Enter চাপো।</span></div>
+        </div>
+        <button class="done-btn" id="done-q9" onclick="markDone(event,'q9')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOPIC 4: PRESENTATION ══ -->
+  <div class="topic-divider" data-icon="📊" data-bn="উপস্থাপনার কৌশল" data-en="Presentation Techniques">উপস্থাপনার কৌশল</div>
+
+  <!-- Q10 -->
+  <div class="qcard t-plum" id="q10" data-cat="present">
+    <div class="qcard-header" onclick="toggle('q10')">
+      <div class="q-emoji">🎤</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 10</span>
+          <span class="q-tag" data-bn="স্লাইডশো" data-en="Slideshow">স্লাইডশো</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="স্লাইডশো শুরু করো ও প্রেজেন্টেশন দাও" data-en="Start the Slideshow and Deliver Your Presentation">স্লাইডশো শুরু করো ও প্রেজেন্টেশন দাও</div>
+        <div class="q-scene" data-bn="তোমার তৈরি প্রেজেন্টেশন ক্লাসে বা অফিসে সবার সামনে দেখাবার জন্য প্রস্তুত করো।" data-en="Prepare your presentation to show in front of your class or office.">তোমার তৈরি প্রেজেন্টেশন ক্লাসে বা অফিসে সবার সামনে দেখাবার জন্য প্রস্তুত করো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">👩‍🏫</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" নাদিয়া তার ক্লাসে প্রথমবার PPT দিয়ে উপস্থাপনা দেবে। সে একটু নার্ভাস — কোন বোতাম চাপতে হবে, কীভাবে এগোতে হবে জানে না।" data-en=" Nadia is presenting with PPT for the first time in her class. She's a bit nervous — she doesn't know which buttons to press or how to proceed."> নাদিয়া প্রথমবার ক্লাসে PPT দিয়ে উপস্থাপনা দেবে। কোন বোতাম চাপতে হবে জানে না।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="প্রথম স্লাইড থেকে শুরু করতে → <strong>F5</strong> বোতাম চাপো। পুরো পর্দা জুড়ে স্লাইড দেখাবে।" data-en="To start from the first slide → press <strong>F5</strong>. The slide will show full screen.">প্রথম থেকে শুরু → <strong>F5</strong> চাপো।</li>
+          <li data-bn="বর্তমান স্লাইড থেকে শুরু করতে → <strong>Shift+F5</strong> চাপো। উপকারী যখন মাঝখান থেকে শুরু করতে চাও।" data-en="To start from current slide → press <strong>Shift+F5</strong>. Useful when you want to start from the middle.">বর্তমান স্লাইড থেকে → <strong>Shift+F5</strong></li>
+          <li data-bn="পরের স্লাইডে যেতে → <strong>Enter, Space বা →</strong> চাপো। আগের স্লাইডে ফিরতে → <strong>←</strong> চাপো।" data-en="To go to next slide → press <strong>Enter, Space or →</strong>. To go back → press <strong>←</strong>.">পরের স্লাইড → <strong>Enter/Space</strong> · পেছনে → <strong>←</strong></li>
+          <li data-bn="প্রেজেন্টেশন বন্ধ করতে → <strong>Esc</strong> বোতাম চাপো। সাধারণ সম্পাদনা মোডে ফিরে আসবে।" data-en="To stop presentation → press <strong>Esc</strong>. You'll return to normal editing mode.">বন্ধ করতে → <strong>Esc</strong> চাপো।</li>
+          <li data-bn="প্রেজেন্টেশনের সময় পর্দা কালো করতে → <strong>B</strong> বোতাম চাপো। আবার B চাপলে ফিরে আসবে।" data-en="To black out the screen during presentation → press <strong>B</strong>. Press B again to return.">পর্দা কালো করতে → <strong>B</strong> চাপো।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">👁️</span><span data-bn="Presenter View চালু করো → View → Presenter View। নিজে নোট দেখবে, দর্শক শুধু স্লাইড দেখবে।" data-en="Turn on Presenter View → View → Presenter View. You see notes, audience only sees slides.">Presenter View চালু করো → নোট দেখবে, দর্শক দেখবে না।</span></div>
+          <div class="tip"><span class="ti">🖊️</span><span data-bn="প্রেজেন্টেশনে আঁকতে → Ctrl+P চাপো → কলম দিয়ে স্লাইডে লিখতে পারবে।" data-en="To draw during presentation → press Ctrl+P → you can write on the slide with a pen.">প্রেজেন্টেশনে আঁকতে → <strong>Ctrl+P</strong></span></div>
+        </div>
+        <div class="shortcut-row">
+          <div class="sc-item"><span class="kbd">F5</span> <span data-bn="শুরু থেকে" data-en="From start">শুরু থেকে</span></div>
+          <div class="sc-item"><span class="kbd">Shift+F5</span> <span data-bn="এখান থেকে" data-en="From here">এখান থেকে</span></div>
+          <div class="sc-item"><span class="kbd">Esc</span> <span data-bn="বন্ধ" data-en="Stop">বন্ধ</span></div>
+          <div class="sc-item"><span class="kbd">B</span> <span data-bn="কালো পর্দা" data-en="Black screen">কালো পর্দা</span></div>
+        </div>
+        <button class="done-btn" id="done-q10" onclick="markDone(event,'q10')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="qcard t-plum" id="q11" data-cat="present">
+    <div class="qcard-header" onclick="toggle('q11')">
+      <div class="q-emoji">📋</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 11</span>
+          <span class="q-tag" data-bn="স্পিকার নোট" data-en="Speaker Notes">স্পিকার নোট</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="প্রতিটি স্লাইডে স্পিকার নোট যোগ করো" data-en="Add Speaker Notes to Each Slide">প্রতিটি স্লাইডে স্পিকার নোট যোগ করো</div>
+        <div class="q-scene" data-bn="প্রেজেন্টেশনের সময় কী বলবে তা মনে রাখতে প্রতিটি স্লাইডে ছোট নোট লেখো।" data-en="Write small notes on each slide to remember what to say during the presentation.">প্রেজেন্টেশনের সময় কী বলবে তা মনে রাখতে প্রতিটি স্লাইডে ছোট নোট লেখো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🗒️</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" শিক্ষক হাসান স্যার ক্লাসে জলবায়ু পরিবর্তন পড়াবেন। প্রতিটি স্লাইডে তার বলার পয়েন্ট, প্রশ্ন এবং সময় হিসাব নোটে লিখে রাখবেন।" data-en=" Teacher Hassan sir will teach Climate Change in class. He'll note his talking points, questions, and timing in notes on each slide."> শিক্ষক হাসান স্যার প্রতিটি স্লাইডে বলার পয়েন্ট ও সময় নোটে লিখে রাখবেন।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="নোট প্যানেল দেখাতে → স্ক্রিনের নিচে <strong>'Click to add notes'</strong> লেখা দেখবে → সেখানে ক্লিক করো।" data-en="To see notes panel → at the bottom of screen you'll see <strong>'Click to add notes'</strong> → click there.">নিচে <strong>'Click to add notes'</strong>-এ ক্লিক করো।</li>
+          <li data-bn="নোট প্যানেল ছোট হলে → প্যানেলের উপরের কিনারা টেনে বড় করো।" data-en="If notes panel is small → drag the top edge of the panel to make it bigger.">প্যানেল ছোট হলে → উপরের কিনারা টেনে বড় করো।</li>
+          <li data-bn="প্রতিটি স্লাইডে সহজ ভাষায় লেখো: কী বলবে, কত সময় নেবে, কোনো গল্প বা উদাহরণ আছে কিনা।" data-en="On each slide write simply: what you'll say, how long, any story or example.">সহজ ভাষায় লেখো: কী বলবে, কত সময়, কোনো উদাহরণ।</li>
+          <li data-bn="View → <strong>Notes View</strong> — শুধু নোট দেখতে এবং দীর্ঘ নোট লিখতে এই ভিউ ব্যবহার করো।" data-en="View → <strong>Notes View</strong> — use this view to see only notes and write longer notes.">দীর্ঘ নোট লিখতে → <strong>View → Notes View</strong></li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">🔒</span><span data-bn="Presenter View-এ শুধু তুমি নোট দেখবে — দর্শক দেখবে না। নিশ্চিন্তে নোট রাখো।" data-en="In Presenter View only you see the notes — audience won't see them. Keep notes freely.">Presenter View-এ শুধু তুমি নোট দেখবে।</span></div>
+          <div class="tip"><span class="ti">🖨️</span><span data-bn="নোট সহ প্রিন্ট করতে → File → Print → Print Layout → 'Notes Pages' বেছে নাও।" data-en="To print with notes → File → Print → Print Layout → select 'Notes Pages'.">নোট সহ প্রিন্ট → Print Layout → 'Notes Pages'</span></div>
+        </div>
+        <button class="done-btn" id="done-q11" onclick="markDone(event,'q11')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="qcard t-plum" id="q12" data-cat="present">
+    <div class="qcard-header" onclick="toggle('q12')">
+      <div class="q-emoji">🔄</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 12</span>
+          <span class="q-tag" data-bn="ট্রানজিশন" data-en="Transitions">ট্রানজিশন</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="স্লাইডে পেশাদার ট্রানজিশন যোগ করো" data-en="Add Professional Transitions to Slides">স্লাইডে পেশাদার ট্রানজিশন যোগ করো</div>
+        <div class="q-scene" data-bn="তোমার প্রেজেন্টেশনে স্লাইড বদলানোর সময় সুন্দর ট্রানজিশন যোগ করো যাতে পেশাদার দেখায়।" data-en="Add beautiful transitions when changing slides in your presentation to make it look professional.">প্রেজেন্টেশনে স্লাইড বদলানোর সময় সুন্দর ট্রানজিশন যোগ করো।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">✨</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" রাফি তার বন্ধুর বিয়ের ছবির স্লাইডশো বানাচ্ছে। ছবিগুলো এমনভাবে বদলাবে যাতে দেখতে সুন্দর লাগে।" data-en=" Rafi is making a wedding photo slideshow for his friend. He wants the photos to change in a beautiful way."> রাফি বিয়ের ছবির স্লাইডশো বানাচ্ছে। ছবিগুলো সুন্দরভাবে বদলাবে।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="সব স্লাইড সিলেক্ট করতে → বাম প্যানেলে যেকোনো স্লাইডে ক্লিক → <strong>Ctrl+A</strong> চাপো।" data-en="To select all slides → click any slide in left panel → press <strong>Ctrl+A</strong>.">সব স্লাইড সিলেক্ট → <strong>Ctrl+A</strong></li>
+          <li data-bn="<strong>Transitions ট্যাব</strong> ক্লিক করো → অনেক ট্রানজিশন দেখতে পাবে।" data-en="Click <strong>Transitions tab</strong> → you'll see many transitions."><strong>Transitions ট্যাব</strong>-এ যাও।</li>
+          <li data-bn="পেশাদার ট্রানজিশন: <strong>Fade</strong> (ধীরে মিলিয়ে) বা <strong>Push</strong> (ঠেলে বদলানো) বেছে নাও। এগুলো সবচেয়ে ভালো দেখায়।" data-en="Professional transitions: choose <strong>Fade</strong> (slowly fades) or <strong>Push</strong> (pushes slide). These look best.">সেরা ট্রানজিশন: <strong>Fade</strong> বা <strong>Push</strong> বেছে নাও।</li>
+          <li data-bn="গতি ঠিক করতে → Duration বক্সে '0.50' বা '0.75' সেকেন্ড লেখো। বেশি ধীর করবে না।" data-en="To set speed → type '0.50' or '0.75' seconds in the Duration box. Don't make it too slow.">Duration: '0.50' সেকেন্ড লেখো।</li>
+          <li data-bn="সব স্লাইডে একসাথে প্রয়োগ করতে → <strong>'Apply to All'</strong> বোতামে ক্লিক করো।" data-en="To apply to all slides at once → click the <strong>'Apply to All'</strong> button.">সব স্লাইডে → <strong>'Apply to All'</strong></li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">🚫</span><span data-bn="'Bounce', 'Spiral', 'Ripple' ট্রানজিশন ব্যবহার করো না — অপেশাদার দেখায়।" data-en="Don't use 'Bounce', 'Spiral', 'Ripple' transitions — they look unprofessional.">'Bounce', 'Spiral' ব্যবহার করো না।</span></div>
+          <div class="tip"><span class="ti">⏱️</span><span data-bn="স্বয়ংক্রিয়ভাবে বদলাতে → 'After' টাইমার সেট করো — নির্দিষ্ট সময় পরপর স্লাইড বদলাবে।" data-en="For auto-advance → set 'After' timer — slides change automatically after set time.">স্বয়ংক্রিয় বদলাতে → 'After' টাইমার সেট করো।</span></div>
+        </div>
+        <button class="done-btn" id="done-q12" onclick="markDone(event,'q12')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOPIC 5: ANIMATION ══ -->
+  <div class="topic-divider" data-icon="✨" data-bn="অ্যানিমেশন — জীবন্ত করো স্লাইড" data-en="Animation — Bring Slides to Life">অ্যানিমেশন — জীবন্ত করো স্লাইড</div>
+
+  <!-- Q13 -->
+  <div class="qcard t-navy" id="q13" data-cat="anim">
+    <div class="qcard-header" onclick="toggle('q13')">
+      <div class="q-emoji">💫</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 13</span>
+          <span class="q-tag" data-bn="প্রবেশ অ্যানিমেশন" data-en="Entrance Animation">প্রবেশ অ্যানিমেশন</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="শিরোনামে চমৎকার প্রবেশ অ্যানিমেশন দাও" data-en="Add a Stunning Entrance Animation to the Title">শিরোনামে চমৎকার প্রবেশ অ্যানিমেশন দাও</div>
+        <div class="q-scene" data-bn="তোমার পণ্য লঞ্চ স্লাইডে পণ্যের নাম ধীরে ধীরে ভেসে উঠুক — প্রথম দেখায় সবাই মুগ্ধ হবে।" data-en="Make the product name gradually appear on your product launch slide — everyone will be impressed at first sight.">তোমার পণ্য লঞ্চ স্লাইডে পণ্যের নাম ধীরে ধীরে ভেসে উঠুক।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🚀</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" দিনার একটি মেলায় তার নতুন হাতের কাজের পণ্য পরিচয় দেবে। প্রথম স্লাইডে পণ্যের নাম এমনভাবে আসবে যাতে দর্শকদের মনোযোগ আকর্ষণ হয়।" data-en=" Dina will introduce her new handcraft product at a fair. The product name on the first slide should appear in a way that grabs the audience's attention."> দিনার পণ্যের নাম এমনভাবে আসবে যাতে দর্শকদের মনোযোগ আকর্ষণ হয়।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="যে লেখায় অ্যানিমেশন দিতে চাও সেটায় ক্লিক করো (টেক্সটবক্স বা শিরোনাম)।" data-en="Click on the text you want to animate (text box or title).">যে লেখায় অ্যানিমেশন দেবে সেটায় ক্লিক করো।</li>
+          <li data-bn="<strong>Animations ট্যাব</strong> → Entrance (সবুজ তীর চিহ্ন) থেকে <strong>'Fade'</strong> বা <strong>'Fly In'</strong> বেছে নাও।" data-en="<strong>Animations tab</strong> → from Entrance (green arrow) choose <strong>'Fade'</strong> or <strong>'Fly In'</strong>."><strong>Animations ট্যাব → Fade</strong> বা <strong>Fly In</strong> বেছে নাও।</li>
+          <li data-bn="গতি ঠিক করতে → Duration বক্সে '1.00' (১ সেকেন্ড) লেখো। খুব ধীর বা খুব দ্রুত না হওয়াই ভালো।" data-en="To set speed → type '1.00' (1 second) in Duration box. Best not too slow or too fast.">Duration: '1.00' সেকেন্ড।</li>
+          <li data-bn="অ্যানিমেশন দেখতে → <strong>Preview</strong> বোতামে ক্লিক করো (Animations ট্যাবের শুরুতে)।" data-en="To preview animation → click the <strong>Preview</strong> button (at the start of Animations tab).">দেখতে → <strong>Preview</strong> বোতামে ক্লিক।</li>
+          <li data-bn="একই স্লাইডে ছবিতেও অ্যানিমেশন দাও — ছবি ক্লিক করো → Zoom বা Appear বেছে নাও।" data-en="Also animate the image on the same slide — click image → choose Zoom or Appear.">ছবিতেও দাও → Zoom বা Appear বেছে নাও।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">⚡</span><span data-bn="অ্যানিমেশন Duration: ০.৫–১ সেকেন্ড সবচেয়ে ভালো। ২ সেকেন্ডের বেশি হলে দর্শক বিরক্ত হয়।" data-en="Animation Duration: 0.5–1 second is best. More than 2 seconds annoys the audience.">Duration: ০.৫–১ সেকেন্ড সবচেয়ে ভালো।</span></div>
+          <div class="tip"><span class="ti">🚫</span><span data-bn="'Bounce', 'Pinwheel' অ্যানিমেশন ব্যবহার করো না — শিশুদের প্রেজেন্টেশনে হয়তো মানায়, কিন্তু পেশাদার জায়গায় না।" data-en="Don't use 'Bounce', 'Pinwheel' animations — maybe for kids' presentations, but not professional settings.">'Bounce', 'Pinwheel' পেশাদার জায়গায় মানায় না।</span></div>
+        </div>
+        <div class="shortcut-row">
+          <div class="sc-item"><span class="kbd">Alt+A</span> <span data-bn="অ্যানিমেশন ট্যাব" data-en="Animations tab">অ্যানিমেশন ট্যাব</span></div>
+        </div>
+        <button class="done-btn" id="done-q13" onclick="markDone(event,'q13')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="qcard t-navy" id="q14" data-cat="anim">
+    <div class="qcard-header" onclick="toggle('q14')">
+      <div class="q-emoji">🔢</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 14</span>
+          <span class="q-tag" data-bn="একে একে দেখাও" data-en="Reveal One by One">একে একে দেখাও</span>
+          <div class="q-diff"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="বুলেট পয়েন্ট একে একে দেখাও" data-en="Reveal Bullet Points One by One">বুলেট পয়েন্ট একে একে দেখাও</div>
+        <div class="q-scene" data-bn="তোমার ৫টি পয়েন্টের স্লাইডে প্রতিটি পয়েন্ট আলাদাভাবে, একে একে দেখাও — যাতে দর্শক এগিয়ে না পড়ে।" data-en="Show each of your 5 points separately one by one on your slide — so the audience doesn't read ahead.">৫টি পয়েন্টের স্লাইডে প্রতিটি পয়েন্ট একে একে দেখাও।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">🎯</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" সালমা ৫টি কারণ উপস্থাপন করবে কেন তার পণ্য ভালো। যদি একসাথে দেখায় তাহলে দর্শকরা সব পড়ে ফেলবে — সে চায় একটা একটা করে বলতে বলতে দেখাতে।" data-en=" Salma will present 5 reasons why her product is good. If shown all at once the audience will read everything — she wants to show them one by one as she talks."> সালমা চায় ৫টি কারণ একটা একটা করে বলতে বলতে দেখাতে।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="বুলেট পয়েন্টের টেক্সটবক্সে ক্লিক করো (মূল বক্সটি সিলেক্ট হওয়া দরকার, ভিতরে না)।" data-en="Click the bullet point text box (the main box needs to be selected, not inside it).">বুলেট পয়েন্টের বক্সটি সিলেক্ট করো।</li>
+          <li data-bn="<strong>Animations ট্যাব → Appear</strong> বা <strong>Fade</strong> বেছে নাও।" data-en="<strong>Animations tab → Appear</strong> or <strong>Fade</strong>."><strong>Animations → Appear</strong> বা <strong>Fade</strong> বেছে নাও।</li>
+          <li data-bn="<strong>Effect Options</strong> ক্লিক করো → <strong>'By 1st Level Paragraphs'</strong> বেছে নাও। এখন প্রতিটি বুলেট আলাদা অ্যানিমেশন হবে।" data-en="Click <strong>Effect Options</strong> → choose <strong>'By 1st Level Paragraphs'</strong>. Now each bullet has a separate animation."><strong>Effect Options → 'By 1st Level Paragraphs'</strong> বেছে নাও।</li>
+          <li data-bn="প্রেজেন্টেশনে প্রতিটি ক্লিকে একটি করে পয়েন্ট দেখাবে। F5 চেপে পরীক্ষা করো।" data-en="In the presentation each click will show one point. Press F5 to test.">এখন F5 চেপে পরীক্ষা করো — প্রতি ক্লিকে একটি পয়েন্ট।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">🎭</span><span data-bn="আগের পয়েন্ট ধূসর করতে → Effect Options → After Animation → 'Dim' → হালকা রঙ বেছে নাও। পুরানো পয়েন্ট ম্লান হবে।" data-en="To dim previous points → Effect Options → After Animation → 'Dim' → choose a light color. Old points fade.">আগের পয়েন্ট ম্লান করতে → After Animation → Dim</span></div>
+          <div class="tip"><span class="ti">👁️</span><span data-bn="Presenter View-এ সব পয়েন্ট দেখতে পাবে — দর্শক শুধু আসা পয়েন্টগুলো দেখবে।" data-en="In Presenter View you can see all points — audience only sees revealed ones.">Presenter View-এ তুমি সব দেখবে, দর্শক শুধু আসাগুলো।</span></div>
+        </div>
+        <button class="done-btn" id="done-q14" onclick="markDone(event,'q14')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="qcard t-navy" id="q15" data-cat="anim">
+    <div class="qcard-header" onclick="toggle('q15')">
+      <div class="q-emoji">💾</div>
+      <div class="q-info">
+        <div class="q-meta">
+          <span class="q-no">Q 15</span>
+          <span class="q-tag" data-bn="সংরক্ষণ ও শেয়ার" data-en="Save & Share">সংরক্ষণ ও শেয়ার</span>
+          <div class="q-diff"><span class="f"></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="q-title" data-bn="প্রেজেন্টেশন PDF করো ও ইমেইলে পাঠাও" data-en="Convert Presentation to PDF and Send by Email">প্রেজেন্টেশন PDF করো ও ইমেইলে পাঠাও</div>
+        <div class="q-scene" data-bn="তোমার তৈরি প্রেজেন্টেশন পরিবারের কাছে বা বসের কাছে পাঠাতে PDF বানাও যাতে সবাই সহজে খুলতে পারে।" data-en="Convert your presentation to PDF to send to family or your boss so everyone can easily open it.">প্রেজেন্টেশন PDF করো যাতে সবাই সহজে খুলতে পারে।</div>
+      </div>
+      <div class="q-toggle">▼</div>
+    </div>
+    <div class="q-answer">
+      <div class="ans-inner">
+        <div class="scene-box">
+          <span class="scene-emo">📧</span>
+          <div class="scene-txt">
+            <strong data-bn="বাস্তব পরিস্থিতি:" data-en="Real Scenario:">বাস্তব পরিস্থিতি:</strong>
+            <span data-bn=" মাহিন তার বার্ষিক রিপোর্ট প্রেজেন্টেশন বসকে পাঠাতে চায়। বস হয়তো PowerPoint ব্যবহার করেন না — তাই PDF করলে যেকোনো ডিভাইসে খোলা যাবে।" data-en=" Mahin wants to send his annual report presentation to his boss. The boss might not use PowerPoint — so PDF will open on any device."> মাহিন বসকে PDF করে পাঠাবে যাতে যেকোনো ডিভাইসে খোলা যায়।</span>
+          </div>
+        </div>
+        <ul class="steps">
+          <li data-bn="<strong>File → Export → Create PDF/XPS</strong> ক্লিক করো।" data-en="Click <strong>File → Export → Create PDF/XPS</strong>."><strong>File → Export → Create PDF/XPS</strong></li>
+          <li data-bn="ফাইলের নাম দাও → <strong>Publish</strong> বোতামে ক্লিক করো। পাশের ফোল্ডারে PDF তৈরি হবে।" data-en="Give the file a name → click <strong>Publish</strong>. A PDF will be created in the same folder.">নাম দাও → <strong>Publish</strong> বোতামে ক্লিক করো।</li>
+          <li data-bn="ভিডিও তৈরি করতে → <strong>File → Export → Create a Video</strong> → Full HD (1080p) বেছে → Create Video।" data-en="To create a video → <strong>File → Export → Create a Video</strong> → choose Full HD (1080p) → Create Video.">ভিডিও বানাতে → <strong>Export → Create a Video</strong></li>
+          <li data-bn="সরাসরি ইমেইলে পাঠাতে → <strong>File → Share → Email</strong> → 'Send as PDF' বেছে নাও।" data-en="To email directly → <strong>File → Share → Email</strong> → choose 'Send as PDF'.">সরাসরি ইমেইলে → <strong>File → Share → Email → Send as PDF</strong></li>
+          <li data-bn="ফাইল সাইজ বড় হলে ছোট করতে → <strong>File → Info → Compress Media</strong> → ছোট কোয়ালিটি বেছে নাও।" data-en="If file is too large → <strong>File → Info → Compress Media</strong> → choose lower quality.">ফাইল বড় হলে → <strong>Compress Media</strong> দিয়ে ছোট করো।</li>
+        </ul>
+        <div class="tips-row">
+          <div class="tip"><span class="ti">📱</span><span data-bn="PDF সব ডিভাইসে একই দেখায় — মোবাইল, ট্যাবলেট, কম্পিউটার সব জায়গায়।" data-en="PDF looks the same on all devices — mobile, tablet, computer everywhere.">PDF সব ডিভাইসে একই দেখায়।</span></div>
+          <div class="tip"><span class="ti">☁️</span><span data-bn="Google Drive বা OneDrive-এ আপলোড করলে লিংক শেয়ার করতে পারবে — ফাইল ইমেইলে পাঠাতে হবে না।" data-en="Upload to Google Drive or OneDrive to share a link — no need to email the file.">Drive-এ আপলোড করে লিংক শেয়ার করো।</span></div>
+        </div>
+        <div class="shortcut-row">
+          <div class="sc-item"><span class="kbd">Ctrl+S</span> <span data-bn=".pptx সেভ" data-en="Save .pptx">.pptx সেভ</span></div>
+          <div class="sc-item"><span class="kbd">Ctrl+P</span> <span data-bn="প্রিন্ট" data-en="Print">প্রিন্ট</span></div>
+        </div>
+        <button class="done-btn" id="done-q15" onclick="markDone(event,'q15')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /qwrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-brand"><em>স্লাইড</em> শিক্ষা</div>
+  <p data-bn="বাংলায় শিখুন, আত্মবিশ্বাসে উপস্থাপন করুন 🎨" data-en="Learn in Bengali, Present with Confidence 🎨">বাংলায় শিখুন, আত্মবিশ্বাসে উপস্থাপন করুন 🎨</p>
+</footer>
+
+<script>
+const TOTAL = 15;
+let done = new Set();
+let lang = 'bn';
+
+/* ── TOGGLE CARD ── */
+function toggle(id) {
+  const card = document.getElementById(id);
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.qcard.open').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) card.classList.add('open');
+}
+
+/* ── MARK DONE ── */
+function markDone(e, id) {
+  e.stopPropagation();
+  const card = document.getElementById(id);
+  const btn = document.getElementById('done-' + id);
+  if (done.has(id)) {
+    done.delete(id);
+    card.classList.remove('done-card');
+    btn.classList.remove('done');
+    btn.textContent = lang === 'bn' ? 'সম্পন্ন চিহ্নিত করো' : 'Mark as Done';
+  } else {
+    done.add(id);
+    card.classList.add('done-card');
+    btn.classList.add('done');
+    btn.textContent = lang === 'bn' ? '✓ সম্পন্ন হয়েছে' : '✓ Completed!';
+  }
+  updateProg();
+}
+
+function updateProg() {
+  const n = done.size;
+  document.getElementById('progFill').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('progLabel').textContent = lang === 'bn'
+    ? n + ' / ' + TOTAL
+    : n + ' / ' + TOTAL;
+  document.getElementById('doneCount').textContent = lang === 'bn'
+    ? toBengaliNum(n) : n;
+}
+
+function toBengaliNum(n) {
+  return n.toString().split('').map(d => '০১২৩৪৫৬৭৮৯'[+d]).join('');
+}
+
+/* ── FILTER ── */
+function filter(cat, btn) {
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.qcard').forEach(c => {
+    c.classList.toggle('hide', cat !== 'all' && c.dataset.cat !== cat);
+    if (cat !== 'all' && c.dataset.cat !== cat) c.classList.remove('open');
+  });
+  document.querySelectorAll('.topic-divider').forEach(d => {
+    d.style.display = '';
+    if (cat !== 'all') {
+      // check if any visible card follows this divider
+      let next = d.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('topic-divider')) {
+        if (!next.classList.contains('hide')) { hasVisible = true; break; }
+        next = next.nextElementSibling;
+      }
+      d.style.display = hasVisible ? '' : 'none';
+    }
+  });
+}
+
+/* ── LANGUAGE ── */
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.getElementById('btn-bn').classList.toggle('on', l === 'bn');
+  document.getElementById('btn-en').classList.toggle('on', l === 'en');
+
+  // Update brand
+  document.getElementById('brand-text').innerHTML = l === 'bn'
+    ? '<em>স্লাইড</em> শিক্ষা'
+    : '<em>Slide</em> Shikkha';
+
+  // Update all data-bn / data-en elements
+  document.querySelectorAll('[data-' + l + ']').forEach(el => {
+    const val = el.getAttribute('data-' + l);
+    if (val === null) return;
+    if (el.tagName === 'BUTTON') {
+      // only update done buttons that are not completed
+      if (!el.classList.contains('done')) el.textContent = val;
+    } else {
+      el.innerHTML = val;
+    }
+  });
+
+  // Update completed done buttons
+  done.forEach(id => {
+    const btn = document.getElementById('done-' + id);
+    if (btn) btn.textContent = l === 'bn' ? '✓ সম্পন্ন হয়েছে' : '✓ Completed!';
+  });
+
+  // Update topic dividers text
+  document.querySelectorAll('.topic-divider').forEach(d => {
+    const val = d.getAttribute('data-' + l);
+    if (val) d.childNodes.forEach(n => { if (n.nodeType === 3) n.textContent = val; });
+  });
+
+  updateProg();
+
+  document.body.style.fontFamily = l === 'bn'
+    ? "'Hind Siliguri', 'Tiro Bangla', sans-serif"
+    : "'DM Sans', 'Hind Siliguri', sans-serif";
+}
+
+// Init
+updateProg();
+</script>
+</body>
+</html>

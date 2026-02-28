@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel শিক্ষা — Beginner Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf8f0;
+    --surface: #ffffff;
+    --surface2: #f5f0e8;
+    --border: #e8dfd0;
+    --primary: #2d6a4f;
+    --primary-light: #52b788;
+    --primary-soft: #d8f3dc;
+    --accent: #e76f51;
+    --accent-soft: #fde8e2;
+    --yellow: #f4a261;
+    --yellow-soft: #fef3e2;
+    --blue: #264653;
+    --blue-soft: #e0ecf0;
+    --text: #1a1a2e;
+    --text-mid: #4a4a6a;
+    --text-muted: #8a8aaa;
+    --shadow: 0 4px 24px rgba(45,106,79,0.10);
+    --shadow-hover: 0 8px 40px rgba(45,106,79,0.18);
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hind Siliguri', 'Syne', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 600px at 10% 20%, rgba(82,183,136,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 600px 500px at 90% 80%, rgba(231,111,81,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Decorative dots */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(45,106,79,0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(253,248,240,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+  }
+
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3px;
+    padding: 6px;
+  }
+
+  .logo-cell {
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+  }
+  .logo-cell.lit { background: #fff; }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--primary);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span {
+    color: var(--accent);
+  }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 30px;
+    padding: 4px;
+    cursor: pointer;
+  }
+
+  .lang-btn {
+    padding: 7px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+    color: var(--text-muted);
+    font-family: 'Hind Siliguri', sans-serif;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.3);
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 32px 40px;
+    text-align: center;
+  }
+
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid rgba(82,183,136,0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.2px;
+  }
+
+  .hero-pill .dot {
+    width: 7px;
+    height: 7px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+  }
+
+  h1 {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--primary);
+    position: relative;
+  }
+
+  h1 em::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-light), var(--accent));
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text-mid);
+    max-width: 500px;
+    margin: 0 auto 32px;
+    font-weight: 400;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 22px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-width: 100px;
+    transition: all 0.2s;
+  }
+
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* Progress */
+  .progress-section {
+    max-width: 960px;
+    margin: 0 auto 16px;
+    padding: 0 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .progress-track {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== QUESTIONS ===== */
+  .questions-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  .topic-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin: 32px 0 12px;
+  }
+
+  .topic-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .question-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+
+  .question-card:hover {
+    border-color: var(--primary-light);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .question-card.open {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(82,183,136,0.12), var(--shadow-hover);
+  }
+
+  .card-header {
+    padding: 22px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .q-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .q-icon.green { background: var(--primary-soft); }
+  .q-icon.orange { background: var(--accent-soft); }
+  .q-icon.yellow { background: var(--yellow-soft); }
+  .q-icon.blue { background: var(--blue-soft); }
+
+  .card-body-header {
+    flex: 1;
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .q-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .q-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .badge-green { background: var(--primary-soft); color: var(--primary); }
+  .badge-orange { background: var(--accent-soft); color: var(--accent); }
+  .badge-yellow { background: var(--yellow-soft); color: #b05a00; }
+  .badge-blue { background: var(--blue-soft); color: var(--blue); }
+
+  .q-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 4px;
+    font-family: 'Hind Siliguri', sans-serif;
+  }
+
+  .q-scenario {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .expand-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 4px;
+    transition: all 0.25s;
+    color: var(--text-muted);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .question-card.open .expand-btn {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    transform: rotate(45deg);
+  }
+
+  /* Answer section */
+  .answer-section {
+    display: none;
+    padding: 0 24px 24px;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-card.open .answer-section { display: block; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 20px;
+  }
+
+  /* Scenario visual */
+  .scenario-visual {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .scenario-emoji { font-size: 22px; flex-shrink: 0; }
+
+  .scenario-text {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* Mini spreadsheet preview */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .mini-table th {
+    background: var(--primary);
+    color: white;
+    padding: 7px 12px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .mini-table td {
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-mid);
+    background: var(--surface);
+  }
+
+  .mini-table tr:last-child td { border-bottom: none; }
+  .mini-table tr:nth-child(even) td { background: var(--surface2); }
+  .mini-table td.formula { color: var(--primary); font-family: monospace; font-weight: 600; }
+  .mini-table td.result { color: var(--accent); font-weight: 700; }
+
+  /* Formula answer box */
+  .formula-answer {
+    background: #1a2e1e;
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .formula-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--primary-light);
+    margin-bottom: 8px;
+  }
+
+  .formula-code {
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    color: #a8e6cf;
+    word-break: break-all;
+    line-height: 1.5;
+  }
+
+  .formula-code .fn { color: #52b788; font-weight: bold; }
+  .formula-code .ref { color: #ffd166; }
+  .formula-code .str { color: #ef9a9a; }
+  .formula-code .num { color: #80cbc4; }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .copy-btn:hover { background: rgba(82,183,136,0.2); color: var(--primary-light); border-color: var(--primary-light); }
+
+  /* Explanation */
+  .explanation {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+
+  .explanation strong { color: var(--primary); font-weight: 600; }
+
+  .steps-list {
+    counter-reset: step-counter;
+    list-style: none;
+    margin-bottom: 14px;
+  }
+
+  .steps-list li {
+    counter-increment: step-counter;
+    font-size: 13px;
+    color: var(--text-mid);
+    padding: 8px 0 8px 36px;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+    line-height: 1.6;
+  }
+
+  .steps-list li:last-child { border-bottom: none; }
+
+  .steps-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 22px;
+    height: 22px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* Tip */
+  .tip-card {
+    background: var(--yellow-soft);
+    border: 1px solid rgba(244,162,97,0.3);
+    border-left: 3px solid var(--yellow);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #7a4500;
+    line-height: 1.6;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Mark done button */
+  .done-btn {
+    margin-top: 16px;
+    width: 100%;
+    padding: 11px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Hind Siliguri', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .done-btn:hover { background: var(--primary-soft); color: var(--primary); border-color: var(--primary-light); }
+  .done-btn.done { background: var(--primary); color: white; border-color: var(--primary); }
+  .done-btn.done::before { content: '✓ '; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    header, .hero, .questions-wrap, .progress-section { padding-left: 16px; padding-right: 16px; }
+    .stats-row { gap: 10px; }
+    .card-header { padding: 18px 16px; gap: 12px; }
+    .answer-section { padding: 0 16px 18px; }
+  }
+
+  /* Solved overlay */
+  .question-card.solved {
+    border-color: var(--primary-light);
+  }
+
+  .question-card.solved .q-num::before {
+    content: '✓ ';
+    color: var(--primary);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <div class="logo-cell lit"></div><div class="logo-cell"></div><div class="logo-cell lit"></div>
+        <div class="logo-cell lit"></div><div class="logo-cell lit"></div><div class="logo-cell"></div>
+        <div class="logo-cell"></div><div class="logo-cell lit"></div><div class="logo-cell lit"></div>
+      </div>
+      <span class="logo-text">Excel<span>শিক্ষা</span></span>
+    </div>
+
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-bn" onclick="setLang('bn')">বাংলা</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-pill">
+    <span class="dot"></span>
+    <span data-bn="শিক্ষার্থীদের জন্য বিনামূল্যে" data-en="Free for Learners">শিক্ষার্থীদের জন্য বিনামূল্যে</span>
+  </div>
+  <h1>
+    <span data-bn="Excel শিখুন" data-en="Learn Excel">Excel শিখুন</span><br>
+    <em data-bn="বাস্তব জীবনের উদাহরণে" data-en="With Real Life Examples">বাস্তব জীবনের উদাহরণে</em>
+  </h1>
+  <p class="hero-sub" data-bn="দোকানের হিসাব থেকে শুরু করে ক্লাসের নম্বর — সহজ বাংলায় Excel ফর্মুলা শিখুন।" data-en="From shop accounts to class marks — learn Excel formulas step by step in simple language.">
+    দোকানের হিসাব থেকে শুরু করে ক্লাসের নম্বর — সহজ বাংলায় Excel ফর্মুলা শিখুন।
+  </p>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">15</div>
+      <div class="stat-label" data-bn="প্রশ্ন" data-en="Questions">প্রশ্ন</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="done-count">0</div>
+      <div class="stat-label" data-bn="সম্পন্ন" data-en="Done">সম্পন্ন</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label" data-bn="বিষয়" data-en="Topics">বিষয়</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">🟢</div>
+      <div class="stat-label" data-bn="শুরু স্তর" data-en="Beginner">শুরু স্তর</div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-section">
+  <div class="progress-label">
+    <span data-bn="অগ্রগতি" data-en="Your Progress">অগ্রগতি</span>
+    <span id="progress-text">0 / 15</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<div class="questions-wrap">
+
+  <!-- TOPIC 1: SUM -->
+  <div class="topic-label" data-bn="যোগফল — SUM" data-en="Addition — SUM">যোগফল — SUM</div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1">
+    <div class="card-header" onclick="toggleCard('q1')">
+      <div class="q-icon green">🛒</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০১</span>
+          <span class="q-badge badge-green" data-bn="SUM" data-en="SUM">SUM</span>
+        </div>
+        <div class="q-title" data-bn="মাসের মোট বাজার খরচ বের করো" data-en="Find the Total Monthly Grocery Bill">মাসের মোট বাজার খরচ বের করো</div>
+        <div class="q-scenario" data-bn="তুমি প্রতিদিনের বাজার খরচ B2 থেকে B32 সেলে লিখেছ। পুরো মাসের মোট খরচ কত?" data-en="You wrote daily grocery expenses in cells B2 to B32. What is the total for the whole month?">তুমি প্রতিদিনের বাজার খরচ B2 থেকে B32 সেলে লিখেছ। পুরো মাসের মোট খরচ কত?</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="scenario-visual">
+        <span class="scenario-emoji">🏪</span>
+        <span class="scenario-text" data-bn="রহিমা বেগম প্রতিদিন বাজার থেকে কেনার পর টাকার অঙ্ক Excel এ লেখেন। মাস শেষে তিনি দেখতে চান মোট কত টাকা খরচ হলো।" data-en="Rahima Begum notes down daily grocery expenses in Excel. At month end she wants to see the total spent.">রহিমা বেগম প্রতিদিন বাজার থেকে কেনার পর টাকার অঙ্ক Excel এ লেখেন। মাস শেষে তিনি দেখতে চান মোট কত টাকা খরচ হলো।</span>
+      </div>
+      <table class="mini-table">
+        <tr><th>সেল</th><th data-bn="বিবরণ" data-en="Description">বিবরণ</th><th data-bn="টাকা" data-en="Amount">টাকা</th></tr>
+        <tr><td>B2</td><td data-bn="১ তারিখ" data-en="Day 1">১ তারিখ</td><td>৳ ৪৫০</td></tr>
+        <tr><td>B3</td><td data-bn="২ তারিখ" data-en="Day 2">২ তারিখ</td><td>৳ ৩২০</td></tr>
+        <tr><td>...</td><td>...</td><td>...</td></tr>
+        <tr><td>B33</td><td class="formula" data-bn="মোট (ফর্মুলা এখানে)" data-en="Total (formula here)">মোট (ফর্মুলা এখানে)</td><td class="result">=SUM(B2:B32)</td></tr>
+      </table>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=SUM(B2:B32)')">Copy</button>
+        <div class="formula-label">ফর্মুলা</div>
+        <div class="formula-code"><span class="fn">=SUM</span>(<span class="ref">B2:B32</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>SUM</strong> মানে যোগ করা। B2:B32 মানে B2 থেকে B32 পর্যন্ত সব সেল। Excel এই সব সংখ্যা একসাথে যোগ করে দেবে।" data-en="<strong>SUM</strong> means to add. B2:B32 means all cells from B2 to B32. Excel will add all those numbers together.">
+        <strong>SUM</strong> মানে যোগ করা। B2:B32 মানে B2 থেকে B32 পর্যন্ত সব সেল। Excel এই সব সংখ্যা একসাথে যোগ করে দেবে।
+      </p>
+      <ul class="steps-list">
+        <li data-bn="B33 সেলে ক্লিক করো" data-en="Click on cell B33">B33 সেলে ক্লিক করো</li>
+        <li data-bn="টাইপ করো: =SUM(B2:B32)" data-en="Type: =SUM(B2:B32)">টাইপ করো: =SUM(B2:B32)</li>
+        <li data-bn="Enter চাপো" data-en="Press Enter">Enter চাপো</li>
+      </ul>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="শর্টকাট: সেলগুলো সিলেক্ট করে Alt + = (= চিহ্ন) চাপলে Excel নিজেই SUM লিখে দেয়!" data-en="Shortcut: Select the cells and press Alt + = and Excel will automatically write SUM for you!">শর্টকাট: সেলগুলো সিলেক্ট করে Alt + = (= চিহ্ন) চাপলে Excel নিজেই SUM লিখে দেয়!</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q1')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2">
+    <div class="card-header" onclick="toggleCard('q2')">
+      <div class="q-icon green">🏪</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০২</span>
+          <span class="q-badge badge-green">SUM</span>
+        </div>
+        <div class="q-title" data-bn="দোকানের সাপ্তাহিক বিক্রয় যোগ করো" data-en="Add Up Weekly Shop Sales">দোকানের সাপ্তাহিক বিক্রয় যোগ করো</div>
+        <div class="q-scenario" data-bn="রবি থেকে শনি — ৭ দিনের বিক্রয় C2:C8 সেলে আছে। সপ্তাহের মোট বিক্রয় বের করো।" data-en="Sun to Sat — 7 days of sales are in C2:C8. Find the week's total sales.">রবি থেকে শনি — ৭ দিনের বিক্রয় C2:C8 সেলে আছে। সপ্তাহের মোট বিক্রয় বের করো।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <table class="mini-table">
+        <tr><th data-bn="দিন" data-en="Day">দিন</th><th data-bn="বিক্রয় (৳)" data-en="Sales (৳)">বিক্রয় (৳)</th></tr>
+        <tr><td data-bn="রবিবার" data-en="Sunday">রবিবার</td><td>১,২০০</td></tr>
+        <tr><td data-bn="সোমবার" data-en="Monday">সোমবার</td><td>৯৮০</td></tr>
+        <tr><td data-bn="মঙ্গলবার" data-en="Tuesday">মঙ্গলবার</td><td>১,৫৫০</td></tr>
+        <tr><td><strong data-bn="মোট" data-en="Total">মোট</strong></td><td class="result">=SUM(C2:C8)</td></tr>
+      </table>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=SUM(C2:C8)')">Copy</button>
+        <div class="formula-label">ফর্মুলা</div>
+        <div class="formula-code"><span class="fn">=SUM</span>(<span class="ref">C2:C8</span>)</div>
+      </div>
+      <p class="explanation" data-bn="C2:C8 মানে রবি থেকে শনি পর্যন্ত ৭টি সেল। SUM এই ৭টি সংখ্যা একসাথে যোগ করে মোট বিক্রয় দেখাবে।" data-en="C2:C8 means 7 cells from Sunday to Saturday. SUM will add these 7 numbers together and show total sales.">C2:C8 মানে রবি থেকে শনি পর্যন্ত ৭টি সেল। SUM এই ৭টি সংখ্যা একসাথে যোগ করে মোট বিক্রয় দেখাবে।</p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="একাধিক কলাম যোগ করতে: =SUM(B2:B8, C2:C8) — কমা দিয়ে আলাদা করো।" data-en="To add multiple columns: =SUM(B2:B8, C2:C8) — separate with commas.">একাধিক কলাম যোগ করতে: =SUM(B2:B8, C2:C8) — কমা দিয়ে আলাদা করো।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q2')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- TOPIC 2: AVERAGE -->
+  <div class="topic-label" data-bn="গড় — AVERAGE" data-en="Average — AVERAGE">গড় — AVERAGE</div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3">
+    <div class="card-header" onclick="toggleCard('q3')">
+      <div class="q-icon orange">📊</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৩</span>
+          <span class="q-badge badge-orange">AVERAGE</span>
+        </div>
+        <div class="q-title" data-bn="ছাত্রের পরীক্ষার গড় নম্বর বের করো" data-en="Find a Student's Average Exam Score">ছাত্রের পরীক্ষার গড় নম্বর বের করো</div>
+        <div class="q-scenario" data-bn="করিম ৫টি বিষয়ে পরীক্ষা দিয়েছে। নম্বরগুলো D2:D6 সেলে আছে। তার গড় নম্বর কত?" data-en="Karim sat for 5 subjects. Marks are in D2:D6. What is his average score?">করিম ৫টি বিষয়ে পরীক্ষা দিয়েছে। নম্বরগুলো D2:D6 সেলে আছে। তার গড় নম্বর কত?</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <table class="mini-table">
+        <tr><th data-bn="বিষয়" data-en="Subject">বিষয়</th><th data-bn="নম্বর" data-en="Marks">নম্বর</th></tr>
+        <tr><td data-bn="বাংলা" data-en="Bangla">বাংলা</td><td>৭৮</td></tr>
+        <tr><td data-bn="ইংরেজি" data-en="English">ইংরেজি</td><td>৬৫</td></tr>
+        <tr><td data-bn="গণিত" data-en="Math">গণিত</td><td>৮২</td></tr>
+        <tr><td data-bn="বিজ্ঞান" data-en="Science">বিজ্ঞান</td><td>৭১</td></tr>
+        <tr><td data-bn="ইতিহাস" data-en="History">ইতিহাস</td><td>৬৮</td></tr>
+        <tr><td><strong data-bn="গড়" data-en="Average">গড়</strong></td><td class="result">=AVERAGE(D2:D6)</td></tr>
+      </table>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=AVERAGE(D2:D6)')">Copy</button>
+        <div class="formula-label">ফর্মুলা</div>
+        <div class="formula-code"><span class="fn">=AVERAGE</span>(<span class="ref">D2:D6</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>AVERAGE</strong> সব নম্বর যোগ করে মোট সংখ্যা দিয়ে ভাগ করে। এখানে (78+65+82+71+68)÷5 = 72.8 হবে।" data-en="<strong>AVERAGE</strong> adds all marks and divides by count. Here (78+65+82+71+68)÷5 = 72.8.">
+        <strong>AVERAGE</strong> সব নম্বর যোগ করে মোট সংখ্যা দিয়ে ভাগ করে। এখানে (78+65+82+71+68)÷5 = 72.8 হবে।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="ফাঁকা সেল AVERAGE গণনায় ধরে না — কিন্তু ০ (শূন্য) লেখা থাকলে সেটা ধরবে।" data-en="Empty cells are ignored by AVERAGE — but cells with 0 are counted.">ফাঁকা সেল AVERAGE গণনায় ধরে না — কিন্তু ০ (শূন্য) লেখা থাকলে সেটা ধরবে।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q3')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4">
+    <div class="card-header" onclick="toggleCard('q4')">
+      <div class="q-icon orange">🌡️</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৪</span>
+          <span class="q-badge badge-orange">AVERAGE</span>
+        </div>
+        <div class="q-title" data-bn="সপ্তাহের গড় তাপমাত্রা হিসাব করো" data-en="Calculate Average Weekly Temperature">সপ্তাহের গড় তাপমাত্রা হিসাব করো</div>
+        <div class="q-scenario" data-bn="একটি কৃষি প্রকল্পে ৭ দিনের তাপমাত্রা E2:E8 সেলে রেকর্ড করা হয়েছে। গড় তাপমাত্রা বের করো।" data-en="7 days of temperature readings for a farm project are in E2:E8. Find the average temperature.">একটি কৃষি প্রকল্পে ৭ দিনের তাপমাত্রা E2:E8 সেলে রেকর্ড করা হয়েছে। গড় তাপমাত্রা বের করো।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=AVERAGE(E2:E8)')">Copy</button>
+        <div class="formula-label">ফর্মুলা</div>
+        <div class="formula-code"><span class="fn">=AVERAGE</span>(<span class="ref">E2:E8</span>)</div>
+      </div>
+      <p class="explanation" data-bn="AVERAGE(E2:E8) ৭ দিনের তাপমাত্রা যোগ করে ৭ দিয়ে ভাগ করবে। ফলে সপ্তাহের গড় তাপমাত্রা পাবে।" data-en="AVERAGE(E2:E8) will add 7 days of temperature and divide by 7 to give the weekly average.">AVERAGE(E2:E8) ৭ দিনের তাপমাত্রা যোগ করে ৭ দিয়ে ভাগ করবে। ফলে সপ্তাহের গড় তাপমাত্রা পাবে।</p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="MAX(E2:E8) দিলে সর্বোচ্চ তাপমাত্রা এবং MIN(E2:E8) দিলে সর্বনিম্ন পাবে।" data-en="MAX(E2:E8) gives the highest temperature and MIN(E2:E8) gives the lowest.">MAX(E2:E8) দিলে সর্বোচ্চ তাপমাত্রা এবং MIN(E2:E8) দিলে সর্বনিম্ন পাবে।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q4')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5">
+    <div class="card-header" onclick="toggleCard('q5')">
+      <div class="q-icon orange">👨‍💼</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৫</span>
+          <span class="q-badge badge-orange">MAX / MIN</span>
+        </div>
+        <div class="q-title" data-bn="সর্বোচ্চ ও সর্বনিম্ন বেতন খুঁজে বের করো" data-en="Find Highest and Lowest Salary">সর্বোচ্চ ও সর্বনিম্ন বেতন খুঁজে বের করো</div>
+        <div class="q-scenario" data-bn="একটি অফিসে ১০ জন কর্মীর বেতন F2:F11 সেলে আছে। সবচেয়ে বেশি এবং সবচেয়ে কম বেতন কত?" data-en="Salaries of 10 employees in an office are in F2:F11. What are the highest and lowest salaries?">একটি অফিসে ১০ জন কর্মীর বেতন F2:F11 সেলে আছে। সবচেয়ে বেশি এবং সবচেয়ে কম বেতন কত?</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=MAX(F2:F11)')">Copy</button>
+        <div class="formula-label" data-bn="সর্বোচ্চ বেতন" data-en="Highest Salary">সর্বোচ্চ বেতন</div>
+        <div class="formula-code"><span class="fn">=MAX</span>(<span class="ref">F2:F11</span>)</div>
+      </div>
+      <div class="formula-answer" style="margin-top:8px">
+        <button class="copy-btn" onclick="copyIt(event,'=MIN(F2:F11)')">Copy</button>
+        <div class="formula-label" data-bn="সর্বনিম্ন বেতন" data-en="Lowest Salary">সর্বনিম্ন বেতন</div>
+        <div class="formula-code"><span class="fn">=MIN</span>(<span class="ref">F2:F11</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>MAX</strong> সবচেয়ে বড় সংখ্যা দেয়। <strong>MIN</strong> সবচেয়ে ছোট সংখ্যা দেয়। দুটো আলাদা সেলে লেখো — একটায় MAX, আরেকটায় MIN।" data-en="<strong>MAX</strong> returns the largest number. <strong>MIN</strong> returns the smallest. Write each in a separate cell.">
+        <strong>MAX</strong> সবচেয়ে বড় সংখ্যা দেয়। <strong>MIN</strong> সবচেয়ে ছোট সংখ্যা দেয়। দুটো আলাদা সেলে লেখো।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="দামের লিস্টে সবচেয়ে সস্তা পণ্য খুঁজতে MIN, সবচেয়ে দামি পণ্য খুঁজতে MAX ব্যবহার করো।" data-en="Use MIN to find the cheapest item in a price list, MAX for the most expensive.">দামের লিস্টে সবচেয়ে সস্তা পণ্য খুঁজতে MIN, সবচেয়ে দামি পণ্য খুঁজতে MAX ব্যবহার করো।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q5')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- TOPIC 3: IF -->
+  <div class="topic-label" data-bn="শর্ত যাচাই — IF" data-en="Condition Check — IF">শর্ত যাচাই — IF</div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6">
+    <div class="card-header" onclick="toggleCard('q6')">
+      <div class="q-icon yellow">📝</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৬</span>
+          <span class="q-badge badge-yellow">IF</span>
+        </div>
+        <div class="q-title" data-bn="পাশ বা ফেল বিচার করো" data-en="Determine Pass or Fail">পাশ বা ফেল বিচার করো</div>
+        <div class="q-scenario" data-bn="পরীক্ষার নম্বর G2 সেলে আছে। ৩৩ বা তার বেশি হলে 'পাশ', না হলে 'ফেল' দেখাও।" data-en="Exam marks are in G2. Show 'Pass' if 33 or above, 'Fail' otherwise.">পরীক্ষার নম্বর G2 সেলে আছে। ৩৩ বা তার বেশি হলে "পাশ", না হলে "ফেল" দেখাও।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="scenario-visual">
+        <span class="scenario-emoji">🎓</span>
+        <span class="scenario-text" data-bn="পরীক্ষার ফল বের করতে প্রতিটি ছাত্রের জন্য আলাদা করে দেখতে হয় না — IF ফর্মুলা নিজেই সিদ্ধান্ত নেবে।" data-en="You don't need to check each student manually — the IF formula will decide automatically.">পরীক্ষার ফল বের করতে প্রতিটি ছাত্রের জন্য আলাদা করে দেখতে হয় না — IF ফর্মুলা নিজেই সিদ্ধান্ত নেবে।</span>
+      </div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick='copyIt(event,"=IF(G2>=33,\"পাশ\",\"ফেল\")")'>Copy</button>
+        <div class="formula-label">ফর্মুলা (H2 সেলে লেখো)</div>
+        <div class="formula-code"><span class="fn">=IF</span>(<span class="ref">G2</span>>=<span class="num">33</span>, <span class="str">"পাশ"</span>, <span class="str">"ফেল"</span>)</div>
+      </div>
+      <p class="explanation" data-bn="IF ফর্মুলার ৩টি অংশ:<br>① শর্ত: G2>=33 (নম্বর কি ৩৩ বা বেশি?)<br>② হ্যাঁ হলে: 'পাশ' দেখাও<br>③ না হলে: 'ফেল' দেখাও" data-en="IF formula has 3 parts:<br>① Condition: G2>=33 (is the mark 33 or more?)<br>② If YES: show 'Pass'<br>③ If NO: show 'Fail'">
+        IF ফর্মুলার ৩টি অংশ:<br>① শর্ত: G2>=33<br>② হ্যাঁ হলে: "পাশ"<br>③ না হলে: "ফেল"
+      </p>
+      <ul class="steps-list">
+        <li data-bn="H2 সেলে ক্লিক করো" data-en="Click on cell H2">H2 সেলে ক্লিক করো</li>
+        <li data-bn='টাইপ করো: =IF(G2>=33,"পাশ","ফেল")' data-en='Type: =IF(G2>=33,"Pass","Fail")'>টাইপ করো: =IF(G2>=33,"পাশ","ফেল")</li>
+        <li data-bn="Enter চেপে নিচের সেলগুলোতে ফর্মুলা টেনে দাও" data-en="Press Enter and drag the formula down to other cells">Enter চেপে নিচের সেলগুলোতে ফর্মুলা টেনে দাও</li>
+      </ul>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="English এ লিখলে: =IF(G2>=33,&quot;Pass&quot;,&quot;Fail&quot;) — দুই ভাষায়ই কাজ করে!" data-en="In English: =IF(G2>=33,&quot;Pass&quot;,&quot;Fail&quot;) — works in both languages!">English এ লিখলে: =IF(G2>=33,"Pass","Fail") — দুই ভাষায়ই কাজ করে!</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q6')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7">
+    <div class="card-header" onclick="toggleCard('q7')">
+      <div class="q-icon yellow">🔴</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৭</span>
+          <span class="q-badge badge-yellow">IF + TODAY</span>
+        </div>
+        <div class="q-title" data-bn="মেয়াদ উত্তীর্ণ পণ্য চিহ্নিত করো" data-en="Mark Expired Products">মেয়াদ উত্তীর্ণ পণ্য চিহ্নিত করো</div>
+        <div class="q-scenario" data-bn="দোকানে রাখা পণ্যের মেয়াদ শেষের তারিখ H2 সেলে আছে। মেয়াদ শেষ হলে 'মেয়াদ শেষ' দেখাও।" data-en="Expiry dates of shop products are in H2. Show 'Expired' if the date has passed.">দোকানে রাখা পণ্যের মেয়াদ শেষের তারিখ H2 সেলে আছে। মেয়াদ শেষ হলে 'মেয়াদ শেষ' দেখাও।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick='copyIt(event,"=IF(H2<TODAY(),\"মেয়াদ শেষ\",\"ঠিক আছে\")")'>Copy</button>
+        <div class="formula-label">ফর্মুলা (I2 সেলে)</div>
+        <div class="formula-code"><span class="fn">=IF</span>(<span class="ref">H2</span><<span class="fn">TODAY</span>(), <span class="str">"মেয়াদ শেষ"</span>, <span class="str">"ঠিক আছে"</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>TODAY()</strong> আজকের তারিখ দেয়। H2 এর তারিখ যদি আজকের আগে হয়, তাহলে মেয়াদ শেষ। Excel ফাইল খোলার সাথে সাথে এটি আপডেট হয়!" data-en="<strong>TODAY()</strong> gives today's date. If H2's date is before today, the product is expired. This updates automatically every time you open the file!">
+        <strong>TODAY()</strong> আজকের তারিখ দেয়। H2 এর তারিখ যদি আজকের আগে হয়, মেয়াদ শেষ। ফাইল খুললেই আপডেট হয়!
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="=H2-TODAY() দিলে মেয়াদ শেষ হতে কত দিন বাকি সেটাও জানতে পারবে!" data-en="=H2-TODAY() tells you how many days remain until expiry!">= H2-TODAY() দিলে মেয়াদ শেষ হতে কত দিন বাকি সেটাও জানতে পারবে!</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q7')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8">
+    <div class="card-header" onclick="toggleCard('q8')">
+      <div class="q-icon yellow">💰</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৮</span>
+          <span class="q-badge badge-yellow">IF</span>
+        </div>
+        <div class="q-title" data-bn="বিক্রয় লক্ষ্যমাত্রা পূরণ হয়েছে কিনা দেখাও" data-en="Show if Sales Target Was Met">বিক্রয় লক্ষ্যমাত্রা পূরণ হয়েছে কিনা দেখাও</div>
+        <div class="q-scenario" data-bn="প্রতি মাসে লক্ষ্যমাত্রা ৫০,০০০ টাকা। বর্তমান বিক্রয় I2 সেলে। লক্ষ্য পূরণ হলে 'অর্জিত ✓' নাহলে 'বাকি ✗' দেখাও।" data-en="Monthly target is ৳50,000. Current sales are in I2. Show 'Achieved ✓' if met, 'Remaining ✗' if not.">প্রতি মাসে লক্ষ্যমাত্রা ৫০,০০০ টাকা। বর্তমান বিক্রয় I2 সেলে।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick='copyIt(event,"=IF(I2>=50000,\"অর্জিত ✓\",\"বাকি ✗\")")'>Copy</button>
+        <div class="formula-label">ফর্মুলা (J2 সেলে)</div>
+        <div class="formula-code"><span class="fn">=IF</span>(<span class="ref">I2</span>>=<span class="num">50000</span>, <span class="str">"অর্জিত ✓"</span>, <span class="str">"বাকি ✗"</span>)</div>
+      </div>
+      <p class="explanation" data-bn="বিক্রয় ৫০,০০০ বা বেশি হলে 'অর্জিত ✓' দেখাবে। কম হলে 'বাকি ✗' দেখাবে। তারপর সেলে রং দিয়ে আরও সুন্দর করা যায়।" data-en="If sales are 50,000 or more it shows 'Achieved ✓'. Less shows 'Remaining ✗'. You can add colors too.">
+        বিক্রয় ৫০,০০০ বা বেশি হলে 'অর্জিত ✓' দেখাবে। কম হলে 'বাকি ✗' দেখাবে।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="লক্ষ্যমাত্রা K1 সেলে রাখো। তাহলে: =IF(I2>=K1,...) — লক্ষ্য বদলালে সব সেল আপডেট হবে।" data-en="Put the target in cell K1. Then: =IF(I2>=K1,...) — change the target and all cells update.">লক্ষ্যমাত্রা K1 সেলে রাখলে সহজে পরিবর্তন করা যায়।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q8')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- TOPIC 4: COUNT / TEXT -->
+  <div class="topic-label" data-bn="গণনা ও টেক্সট — COUNT & TEXT" data-en="Counting & Text — COUNT & TEXT">গণনা ও টেক্সট — COUNT & TEXT</div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9">
+    <div class="card-header" onclick="toggleCard('q9')">
+      <div class="q-icon blue">📋</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ০৯</span>
+          <span class="q-badge badge-blue">COUNTA</span>
+        </div>
+        <div class="q-title" data-bn="কতজন ছাত্র উপস্থিত ছিল গণনা করো" data-en="Count How Many Students Attended">কতজন ছাত্র উপস্থিত ছিল গণনা করো</div>
+        <div class="q-scenario" data-bn="হাজিরা খাতায় উপস্থিত ছাত্রদের নাম J2:J60 সেলে আছে (অনুপস্থিতদের সেল ফাঁকা)। কতজন এসেছিল?" data-en="Present students' names are in J2:J60 (absent cells are blank). How many attended?">হাজিরা খাতায় উপস্থিত ছাত্রদের নাম J2:J60 সেলে আছে (অনুপস্থিতদের সেল ফাঁকা)।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=COUNTA(J2:J60)')">Copy</button>
+        <div class="formula-label">ফর্মুলা</div>
+        <div class="formula-code"><span class="fn">=COUNTA</span>(<span class="ref">J2:J60</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>COUNTA</strong> ফাঁকা নয় এমন সেল গণনা করে। নাম থাকলে গণনা হবে, ফাঁকা থাকলে হবে না। তাই যতজনের নাম আছে ততজনকে গণনা করবে।" data-en="<strong>COUNTA</strong> counts non-empty cells. Cells with names get counted, blank cells do not. So it counts exactly how many names are present.">
+        <strong>COUNTA</strong> ফাঁকা নয় এমন সেল গণনা করে। নাম আছে → গণনা। ফাঁকা → গণনা নেই।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="অনুপস্থিতের সংখ্যা জানতে: =COUNTBLANK(J2:J60) — এটি ফাঁকা সেল গণনা করে।" data-en="To count absences: =COUNTBLANK(J2:J60) — this counts empty cells.">অনুপস্থিতের সংখ্যা: =COUNTBLANK(J2:J60) — ফাঁকা সেল গণনা করে।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q9')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q10">
+    <div class="card-header" onclick="toggleCard('q10')">
+      <div class="q-icon blue">✉️</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ১০</span>
+          <span class="q-badge badge-blue">CONCATENATE</span>
+        </div>
+        <div class="q-title" data-bn="প্রথম ও শেষ নাম একসাথে জোড়া লাগাও" data-en="Join First and Last Name Together">প্রথম ও শেষ নাম একসাথে জোড়া লাগাও</div>
+        <div class="q-scenario" data-bn="প্রথম নাম K2 সেলে, পদবি L2 সেলে আছে। পূর্ণ নাম একটি সেলে দেখাও।" data-en="First name is in K2, last name in L2. Show the full name in one cell.">প্রথম নাম K2 সেলে, পদবি L2 সেলে আছে। পূর্ণ নাম একটি সেলে দেখাও।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick='copyIt(event,"=K2&\" \"&L2")'>Copy</button>
+        <div class="formula-label">ফর্মুলা (M2 সেলে)</div>
+        <div class="formula-code"><span class="ref">=K2</span>&<span class="str">" "</span>&<span class="ref">L2</span></div>
+      </div>
+      <p class="explanation" data-bn="<strong>&</strong> চিহ্ন দিয়ে টেক্সট জোড়া লাগানো যায়। মাঝে <strong>&quot; &quot;</strong> (স্পেস) না দিলে নাম লাগোয়া হয়ে যাবে। যেমন: 'করিম' + ' ' + 'মিয়া' = 'করিম মিয়া'।" data-en="The <strong>&</strong> symbol joins text. Without <strong>&quot; &quot;</strong> (space) in the middle the names would run together. E.g., 'Karim' + ' ' + 'Mia' = 'Karim Mia'.">
+        <strong>&</strong> চিহ্ন দিয়ে জোড়া লাগাও। মাঝে স্পেস (<strong>" "</strong>) না দিলে লাগোয়া হয়ে যাবে।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="আধুনিক পদ্ধতি: =TEXTJOIN(&quot; &quot;,TRUE,K2,L2) — একাধিক ঘরের টেক্সট জোড়া লাগাতে বেশি সুবিধাজনক।" data-en="Modern way: =TEXTJOIN(&quot; &quot;,TRUE,K2,L2) — more convenient for joining multiple cells.">আধুনিক পদ্ধতি: =TEXTJOIN(" ",TRUE,K2,L2)</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q10')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="question-card" id="q11">
+    <div class="card-header" onclick="toggleCard('q11')">
+      <div class="q-icon blue">🔢</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ১১</span>
+          <span class="q-badge badge-blue">COUNTIF</span>
+        </div>
+        <div class="q-title" data-bn="কতটি পণ্য 'ইলেকট্রনিক্স' বিভাগের তা গণনা করো" data-en="Count How Many Products Are in 'Electronics' Category">কতটি পণ্য 'ইলেকট্রনিক্স' বিভাগের তা গণনা করো</div>
+        <div class="q-scenario" data-bn="পণ্যের বিভাগ M2:M200 সেলে আছে। 'ইলেকট্রনিক্স' বিভাগের পণ্য কতটি?" data-en="Product categories are in M2:M200. How many products are in the 'Electronics' category?">পণ্যের বিভাগ M2:M200 সেলে আছে। 'ইলেকট্রনিক্স' বিভাগের পণ্য কতটি?</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick='copyIt(event,"=COUNTIF(M2:M200,\"ইলেকট্রনিক্স\")")'>Copy</button>
+        <div class="formula-label">ফর্মুলা</div>
+        <div class="formula-code"><span class="fn">=COUNTIF</span>(<span class="ref">M2:M200</span>, <span class="str">"ইলেকট্রনিক্স"</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>COUNTIF</strong> একটি নির্দিষ্ট শর্ত মেলে এমন সেল গণনা করে। এখানে M2:M200 রেঞ্জে যত সেলে 'ইলেকট্রনিক্স' লেখা আছে তা গণনা করবে।" data-en="<strong>COUNTIF</strong> counts cells matching a specific condition. Here it counts how many cells in M2:M200 contain 'Electronics'.">
+        <strong>COUNTIF</strong> শর্ত মিললে গণনা করে। 'ইলেকট্রনিক্স' যতবার আছে ততবার গণবে।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="একটি সেলে বিভাগের নাম রেখে রেফারেন্স দাও: =COUNTIF(M2:M200,N1) — N1 বদলালে ফলাফল বদলাবে।" data-en="Put the category name in a cell and reference it: =COUNTIF(M2:M200,N1) — change N1 and the result changes.">সেল রেফারেন্স ব্যবহার করো: =COUNTIF(M2:M200,N1) — N1 বদলালে ফল বদলাবে।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q11')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- TOPIC 5: Practical Calculations -->
+  <div class="topic-label" data-bn="ব্যবহারিক হিসাব — Practical" data-en="Practical Calculations">ব্যবহারিক হিসাব — Practical</div>
+
+  <!-- Q12 -->
+  <div class="question-card" id="q12">
+    <div class="card-header" onclick="toggleCard('q12')">
+      <div class="q-icon green">🏷️</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ১২</span>
+          <span class="q-badge badge-green" data-bn="শতাংশ" data-en="Percentage">শতাংশ</span>
+        </div>
+        <div class="q-title" data-bn="পণ্যের ছাড়ের দাম বের করো" data-en="Calculate Discounted Price of a Product">পণ্যের ছাড়ের দাম বের করো</div>
+        <div class="q-scenario" data-bn="একটি শার্টের দাম N2 সেলে ৮০০ টাকা। ২০% ছাড় দিলে কত টাকায় বিক্রি হবে?" data-en="A shirt's price is ৳800 in N2. With 20% discount, what is the selling price?">একটি শার্টের দাম N2 সেলে ৮০০ টাকা। ২০% ছাড় দিলে কত টাকায় বিক্রি হবে?</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <table class="mini-table">
+        <tr><th data-bn="সেল" data-en="Cell">সেল</th><th data-bn="বিষয়" data-en="Content">বিষয়</th><th data-bn="মান" data-en="Value">মান</th></tr>
+        <tr><td>N2</td><td data-bn="মূল দাম" data-en="Original Price">মূল দাম</td><td>৳ ৮০০</td></tr>
+        <tr><td>O2</td><td data-bn="ছাড়ের পরিমাণ" data-en="Discount Amount">ছাড়ের পরিমাণ</td><td class="formula">=N2*20%</td></tr>
+        <tr><td>P2</td><td data-bn="চূড়ান্ত দাম" data-en="Final Price">চূড়ান্ত দাম</td><td class="result">=N2*(1-20%)</td></tr>
+      </table>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=N2*(1-20%)')">Copy</button>
+        <div class="formula-label" data-bn="ছাড়ের পরের দাম" data-en="Price After Discount">ছাড়ের পরের দাম (P2 সেলে)</div>
+        <div class="formula-code"><span class="ref">=N2</span>*(<span class="num">1</span>-<span class="num">20%</span>)</div>
+      </div>
+      <p class="explanation" data-bn="২০% ছাড় মানে ৮০% রাখা। তাই দাম × ০.৮০ বা দাম × (১ - ২০%) = ছাড়ের পরের দাম। ৮০০ × ০.৮০ = ৬৪০ টাকা।" data-en="20% off means keeping 80%. So price × 0.80 or price × (1 - 20%) = final price. 800 × 0.80 = ৳640.">
+        ২০% ছাড় = ৮০% রাখা। ৮০০ × ০.৮০ = ৬৪০ টাকা।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="ছাড়ের পরিমাণ: =N2*20% → ১৬০ টাকা। চূড়ান্ত দাম: =N2-O2 বা =N2*80%।" data-en="Discount amount: =N2*20% → ৳160. Final price: =N2-O2 or =N2*80%.">ছাড়ের পরিমাণ: =N2*20% = ১৬০ টাকা।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q12')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="question-card" id="q13">
+    <div class="card-header" onclick="toggleCard('q13')">
+      <div class="q-icon orange">📅</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ১৩</span>
+          <span class="q-badge badge-orange" data-bn="তারিখ" data-en="Date">তারিখ</span>
+        </div>
+        <div class="q-title" data-bn="কর্মীর চাকরির বয়স (বছরে) বের করো" data-en="Calculate Employee Tenure in Years">কর্মীর চাকরির বয়স (বছরে) বের করো</div>
+        <div class="q-scenario" data-bn="একজন কর্মীর যোগদানের তারিখ O2 সেলে আছে। আজ পর্যন্ত কত বছর চাকরি করেছেন?" data-en="An employee's joining date is in O2. How many years have they worked until today?">একজন কর্মীর যোগদানের তারিখ O2 সেলে আছে। আজ পর্যন্ত কত বছর চাকরি করেছেন?</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=DATEDIF(O2,TODAY(),\"Y\")')">Copy</button>
+        <div class="formula-label">ফর্মুলা (P2 সেলে)</div>
+        <div class="formula-code"><span class="fn">=DATEDIF</span>(<span class="ref">O2</span>, <span class="fn">TODAY</span>(), <span class="str">"Y"</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>DATEDIF</strong> দুটি তারিখের মধ্যে পার্থক্য বের করে। &quot;Y&quot; মানে সম্পূর্ণ বছর। O2 = শুরুর তারিখ, TODAY() = আজ।" data-en="<strong>DATEDIF</strong> calculates the difference between two dates. &quot;Y&quot; means complete years. O2 = start date, TODAY() = today.">
+        <strong>DATEDIF</strong> = তারিখের পার্থক্য। "Y" = পূর্ণ বছর সংখ্যা।
+      </p>
+      <ul class="steps-list">
+        <li data-bn='"Y" = সম্পূর্ণ বছর' data-en='"Y" = complete years'>"Y" = সম্পূর্ণ বছর</li>
+        <li data-bn='"M" = সম্পূর্ণ মাস' data-en='"M" = complete months'>"M" = সম্পূর্ণ মাস</li>
+        <li data-bn='"D" = মোট দিন' data-en='"D" = total days'>"D" = মোট দিন</li>
+      </ul>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn='বছর ও মাস একসাথে: =DATEDIF(O2,TODAY(),"Y")&" বছর "&DATEDIF(O2,TODAY(),"YM")&" মাস"' data-en='Years and months together: =DATEDIF(O2,TODAY(),"Y")&" yrs "&DATEDIF(O2,TODAY(),"YM")&" mo"'>বছর ও মাস: =DATEDIF(O2,TODAY(),"Y")&" বছর "&DATEDIF(O2,TODAY(),"YM")&" মাস"</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q13')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="question-card" id="q14">
+    <div class="card-header" onclick="toggleCard('q14')">
+      <div class="q-icon yellow">🔢</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ১৪</span>
+          <span class="q-badge badge-yellow">ROUND</span>
+        </div>
+        <div class="q-title" data-bn="ভ্যাট সহ মূল্য দশমিক ২ ঘরে পরিষ্কার করো" data-en="Round VAT-Inclusive Price to 2 Decimal Places">ভ্যাট সহ মূল্য দশমিক ২ ঘরে পরিষ্কার করো</div>
+        <div class="q-scenario" data-bn="পণ্যের দাম P2 সেলে। ১৫% ভ্যাট যোগ করলে অনেক দশমিক আসে — ২ ঘরে রাখো।" data-en="Product price is in P2. Adding 15% VAT gives many decimal places — keep only 2.">পণ্যের দাম P2 সেলে। ১৫% ভ্যাট যোগ করলে অনেক দশমিক আসে — ২ ঘরে রাখো।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=ROUND(P2*1.15,2)')">Copy</button>
+        <div class="formula-label">ফর্মুলা (Q2 সেলে)</div>
+        <div class="formula-code"><span class="fn">=ROUND</span>(<span class="ref">P2</span>*<span class="num">1.15</span>, <span class="num">2</span>)</div>
+      </div>
+      <p class="explanation" data-bn="<strong>ROUND(সংখ্যা, দশমিক_ঘর)</strong> — P2*1.15 দিয়ে ভ্যাট যোগ করা হয়, তারপর ROUND দিয়ে ২ দশমিক ঘরে রাখা হয়। যেমন ৮৭৩.৪৫৬ হলে ৮৭৩.৪৬ হবে।" data-en="<strong>ROUND(number, decimal_places)</strong> — P2*1.15 adds VAT, then ROUND keeps 2 decimal places. E.g., 873.456 becomes 873.46.">
+        ROUND(সংখ্যা, ২) = দশমিক ২ ঘরে রাখে।
+      </p>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="ROUNDUP সবসময় উপরে রাউন্ড করে, ROUNDDOWN সবসময় নিচে। হিসাব মিলাতে সঠিকটা বেছে নাও।" data-en="ROUNDUP always rounds up, ROUNDDOWN always rounds down. Choose the right one for your calculations.">ROUNDUP সবসময় বাড়ায়, ROUNDDOWN সবসময় কমায়।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q14')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="question-card" id="q15">
+    <div class="card-header" onclick="toggleCard('q15')">
+      <div class="q-icon blue">🧹</div>
+      <div class="card-body-header">
+        <div class="q-meta">
+          <span class="q-num">প্রশ্ন ১৫</span>
+          <span class="q-badge badge-blue">TRIM + UPPER</span>
+        </div>
+        <div class="q-title" data-bn="আমদানি করা তথ্যের নাম পরিষ্কার করো" data-en="Clean Up Imported Data Names">আমদানি করা তথ্যের নাম পরিষ্কার করো</div>
+        <div class="q-scenario" data-bn="একটি ফাইল থেকে আমদানি করা গ্রাহকের নামে বাড়তি স্পেস আছে এবং ছোট/বড় হাতের সমস্যা আছে (Q2 সেলে)।" data-en="Customer names imported from a file have extra spaces and mixed case issues (in Q2).">একটি ফাইল থেকে আমদানি করা গ্রাহকের নামে বাড়তি স্পেস ও ছোট/বড় হাতের সমস্যা আছে।</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="answer-section">
+      <div class="divider"></div>
+      <div class="scenario-visual">
+        <span class="scenario-emoji">✨</span>
+        <span class="scenario-text" data-bn="আগে: '  করিম মিয়া  ' → পরে: 'করিম মিয়া' (বাড়তি স্পেস মুছে পরিষ্কার)" data-en="Before: '  Karim Mia  ' → After: 'Karim Mia' (extra spaces removed and cleaned)">আগে: '&nbsp;&nbsp;করিম মিয়া&nbsp;&nbsp;' → পরে: 'করিম মিয়া'</span>
+      </div>
+      <div class="formula-answer">
+        <button class="copy-btn" onclick="copyIt(event,'=TRIM(PROPER(Q2))')">Copy</button>
+        <div class="formula-label">ফর্মুলা (R2 সেলে)</div>
+        <div class="formula-code"><span class="fn">=TRIM</span>(<span class="fn">PROPER</span>(<span class="ref">Q2</span>))</div>
+      </div>
+      <p class="explanation" data-bn="<strong>TRIM</strong> বাড়তি স্পেস মুছে দেয়। <strong>PROPER</strong> প্রতিটি শব্দের প্রথম অক্ষর বড় হাতে করে। দুটো একসাথে ব্যবহার করলে নাম পরিষ্কার ও সুন্দর হয়।" data-en="<strong>TRIM</strong> removes extra spaces. <strong>PROPER</strong> capitalizes the first letter of each word. Using both together gives clean, well-formatted names.">
+        TRIM = বাড়তি স্পেস মুছে। PROPER = প্রতিটি শব্দ বড় হাতে।
+      </p>
+      <ul class="steps-list">
+        <li data-bn="PROPER(Q2) → 'করিম মিয়া' (প্রথম অক্ষর বড়)" data-en="PROPER(Q2) → capitalizes first letter of each word">PROPER(Q2) → প্রথম অক্ষর বড় হাতে</li>
+        <li data-bn="TRIM(...) → বাড়তি স্পেস সরায়" data-en="TRIM(...) → removes extra spaces">TRIM(...) → বাড়তি স্পেস সরায়</li>
+        <li data-bn="R2 তে ফলাফল পাবে: 'করিম মিয়া'" data-en="Result in R2: 'Karim Mia'">R2 তে পরিষ্কার নাম পাবে</li>
+      </ul>
+      <div class="tip-card">
+        <span class="tip-icon">💡</span>
+        <span data-bn="পরিষ্কার ডেটা R কলামে পাওয়ার পর কপি করে 'Values Only' হিসাবে Q কলামে পেস্ট করো — তারপর R মুছে দাও।" data-en="After getting clean data in column R, copy and paste as 'Values Only' into column Q — then delete column R.">পরিষ্কার কলাম পেলে Values Only পেস্ট করে আসল কলাম বদলাও।</span>
+      </div>
+      <button class="done-btn" onclick="markDone(event,'q15')" data-bn="সম্পন্ন চিহ্নিত করো" data-en="Mark as Done">সম্পন্ন চিহ্নিত করো</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p data-bn="Excel শিক্ষা • বাংলায় শিখুন, দক্ষতায় এগিয়ে যান 🌿" data-en="Excel Shikkha • Learn in Bengali, Grow with Skill 🌿">Excel শিক্ষা • বাংলায় শিখুন, দক্ষতায় এগিয়ে যান 🌿</p>
+</footer>
+
+<script>
+  let doneSet = new Set();
+  const TOTAL = 15;
+  let currentLang = 'bn';
+
+  function toggleCard(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.question-card.open').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+
+  function markDone(e, id) {
+    e.stopPropagation();
+    const card = document.getElementById(id);
+    const btn = card.querySelector('.done-btn');
+    if (doneSet.has(id)) {
+      doneSet.delete(id);
+      card.classList.remove('solved');
+      btn.classList.remove('done');
+      btn.textContent = currentLang === 'bn' ? 'সম্পন্ন চিহ্নিত করো' : 'Mark as Done';
+    } else {
+      doneSet.add(id);
+      card.classList.add('solved');
+      btn.classList.add('done');
+      btn.textContent = currentLang === 'bn' ? 'সম্পন্ন হয়েছে' : 'Completed';
+    }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const count = doneSet.size;
+    document.getElementById('done-count').textContent = count;
+    document.getElementById('progress-fill').style.width = (count / TOTAL * 100) + '%';
+    document.getElementById('progress-text').textContent = count + ' / ' + TOTAL;
+  }
+
+  function copyIt(e, text) {
+    e.stopPropagation();
+    const btn = e.target;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓';
+      btn.style.color = '#52b788';
+      setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+    });
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    document.getElementById('btn-bn').classList.toggle('active', lang === 'bn');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+    // Update all data-bn / data-en elements
+    document.querySelectorAll('[data-bn]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) {
+        if (el.tagName === 'INPUT' || el.tagName === 'BUTTON') {
+          el.value = val;
+          el.textContent = val;
+        } else {
+          el.innerHTML = val;
+        }
+      }
+    });
+
+    // Update done buttons that are completed
+    document.querySelectorAll('.done-btn.done').forEach(btn => {
+      btn.textContent = lang === 'bn' ? 'সম্পন্ন হয়েছে' : 'Completed';
+    });
+
+    // Switch font family
+    document.body.style.fontFamily = lang === 'bn'
+      ? "'Hind Siliguri', 'Syne', sans-serif"
+      : "'Syne', 'Hind Siliguri', sans-serif";
+  }
+
+  // Init
+  updateProgress();
+</script>
+</body>
+</html>

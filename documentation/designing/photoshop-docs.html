@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adobe Photoshop — Complete Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #0a0a0f;
+  --bg2:        #0f0f18;
+  --surface:    #13131f;
+  --surface2:   #1a1a2e;
+  --border:     #1f1f35;
+  --border2:    #2a2a45;
+  --text:       #e8e8f0;
+  --muted:      #7878a0;
+  --faint:      #4a4a6a;
+  --ps-blue:    #31a8ff;
+  --ps-dark:    #001e36;
+  --accent1:    #ff6b35;
+  --accent2:    #ffd23f;
+  --accent3:    #06ffa5;
+  --accent4:    #ff3d71;
+  --accent5:    #c77dff;
+  --sidebar-w:  295px;
+  --ff-head:    'Bebas Neue', sans-serif;
+  --ff-body:    'Syne', sans-serif;
+  --ff-mono:    'IBM Plex Mono', monospace;
+  --ff-bengali: 'Hind Siliguri', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+::selection { background: rgba(49,168,255,0.2); }
+
+body {
+  font-family: var(--ff-body);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ps-blue); }
+
+/* ══════════════
+   SIDEBAR
+══════════════ */
+#sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 200;
+  display: flex; flex-direction: column;
+}
+
+.sb-head {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(49,168,255,0.06) 0%, transparent 100%);
+}
+
+.sb-logo {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+
+.ps-mark {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, #001e36, #003f6b);
+  border: 2px solid var(--ps-blue);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 0 20px rgba(49,168,255,0.3);
+}
+
+.ps-mark span {
+  font-family: var(--ff-head);
+  font-size: 1.4rem;
+  color: var(--ps-blue);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.sb-head h1 {
+  font-family: var(--ff-head);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.sb-head p {
+  font-family: var(--ff-mono);
+  font-size: 0.66rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-top: 3px;
+}
+
+.sb-search {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sb-search input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--ff-body);
+  font-size: 0.8rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sb-search input:focus {
+  border-color: var(--ps-blue);
+  box-shadow: 0 0 0 3px rgba(49,168,255,0.1);
+}
+
+.sb-search input::placeholder { color: var(--faint); }
+
+/* progress bar in sidebar */
+.sb-progress {
+  padding: 10px 16px 0;
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  color: var(--faint);
+  letter-spacing: 0.08em;
+}
+
+.sb-prog-bar {
+  height: 3px; background: var(--border);
+  border-radius: 2px; margin-top: 6px; overflow: hidden;
+}
+
+.sb-prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ps-blue), var(--accent5));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.nav-grp { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.nav-grp:last-child { border-bottom: none; }
+
+.nav-grp-title {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 5px 18px 7px;
+}
+
+.nav-a {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 18px;
+  font-size: 0.82rem; font-weight: 400;
+  color: var(--muted);
+  text-decoration: none; cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.14s;
+}
+
+.nav-a:hover { color: var(--text); background: rgba(49,168,255,0.05); }
+
+.nav-a.active {
+  color: var(--ps-blue);
+  font-weight: 600;
+  background: rgba(49,168,255,0.08);
+  border-left-color: var(--ps-blue);
+}
+
+.nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nlv {
+  margin-left: auto;
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+}
+
+.nlv.b { background: rgba(6,255,165,0.12); color: var(--accent3); }
+.nlv.i { background: rgba(255,210,63,0.12);  color: var(--accent2); }
+.nlv.a { background: rgba(199,125,255,0.12); color: var(--accent5); }
+.nlv.x { background: rgba(255,61,113,0.12);  color: var(--accent4); }
+
+/* ══════════════
+   MAIN
+══════════════ */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1; min-width: 0;
+}
+
+/* Top bar */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.bc {
+  font-family: var(--ff-mono);
+  font-size: 0.73rem;
+  color: var(--faint);
+}
+
+.bc strong { color: var(--ps-blue); }
+
+.tb-chips { display: flex; gap: 8px; }
+.tb-chip {
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+}
+
+.tb-chip.hot {
+  background: linear-gradient(135deg, #001e36, #003f6b);
+  border-color: var(--ps-blue);
+  color: var(--ps-blue);
+}
+
+/* ══════════════
+   HERO
+══════════════ */
+.hero {
+  padding: 70px 52px 54px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(49,168,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49,168,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(49,168,255,0.08) 0%, transparent 70%);
+  top: -150px; right: -100px;
+  pointer-events: none;
+}
+
+.hero-glow2 {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(199,125,255,0.06) 0%, transparent 70%);
+  bottom: -50px; left: 300px;
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+  color: var(--ps-blue);
+  letter-spacing: 0.12em;
+  border: 1px solid rgba(49,168,255,0.25);
+  background: rgba(49,168,255,0.06);
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.hero h2 {
+  font-family: var(--ff-head);
+  font-size: 5rem;
+  letter-spacing: 4px;
+  line-height: 0.95;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.hero h2 .ps-word {
+  color: var(--ps-blue);
+  text-shadow: 0 0 40px rgba(49,168,255,0.4);
+}
+
+.hero-sub {
+  font-family: var(--ff-head);
+  font-size: 2rem;
+  letter-spacing: 6px;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 580px;
+  line-height: 1.85;
+  margin-bottom: 40px;
+}
+
+.hero-stats {
+  display: flex; gap: 36px; margin-bottom: 44px;
+}
+
+.hstat { display: flex; flex-direction: column; gap: 3px; }
+.hstat-n {
+  font-family: var(--ff-head);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.hstat-n span { color: var(--ps-blue); }
+.hstat-l {
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  color: var(--faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Module cards grid */
+.modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.mod-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mod-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--glow-c, rgba(49,168,255,0.06)), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.mod-card:hover { transform: translateY(-3px); border-color: var(--ps-blue); }
+.mod-card:hover::after { opacity: 1; }
+
+.mod-emoji { font-size: 2rem; margin-bottom: 10px; display: block; }
+.mod-name {
+  font-family: var(--ff-head);
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.mod-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ══════════════
+   CONTENT
+══════════════ */
+.content { padding: 0 52px 100px; }
+
+.section {
+  padding-top: 60px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  scroll-margin-top: 62px;
+}
+
+.section:last-child { border-bottom: none; }
+
+/* Section header */
+.sec-hd {
+  display: flex; align-items: flex-start; gap: 18px;
+  margin-bottom: 32px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.sec-hd::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, var(--ps-blue), transparent);
+}
+
+.sec-icon {
+  width: 58px; height: 58px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem;
+  flex-shrink: 0;
+  border: 1px solid var(--border2);
+}
+
+.sec-info h2 {
+  font-family: var(--ff-head);
+  font-size: 2.4rem;
+  letter-spacing: 3px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.sec-info p {
+  font-size: 0.87rem;
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.8;
+  margin-bottom: 0;
+}
+
+.sec-tags { display: flex; gap: 8px; margin-top: 10px; }
+.stag {
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+
+/* H3 */
+h3 {
+  font-family: var(--ff-head);
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  margin: 38px 0 14px;
+  color: var(--text);
+  display: flex; align-items: center; gap: 12px;
+}
+
+h3 .h3-accent {
+  display: inline-block;
+  width: 4px; height: 22px;
+  background: linear-gradient(to bottom, var(--ps-blue), var(--accent5));
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ps-blue);
+  margin: 22px 0 10px;
+  font-family: var(--ff-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+p {
+  font-size: 0.88rem;
+  color: #9090b0;
+  line-height: 1.95;
+  margin-bottom: 14px;
+}
+
+strong { color: var(--text); }
+
+/* Callout */
+.note {
+  display: flex; gap: 14px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 18px 0;
+  font-size: 0.84rem;
+  line-height: 1.75;
+  border-left: 3px solid;
+}
+
+.note .ni { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+.note.info  { background: rgba(49,168,255,0.06);  border-color: var(--ps-blue);   color: #7ab8e8; }
+.note.tip   { background: rgba(6,255,165,0.05);   border-color: var(--accent3);   color: #5ad9a8; }
+.note.warn  { background: rgba(255,210,63,0.05);  border-color: var(--accent2);   color: #c4a030; }
+.note.danger{ background: rgba(255,61,113,0.06);  border-color: var(--accent4);   color: #e07090; }
+.note.pro   { background: rgba(199,125,255,0.06); border-color: var(--accent5);   color: #a88acc; }
+.note.bengali { background: rgba(6,255,165,0.05); border-color: var(--accent3);   color: #5ad9a8; font-family: var(--ff-bengali); }
+
+.note strong { color: inherit; }
+
+/* Code block */
+.cb {
+  background: #050810;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.cb-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.cb-dots { display: flex; gap: 6px; }
+.cb-dots span { width: 10px; height: 10px; border-radius: 50%; display: block; }
+.cb-title { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--faint); letter-spacing: 0.06em; }
+.cb-copy {
+  font-family: var(--ff-mono); font-size: 0.62rem;
+  color: var(--faint); cursor: pointer; padding: 3px 8px;
+  border: 1px solid var(--border); border-radius: 4px;
+  transition: all 0.15s;
+}
+.cb-copy:hover { color: var(--ps-blue); border-color: var(--ps-blue); }
+
+pre {
+  padding: 20px;
+  font-family: var(--ff-mono);
+  font-size: 0.79rem;
+  line-height: 1.8;
+  color: #8888aa;
+  overflow-x: auto;
+}
+
+.t-blue   { color: #5eb0f5; }
+.t-green  { color: #50c888; }
+.t-yellow { color: #d4b840; }
+.t-red    { color: #e06060; }
+.t-purple { color: #b080e0; }
+.t-orange { color: #d0804a; }
+.t-gray   { color: #444466; }
+.t-cyan   { color: #40c0c0; }
+.t-white  { color: #ccccdd; }
+
+/* Steps */
+.steps { margin: 18px 0; }
+
+.step {
+  display: flex; gap: 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px; top: 35px; bottom: -8px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--ps-blue), transparent);
+  opacity: 0.3;
+}
+
+.sn {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #001e36, #003f6b);
+  border: 1px solid var(--ps-blue);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  color: var(--ps-blue);
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(49,168,255,0.15);
+}
+
+.sb2 { flex: 1; padding-top: 4px; }
+.sb2 strong { display: block; font-size: 0.9rem; margin-bottom: 5px; color: var(--text); }
+.sb2 p { margin-bottom: 0; }
+
+/* Grid cards */
+.cg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.cg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+.cg4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 16px 0; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--ps-blue); }
+.card h5 {
+  font-size: 0.86rem; font-weight: 700;
+  color: var(--text); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.card p { font-size: 0.8rem; color: var(--muted); margin: 0; line-height: 1.65; }
+
+/* Keyboard shortcuts */
+.shortcuts {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 7px; margin: 14px 0;
+}
+
+.sc {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  transition: border-color 0.15s;
+}
+
+.sc:hover { border-color: var(--ps-blue); }
+.sc-l { color: var(--muted); font-size: 0.8rem; }
+.sc-k { display: flex; gap: 4px; align-items: center; }
+
+kbd {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-family: var(--ff-mono);
+  font-size: 0.68rem;
+  color: var(--text);
+}
+
+/* Table */
+.tbl {
+  width: 100%; border-collapse: collapse;
+  margin: 16px 0; font-size: 0.82rem;
+}
+
+.tbl th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tbl td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  color: #8888aa;
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.tbl tr:hover td { background: rgba(49,168,255,0.03); }
+.tbl td strong { color: var(--text); }
+
+/* Practice */
+.practice {
+  background: linear-gradient(135deg, rgba(49,168,255,0.04), rgba(199,125,255,0.04));
+  border: 1px solid rgba(49,168,255,0.2);
+  border-radius: 12px;
+  padding: 24px 26px;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.practice::before {
+  content: 'PS';
+  position: absolute;
+  right: 20px; top: 12px;
+  font-family: var(--ff-head);
+  font-size: 3rem;
+  letter-spacing: 2px;
+  color: var(--ps-blue);
+  opacity: 0.05;
+}
+
+.p-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+
+.p-badge {
+  font-family: var(--ff-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.pb-task    { background: rgba(49,168,255,0.12); color: var(--ps-blue); }
+.pb-project { background: rgba(255,107,53,0.12); color: var(--accent1); }
+.pb-real    { background: rgba(255,210,63,0.12);  color: var(--accent2); }
+.pb-expert  { background: rgba(199,125,255,0.12); color: var(--accent5); }
+
+.p-head h4 { margin: 0; font-size: 1rem; font-weight: 700; color: var(--text); font-family: var(--ff-body); text-transform: none; letter-spacing: 0; font-size: 0.95rem; }
+.practice ol { padding-left: 20px; line-height: 2.1; font-size: 0.86rem; color: #8888aa; }
+.practice ol li { margin-bottom: 2px; }
+.practice ol li strong { color: var(--text); }
+
+/* Real life box */
+.rl {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin: 18px 0;
+}
+
+.rl-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent1);
+  background: rgba(255,107,53,0.1);
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,107,53,0.2);
+  margin-bottom: 10px;
+  display: block;
+  width: fit-content;
+}
+
+.rl h5 { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.rl p { font-size: 0.82rem; margin: 0; }
+
+/* Tool card */
+.tool-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px; margin: 14px 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 12px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.tool-card:hover { border-color: var(--ps-blue); background: rgba(49,168,255,0.04); }
+.tool-icon { font-size: 1.6rem; display: block; margin-bottom: 7px; }
+.tool-name { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--text); display: block; margin-bottom: 4px; }
+.tool-key { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--ps-blue); }
+
+/* Visual diagram box */
+.diagram {
+  border: 1px dashed var(--border2);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 16px 0;
+  background: var(--bg2);
+  position: relative;
+}
+
+.diagram-label {
+  position: absolute;
+  top: 10px; left: 14px;
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  color: var(--faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Layer visual */
+.layer-stack {
+  display: flex; flex-direction: column-reverse;
+  gap: 6px; margin: 14px 0;
+}
+
+.layer-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.layer-item:hover { border-color: var(--ps-blue); background: rgba(49,168,255,0.04); }
+.layer-vis { width: 28px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+.layer-name { color: var(--text); font-weight: 600; flex: 1; }
+.layer-type { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--faint); }
+.layer-eye { color: var(--muted); font-size: 0.9rem; }
+
+/* Blend mode table */
+.blend-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin: 14px 0;
+}
+
+.blend-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.blend-name { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--ps-blue); margin-bottom: 5px; }
+.blend-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+/* Bengali specific */
+.bn {
+  font-family: var(--ff-bengali);
+  background: rgba(6,255,165,0.05);
+  border: 1px solid rgba(6,255,165,0.15);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.bn-title {
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  color: var(--accent3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.bn-text {
+  font-size: 1.1rem;
+  color: var(--text);
+  line-height: 2;
+}
+
+.bn-eng {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-family: var(--ff-body);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* Keyboard visual */
+.key-layout {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 14px 0;
+}
+
+.key-row {
+  display: flex; gap: 6px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.key-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-bottom: 2px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  color: var(--text);
+  min-width: 36px;
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+
+.key-btn .bn-char {
+  font-family: var(--ff-bengali);
+  font-size: 0.85rem;
+  color: var(--accent3);
+  line-height: 1.2;
+}
+
+.key-btn .en-char {
+  font-size: 0.6rem;
+  color: var(--faint);
+}
+
+.key-btn.active {
+  background: rgba(49,168,255,0.1);
+  border-color: var(--ps-blue);
+}
+
+/* Chip row */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.chip {
+  padding: 5px 14px;
+  border-radius: 4px;
+  font-family: var(--ff-mono);
+  font-size: 0.73rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--ps-blue); color: var(--ps-blue); }
+
+/* Process flow */
+.flow {
+  display: flex; align-items: center; gap: 0;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.flow-step {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  text-align: center;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.flow-step .f-num {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  color: var(--ps-blue);
+  margin-bottom: 4px;
+}
+
+.flow-step .f-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.flow-arrow { color: var(--faint); margin: 0 8px; font-size: 1rem; flex-shrink: 0; }
+
+/* Size reference */
+.size-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.83rem;
+}
+
+.size-vis {
+  flex-shrink: 0;
+  background: rgba(49,168,255,0.12);
+  border: 1px solid rgba(49,168,255,0.3);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  color: var(--ps-blue);
+}
+
+.size-name { color: var(--text); font-weight: 600; flex: 1; }
+.size-dim { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); }
+.size-use { font-size: 0.75rem; color: var(--faint); }
+
+/* ══════════════
+   ANIMATIONS
+══════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero > * { animation: fadeUp 0.5s ease both; }
+.hero-eyebrow    { animation-delay: 0.05s; }
+.hero h2         { animation-delay: 0.12s; }
+.hero-sub        { animation-delay: 0.18s; }
+.hero-desc       { animation-delay: 0.25s; }
+.hero-stats      { animation-delay: 0.32s; }
+.modules         { animation-delay: 0.38s; }
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(49,168,255,0.3); }
+  50%       { box-shadow: 0 0 0 6px rgba(49,168,255,0); }
+}
+
+.ps-mark { animation: pulse-border 3s ease infinite; }
+
+/* ══════════════
+   RESPONSIVE
+══════════════ */
+@media (max-width: 1000px) {
+  :root { --sidebar-w: 240px; }
+  .hero { padding: 48px 32px 40px; }
+  .content { padding: 0 32px 80px; }
+  .hero h2 { font-size: 3.5rem; }
+  .cg { grid-template-columns: 1fr; }
+  .cg3 { grid-template-columns: 1fr 1fr; }
+  .shortcuts { grid-template-columns: 1fr; }
+  .blend-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 680px) {
+  #sidebar { display: none; }
+  #main { margin-left: 0; }
+  .hero h2 { font-size: 2.5rem; }
+  .cg3 { grid-template-columns: 1fr; }
+  .cg4 { grid-template-columns: 1fr 1fr; }
+  .blend-grid { grid-template-columns: 1fr; }
+  .modules { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════
+     SIDEBAR
+══════════════════════════ -->
+<aside id="sidebar">
+  <div class="sb-head">
+    <div class="sb-logo">
+      <div class="ps-mark"><span>Ps</span></div>
+      <div>
+        <h1>PHOTOSHOP</h1>
+        <p>COMPLETE DOCUMENTATION · 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-search">
+    <input type="text" id="sbSearch" placeholder="Search topics..." oninput="navFilter(this.value)">
+  </div>
+
+  <div class="sb-progress">
+    <span>READING PROGRESS</span>
+    <div class="sb-prog-bar"><div class="sb-prog-fill" id="progFill"></div></div>
+  </div>
+
+  <nav id="navList">
+    <div class="nav-grp">
+      <div class="nav-grp-title">Foundation</div>
+      <a class="nav-a active" href="#intro"  onclick="setActive(this)"><span class="nav-dot" style="background:#31a8ff"></span>What is Photoshop? <span class="nlv b">Basic</span></a>
+      <a class="nav-a"        href="#setup"  onclick="setActive(this)"><span class="nav-dot" style="background:#31a8ff"></span>Setup & Interface <span class="nlv b">Basic</span></a>
+      <a class="nav-a"        href="#tools"  onclick="setActive(this)"><span class="nav-dot" style="background:#31a8ff"></span>Tools Panel <span class="nlv b">Basic</span></a>
+      <a class="nav-a"        href="#layers" onclick="setActive(this)"><span class="nav-dot" style="background:#31a8ff"></span>Layers <span class="nlv b">Basic</span></a>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-title">Photo Editing</div>
+      <a class="nav-a" href="#selection"  onclick="setActive(this)"><span class="nav-dot" style="background:#ffd23f"></span>Selection Tools <span class="nlv i">Inter</span></a>
+      <a class="nav-a" href="#retouching" onclick="setActive(this)"><span class="nav-dot" style="background:#ffd23f"></span>Retouching <span class="nlv i">Inter</span></a>
+      <a class="nav-a" href="#color"      onclick="setActive(this)"><span class="nav-dot" style="background:#ffd23f"></span>Color Correction <span class="nlv i">Inter</span></a>
+      <a class="nav-a" href="#masking"    onclick="setActive(this)"><span class="nav-dot" style="background:#ffd23f"></span>Masks & Cutouts <span class="nlv i">Inter</span></a>
+      <a class="nav-a" href="#filters"    onclick="setActive(this)"><span class="nav-dot" style="background:#ffd23f"></span>Filters & Effects <span class="nlv i">Inter</span></a>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-title">Design Projects</div>
+      <a class="nav-a" href="#banner"  onclick="setActive(this)"><span class="nav-dot" style="background:#ff6b35"></span>Banner Design <span class="nlv a">Adv</span></a>
+      <a class="nav-a" href="#flex"    onclick="setActive(this)"><span class="nav-dot" style="background:#ff6b35"></span>Flex / Hoarding <span class="nlv a">Adv</span></a>
+      <a class="nav-a" href="#poster"  onclick="setActive(this)"><span class="nav-dot" style="background:#ff6b35"></span>Poster Design <span class="nlv a">Adv</span></a>
+      <a class="nav-a" href="#visiting"onclick="setActive(this)"><span class="nav-dot" style="background:#ff6b35"></span>Visiting Card <span class="nlv a">Adv</span></a>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-title">Bengali Typing</div>
+      <a class="nav-a" href="#bengali-intro"   onclick="setActive(this)"><span class="nav-dot" style="background:#06ffa5"></span>Bengali in Photoshop</a>
+      <a class="nav-a" href="#avro"            onclick="setActive(this)"><span class="nav-dot" style="background:#06ffa5"></span>Avro Keyboard Setup</a>
+      <a class="nav-a" href="#bijoy"           onclick="setActive(this)"><span class="nav-dot" style="background:#06ffa5"></span>Bijoy Keyboard</a>
+      <a class="nav-a" href="#bangla-fonts"    onclick="setActive(this)"><span class="nav-dot" style="background:#06ffa5"></span>Bengali Fonts Guide</a>
+      <a class="nav-a" href="#bengali-design"  onclick="setActive(this)"><span class="nav-dot" style="background:#06ffa5"></span>Bengali Design Projects</a>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-title">Advanced</div>
+      <a class="nav-a" href="#smart"     onclick="setActive(this)"><span class="nav-dot" style="background:#c77dff"></span>Smart Objects <span class="nlv x">Expert</span></a>
+      <a class="nav-a" href="#actions"   onclick="setActive(this)"><span class="nav-dot" style="background:#c77dff"></span>Actions & Automation <span class="nlv x">Expert</span></a>
+      <a class="nav-a" href="#shortcuts" onclick="setActive(this)"><span class="nav-dot" style="background:#888"></span>All Shortcuts</a>
+      <a class="nav-a" href="#export"    onclick="setActive(this)"><span class="nav-dot" style="background:#888"></span>Export & Save</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ══════════════════════════
+     MAIN
+══════════════════════════ -->
+<main id="main">
+
+  <div class="topbar">
+    <div class="bc">adobe / photoshop / <strong>documentation</strong></div>
+    <div class="tb-chips">
+      <span class="tb-chip">CC 2025</span>
+      <span class="tb-chip hot">Ps Complete Guide</span>
+    </div>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero" id="intro">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+
+    <div class="hero-eyebrow">★ The Professional's Handbook</div>
+
+    <h2><span class="ps-word">PHOTO</span><br>SHOP</h2>
+    <div class="hero-sub">COMPLETE DOCUMENTATION</div>
+
+    <p class="hero-desc">Master Adobe Photoshop from scratch — tools, layers, photo editing, color correction, banner design, flex/hoarding printing, poster creation, visiting cards, and complete step-by-step Bengali typing with Avro & Bijoy keyboards.</p>
+
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">18<span>+</span></div><div class="hstat-l">Chapters</div></div>
+      <div class="hstat"><div class="hstat-n">50<span>+</span></div><div class="hstat-l">Real Projects</div></div>
+      <div class="hstat"><div class="hstat-n">120<span>+</span></div><div class="hstat-l">Tips & Tricks</div></div>
+      <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">Design Verticals</div></div>
+    </div>
+
+    <div class="modules">
+      <a class="mod-card" href="#setup"     style="--glow-c:rgba(49,168,255,0.08)"><span class="mod-emoji">🖥️</span><div class="mod-name">INTERFACE</div><div class="mod-desc">Workspace, panels, preferences</div></a>
+      <a class="mod-card" href="#layers"    style="--glow-c:rgba(199,125,255,0.08)"><span class="mod-emoji">📚</span><div class="mod-name">LAYERS</div><div class="mod-desc">Core Photoshop concept</div></a>
+      <a class="mod-card" href="#retouching"style="--glow-c:rgba(6,255,165,0.08)"><span class="mod-emoji">✨</span><div class="mod-name">RETOUCHING</div><div class="mod-desc">Skin, objects, backgrounds</div></a>
+      <a class="mod-card" href="#color"     style="--glow-c:rgba(255,210,63,0.08)"><span class="mod-emoji">🎨</span><div class="mod-name">COLOR</div><div class="mod-desc">Curves, levels, grading</div></a>
+      <a class="mod-card" href="#banner"    style="--glow-c:rgba(255,107,53,0.08)"><span class="mod-emoji">🪧</span><div class="mod-name">BANNER</div><div class="mod-desc">Digital & print banners</div></a>
+      <a class="mod-card" href="#flex"      style="--glow-c:rgba(255,61,113,0.08)"><span class="mod-emoji">🖼️</span><div class="mod-name">FLEX</div><div class="mod-desc">Hoarding & outdoor printing</div></a>
+      <a class="mod-card" href="#bengali-intro"style="--glow-c:rgba(6,255,165,0.1)"><span class="mod-emoji">অ</span><div class="mod-name">BENGALI</div><div class="mod-desc">Avro, Bijoy, fonts</div></a>
+      <a class="mod-card" href="#actions"   style="--glow-c:rgba(199,125,255,0.08)"><span class="mod-emoji">⚡</span><div class="mod-name">AUTOMATION</div><div class="mod-desc">Actions & batch processing</div></a>
+    </div>
+  </div><!-- /hero -->
+
+  <div class="content">
+
+    <!-- ═══════════════════════════
+         CH 1 — SETUP & INTERFACE
+    ═══════════════════════════ -->
+    <section class="section" id="setup">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(49,168,255,0.15),rgba(49,168,255,0.03))">🖥️</div>
+        <div class="sec-info">
+          <h2>SETUP & INTERFACE</h2>
+          <p>Understanding the Photoshop workspace — panels, menus, options bar, document window, and how to customize your environment for maximum efficiency.</p>
+          <div class="sec-tags">
+            <span class="stag" style="background:rgba(6,255,165,0.1);color:var(--accent3)">Chapter 1</span>
+            <span class="stag" style="background:var(--surface2);color:var(--muted)">Beginner</span>
+          </div>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>SYSTEM REQUIREMENTS</h3>
+      <div class="cg">
+        <div class="card"><h5>💻 Minimum PC</h5><p>Windows 10 64-bit, Intel/AMD processor 2GHz+, 8GB RAM, 4GB GPU VRAM, 10GB storage, 1024×768 display</p></div>
+        <div class="card"><h5>🚀 Recommended PC</h5><p>Windows 11 64-bit, Intel Core i7/AMD Ryzen 7+, 16–32GB RAM, 8GB+ GPU VRAM, SSD storage, 1920×1080 display</p></div>
+        <div class="card"><h5>🍎 Mac Minimum</h5><p>macOS 12 Monterey+, Apple Silicon M1 or Intel i5, 8GB RAM, 4GB GPU, 10GB storage</p></div>
+        <div class="card"><h5>💡 Pro Tip</h5><p>Keep your Scratch Disk on a separate fast SSD (not your OS drive). Photoshop uses it as virtual RAM. Performance difference is massive.</p></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>THE PHOTOSHOP WORKSPACE</h3>
+
+      <div class="cb">
+        <div class="cb-top">
+          <div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <div class="cb-title">Photoshop Interface Layout</div>
+        </div>
+        <pre><span class="t-blue">┌─────────────────────────────────────────────────────────────────────────┐</span>
+<span class="t-blue">│</span> <span class="t-yellow">MENU BAR:</span> File · Edit · Image · Layer · Type · Select · Filter · View   <span class="t-blue">│</span>
+<span class="t-blue">│</span> <span class="t-cyan">OPTIONS BAR:</span> [Context-sensitive toolbar for selected tool]              <span class="t-blue">│</span>
+<span class="t-blue">├──────┬──────────────────────────────────────────────────┬───────────────┤</span>
+<span class="t-blue">│</span> <span class="t-green">TOOLS</span><span class="t-blue">│</span>                                                  <span class="t-blue">│</span> <span class="t-purple">PANELS</span>        <span class="t-blue">│</span>
+<span class="t-blue">│</span> <span class="t-green">PANEL</span><span class="t-blue">│</span>           <span class="t-orange">DOCUMENT WINDOW</span>                   <span class="t-blue">│</span> · Layers      <span class="t-blue">│</span>
+<span class="t-blue">│</span>      <span class="t-blue">│</span>    ┌─────────────────────────────┐          <span class="t-blue">│</span> · Properties  <span class="t-blue">│</span>
+<span class="t-blue">│</span> M    <span class="t-blue">│</span>    │                             │          <span class="t-blue">│</span> · Channels    <span class="t-blue">│</span>
+<span class="t-blue">│</span> V    <span class="t-blue">│</span>    │   Your Image/Canvas Here    │          <span class="t-blue">│</span> · Paths       <span class="t-blue">│</span>
+<span class="t-blue">│</span> ─    <span class="t-blue">│</span>    │                             │          <span class="t-blue">│</span> · History     <span class="t-blue">│</span>
+<span class="t-blue">│</span> W    <span class="t-blue">│</span>    └─────────────────────────────┘          <span class="t-blue">│</span> · Character   <span class="t-blue">│</span>
+<span class="t-blue">│</span> ─    <span class="t-blue">│</span>                                                  <span class="t-blue">│</span> · Swatches    <span class="t-blue">│</span>
+<span class="t-blue">│</span> B    <span class="t-blue">│</span>                                                  <span class="t-blue">│</span> · Info        <span class="t-blue">│</span>
+<span class="t-blue">├──────┴──────────────────────────────────────────────────┴───────────────┤</span>
+<span class="t-blue">│</span> <span class="t-red">STATUS BAR:</span> File Size · Document Dimensions · Zoom Level               <span class="t-blue">│</span>
+<span class="t-blue">└─────────────────────────────────────────────────────────────────────────┘</span></pre>
+      </div>
+
+      <h3><span class="h3-accent"></span>CREATING A NEW DOCUMENT</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>File → New (Ctrl+N)</strong><p>Opens the New Document dialog. Choose from preset categories: Photo, Print, Web, Mobile, Film & Video, or enter custom dimensions.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Set Width, Height & Resolution</strong><p>For print: set in cm/mm, 300 DPI. For web/screen: set in pixels, 72-96 PPI. Color mode: RGB for screen, CMYK for professional print.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Set Color Mode & Bit Depth</strong><p>RGB Color, 8-bit for standard work. 16-bit for advanced color editing. CMYK for offset printing. Never work in Indexed Color.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Set Background Contents</strong><p>White (most common), Background Color, or Transparent (for graphics with no background). Click Create.</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>ESSENTIAL PREFERENCES</h3>
+      <p>Go to <strong>Edit → Preferences</strong> (Ctrl+K) on PC, or <strong>Photoshop → Preferences</strong> on Mac. Key settings to change:</p>
+      <div class="cg">
+        <div class="card"><h5>💾 Performance</h5><p>Set RAM usage to 70–80%. Assign fast SSD as Scratch Disk #1. Enable GPU acceleration. These are the most impactful performance settings.</p></div>
+        <div class="card"><h5>🎨 Interface</h5><p>Choose UI color theme (Dark/Medium Gray recommended). Enable "Show Tool Tips." Set OpenGL options for better canvas performance.</p></div>
+        <div class="card"><h5>📁 File Handling</h5><p>Enable "Auto Save Recovery Info Every: 5 Minutes." This can save you from losing hours of work during crashes.</p></div>
+        <div class="card"><h5>🖱️ Cursors</h5><p>Set Painting Cursors to "Full Size Brush Tip" and "Show Crosshair in Brush Tip." This shows exact brush size while painting.</p></div>
+      </div>
+
+      <div class="note info">
+        <span class="ni">ℹ️</span>
+        <div><strong>Workspace Tip:</strong> Go to <strong>Window → Workspace → Photography</strong> or <strong>Graphic and Web</strong> to switch between preset panel layouts optimized for different tasks. Save your own layout with Window → Workspace → New Workspace.</div>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-task">Task 1.1</span><h4>Setup Your Photoshop Workspace</h4></div>
+        <ol>
+          <li>Open Photoshop and go to Edit → Preferences → Performance</li>
+          <li>Set Memory Usage to 75% and assign your fastest drive as Scratch Disk</li>
+          <li>Create a new document: 1920×1080px, 72 DPI, RGB, White background</li>
+          <li>Arrange panels: Layers on right, History on right below Layers, Tools on left</li>
+          <li>Save your workspace as "My Workspace" via Window → Workspace → New Workspace</li>
+          <li>Practice the shortcut Ctrl+Z (undo), Ctrl+Alt+Z (step back through history)</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 2 — TOOLS
+    ═══════════════════════════ -->
+    <section class="section" id="tools">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,210,63,0.12),rgba(255,210,63,0.03))">🔧</div>
+        <div class="sec-info">
+          <h2>TOOLS PANEL</h2>
+          <p>Every tool in Photoshop — selection, crop, painting, retouching, drawing, and navigation tools with their keyboard shortcuts and best use cases.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>SELECTION TOOLS</h3>
+      <div class="tool-grid">
+        <div class="tool-card"><span class="tool-icon">⬜</span><span class="tool-name">Rectangular Marquee</span><span class="tool-key">M</span></div>
+        <div class="tool-card"><span class="tool-icon">⭕</span><span class="tool-name">Elliptical Marquee</span><span class="tool-key">M (shift)</span></div>
+        <div class="tool-card"><span class="tool-icon">🌀</span><span class="tool-name">Lasso Tool</span><span class="tool-key">L</span></div>
+        <div class="tool-card"><span class="tool-icon">🔗</span><span class="tool-name">Polygonal Lasso</span><span class="tool-key">L (shift)</span></div>
+        <div class="tool-card"><span class="tool-icon">🪄</span><span class="tool-name">Magic Wand</span><span class="tool-key">W</span></div>
+        <div class="tool-card"><span class="tool-icon">✅</span><span class="tool-name">Quick Selection</span><span class="tool-key">W (shift)</span></div>
+        <div class="tool-card"><span class="tool-icon">🤖</span><span class="tool-name">Object Select</span><span class="tool-key">W</span></div>
+        <div class="tool-card"><span class="tool-icon">🪄</span><span class="tool-name">Select Subject (AI)</span><span class="tool-key">Auto</span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>CROP & TRANSFORM TOOLS</h3>
+      <div class="tool-grid">
+        <div class="tool-card"><span class="tool-icon">✂️</span><span class="tool-name">Crop Tool</span><span class="tool-key">C</span></div>
+        <div class="tool-card"><span class="tool-icon">🔄</span><span class="tool-name">Perspective Crop</span><span class="tool-key">C</span></div>
+        <div class="tool-card"><span class="tool-icon">📐</span><span class="tool-name">Ruler Tool</span><span class="tool-key">I</span></div>
+        <div class="tool-card"><span class="tool-icon">↔️</span><span class="tool-name">Move Tool</span><span class="tool-key">V</span></div>
+        <div class="tool-card"><span class="tool-icon">🔀</span><span class="tool-name">Free Transform</span><span class="tool-key">Ctrl+T</span></div>
+        <div class="tool-card"><span class="tool-icon">🔁</span><span class="tool-name">Warp/Distort</span><span class="tool-key">Ctrl+T</span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>PAINTING & RETOUCHING TOOLS</h3>
+      <div class="tool-grid">
+        <div class="tool-card"><span class="tool-icon">🖌️</span><span class="tool-name">Brush Tool</span><span class="tool-key">B</span></div>
+        <div class="tool-card"><span class="tool-icon">🩹</span><span class="tool-name">Healing Brush</span><span class="tool-key">J</span></div>
+        <div class="tool-card"><span class="tool-icon">🔵</span><span class="tool-name">Spot Heal Brush</span><span class="tool-key">J</span></div>
+        <div class="tool-card"><span class="tool-icon">🩼</span><span class="tool-name">Patch Tool</span><span class="tool-key">J</span></div>
+        <div class="tool-card"><span class="tool-icon">🖲️</span><span class="tool-name">Clone Stamp</span><span class="tool-key">S</span></div>
+        <div class="tool-card"><span class="tool-icon">💧</span><span class="tool-name">Dodge / Burn</span><span class="tool-key">O</span></div>
+        <div class="tool-card"><span class="tool-icon">🌫️</span><span class="tool-name">Blur / Sharpen</span><span class="tool-key">R</span></div>
+        <div class="tool-card"><span class="tool-icon">🎨</span><span class="tool-name">Smudge Tool</span><span class="tool-key">R</span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>DRAWING & TYPE TOOLS</h3>
+      <div class="tool-grid">
+        <div class="tool-card"><span class="tool-icon">🖊️</span><span class="tool-name">Pen Tool</span><span class="tool-key">P</span></div>
+        <div class="tool-card"><span class="tool-icon">🔷</span><span class="tool-name">Shape Tools</span><span class="tool-key">U</span></div>
+        <div class="tool-card"><span class="tool-icon">🔤</span><span class="tool-name">Type Tool</span><span class="tool-key">T</span></div>
+        <div class="tool-card"><span class="tool-icon">📝</span><span class="tool-name">Vertical Type</span><span class="tool-key">T</span></div>
+        <div class="tool-card"><span class="tool-icon">🪣</span><span class="tool-name">Paint Bucket</span><span class="tool-key">G</span></div>
+        <div class="tool-card"><span class="tool-icon">🌈</span><span class="tool-name">Gradient Tool</span><span class="tool-key">G</span></div>
+        <div class="tool-card"><span class="tool-icon">💉</span><span class="tool-name">Eyedropper</span><span class="tool-key">I</span></div>
+        <div class="tool-card"><span class="tool-icon">🔍</span><span class="tool-name">Zoom / Hand</span><span class="tool-key">Z / H</span></div>
+      </div>
+
+      <div class="note tip">
+        <span class="ni">💡</span>
+        <div><strong>Tool Cycling:</strong> Many tools share the same keyboard key. Hold <strong>Shift</strong> while pressing the key to cycle through grouped tools. E.g., <kbd>Shift+J</kbd> cycles through Healing Brush, Spot Healing, Patch, and Content-Aware Move tools.</div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BRUSH SETTINGS MASTERY</h3>
+      <p>The Brush tool is the most powerful tool in Photoshop. Open the Brush Settings panel via <strong>Window → Brush Settings (F5)</strong> for complete control.</p>
+      <div class="cg">
+        <div class="card"><h5>📏 Size & Hardness</h5><p>Use [ and ] keys to decrease/increase brush size. Shift+[ / Shift+] changes hardness. 0% = soft feathered edge. 100% = hard crisp edge.</p></div>
+        <div class="card"><h5>📐 Shape Dynamics</h5><p>Size Jitter, Angle Jitter — creates natural randomness. Control: "Pen Pressure" with a drawing tablet for pressure-sensitive painting.</p></div>
+        <div class="card"><h5>🌫️ Scattering</h5><p>Makes brush marks scatter around the stroke path. Use for stars, foliage, particles. Adjust Count and Count Jitter for density.</p></div>
+        <div class="card"><h5>💧 Flow vs. Opacity</h5><p>Opacity controls overall transparency. Flow controls paint buildup per stroke. Low flow = airbrushing effect. Both at 100% = solid opaque strokes.</p></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 3 — LAYERS
+    ═══════════════════════════ -->
+    <section class="section" id="layers">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(199,125,255,0.12),rgba(199,125,255,0.03))">📚</div>
+        <div class="sec-info">
+          <h2>LAYERS</h2>
+          <p>The single most important concept in Photoshop. Layers let you work non-destructively, stack elements, and control every part of your design independently.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>UNDERSTANDING LAYERS</h3>
+      <p>Think of layers as transparent sheets stacked on top of each other. Each layer contains different elements. You can edit, move, hide, or delete any layer without affecting others.</p>
+
+      <div class="layer-stack">
+        <div class="layer-item"><div class="layer-vis" style="background:linear-gradient(135deg,#ff6b35,#ffd23f)"></div><div class="layer-name">Background Photo</div><div class="layer-type">Background</div><div class="layer-eye">👁</div></div>
+        <div class="layer-item"><div class="layer-vis" style="background:rgba(0,0,0,0.5);border:1px dashed var(--border2)"></div><div class="layer-name">Color Overlay</div><div class="layer-type">Normal — 60%</div><div class="layer-eye">👁</div></div>
+        <div class="layer-item"><div class="layer-vis" style="background:#31a8ff;border-radius:2px"></div><div class="layer-name">Logo Shape</div><div class="layer-type">Shape Layer</div><div class="layer-eye">👁</div></div>
+        <div class="layer-item"><div class="layer-vis" style="background:linear-gradient(#31a8ff,transparent)"></div><div class="layer-name">Gradient Effect</div><div class="layer-type">Adjustment</div><div class="layer-eye">👁</div></div>
+        <div class="layer-item" style="border-color:var(--ps-blue)"><div class="layer-vis" style="background:white;display:flex;align-items:center;justify-content:center;font-size:0.5rem;color:black;font-weight:900">T</div><div class="layer-name">Headline Text</div><div class="layer-type">Type Layer ← ACTIVE</div><div class="layer-eye">👁</div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>LAYER TYPES</h3>
+      <div class="cg3">
+        <div class="card"><h5>📷 Pixel Layer</h5><p>Regular image layer containing rasterized pixels. Most common. Editing is destructive — enlarging loses quality.</p></div>
+        <div class="card"><h5>🔤 Type Layer</h5><p>Vector-based text layer. Always editable. Keeps text crisp at any size. Rasterize only when necessary.</p></div>
+        <div class="card"><h5>🔷 Shape Layer</h5><p>Vector shape — scales without quality loss. Can edit anchor points with Direct Selection tool.</p></div>
+        <div class="card"><h5>🎛️ Adjustment Layer</h5><p>Non-destructive edits (curves, levels, hue) that affect all layers below. Can be toggled off, edited, or deleted.</p></div>
+        <div class="card"><h5>📦 Smart Object</h5><p>Embedded or linked content that retains original quality. Filters applied to Smart Objects are non-destructive.</p></div>
+        <div class="card"><h5>📁 Group Layer</h5><p>Folder containing multiple layers. Organize complex designs. Can apply blend modes and masks to entire groups.</p></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BLEND MODES EXPLAINED</h3>
+      <p>Blend modes control how a layer interacts with the layers below it. Most used modes:</p>
+      <div class="blend-grid">
+        <div class="blend-card"><div class="blend-name">MULTIPLY</div><div class="blend-desc">Darkens. White disappears. Used for shadows, textures on light backgrounds. Multiplies color values.</div></div>
+        <div class="blend-card"><div class="blend-name">SCREEN</div><div class="blend-desc">Brightens. Black disappears. Used for glows, fire, fog effects on dark backgrounds.</div></div>
+        <div class="blend-card"><div class="blend-name">OVERLAY</div><div class="blend-desc">Increases contrast. Midtones transparent. Used to add texture while preserving image detail.</div></div>
+        <div class="blend-card"><div class="blend-name">SOFT LIGHT</div><div class="blend-desc">Subtle Overlay. Gentler contrast boost. Great for skin retouching and subtle color grading.</div></div>
+        <div class="blend-card"><div class="blend-name">LUMINOSITY</div><div class="blend-desc">Applies brightness without color shift. Perfect for sharpening layers without color halos.</div></div>
+        <div class="blend-card"><div class="blend-name">COLOR</div><div class="blend-desc">Applies hue/saturation without changing luminosity. Use to colorize grayscale images.</div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>LAYER STYLES (FX)</h3>
+      <p>Double-click any layer to open Layer Style dialog. These are non-destructive effects:</p>
+      <div class="cg3">
+        <div class="card"><h5>🌑 Drop Shadow</h5><p>Adds shadow behind element. Control angle, distance, size, opacity. Essential for making text readable over photos.</p></div>
+        <div class="card"><h5>✨ Outer Glow</h5><p>Glowing halo around element edge. Used for neon effects, highlighted text, magical effects.</p></div>
+        <div class="card"><h5>🔲 Stroke</h5><p>Adds border around layer. Inside, Outside, or Center. Use for text outlines, bordered shapes.</p></div>
+        <div class="card"><h5>🎨 Color Overlay</h5><p>Fills entire layer with a color at specified opacity. Quick way to change element color without destructive edit.</p></div>
+        <div class="card"><h5>🌈 Gradient Overlay</h5><p>Fills layer with gradient. Control style (linear, radial, angle), angle, and scale. Powerful for buttons, backgrounds.</p></div>
+        <div class="card"><h5>🧱 Bevel & Emboss</h5><p>3D raised or carved appearance. Used for metallic text, buttons, logo treatments.</p></div>
+      </div>
+
+      <div class="note pro">
+        <span class="ni">✦</span>
+        <div><strong>Layer Mask vs. Eraser:</strong> Never use the Eraser tool to remove backgrounds. Always use a <strong>Layer Mask</strong> — it's non-destructive. You can paint back hidden areas with white paint on the mask at any time. The Eraser permanently deletes pixels and can never be recovered.</div>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-task">Task 3.1</span><h4>Layers Fundamentals Exercise</h4></div>
+        <ol>
+          <li>Open any photo. In the Layers panel, double-click "Background" → name it "Photo Base"</li>
+          <li>Add a Curves Adjustment Layer (Layer → New Adjustment Layer → Curves)</li>
+          <li>Add a text layer with any text, apply Drop Shadow and Stroke from Layer Style</li>
+          <li>Create a new layer, draw a rectangle (Marquee tool), fill with color (Alt+Delete)</li>
+          <li>Change the rectangle layer's Blend Mode to "Multiply" at 70% opacity</li>
+          <li>Group all layers (Ctrl+G), name the group "Design Elements"</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 4 — SELECTION TOOLS
+    ═══════════════════════════ -->
+    <section class="section" id="selection">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,210,63,0.12),rgba(255,210,63,0.03))">🎯</div>
+        <div class="sec-info">
+          <h2>SELECTION TOOLS</h2>
+          <p>Precise selections are the foundation of all compositing and retouching work. Learn every selection method from simple to AI-powered.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>SELECTION METHODS COMPARISON</h3>
+      <div class="tbl">
+        <table class="tbl">
+          <thead><tr><th>Method</th><th>Best For</th><th>Difficulty</th><th>Quality</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Rectangular/Elliptical Marquee</strong></td><td>Simple geometric shapes, crop areas</td><td>Easy</td><td>Basic</td></tr>
+            <tr><td><strong>Magic Wand (W)</strong></td><td>Solid color areas, simple backgrounds</td><td>Easy</td><td>Rough</td></tr>
+            <tr><td><strong>Quick Selection (W)</strong></td><td>Subjects with clear edges against different backgrounds</td><td>Easy</td><td>Good</td></tr>
+            <tr><td><strong>Select Subject (AI)</strong></td><td>People, animals, prominent objects</td><td>One click</td><td>Excellent</td></tr>
+            <tr><td><strong>Select & Mask Workspace</strong></td><td>Hair, fur, complex edges — refine any selection</td><td>Medium</td><td>Professional</td></tr>
+            <tr><td><strong>Pen Tool</strong></td><td>Product photos, hard-edged objects</td><td>Hard</td><td>Perfect</td></tr>
+            <tr><td><strong>Color Range</strong></td><td>Selecting by specific color across entire image</td><td>Medium</td><td>Very Good</td></tr>
+            <tr><td><strong>Focus Area</strong></td><td>Selecting the in-focus subject in a blurred photo</td><td>Easy</td><td>Good</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="h3-accent"></span>SELECT & MASK — THE PROFESSIONAL WAY</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Make an initial rough selection</strong><p>Use Quick Selection (W) or Select Subject to get a rough selection of your subject. It doesn't need to be perfect — Select & Mask will refine it.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Open Select & Mask</strong><p>Go to Select → Select and Mask (Alt+Ctrl+R). The workspace opens with your selection visible.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Use Refine Edge Brush on Hair/Fur</strong><p>Select the Refine Edge Brush tool (R) and paint over the hair/fur edges. Photoshop AI detects fine strands automatically.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Adjust Edge Detection Settings</strong><p>Smart Radius: ON. Radius: 2–5px for hard edges, 10–25px for hair. Smooth: 2–3. Feather: 0.5–1px. Contrast: 10–25%.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Set Output</strong><p>Output To: "New Layer with Layer Mask" → OK. Your subject is now on its own layer with a professional mask.</p></div></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Product Photography Background Removal</h5>
+        <p>An e-commerce seller photographs sarees on a mannequin against a grey background. Using Select Subject → Select & Mask, they remove the background in under 2 minutes per image, place products on a clean white background, and deliver 50+ product images per day. The Pen Tool would give perfection for jewellery photos where every edge must be pixel-perfect.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 5 — RETOUCHING
+    ═══════════════════════════ -->
+    <section class="section" id="retouching">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,255,165,0.1),rgba(6,255,165,0.02))">✨</div>
+        <div class="sec-info">
+          <h2>PHOTO RETOUCHING</h2>
+          <p>Professional skin retouching, blemish removal, frequency separation, body reshaping, and object removal — the techniques used by professional photographers.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BLEMISH & SPOT REMOVAL</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Duplicate the Background Layer</strong><p>Always retouch on a duplicate. Ctrl+J. Name it "Retouch." This keeps the original intact.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Spot Healing Brush (J)</strong><p>Make sure "Content-Aware" is selected in Options Bar. Set brush size slightly larger than the blemish. Single click. Photoshop automatically samples surrounding skin texture.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Healing Brush for Complex Areas</strong><p>Alt+Click to manually sample clean skin texture, then paint over the problem area. More control than Spot Healing for areas near edges (eyes, lips).</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Patch Tool for Large Areas</strong><p>Draw around the area to fix → drag the selection to a clean texture area. Best for removing large patches or objects.</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>FREQUENCY SEPARATION (Professional Skin)</h3>
+      <p>Frequency Separation separates skin texture (high frequency) from color/tone (low frequency) so you can retouch each independently without destroying natural skin texture.</p>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Duplicate Background Twice</strong><p>Layer 1 (Low frequency) — rename "Low Freq". Layer 2 (High frequency) — rename "High Freq". Turn off High Freq visibility.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Apply Gaussian Blur to Low Freq</strong><p>Select Low Freq layer. Filter → Blur → Gaussian Blur. Set radius to 3–8px (enough to blur all skin detail). Click OK.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>High Pass on High Freq</strong><p>Select High Freq layer (turn visibility on). Image → Apply Image. Set: Layer: Low Freq, Blending: Subtract, Scale: 2, Offset: 128. OK. Then change blend mode to <strong>Linear Light</strong>.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Retouch Each Frequency Independently</strong><p>Low Freq: Use Clone Stamp or Healing Brush for uneven skin tone, shadows, color blotches. High Freq: Use Clone Stamp to replace/move skin texture without affecting color.</p></div></div>
+      </div>
+
+      <div class="note warn">
+        <span class="ni">⚠️</span>
+        <div><strong>Over-Retouching Warning:</strong> The goal of skin retouching is to make skin look naturally better, not plastic or fake. Preserve at least 70% of original texture. If skin looks like glass or rubber, you've gone too far. Zoom out to 25% to judge the overall result.</div>
+      </div>
+
+      <h3><span class="h3-accent"></span>CONTENT-AWARE FILL (Object Removal)</h3>
+      <p>Remove unwanted objects, people, watermarks, and distractions from photos using Photoshop's AI-powered Content-Aware Fill.</p>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Select the object to remove</strong><p>Use Lasso or Quick Selection tool to make a loose selection around the object. Add 5–10px of surrounding area in your selection for better results.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Edit → Content-Aware Fill</strong><p>The Content-Aware Fill workspace opens. You'll see a live preview of the removal on the right.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Exclude areas if needed</strong><p>Use the Sampling Brush to paint green (include) or red (exclude) over areas to guide which textures Photoshop uses to fill.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Output to New Layer</strong><p>Choose "New Layer" in Output Settings → OK. Keeps your original intact. Use Healing Brush to clean up any remaining imperfections.</p></div></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Wedding Photography Retouching in West Bengal</h5>
+        <p>A photographer from Kolkata shoots wedding portraits. Using Frequency Separation on skin ensures the bride's natural complexion looks flawless without the plastic look. Content-Aware Fill removes a stray cord or uninvited guest from the background shot. Dodge & Burn creates dimension by lightening forehead highlights and darkening shadow areas around the jawline. Final export: 300 DPI JPG for album printing, 72 DPI JPG for WhatsApp/social media.</p>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-project">Project 5.1</span><h4>Portrait Retouching Workflow</h4></div>
+        <ol>
+          <li>Open a portrait photo and duplicate background (Ctrl+J)</li>
+          <li>Use Spot Healing Brush to remove 5 blemishes</li>
+          <li>Use Patch Tool to remove a large dark spot or scar</li>
+          <li>Add a Curves Adjustment Layer: brighten midtones slightly, add subtle S-curve</li>
+          <li>Add a Hue/Saturation Adjustment Layer: reduce skin redness by selecting Reds, shifting Hue slightly toward yellow</li>
+          <li>Use Dodge Tool (Highlights, 8% exposure) to brighten eyes and teeth</li>
+          <li>Compare before/after by toggling visibility of your retouch layers</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 6 — COLOR CORRECTION
+    ═══════════════════════════ -->
+    <section class="section" id="color">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,210,63,0.12),rgba(255,107,53,0.03))">🎨</div>
+        <div class="sec-info">
+          <h2>COLOR CORRECTION</h2>
+          <p>Curves, Levels, Color Balance, Hue/Saturation, Camera Raw — master every color tool for perfect exposures and cinematic color grades.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>THE COLOR CORRECTION ORDER</h3>
+      <div class="flow">
+        <div class="flow-step"><div class="f-num">STEP 1</div><div class="f-name">White Balance</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="f-num">STEP 2</div><div class="f-name">Exposure / Levels</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="f-num">STEP 3</div><div class="f-name">Contrast Curves</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="f-num">STEP 4</div><div class="f-name">Saturation</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="f-num">STEP 5</div><div class="f-name">Creative Grade</div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>CURVES — THE MOST POWERFUL TOOL</h3>
+      <p>Curves (Ctrl+M or Adjustment Layer) is the most precise color and tonal control in Photoshop. The diagonal line = tonal range from black (bottom-left) to white (top-right).</p>
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Curves Techniques</div></div>
+        <pre><span class="t-yellow"># S-CURVE: Classic contrast boost</span>
+<span class="t-green">Upper right point:</span>  <span class="t-white">Drag UP   → Brighten highlights</span>
+<span class="t-green">Lower left point:</span>   <span class="t-white">Drag DOWN → Deepen shadows</span>
+<span class="t-gray">Result: Increased contrast + vibrance</span>
+
+<span class="t-yellow"># BRIGHTEN MIDTONES:</span>
+<span class="t-green">Center point (128):</span> <span class="t-white">Drag UP → Brightens overall without blowing highlights</span>
+
+<span class="t-yellow"># FIX COLOR CAST: (e.g., remove yellow cast)</span>
+<span class="t-blue">Channel: Blue</span>    → <span class="t-white">Drag midpoint UP slightly</span>
+<span class="t-red">Channel: Red</span>     → <span class="t-white">Drag midpoint DOWN slightly</span>
+
+<span class="t-yellow"># CINEMATIC FADE (film look):</span>
+<span class="t-green">Bottom-left point:</span> <span class="t-white">Drag UP to RGB: (0, 30) → lifts blacks/shadows</span>
+<span class="t-green">Top-right point:</span>   <span class="t-white">Drag DOWN to RGB: (255, 225) → reduces highlights</span>
+<span class="t-gray">Gives a faded, analog film aesthetic</span>
+
+<span class="t-yellow"># TEAL & ORANGE LOOK (cinema grade):</span>
+<span class="t-blue">Blue channel:</span>    <span class="t-white">Lift shadows UP (adds blue/teal to darks)</span>
+<span class="t-red">Red channel:</span>     <span class="t-white">Push highlights UP (adds orange warmth to lights)</span></pre>
+      </div>
+
+      <h3><span class="h3-accent"></span>LEVELS vs. CURVES</h3>
+      <div class="cg">
+        <div class="card"><h5>📊 Levels (Ctrl+L)</h5><p>3 sliders: Shadows (black point), Midtones (gamma), Highlights (white point). Simpler than Curves. Use Levels to quickly fix exposure and set black/white points.</p></div>
+        <div class="card"><h5>📈 Curves (Ctrl+M)</h5><p>Infinitely flexible tonal control. Can create multiple control points. Adjust each color channel independently. Use Curves for all serious color work.</p></div>
+        <div class="card"><h5>🎨 Hue/Saturation (Ctrl+U)</h5><p>Control hue, saturation, and lightness. Target specific colors (Reds, Yellows, Greens). Colorize grayscale images. Quickly fix over-saturated skin or grass.</p></div>
+        <div class="card"><h5>🌡️ Color Balance</h5><p>Adjust shadows, midtones, highlights separately by pushing toward Cyan/Red, Magenta/Green, Yellow/Blue. Quick way to warm up or cool down shadows.</p></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>CAMERA RAW FILTER</h3>
+      <p>Camera Raw Filter (Filter → Camera Raw Filter, Shift+Ctrl+A) gives you Lightroom-level editing inside Photoshop. Apply it as a Smart Filter to keep it editable.</p>
+      <div class="cg3">
+        <div class="card"><h5>☀️ Basic Panel</h5><p>Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Clarity, Dehaze, Vibrance, Saturation. This alone handles 80% of photo editing.</p></div>
+        <div class="card"><h5>🎨 HSL Panel</h5><p>Hue, Saturation, Luminance per color. Change grass from yellow-green to rich green. Darken blue sky. Fix orange skin tones.</p></div>
+        <div class="card"><h5>🌃 Tone Curve</h5><p>Point Curve (same as Curves in PS) plus Parametric curve. Color grade with Highlights, Lights, Darks, Shadows sliders per channel.</p></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Commercial Food Photography Edit</h5>
+        <p>A Dhaka-based food photographer shoots biryani for a restaurant client. The image looks dull and slightly cool (LED lighting). Workflow: Camera Raw Filter → push Exposure +0.4, Shadows +40, Clarity +20 → HSL: Reds more saturated for meat, Yellows more saturated for rice → Curves: warm S-curve, push Red channel highlights up for a warm golden tone → Vibrance +15. Result: mouth-watering food photo that makes you hungry.</p>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-project">Project 6.1</span><h4>Cinematic Photo Color Grade</h4></div>
+        <ol>
+          <li>Open any landscape or portrait photo</li>
+          <li>Convert background to Smart Object (right-click → Convert to Smart Object)</li>
+          <li>Apply Camera Raw Filter: set Exposure, bring up Shadows, lower Highlights</li>
+          <li>Add Curves Adjustment Layer: create S-curve, then in Blue channel lift the shadows to create a slight teal tone</li>
+          <li>Add Color Lookup Adjustment Layer → try different LUT presets for cinematic looks</li>
+          <li>Add Vignette: new layer filled with black → change to Multiply → add layer mask → radial gradient from center white to edges black</li>
+          <li>Compare final vs original — toggle group visibility</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 7 — MASKS & CUTOUTS
+    ═══════════════════════════ -->
+    <section class="section" id="masking">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,107,53,0.12),rgba(255,107,53,0.03))">🎭</div>
+        <div class="sec-info">
+          <h2>MASKS & CUTOUTS</h2>
+          <p>Layer masks, Clipping masks, vector masks — the non-destructive way to hide, reveal, and composite elements professionally.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>LAYER MASK FUNDAMENTALS</h3>
+      <p>A Layer Mask is a grayscale channel attached to a layer. <strong>White = Visible, Black = Hidden, Gray = Partially visible</strong>. Painting with black on a mask hides. Painting with white reveals.</p>
+      <div class="cg">
+        <div class="card"><h5>➕ Adding a Layer Mask</h5><p>Select layer → click □ (mask icon) at bottom of Layers panel. Or Layer → Layer Mask → Reveal All (white/show all) or Hide All (black/hide all).</p></div>
+        <div class="card"><h5>🖌️ Painting on Mask</h5><p>Click the mask thumbnail (not the layer thumbnail). Paint with Black brush to hide, White brush to reveal. Press X to swap foreground/background colors.</p></div>
+        <div class="card"><h5>🔍 View Mask Alone</h5><p>Alt+Click the mask thumbnail to view the mask itself. Helpful for checking for holes or rough edges in complex masks.</p></div>
+        <div class="card"><h5>🔗 Unlink Mask from Layer</h5><p>Click the chain icon between layer and mask thumbnails to move/transform each independently. Useful for repositioning the image inside a mask shape.</p></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>CLIPPING MASKS</h3>
+      <p>A Clipping Mask clips one layer's content to the shape of the layer below. Create with <strong>Alt+Click between two layers</strong>, or Layer → Create Clipping Mask (Ctrl+Alt+G).</p>
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Clipping Mask Uses</div></div>
+        <pre><span class="t-yellow"># Photo inside text</span>
+<span class="t-white">1. Type text in large bold font</span>
+<span class="t-white">2. Place photo above text layer</span>
+<span class="t-green">3. Alt+Click between photo and text</span> <span class="t-gray">← Creates clipping mask</span>
+<span class="t-white">4. Photo is now visible only inside the text shape</span>
+
+<span class="t-yellow"># Color grade only on skin</span>
+<span class="t-white">1. Make selection of skin areas</span>
+<span class="t-white">2. Create Curves Adjustment Layer (auto-creates mask from selection)</span>
+<span class="t-white">3. Adjustments affect only the selected skin area</span>
+
+<span class="t-yellow"># Texture inside a shape</span>
+<span class="t-white">1. Draw any shape on a layer</span>
+<span class="t-white">2. Place texture/pattern layer above</span>
+<span class="t-green">3. Ctrl+Alt+G</span> <span class="t-gray">← Clips texture to shape</span></pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 8 — FILTERS
+    ═══════════════════════════ -->
+    <section class="section" id="filters">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(199,125,255,0.12),rgba(199,125,255,0.03))">🔮</div>
+        <div class="sec-info">
+          <h2>FILTERS & EFFECTS</h2>
+          <p>Blur effects, distortion, sharpening, artistic effects, Neural Filters — Photoshop's extensive filter library for creative and technical work.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>ESSENTIAL FILTERS</h3>
+      <div class="tbl">
+        <table class="tbl">
+          <thead><tr><th>Filter</th><th>Use Case</th><th>Key Settings</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Gaussian Blur</strong></td><td>Background blur, smooth skin, depth of field simulation</td><td>Radius: 0.5–50px depending on use</td></tr>
+            <tr><td><strong>Motion Blur</strong></td><td>Speed effect, panning photography simulation</td><td>Angle matches motion direction, Distance 20–200px</td></tr>
+            <tr><td><strong>Lens Blur</strong></td><td>Realistic bokeh/depth of field effect</td><td>Use Depth Map for realistic results</td></tr>
+            <tr><td><strong>Field Blur</strong></td><td>Multiple focus points in same image</td><td>Blur Gallery — place pins at different blur amounts</td></tr>
+            <tr><td><strong>Unsharp Mask</strong></td><td>Photo sharpening before final output</td><td>Amount 80–120%, Radius 0.8–1.5px, Threshold 3–5</td></tr>
+            <tr><td><strong>Smart Sharpen</strong></td><td>Advanced sharpening with blur type detection</td><td>Amount 100–150%, Radius 0.5–1px, Reduce Noise 10%</td></tr>
+            <tr><td><strong>High Pass Sharpen</strong></td><td>Professional sharpening technique</td><td>Filter → Other → High Pass (0.5–3px) + Overlay blend mode</td></tr>
+            <tr><td><strong>Liquify (Shift+Ctrl+X)</strong></td><td>Body reshaping, face adjustments, pushing pixels</td><td>Face-Aware Liquify autodetects faces for expression editing</td></tr>
+            <tr><td><strong>Neural Filters</strong></td><td>AI skin smoothing, colorization, style transfer</td><td>Filter → Neural Filters (requires internet)</td></tr>
+            <tr><td><strong>Oil Paint</strong></td><td>Painterly artistic effect on photos</td><td>Stylization, Cleanliness, Scale, Bristle Detail</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="h3-accent"></span>LIQUIFY TOOL — FACE & BODY</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Convert to Smart Object first</strong><p>Right-click layer → Convert to Smart Object. This makes Liquify a non-destructive Smart Filter you can re-edit.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Use Face-Aware Liquify for portraits</strong><p>Photoshop auto-detects faces. Sliders for Eyes (size, height, width, tilt, distance), Nose, Mouth (smile, width, height), Face Shape.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Forward Warp (W) for manual adjustments</strong><p>Push pixels in any direction. Use a large, soft brush with low pressure (20–40%). Subtle adjustments avoid the "warped" look.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Reconstruct to undo mistakes</strong><p>The Reconstruct brush (R) restores areas back toward the original. Use if any area looks unnatural.</p></div></div>
+      </div>
+
+      <div class="note info">
+        <span class="ni">ℹ️</span>
+        <div><strong>Neural Filters:</strong> Filter → Neural Filters provides AI-powered: Skin Smoothing (excellent for portraits), Colorize (colorize B&W photos), Style Transfer (apply Van Gogh, Monet styles), Smart Portrait (change age, expression, hair), and JPEG Artifact Removal. These require an internet connection and Adobe account.</div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 9 — BANNER DESIGN
+    ═══════════════════════════ -->
+    <section class="section" id="banner">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,107,53,0.15),rgba(255,107,53,0.03))">🪧</div>
+        <div class="sec-info">
+          <h2>BANNER DESIGN</h2>
+          <p>Create professional digital banners for Facebook, YouTube, websites, and event promotion. Complete workflow from size setup to final export.</p>
+          <div class="sec-tags">
+            <span class="stag" style="background:rgba(199,125,255,0.1);color:var(--accent5)">Advanced</span>
+            <span class="stag" style="background:rgba(255,107,53,0.1);color:var(--accent1)">Real-World Project</span>
+          </div>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>STANDARD BANNER SIZES</h3>
+
+      <div class="size-item"><div class="size-vis" style="width:80px;height:30px">1200×628</div><div class="size-name">Facebook Event Banner</div><div class="size-dim">1200 × 628 px</div><div class="size-use">Social Media Events, Ads</div></div>
+      <div class="size-item"><div class="size-vis" style="width:80px;height:20px">1500×500</div><div class="size-name">Twitter/X Header</div><div class="size-dim">1500 × 500 px</div><div class="size-use">Profile Cover</div></div>
+      <div class="size-item"><div class="size-vis" style="width:80px;height:22px">2560×1440</div><div class="size-name">YouTube Channel Art</div><div class="size-dim">2560 × 1440 px</div><div class="size-use">YouTube Channel</div></div>
+      <div class="size-item"><div class="size-vis" style="width:80px;height:42px">728×90</div><div class="size-name">Leaderboard Ad Banner</div><div class="size-dim">728 × 90 px</div><div class="size-use">Website Header Ad</div></div>
+      <div class="size-item"><div class="size-vis" style="width:50px;height:60px">300×250</div><div class="size-name">Medium Rectangle Ad</div><div class="size-dim">300 × 250 px</div><div class="size-use">Website Sidebar Ad</div></div>
+      <div class="size-item"><div class="size-vis" style="width:80px;height:45px">1920×1080</div><div class="size-name">Full HD Event Banner</div><div class="size-dim">1920 × 1080 px</div><div class="size-use">Digital Display, LED Wall</div></div>
+      <div class="size-item"><div class="size-vis" style="width:80px;height:80px">1080×1080</div><div class="size-name">Instagram Square Post</div><div class="size-dim">1080 × 1080 px</div><div class="size-use">Instagram, Facebook Post</div></div>
+      <div class="size-item"><div class="size-vis" style="width:45px;height:80px">1080×1920</div><div class="size-name">Story Banner</div><div class="size-dim">1080 × 1920 px</div><div class="size-use">Instagram/Facebook Story</div></div>
+
+      <h3><span class="h3-accent"></span>FACEBOOK EVENT BANNER — STEP BY STEP</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>New Document: 1200×628px, 72 PPI, RGB</strong><p>File → New → Width: 1200px, Height: 628px, Resolution: 72, Color Mode: RGB, Background: White. This is the Facebook event cover size.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Place Background Image</strong><p>File → Place Embedded → choose your image. Scale to fill canvas (hold Shift for proportional). Press Enter. It comes in as a Smart Object.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Add Dark Overlay for Text Readability</strong><p>New layer above photo. Fill with black (Alt+Delete). Change blend mode to Multiply, Opacity 40–60%. This makes text readable over busy photos.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Add Gradient for Professionalism</strong><p>New layer. Gradient Tool (G). Linear gradient from transparent black (left) to transparent (right). Blend mode: Normal, Opacity 70%. Creates depth.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Add Event Title (Type Tool — T)</strong><p>Click canvas, type event name. Choose a bold, readable font. 60–90px for title. White color. Add Drop Shadow (distance 4, size 8, opacity 70%).</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Add Sub-details: Date, Venue, Time</strong><p>Separate text layers for each detail. 24–36px. Use a lighter font weight or opacity. Space them with consistent alignment.</p></div></div>
+        <div class="step"><div class="sn">7</div><div class="sb2"><strong>Add Logo & Branding</strong><p>File → Place Embedded → your logo PNG (with transparent background). Position top-right or bottom-left. Use White color overlay if the logo looks dark.</p></div></div>
+        <div class="step"><div class="sn">8</div><div class="sb2"><strong>Add Decorative Elements</strong><p>Search for ornamental brushes, geometric shapes from Elements (free resources). Add subtle decorative borders, sparkles, or pattern backgrounds.</p></div></div>
+        <div class="step"><div class="sn">9</div><div class="sb2"><strong>Final Check & Export</strong><p>Zoom out to 25%. Check text readability, spacing, and overall composition. File → Export → Export As → JPEG, quality 90–100%. Save PSD for future editing.</p></div></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Cultural Program Banner — বাংলা উৎসব</h5>
+        <p>A cultural committee in Kolkata needs a Facebook event banner for "Rabindra Jayanti" celebrations. Background: a warm golden photo of the Jorasanko Thakur Bari. Overlay: 50% dark gradient from left. Left side: Bengali text "রবীন্দ্র জয়ন্তী ২০২৫" in Kalpurush font at 72px. Below: date, venue in a clean sans-serif. Right side: a circular frame with Rabindranath's portrait. Color theme: Gold (#D4AF37), Deep Red (#8B0000), White. Logo of the organizing committee bottom-right. Export at 1200×628px JPG.</p>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-real">Real Project</span><h4>Design a Complete Banner Set</h4></div>
+        <ol>
+          <li>Create a Facebook Event Banner (1200×628px) for a fictional event "TECH SUMMIT 2025 — KOLKATA"</li>
+          <li>Use a tech-themed dark blue background with circuit board texture overlay (at 15% opacity)</li>
+          <li>Add a bold gradient from deep blue to teal across the banner</li>
+          <li>Typography: Event name 80px, Subtitle 28px, Date/Venue 20px — all white text</li>
+          <li>Add a glowing neon circle element in the corner using Outer Glow layer style</li>
+          <li>Resize/adapt the same design for Instagram Square (1080×1080) and Story (1080×1920)</li>
+          <li>Export all three sizes — save each as a separate JPG and the master as a PSD</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 10 — FLEX / HOARDING
+    ═══════════════════════════ -->
+    <section class="section" id="flex">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,61,113,0.12),rgba(255,61,113,0.03))">🖼️</div>
+        <div class="sec-info">
+          <h2>FLEX & HOARDING DESIGN</h2>
+          <p>Professional flex banner, hoarding, billboard, and outdoor advertising design — the most common commercial printing work in Bangladesh and West Bengal.</p>
+          <div class="sec-tags">
+            <span class="stag" style="background:rgba(255,61,113,0.1);color:var(--accent4)">Print Design</span>
+            <span class="stag" style="background:rgba(255,210,63,0.1);color:var(--accent2)">Most Requested</span>
+          </div>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>FLEX PRINTING — CRITICAL SETTINGS</h3>
+      <div class="note danger">
+        <span class="ni">🚨</span>
+        <div><strong>MOST IMPORTANT:</strong> Flex designs are printed at <strong>LOW DPI (25–72 DPI)</strong> at full size because they are viewed from a distance. However, if you design at reduced scale (1:10 ratio), use 150–300 DPI. Always confirm with your print shop what their preferred DPI and file format is before starting.</div>
+      </div>
+
+      <div class="tbl">
+        <table class="tbl">
+          <thead><tr><th>Flex Type</th><th>Common Sizes</th><th>Resolution</th><th>Color Mode</th><th>Format</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Shop Signboard Flex</strong></td><td>8×3 ft, 10×4 ft, 12×4 ft</td><td>72-150 DPI at full size</td><td>CMYK or RGB*</td><td>TIFF/PDF/JPG</td></tr>
+            <tr><td><strong>Banner Flex (roadside)</strong></td><td>4×6 ft, 6×3 ft, 20×10 ft</td><td>25-72 DPI at full size</td><td>CMYK</td><td>TIFF/PDF</td></tr>
+            <tr><td><strong>Billboard / Hoarding</strong></td><td>20×10 ft, 40×20 ft, 60×20 ft</td><td>15-25 DPI at full size</td><td>CMYK</td><td>TIFF/PDF</td></tr>
+            <tr><td><strong>Auto Rickshaw Wrap</strong></td><td>Custom curved dimensions</td><td>72-150 DPI</td><td>CMYK</td><td>PDF/TIFF</td></tr>
+            <tr><td><strong>Gate Banner</strong></td><td>20×3 ft, 30×3 ft</td><td>72 DPI at full size</td><td>CMYK</td><td>TIFF/JPG</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.77rem;color:var(--faint);margin-top:-8px">*Many Bengali print shops accept RGB. Confirm with your printer. CMYK is technically correct for print but the press operator often converts anyway.</p>
+
+      <h3><span class="h3-accent"></span>HOW TO WORK AT SCALE IN PHOTOSHOP</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Method 1: Reduced Scale (Recommended)</strong><p>For a 10ft×4ft flex at 150 DPI, that's 18000×7200px — very large. Instead, work at 1:10 scale: 1800×720px at 150 DPI. Design everything at this size, then tell the printer to print at 10ft×4ft.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Method 2: Inches at Low DPI</strong><p>Create document: 120 inches × 48 inches at 25 DPI (for a 10×4ft hoarding). This gives 3000×1200px — manageable and prints at the correct physical size.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Method 3: cm at 72 DPI</strong><p>Convert feet to cm (1ft = 30.48cm). Create in cm at 72 DPI. For 3m×1m banner: 300cm × 100cm at 72 DPI = 8504×2835px. This is standard for many print shops in India/Bangladesh.</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>SHOP FLEX BANNER — COMPLETE WORKFLOW</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Document Setup</strong><p>File → New. For a standard 8×3 ft shop banner: Width: 96 inches, Height: 36 inches, Resolution: 25 DPI (for full size) OR Width: 9.6 inches, Height: 3.6 inches at 250 DPI (1:10 scale). Color Mode: CMYK. Background: White.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Set Up Guides for Safe Zones</strong><p>View → Rulers (Ctrl+R). Drag guides from rulers to create 0.5-inch margins on all sides — content within this safe zone won't be cut off during trimming and mounting.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Place Background & Design Elements</strong><p>Start with background color/gradient. For Bengali shops: bold colors (red, green, yellow) attract attention. Place the shop owner's photo (if requested) as a large cutout on one side.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Typography — Business Name (Large)</strong><p>The shop name should be the largest text element — readable from 20-30 feet away. Minimum recommended: 8-12 inch equivalent height at final print size. Use heavy, bold fonts.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Add Bengali Text</strong><p>Switch to Bengali keyboard input (Avro/Bijoy). Type Bengali text for business details, address, phone number. Use Bengali fonts: Kalpurush, SutonnyMJ, Nikosh, Amar Bangla.</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Add Products/Services Visuals</strong><p>Place product images, services list, or promotional offers. Create white or colored boxes behind text for readability. Add phone number prominently — this is what customers remember.</p></div></div>
+        <div class="step"><div class="sn">7</div><div class="sb2"><strong>Proof & Export</strong><p>View → Proof Colors (Ctrl+Y) to simulate CMYK print output. Flatten Image (Shift+Ctrl+E) → File → Save As → TIFF (no compression) or PDF (Press Quality). Deliver to printer with dimension specifications in writing.</p></div></div>
+      </div>
+
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Flex Color Recommendations (Visibility from Distance)</div></div>
+        <pre><span class="t-yellow"># HIGH VISIBILITY COMBINATIONS (print outdoor):</span>
+<span class="t-green">Yellow bg  + Black text</span>   <span class="t-gray">→ Most visible, classic shop banner</span>
+<span class="t-green">Red bg     + White text</span>   <span class="t-gray">→ Urgent, attention-grabbing</span>
+<span class="t-green">Dark Blue  + Yellow text</span>  <span class="t-gray">→ Professional, corporate</span>
+<span class="t-green">White bg   + Dark Blue text</span> <span class="t-gray">→ Clean, medical/pharmacy</span>
+<span class="t-green">Black bg   + Gold text</span>   <span class="t-gray">→ Premium/luxury</span>
+<span class="t-green">Green bg   + White text</span>  <span class="t-gray">→ Natural, organic, NGO</span>
+
+<span class="t-yellow"># CMYK EQUIVALENTS for common colors:</span>
+<span class="t-blue">Bright Red:   </span><span class="t-white">C:0  M:100 Y:100 K:0</span>
+<span class="t-blue">Bright Yellow:</span><span class="t-white">C:0  M:0   Y:100 K:0</span>
+<span class="t-blue">Deep Green:   </span><span class="t-white">C:100 M:0  Y:100 K:20</span>
+<span class="t-blue">Royal Blue:   </span><span class="t-white">C:100 M:50 Y:0   K:0</span>
+<span class="t-blue">Pure Black:   </span><span class="t-white">C:0  M:0  Y:0   K:100</span>
+<span class="t-blue">Rich Black:   </span><span class="t-white">C:40 M:30 Y:30  K:100</span> <span class="t-gray">(deeper black for large areas)</span></pre>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Medicine Shop Flex, Dhaka</h5>
+        <p>"Al-Amin Medical Hall" needs a 12×3 ft flex. Setup: 1200px × 300px at 150 DPI (1:12 scale). Background: Clean white. Left section: green vertical bar (CMYK: C100 M0 Y100 K20) with white cross symbol. Center: shop name "আল-আমিন মেডিকেল হল" in large SutonnyMJ Bengali font in dark green. Below: "সকল প্রকার ওষুধ পাওয়া যায়" in medium text. Right: doctor's image cutout with lab coat. Bottom bar: red strip with phone number and address in white. Phone number at 60px minimum — this is what customers remember. Delivered as flattened TIFF to local print shop in Mirpur.</p>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-real">Real Project</span><h4>Design a Shop Flex Banner (10×3 ft)</h4></div>
+        <ol>
+          <li><strong>Setup:</strong> New document 1000×300px at 150 DPI (1:10 scale), CMYK mode</li>
+          <li><strong>Background:</strong> Yellow to orange gradient left to right</li>
+          <li><strong>Left side:</strong> Place a shop owner portrait photo, remove background, add a subtle drop shadow</li>
+          <li><strong>Center-Right:</strong> Shop name in large bold text (Bengali: "স্বপ্ন কিচেন ও রেস্তোরাঁ")</li>
+          <li><strong>Below name:</strong> Tagline and food items list in smaller text</li>
+          <li><strong>Bottom bar:</strong> Red background strip with phone number, address in white</li>
+          <li><strong>Right corner:</strong> QR code or logo</li>
+          <li><strong>Export:</strong> Flatten all layers → Save as TIFF + JPG (quality 12) + keep PSD</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 11 — POSTER DESIGN
+    ═══════════════════════════ -->
+    <section class="section" id="poster">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,210,63,0.12),rgba(255,210,63,0.03))">🎭</div>
+        <div class="sec-info">
+          <h2>POSTER DESIGN</h2>
+          <p>Event posters, promotional posters, political posters, cultural program posters — create high-impact print and digital posters from scratch.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>POSTER SIZES & SETUP</h3>
+      <div class="cg">
+        <div class="card"><h5>📄 A3 Poster (Standard)</h5><p>420×297mm at 300 DPI. Common for events, concerts, shop walls. Good balance of visibility and printing cost.</p></div>
+        <div class="card"><h5>📄 A2 Poster (Large)</h5><p>594×420mm at 300 DPI. Highly visible at conferences, exhibitions, government offices.</p></div>
+        <div class="card"><h5>📄 11×17" Tabloid</h5><p>279×432mm at 300 DPI. Common in USA. Used for promotional material, menus, posters.</p></div>
+        <div class="card"><h5>📱 Digital Poster</h5><p>1080×1350px at 72 DPI for social. 1920×1080px for digital displays and LED walls at events.</p></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>CULTURAL PROGRAM POSTER WORKFLOW</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Setup: A3 at 300 DPI, CMYK</strong><p>File → New → Width: 420mm, Height: 297mm (landscape) or 297mm × 420mm (portrait), Resolution: 300, Color Mode: CMYK.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Establish Design Hierarchy</strong><p>Define three visual weights: (1) Hero image/visual — largest area, (2) Event name — biggest text, (3) Supporting details — smallest. Plan this before placing anything.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Create Background Atmosphere</strong><p>Place a full-bleed background photo or create a texture/gradient. Adjust exposure down if text will sit on top. Consider a horizontal split: photo top, solid color bottom.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Place Hero Artwork or Portrait</strong><p>Remove background from portrait (Select Subject → Select & Mask). Position on one side. Scale large enough to dominate the composition.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Typography Layout</strong><p>Event name at top or center — maximum size possible while staying proportional. Date/time/venue in a secondary tier. Organizer name smallest at bottom. Use 2 fonts maximum.</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Add Bengali Typography</strong><p>Type Bengali text using Avro (transliteration) or Bijoy (layout). Use Kalpurush or Siyam Rupali for headings, Nikosh or Hind Siliguri for body text. Adjust tracking for Bengali display text.</p></div></div>
+        <div class="step"><div class="sn">7</div><div class="sb2"><strong>Add Decorative Elements</strong><p>Traditional Bengali motifs: alpona patterns, lotus flowers, konakori borders. Find as PNG with transparent background or draw with custom brushes.</p></div></div>
+        <div class="step"><div class="sn">8</div><div class="sb2"><strong>Final Polish</strong><p>Add a subtle vignette to the background. Ensure minimum 5mm margin. Soft drop shadow on all text. Check: is every text element readable at arm's length?</p></div></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Durga Puja Committee Poster</h5>
+        <p>Barisha Club needs A3 posters for Durga Puja 2025. Portrait orientation. Top 60%: a golden photo of the Durga idol with warm tonal grading (curves: warm highlights, deep shadows). Bottom 40%: red gradient background. Large Bengali text: "দুর্গাপূজা ২০২৫" in Kalpurush font at maximum width, gold color with subtle emboss layer style. Below: dates, address, invitation text in white. Bottom strip: sponsor logos at 20% opacity. Committee name in standard font below main text. Print: 300 DPI, CMYK, flatten, save as PDF Press Quality and TIFF.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 12 — VISITING CARD
+    ═══════════════════════════ -->
+    <section class="section" id="visiting">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(49,168,255,0.12),rgba(49,168,255,0.03))">💳</div>
+        <div class="sec-info">
+          <h2>VISITING CARD DESIGN</h2>
+          <p>Professional business cards with bleed setup, CMYK colors, and print-ready export. Including bilingual (English + Bengali) card design.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BUSINESS CARD SPECIFICATIONS</h3>
+
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Visiting Card Document Setup</div></div>
+        <pre><span class="t-yellow"># STANDARD BUSINESS CARD SIZE:</span>
+<span class="t-white">US Standard:</span>  <span class="t-green">3.5" × 2"</span>    <span class="t-gray">(88.9mm × 50.8mm)</span>
+<span class="t-white">UK/Europe:</span>    <span class="t-green">85mm × 55mm</span>
+<span class="t-white">India/BD:</span>     <span class="t-green">90mm × 55mm</span>  <span class="t-gray">← Most common</span>
+
+<span class="t-yellow"># WITH BLEED (+3mm each side):</span>
+<span class="t-white">Document size:</span> <span class="t-green">96mm × 61mm</span>  <span class="t-gray">(add 3mm bleed all sides)</span>
+<span class="t-white">Resolution:</span>    <span class="t-green">300 DPI</span>
+<span class="t-white">Color Mode:</span>    <span class="t-green">CMYK</span>
+<span class="t-white">Background:</span>    <span class="t-green">White or Transparent</span>
+
+<span class="t-yellow"># GUIDES SETUP:</span>
+<span class="t-white">Outer guides:</span> <span class="t-green">3mm from edges</span>  <span class="t-gray">← Bleed line (design extends to here)</span>
+<span class="t-white">Inner guides:</span> <span class="t-green">6mm from edges</span>  <span class="t-gray">← Safe zone (keep all text inside)</span>
+<span class="t-white">Final trim:</span>    <span class="t-green">3mm from bleed</span> <span class="t-gray">← This is the actual card edge</span></pre>
+      </div>
+
+      <h3><span class="h3-accent"></span>VISITING CARD — COMPLETE WORKFLOW</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Create Document with Bleed</strong><p>New document: 96mm × 61mm, 300 DPI, CMYK. Add 3mm guides on all 4 sides as the bleed line. Add another set at 6mm as the safe zone.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Design Background</strong><p>Fill background with brand color or gradient. Or place a subtle texture. The background must extend to the 3mm bleed guide, not just to the 6mm safe zone.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Add Logo (Top Left or Center)</strong><p>Place logo as Smart Object. Scale appropriately — it should be prominent but not overwhelming. Leave breathing room around it.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Typography Hierarchy</strong><p>Name: Largest text, 10–14pt. Title/Designation: 8–10pt. Company Name: 9–11pt, bold. Contact details (phone, email, address): 7–9pt. All text within the 6mm safe zone.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Add Icons for Contact Details</strong><p>Small phone, email, location icons before each contact detail improve readability. Use simple, solid icon sets. Scale to match text height (8–10pt equivalent).</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Design the Back of the Card</strong><p>Duplicate the page or create a new document same size. Back can be: same design mirrored, solid brand color with logo centered, product/service list, or QR code.</p></div></div>
+        <div class="step"><div class="sn">7</div><div class="sb2"><strong>Export for Print</strong><p>Flatten image → File → Save As → TIFF (300 DPI, CMYK, no compression). Also save as PDF (Photoshop PDF, with crop marks and bleed). Send TIFF or PDF to printer.</p></div></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Bilingual Doctor's Visiting Card (Bengali + English)</h5>
+        <p>Dr. Subhasish Roy needs a visiting card. Front: white background, a subtle light blue gradient at top. His name in English "Dr. Subhasish Roy" at 14pt Garamond Bold, and below in Bengali "ডাঃ সুভাষিশ রায়" at 12pt Kalpurush. MBBS, MD below name in 8pt. Then phone, chamber address in both English and Bengali in 7pt. A subtle stethoscope icon in the background at 3% opacity for depth. His clinic's logo top-right. Back: dark navy blue with the clinic logo centered, tagline in white. Export: 300 DPI CMYK TIFF for offset printing at 250gsm matte laminate card stock.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 13 — BENGALI INTRO
+    ═══════════════════════════ -->
+    <section class="section" id="bengali-intro">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,255,165,0.12),rgba(6,255,165,0.03))">অ</div>
+        <div class="sec-info">
+          <h2>BENGALI IN PHOTOSHOP</h2>
+          <p>Complete guide to typing Bengali in Adobe Photoshop — understanding font types, Unicode vs. legacy encoding, and which method works best for your needs.</p>
+          <div class="sec-tags">
+            <span class="stag" style="background:rgba(6,255,165,0.1);color:var(--accent3)">বাংলা</span>
+            <span class="stag" style="background:rgba(6,255,165,0.1);color:var(--accent3)">Bengali Typography</span>
+          </div>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>UNICODE vs. LEGACY (ANSI) BENGALI</h3>
+      <div class="cg">
+        <div class="card"><h5>🌐 Unicode Bengali (Recommended)</h5><p>Modern standard. Works everywhere — websites, Word, PDFs, mobile. Fonts: Noto Sans Bengali, Hind Siliguri, Mukti, Siyam Rupali, Kalpurush. Typed with Avro Keyboard (phonetic/fixed layout).</p></div>
+        <div class="card"><h5>📟 Legacy / ANSI Bengali (Traditional)</h5><p>Older encoding still widely used in Bangladesh/WB for professional printing. Fonts: SutonnyMJ, Bijoy Baijra, Amar Bangla. Typed with Bijoy Keyboard. Files may not display correctly without the same font installed.</p></div>
+        <div class="card"><h5>✅ Which to Use in Photoshop?</h5><p><strong>For digital use (web, social media, apps):</strong> Unicode with Hind Siliguri / Noto Sans Bengali. <strong>For print shops in BD/WB:</strong> Legacy with SutonnyMJ (Bijoy) is still widely accepted and expected.</p></div>
+        <div class="card"><h5>⚙️ Photoshop Text Engine</h5><p>For proper Unicode Bengali: Edit → Preferences → Type → Text Engine Options → Select "World-Class Text Composer (Multi-line Composer)" or use the <strong>World-Ready Single-Line Composer</strong>. Restart Photoshop.</p></div>
+      </div>
+
+      <div class="note warn">
+        <span class="ni">⚠️</span>
+        <div><strong>Important:</strong> To type Unicode Bengali in Photoshop properly, you may need to enable <strong>Middle Eastern and South Asian Text Engine</strong>. Go to Edit → Preferences → Type → Enable "Show Middle Eastern, South Asian, and Southeast Asian Text Options." Restart Photoshop. Then in the Type tool options, select "World-Ready Single-line Composer."</div>
+      </div>
+
+      <div class="bn">
+        <span class="bn-title">Bengali Sample Text — ইউনিকোড বাংলা</span>
+        <div class="bn-text">আমার সোনার বাংলা, আমি তোমায় ভালোবাসি</div>
+        <div class="bn-eng">Amar Shonar Bangla, Ami Tomay Bhalobasi (Tagore)</div>
+      </div>
+
+      <div class="bn">
+        <span class="bn-title">Common Bengali Phrases for Design Work</span>
+        <div class="bn-text">
+          বিশেষ মূল্য হ্রাস — Special Discount<br>
+          যোগাযোগ করুন — Contact Us<br>
+          আজই কিনুন — Buy Today<br>
+          বিনামূল্যে ডেলিভারি — Free Delivery<br>
+          সীমিত সময়ের অফার — Limited Time Offer
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 14 — AVRO KEYBOARD
+    ═══════════════════════════ -->
+    <section class="section" id="avro">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,255,165,0.12),rgba(6,255,165,0.03))">⌨️</div>
+        <div class="sec-info">
+          <h2>AVRO KEYBOARD</h2>
+          <p>Avro is a free, Unicode-based Bengali keyboard input software. The most popular for typing Bengali using phonetic (English-like) input — the easiest method for new learners.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>STEP-BY-STEP AVRO INSTALLATION & SETUP</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Download Avro Keyboard</strong><p>Go to <strong>omicronlab.com</strong> → Download → Avro Keyboard (Windows). File size ~15MB. Free, open-source software. Current version: Avro 5.6+</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Install Avro</strong><p>Run the installer as Administrator. Install for "All Users" (not just current user) so it works in Photoshop. Accept all defaults during installation. Restart Windows after installation.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Launch Avro from System Tray</strong><p>After restart, Avro icon appears in the Windows system tray (bottom-right). Right-click to access settings. Left-click to toggle Bengali/English mode.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Set Input Method</strong><p>Right-click Avro → Keyboard Layout → Select <strong>"Avro Phonetic"</strong> for phonetic typing (easiest for beginners). Or select "Probhat", "Munir Optima", or "National (Jatiya)" fixed layouts.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Set Photoshop Text Engine for Unicode</strong><p>In Photoshop: Edit → Preferences → Type → Check "Show Middle Eastern, South Asian, and Southeast Asian Text Options" → OK → Restart Photoshop.</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Select a Bengali Unicode Font in Photoshop</strong><p>Type Tool (T) → Font dropdown → select "Hind Siliguri", "Noto Sans Bengali", "Kalpurush", or "Siyam Rupali". These are Unicode fonts that work with Avro.</p></div></div>
+        <div class="step"><div class="sn">7</div><div class="sb2"><strong>Activate Bengali Mode</strong><p>Press <kbd>F12</kbd> (Avro default shortcut) to toggle between English and Bengali. The taskbar icon changes. Now everything you type comes out as Bengali.</p></div></div>
+        <div class="step"><div class="sn">8</div><div class="sb2"><strong>Type in Photoshop</strong><p>Click the Type tool, click on canvas. Ensure Bengali font is selected. Press F12 to enable Bengali. Type phonetically — "Amar" types "আমার", "Bangla" types "বাংলা".</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>AVRO PHONETIC MAPPING</h3>
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Avro Phonetic Typing Rules</div></div>
+        <pre><span class="t-yellow"># VOWELS:</span>
+<span class="t-green">a</span> → <span class="t-white">আ/া</span>    <span class="t-green">i/ee</span> → <span class="t-white">ই/ী</span>   <span class="t-green">u/oo</span> → <span class="t-white">উ/ূ</span>
+<span class="t-green">e</span> → <span class="t-white">এ/ে</span>    <span class="t-green">oi</span>  → <span class="t-white">ঐ/ৈ</span>   <span class="t-green">ou</span>  → <span class="t-white">ঔ/ৌ</span>
+<span class="t-green">O</span> → <span class="t-white">ও/ো</span>   <span class="t-green">rri</span> → <span class="t-white">ঋ</span>
+
+<span class="t-yellow"># COMMON CONSONANTS:</span>
+<span class="t-green">k</span> → <span class="t-white">ক</span>    <span class="t-green">kh</span> → <span class="t-white">খ</span>    <span class="t-green">g</span>  → <span class="t-white">গ</span>    <span class="t-green">gh</span> → <span class="t-white">ঘ</span>
+<span class="t-green">c/ch</span>→<span class="t-white">চ</span>   <span class="t-green">chh</span>→ <span class="t-white">ছ</span>    <span class="t-green">j</span>  → <span class="t-white">জ</span>    <span class="t-green">jh</span> → <span class="t-white">ঝ</span>
+<span class="t-green">t</span> → <span class="t-white">ত/ট</span>  <span class="t-green">th</span> → <span class="t-white">থ/ঠ</span>   <span class="t-green">d</span>  → <span class="t-white">দ/ড</span>   <span class="t-green">dh</span> → <span class="t-white">ধ/ঢ</span>
+<span class="t-green">n</span> → <span class="t-white">ন</span>    <span class="t-green">N</span>  → <span class="t-white">ণ</span>    <span class="t-green">p</span>  → <span class="t-white">প</span>    <span class="t-green">ph/f</span>→<span class="t-white">ফ</span>
+<span class="t-green">b</span> → <span class="t-white">ব</span>    <span class="t-green">bh/v</span>→<span class="t-white">ভ</span>   <span class="t-green">m</span>  → <span class="t-white">ম</span>    <span class="t-green">y</span>  → <span class="t-white">য/য়</span>
+<span class="t-green">r</span> → <span class="t-white">র</span>    <span class="t-green">l</span>  → <span class="t-white">ল</span>    <span class="t-green">sh/s</span>→<span class="t-white">শ/স</span>   <span class="t-green">h</span>  → <span class="t-white">হ</span>
+<span class="t-green">R</span> → <span class="t-white">ড়</span>    <span class="t-green">Rh</span> → <span class="t-white">ঢ়</span>    <span class="t-green">ng/NG</span>→<span class="t-white">ং</span>   <span class="t-green">:`</span> → <span class="t-white">ঁ (chandra)</span>
+
+<span class="t-yellow"># WORD EXAMPLES:</span>
+<span class="t-green">Bangla</span>   → <span class="t-white">বাংলা</span>
+<span class="t-green">amar</span>    → <span class="t-white">আমার</span>
+<span class="t-green">bhalobasha</span> → <span class="t-white">ভালোবাশা</span>   <span class="t-gray">(use bhalobasa → ভালোবাসা)</span>
+<span class="t-green">Bangladesh</span> → <span class="t-white">বাংলাদেশ</span>
+<span class="t-green">Kolkata</span>  → <span class="t-white">কলকাতা</span>
+<span class="t-green">dukaan</span>  → <span class="t-white">দুকান</span>
+<span class="t-green">dam</span>     → <span class="t-white">দাম</span>
+<span class="t-green">shobai</span>  → <span class="t-white">সবাই</span></pre>
+      </div>
+
+      <h3><span class="h3-accent"></span>INTERACTIVE AVRO KEY REFERENCE</h3>
+      <div class="key-layout">
+        <div class="key-row">
+          <div class="key-btn active"><span class="bn-char">অ</span><span class="en-char">o/oo</span></div>
+          <div class="key-btn active"><span class="bn-char">আ</span><span class="en-char">a</span></div>
+          <div class="key-btn active"><span class="bn-char">ই</span><span class="en-char">i</span></div>
+          <div class="key-btn active"><span class="bn-char">উ</span><span class="en-char">u</span></div>
+          <div class="key-btn active"><span class="bn-char">এ</span><span class="en-char">e</span></div>
+          <div class="key-btn active"><span class="bn-char">ক</span><span class="en-char">k</span></div>
+          <div class="key-btn active"><span class="bn-char">খ</span><span class="en-char">kh</span></div>
+          <div class="key-btn active"><span class="bn-char">গ</span><span class="en-char">g</span></div>
+          <div class="key-btn active"><span class="bn-char">ঘ</span><span class="en-char">gh</span></div>
+          <div class="key-btn active"><span class="bn-char">চ</span><span class="en-char">ch</span></div>
+          <div class="key-btn active"><span class="bn-char">জ</span><span class="en-char">j</span></div>
+        </div>
+        <div class="key-row">
+          <div class="key-btn active"><span class="bn-char">ট</span><span class="en-char">T</span></div>
+          <div class="key-btn active"><span class="bn-char">ত</span><span class="en-char">t</span></div>
+          <div class="key-btn active"><span class="bn-char">দ</span><span class="en-char">d</span></div>
+          <div class="key-btn active"><span class="bn-char">ড</span><span class="en-char">D</span></div>
+          <div class="key-btn active"><span class="bn-char">ন</span><span class="en-char">n</span></div>
+          <div class="key-btn active"><span class="bn-char">প</span><span class="en-char">p</span></div>
+          <div class="key-btn active"><span class="bn-char">ব</span><span class="en-char">b</span></div>
+          <div class="key-btn active"><span class="bn-char">ভ</span><span class="en-char">bh</span></div>
+          <div class="key-btn active"><span class="bn-char">ম</span><span class="en-char">m</span></div>
+          <div class="key-btn active"><span class="bn-char">র</span><span class="en-char">r</span></div>
+          <div class="key-btn active"><span class="bn-char">ল</span><span class="en-char">l</span></div>
+        </div>
+        <div class="key-row">
+          <div class="key-btn active"><span class="bn-char">শ</span><span class="en-char">sh</span></div>
+          <div class="key-btn active"><span class="bn-char">স</span><span class="en-char">s</span></div>
+          <div class="key-btn active"><span class="bn-char">হ</span><span class="en-char">h</span></div>
+          <div class="key-btn active"><span class="bn-char">য</span><span class="en-char">y</span></div>
+          <div class="key-btn active"><span class="bn-char">ড়</span><span class="en-char">R</span></div>
+          <div class="key-btn active"><span class="bn-char">়</span><span class="en-char">ও</span></div>
+          <div class="key-btn active"><span class="bn-char">ং</span><span class="en-char">ng</span></div>
+          <div class="key-btn active"><span class="bn-char">ঃ</span><span class="en-char">H</span></div>
+          <div class="key-btn active"><span class="bn-char">ঁ</span><span class="en-char">:~</span></div>
+          <div class="key-btn active"><span class="bn-char">।</span><span class="en-char">.</span></div>
+        </div>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-task">Task 14.1</span><h4>Type Bengali with Avro Phonetic</h4></div>
+        <ol>
+          <li>Install Avro Keyboard from omicronlab.com</li>
+          <li>Enable Middle Eastern text engine in Photoshop Preferences → Type</li>
+          <li>Create new Photoshop document 800×400px</li>
+          <li>Select Type tool, choose "Hind Siliguri" font, size 48px</li>
+          <li>Press F12 to switch to Bengali mode</li>
+          <li>Type: "Bangla" → should appear as "বাংলা"</li>
+          <li>Type: "amar naam" → should appear as "আমার নাম"</li>
+          <li>Type: "Bangladesh Zindabad" → "বাংলাদেশ জিন্দাবাদ"</li>
+          <li>Adjust font size, add color, and add a Drop Shadow layer style</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 15 — BIJOY KEYBOARD
+    ═══════════════════════════ -->
+    <section class="section" id="bijoy">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,255,165,0.12),rgba(6,255,165,0.03))">🖥️</div>
+        <div class="sec-info">
+          <h2>BIJOY KEYBOARD</h2>
+          <p>Bijoy is the most widely used legacy (ANSI) Bengali keyboard system in Bangladesh. Essential for professional print work and working with print shops that use legacy Bengali fonts.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BIJOY INSTALLATION & PHOTOSHOP SETUP</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Obtain Bijoy Software</strong><p>Bijoy 52 or Bijoy Ekattor are the standard versions. Available from local software shops in Bangladesh or via official channels. Install as Administrator.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Install Bijoy Fonts</strong><p>Bijoy comes with legacy fonts: SutonnyMJ, BijoyBaijra, Amar Bangla, KomoptiMJ, AdorshoLipi, NiladriMJ. Copy all .ttf/.otf files to C:\Windows\Fonts.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Activate Bijoy in System Tray</strong><p>Launch Bijoy. Right-click tray icon → Select keyboard layout. Default activation: <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>B</kbd> to switch to Bijoy Bengali mode.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Set Photoshop to Use Legacy Text Engine</strong><p>For Bijoy/ANSI fonts, Photoshop should use the standard legacy text engine (NOT Middle Eastern engine). If you enabled the ME engine for Avro, disable it for Bijoy work.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Select SutonnyMJ Font in Photoshop</strong><p>Type Tool → select "SutonnyMJ" (or any Bijoy font) from the font list. Font size: 24–48pt for design work. IMPORTANT: set size using points (pt), not pixels, for print documents.</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Switch to Bijoy Mode and Type</strong><p>Press <kbd>Ctrl+Alt+B</kbd> (or your set hotkey). The taskbar shows Bijoy active. Now type using Bijoy layout. Key mapping is different from phonetic — see layout table below.</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BIJOY KEYBOARD LAYOUT REFERENCE</h3>
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Bijoy Key Mapping (Most Important)</div></div>
+        <pre><span class="t-yellow"># BIJOY PHONETIC KEYBOARD LAYOUT (top row to bottom):</span>
+
+<span class="t-green">KEY</span>  <span class="t-white">Normal</span>    <span class="t-blue">Shift</span>
+<span class="t-green">q</span>    <span class="t-white">ক্</span>       <span class="t-blue">ক</span>
+<span class="t-green">w</span>    <span class="t-white">এ/ে</span>      <span class="t-blue">ৈ</span>
+<span class="t-green">e</span>    <span class="t-white">ম</span>        <span class="t-blue">ও/ো</span>
+<span class="t-green">r</span>    <span class="t-white">জ</span>        <span class="t-blue">র/্র</span>
+<span class="t-green">t</span>    <span class="t-white">ত/ৎ</span>      <span class="t-blue">ট</span>
+<span class="t-green">y</span>    <span class="t-white">ন</span>        <span class="t-blue">ণ</span>
+<span class="t-green">u</span>    <span class="t-white">ব/্ব</span>     <span class="t-blue">ভ</span>
+<span class="t-green">i</span>    <span class="t-white">ি</span>        <span class="t-blue">ী</span>
+<span class="t-green">o</span>    <span class="t-white">দ</span>        <span class="t-blue">ধ</span>
+<span class="t-green">p</span>    <span class="t-white">প</span>        <span class="t-blue">ফ</span>
+<span class="t-green">a</span>    <span class="t-white">া</span>        <span class="t-blue">আ</span>
+<span class="t-green">s</span>    <span class="t-white">স</span>        <span class="t-blue">শ</span>
+<span class="t-green">d</span>    <span class="t-white">্</span>       <span class="t-blue">ড</span>
+<span class="t-green">f</span>    <span class="t-white">ি (alt)</span>  <span class="t-blue">ই</span>
+<span class="t-green">g</span>    <span class="t-white">গ</span>        <span class="t-blue">ঘ</span>
+<span class="t-green">h</span>    <span class="t-white">হ</span>        <span class="t-blue">ঃ</span>
+<span class="t-green">j</span>    <span class="t-white">চ</span>        <span class="t-blue">ছ</span>
+<span class="t-green">k</span>    <span class="t-white">ক</span>        <span class="t-blue">খ</span>
+<span class="t-green">l</span>    <span class="t-white">ল</span>        <span class="t-blue">―</span>
+<span class="t-green">z</span>    <span class="t-white">থ</span>        <span class="t-blue">ঠ</span>
+<span class="t-green">x</span>    <span class="t-white">।</span>        <span class="t-blue">―</span>
+<span class="t-green">c</span>    <span class="t-white">য</span>        <span class="t-blue">―</span>
+<span class="t-green">v</span>    <span class="t-white">্র</span>       <span class="t-blue">র</span>
+<span class="t-green">b</span>    <span class="t-white">ব</span>        <span class="t-blue">ভ</span>
+<span class="t-green">n</span>    <span class="t-white">মো/mo</span>    <span class="t-blue">ং</span>
+<span class="t-green">m</span>    <span class="t-white">ো (matra)</span> <span class="t-blue">―</span></pre>
+      </div>
+
+      <div class="note tip">
+        <span class="ni">💡</span>
+        <div><strong>Bijoy Pro Tip:</strong> Bijoy uses a completely different key mapping system than phonetic keyboards. The best way to learn Bijoy is to print the full keyboard layout chart (search "Bijoy keyboard layout PDF") and keep it beside your computer for the first week. Within 2–3 weeks of daily use, muscle memory takes over.</div>
+      </div>
+
+      <div class="note info">
+        <span class="ni">ℹ️</span>
+        <div><strong>Avro vs. Bijoy — Which is better?</strong><br>
+        <strong>Avro (Unicode)</strong> — better for: new learners, web content, modern apps, Word, social media, and future-proof files.<br>
+        <strong>Bijoy (Legacy)</strong> — better for: professional print work in Bangladesh/WB, newspapers, existing print shop workflows, and users who already know the Bijoy layout.</div>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-task">Task 15.1</span><h4>Bijoy Typing Practice in Photoshop</h4></div>
+        <ol>
+          <li>Install Bijoy and ensure SutonnyMJ font is installed</li>
+          <li>Open Photoshop, create 800×400px document</li>
+          <li>Select Type Tool, choose "SutonnyMJ" font at 36pt</li>
+          <li>Activate Bijoy mode (Ctrl+Alt+B)</li>
+          <li>Practice typing these keys and observe Bengali output: k → ক, j → চ, g → গ, v → র</li>
+          <li>Try typing your name in Bengali using Bijoy layout</li>
+          <li>Type a shop name and address in Bengali for a practice flex design</li>
+          <li>Save as PSD and also export as JPG</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 16 — BENGALI FONTS
+    ═══════════════════════════ -->
+    <section class="section" id="bangla-fonts">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,255,165,0.12),rgba(6,255,165,0.03))">🔤</div>
+        <div class="sec-info">
+          <h2>BENGALI FONTS GUIDE</h2>
+          <p>The complete guide to Bengali fonts — which to use for headings, body, decorative text, and print — covering both Unicode and legacy fonts.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>UNICODE BENGALI FONTS</h3>
+      <div class="tbl">
+        <table class="tbl">
+          <thead><tr><th>Font Name</th><th>Style</th><th>Best For</th><th>Where to Get</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Hind Siliguri</strong></td><td>Clean sans-serif, multiple weights</td><td>Body text, digital, social media</td><td>Google Fonts (free)</td></tr>
+            <tr><td><strong>Noto Sans Bengali</strong></td><td>Neutral, very legible</td><td>App UI, web, readable body text</td><td>Google Fonts (free)</td></tr>
+            <tr><td><strong>Kalpurush</strong></td><td>Elegant, classic calligraphic</td><td>Display headings, cultural posters, editorial</td><td>OmicronLab (free)</td></tr>
+            <tr><td><strong>Siyam Rupali</strong></td><td>Stylish, distinctive curves</td><td>Display text, posters, invitations</td><td>OmicronLab (free)</td></tr>
+            <tr><td><strong>Mukti</strong></td><td>Traditional, clean</td><td>General purpose, newspaper-style</td><td>Online free</td></tr>
+            <tr><td><strong>Tiro Bangla</strong></td><td>High-quality serif</td><td>Long-form reading, books, formal documents</td><td>Google Fonts (free)</td></tr>
+            <tr><td><strong>Baloo Da 2</strong></td><td>Rounded, friendly</td><td>Children's content, apps, informal</td><td>Google Fonts (free)</td></tr>
+            <tr><td><strong>Anek Bangla</strong></td><td>Variable font, versatile</td><td>Modern branding, responsive typography</td><td>Google Fonts (free)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="h3-accent"></span>LEGACY (BIJOY) BENGALI FONTS</h3>
+      <div class="tbl">
+        <table class="tbl">
+          <thead><tr><th>Font Name</th><th>Style</th><th>Best For</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SutonnyMJ</strong></td><td>Classic, newspaper-style</td><td>Print flex, newspapers, general use</td><td>Most widely used in BD</td></tr>
+            <tr><td><strong>Bijoy Baijra</strong></td><td>Bold, display</td><td>Headlines, titles, flex banners</td><td>Comes with Bijoy</td></tr>
+            <tr><td><strong>Amar Bangla</strong></td><td>Traditional</td><td>Formal documents, certificates</td><td>Widely available</td></tr>
+            <tr><td><strong>AdorshoLipi</strong></td><td>Clean, readable</td><td>Books, long-form content</td><td>Comes with Bijoy</td></tr>
+            <tr><td><strong>KomoptiMJ</strong></td><td>Stylized display</td><td>Decorative headings</td><td>For display use only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="h3-accent"></span>FONT USAGE RULES FOR DESIGN</h3>
+      <div class="cg">
+        <div class="card"><h5>📏 Size Guidelines</h5><p>Bengali display text at 48–120pt for posters. Body text 10–14pt for print, 16–18px for web. Never below 8pt for print. Bengali characters need slightly more space than Latin — add 5–10% extra line height.</p></div>
+        <div class="card"><h5>🎨 Mixing Bengali & English</h5><p>When mixing Bengali and English in one design, pair fonts that have similar x-heights. Kalpurush + Georgia pairing works well. Hind Siliguri + Open Sans for modern digital.</p></div>
+        <div class="card"><h5>📝 Tracking & Kerning</h5><p>Bengali text needs looser tracking than Latin. Add +20 to +50 tracking for display text. For flex banners where readability at distance matters, add +30 to +80 tracking.</p></div>
+        <div class="card"><h5>🖨️ Print Font Safety</h5><p>For print flex at large sizes, stick to fonts with clear, thick letterforms. Thin decorative fonts become unreadable. Bijoy Baijra and Kalpurush Bold are safest for flex printing.</p></div>
+      </div>
+
+      <div class="bn">
+        <span class="bn-title">Bengali Font Showcase</span>
+        <div class="bn-text" style="font-size:1.4rem;line-height:2.2">
+          বাংলাদেশ — Hind Siliguri (Regular)<br>
+          <span style="font-weight:600">আমার সোনার বাংলা — Hind Siliguri (Bold)</span><br>
+          <span style="font-size:1.6rem">স্বপ্নের দেশ — Large Display</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 17 — BENGALI DESIGN PROJECTS
+    ═══════════════════════════ -->
+    <section class="section" id="bengali-design">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,255,165,0.12),rgba(6,255,165,0.03))">🎨</div>
+        <div class="sec-info">
+          <h2>BENGALI DESIGN PROJECTS</h2>
+          <p>Complete real-world Bengali design projects — cultural posters, shop banners, wedding invitations, newspaper ads, and certificates.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>PROJECT 1 — বিজ্ঞাপন BANNER (Shop Ad)</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Setup: 12×3 ft at 1:10 scale</strong><p>New document: 1200px × 300px at 150 DPI, CMYK. This represents a 12×3 ft flex at 1:10 scale.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Background: Bold Bengali commercial colors</strong><p>Use a bright red to deep red gradient (#FF0000 to #8B0000). Add a subtle decorative border using Elements library or custom brushes.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Type main shop name in Bengali</strong><p>Enable Avro or Bijoy. Type shop name: e.g., "রহমান গার্মেন্টস" (Rahman Garments). Font: SutonnyMJ 72pt (Bijoy) or Kalpurush 60pt (Unicode). Gold color (#FFD700).</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Add tagline and services</strong><p>"সকল প্রকার পোশাক পাওয়া যায়" in white, smaller size. Add service list: পাঞ্জাবি | শার্ট | প্যান্ট | শাড়ি in a horizontal row.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Phone & Address</strong><p>Bottom strip: white or yellow background, large phone number in red. Address in Bengali below. Make phone number the largest readable element after the shop name.</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Place owner's photo (if required)</strong><p>Remove background from portrait → place on left or right side → add drop shadow. Add subtle ornamental frame around photo.</p></div></div>
+        <div class="step"><div class="sn">7</div><div class="sb2"><strong>Export</strong><p>Flatten → Save as TIFF (300 DPI) + JPG (quality 10). Confirm dimensions with print shop. Send with: "Print size: 12 ft × 3 ft"</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>PROJECT 2 — বিয়ের কার্ড (Wedding Invitation)</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Setup: 10×7 inch at 300 DPI</strong><p>Standard folded wedding card when unfolded: 10×7 inches at 300 DPI, CMYK. For digital-only invites: 1200×840px at 72 DPI, RGB.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Traditional motifs & border</strong><p>Search for "Bengali wedding border vector" or "alpona motif PNG". Place at edges using Multiply blend mode for printed look. Gold and deep red color theme.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Header text in Bengali</strong><p>"শুভ বিবাহ" (Shubho Bibaho — Auspicious Wedding) in large Kalpurush font with gold color and subtle emboss layer style. Add "॥" (double danda) decorative symbols around it.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Names of bride and groom</strong><p>Groom's name and bride's name in large elegant Bengali script (Kalpurush or Siyam Rupali). Center-aligned. Add ornamental divider between names: ❧ or custom alpona element.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Event details</strong><p>Date in Bengali calendar (bengali date) + English date. Venue name in Bengali, address in both languages. Time: "শুভ বিবাহ: সকাল ১১টা" etc.</p></div></div>
+        <div class="step"><div class="sn">6</div><div class="sb2"><strong>Parent names and RSVP</strong><p>Both families' names in smaller text. Contact person and phone. "সকলকে সাদর আমন্ত্রণ জানানো হচ্ছে" (All are cordially invited) in italic style.</p></div></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Political Campaign Poster — West Bengal Local Election</h5>
+        <p>A ward councillor candidate needs 500 A4 posters. Setup: 297×210mm, 300 DPI, CMYK. Background: party colors (e.g., white and blue). Large cutout photo of candidate centered. "ভোট দিন" in massive Kalpurush Bold at top, candidate name in second-largest size. Below: party symbol, ward number "৫ নং ওয়ার্ড", polling date. Bottom: party name, local committee name. Bengali numerals (১২৩ etc.) instead of English numerals for local authenticity. Printed at local press in offset 90gsm glossy paper.</p>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-expert">Expert Project</span><h4>Complete Bengali Design Suite</h4></div>
+        <ol>
+          <li>Design a <strong>flex banner</strong> (10×3 ft) for a fictional Bengali restaurant "আনন্দ রেস্তোরাঁ" with menu items, phone, and address — all in Bengali</li>
+          <li>Design a <strong>cultural program poster</strong> (A3) for "নববর্ষ ১৪৩২" (Bengali New Year) with traditional motifs, complete Bengali typography</li>
+          <li>Design a <strong>visiting card</strong> (90×55mm) for a Bengali professional — bilingual front (English top, Bengali bottom), single color back with logo</li>
+          <li>Design a <strong>Facebook event banner</strong> (1200×628px) for a Bengali cultural event — mix of Bengali and English text, proper hierarchy</li>
+          <li>All projects: export correctly for their purpose (flex as TIFF/CMYK, digital as JPG/RGB, print cards as PDF with bleed)</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 18 — SMART OBJECTS
+    ═══════════════════════════ -->
+    <section class="section" id="smart">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(199,125,255,0.15),rgba(199,125,255,0.03))">📦</div>
+        <div class="sec-info">
+          <h2>SMART OBJECTS</h2>
+          <p>Non-destructive editing powerhouse — linked files, smart filters, mockups, and embedding — the professional way to work in Photoshop.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>WHY USE SMART OBJECTS?</h3>
+      <div class="cg3">
+        <div class="card"><h5>🔄 Non-destructive Transforms</h5><p>Scale, rotate, distort a Smart Object multiple times without quality loss. Regular layers lose quality every time.</p></div>
+        <div class="card"><h5>🎛️ Editable Smart Filters</h5><p>Filters applied to Smart Objects can be re-edited, hidden, or deleted at any time. They're stored as live, adjustable effects.</p></div>
+        <div class="card"><h5>🔗 Linked Smart Objects</h5><p>Link an external file. When the original file updates, all linked instances auto-update. Essential for logo updates across multiple files.</p></div>
+        <div class="card"><h5>📋 Mockup Templates</h5><p>Smart Objects power device mockup templates. Double-click → edit the content → save → the mockup updates automatically.</p></div>
+        <div class="card"><h5>📐 Scaled Quality</h5><p>Smart Objects preserve the original data. Scale down then scale back up — no quality loss. Critical for images you might resize.</p></div>
+        <div class="card"><h5>♾️ Multiple Instances</h5><p>Duplicate a Smart Object (Ctrl+J) — all copies share the same data. Edit one and ALL copies update. Perfect for logos used multiple times.</p></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>USING MOCKUP TEMPLATES</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Open a Mockup PSD</strong><p>Download free mockup PSDs from Freepik, Mockupworld, or Pixeden. Open the file in Photoshop.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Find the Smart Object Layer</strong><p>In the Layers panel, look for a layer with a Smart Object icon (small page icon in corner of thumbnail). It's usually labeled "YOUR DESIGN HERE" or similar.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Double-click to Edit</strong><p>Double-click the Smart Object thumbnail. A new document opens with the placeholder area.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Paste Your Design</strong><p>Delete the placeholder. Paste or place your banner/poster design to fill the area. Scale to fit. Save (Ctrl+S) and close the Smart Object document.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>See the Result</strong><p>Return to the main mockup document. Your design now appears inside the mockup with all the perspective, shadows, and lighting of the original scene.</p></div></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 19 — ACTIONS
+    ═══════════════════════════ -->
+    <section class="section" id="actions">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,210,63,0.12),rgba(255,210,63,0.03))">⚡</div>
+        <div class="sec-info">
+          <h2>ACTIONS & AUTOMATION</h2>
+          <p>Record repetitive tasks as Actions and run them on hundreds of files automatically with Batch Processing. Save hours of work every week.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>RECORDING AN ACTION</h3>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div class="sb2"><strong>Open Actions Panel</strong><p>Window → Actions (Alt+F9). Click "New Action" (⊕) at the bottom. Name it (e.g., "Resize for Web"). Assign a keyboard shortcut. Click Record.</p></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><strong>Perform the Steps</strong><p>Do exactly what you want automated: Image → Image Size, Image → Mode, any adjustments, File → Export. Every action you take is recorded.</p></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><strong>Stop Recording</strong><p>Click the Stop button (■) in the Actions panel, or press Escape. Your action is now saved.</p></div></div>
+        <div class="step"><div class="sn">4</div><div class="sb2"><strong>Test on a Single File</strong><p>Open a different file. Click your action. Click Play (▶). Watch it execute automatically. Check the result before batch processing.</p></div></div>
+        <div class="step"><div class="sn">5</div><div class="sb2"><strong>Batch Process a Folder</strong><p>File → Automate → Batch. Set: Action: your action, Source: Folder (select folder of images), Destination: Folder (choose output folder). Click OK. Watch Photoshop process all files automatically.</p></div></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>USEFUL ACTIONS TO CREATE</h3>
+      <div class="cg">
+        <div class="card"><h5>📸 "Resize for Social"</h5><p>Resize to 1080×1080, convert to sRGB, sharpen, export as JPG quality 85. Run on all client photos for social media delivery.</p></div>
+        <div class="card"><h5>🖨️ "Prepare for Print"</h5><p>Convert to CMYK, check and set resolution to 300 DPI, add bleed marks, export as TIFF. Standardizes all print files.</p></div>
+        <div class="card"><h5>✨ "Quick Skin Retouch"</h5><p>Apply Spot Heal at specific settings, add Frequency Separation layers preset, add basic brightness/contrast. Creates a starting point for portrait retouching.</p></div>
+        <div class="card"><h5>💧 "Watermark"</h5><p>Place a logo/watermark layer in the corner at 30% opacity, flatten, export as JPG. Protect all photos before sharing/delivery.</p></div>
+      </div>
+
+      <div class="rl">
+        <div class="rl-tag">🏢 Real-Life Example</div>
+        <h5>Scenario: Photo Studio Delivery Automation</h5>
+        <p>A Dhaka wedding studio delivers 800 photos per wedding. Manual processing would take 3+ days. With a single Action: apply creative color grade, add studio watermark, resize to 2000px wide, export JPG quality 90 — Batch Processing can process all 800 photos overnight in 2–3 hours. The photographer wakes up to 800 ready-to-deliver photos. Saves 2 full working days per wedding.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 20 — SHORTCUTS
+    ═══════════════════════════ -->
+    <section class="section" id="shortcuts">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(255,210,63,0.1),rgba(255,210,63,0.02))">⌨️</div>
+        <div class="sec-info">
+          <h2>ALL KEYBOARD SHORTCUTS</h2>
+          <p>Master these shortcuts to work at professional speed. Press Ctrl+Alt+Shift+K to see and customize all shortcuts in Photoshop.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>ESSENTIAL SHORTCUTS</h3>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-l">Undo</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Z</kbd></span></div>
+        <div class="sc"><span class="sc-l">Step backward (history)</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Z</kbd></span></div>
+        <div class="sc"><span class="sc-l">Redo</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Z</kbd></span></div>
+        <div class="sc"><span class="sc-l">Free Transform</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>T</kbd></span></div>
+        <div class="sc"><span class="sc-l">New Layer</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>N</kbd></span></div>
+        <div class="sc"><span class="sc-l">Duplicate Layer</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>J</kbd></span></div>
+        <div class="sc"><span class="sc-l">Merge Visible Layers</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>E</kbd></span></div>
+        <div class="sc"><span class="sc-l">Flatten Image</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>E</kbd></span></div>
+        <div class="sc"><span class="sc-l">Deselect All</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>D</kbd></span></div>
+        <div class="sc"><span class="sc-l">Inverse Selection</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>I</kbd></span></div>
+        <div class="sc"><span class="sc-l">Feather Selection</span><span class="sc-k"><kbd>Shift</kbd><kbd>F6</kbd></span></div>
+        <div class="sc"><span class="sc-l">Select All</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>A</kbd></span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>TOOLS SHORTCUTS</h3>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-l">Move Tool</span><span class="sc-k"><kbd>V</kbd></span></div>
+        <div class="sc"><span class="sc-l">Marquee Selection</span><span class="sc-k"><kbd>M</kbd></span></div>
+        <div class="sc"><span class="sc-l">Lasso Tool</span><span class="sc-k"><kbd>L</kbd></span></div>
+        <div class="sc"><span class="sc-l">Quick Selection</span><span class="sc-k"><kbd>W</kbd></span></div>
+        <div class="sc"><span class="sc-l">Crop Tool</span><span class="sc-k"><kbd>C</kbd></span></div>
+        <div class="sc"><span class="sc-l">Eyedropper</span><span class="sc-k"><kbd>I</kbd></span></div>
+        <div class="sc"><span class="sc-l">Healing Brush</span><span class="sc-k"><kbd>J</kbd></span></div>
+        <div class="sc"><span class="sc-l">Brush Tool</span><span class="sc-k"><kbd>B</kbd></span></div>
+        <div class="sc"><span class="sc-l">Clone Stamp</span><span class="sc-k"><kbd>S</kbd></span></div>
+        <div class="sc"><span class="sc-l">History Brush</span><span class="sc-k"><kbd>Y</kbd></span></div>
+        <div class="sc"><span class="sc-l">Eraser</span><span class="sc-k"><kbd>E</kbd></span></div>
+        <div class="sc"><span class="sc-l">Gradient Tool</span><span class="sc-k"><kbd>G</kbd></span></div>
+        <div class="sc"><span class="sc-l">Dodge Tool</span><span class="sc-k"><kbd>O</kbd></span></div>
+        <div class="sc"><span class="sc-l">Pen Tool</span><span class="sc-k"><kbd>P</kbd></span></div>
+        <div class="sc"><span class="sc-l">Type Tool</span><span class="sc-k"><kbd>T</kbd></span></div>
+        <div class="sc"><span class="sc-l">Shape Tools</span><span class="sc-k"><kbd>U</kbd></span></div>
+        <div class="sc"><span class="sc-l">Hand Tool (hold)</span><span class="sc-k"><kbd>Space</kbd></span></div>
+        <div class="sc"><span class="sc-l">Zoom Tool</span><span class="sc-k"><kbd>Z</kbd></span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>VIEW & NAVIGATION</h3>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-l">Zoom In</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>+</kbd></span></div>
+        <div class="sc"><span class="sc-l">Zoom Out</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>-</kbd></span></div>
+        <div class="sc"><span class="sc-l">Fit to Screen</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>0</kbd></span></div>
+        <div class="sc"><span class="sc-l">100% Zoom</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>1</kbd></span></div>
+        <div class="sc"><span class="sc-l">Show/Hide Guides</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>;</kbd></span></div>
+        <div class="sc"><span class="sc-l">Show/Hide Rulers</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>R</kbd></span></div>
+        <div class="sc"><span class="sc-l">Show/Hide Grid</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>'</kbd></span></div>
+        <div class="sc"><span class="sc-l">Full Screen Mode</span><span class="sc-k"><kbd>F</kbd></span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>COLOR & FILL</h3>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-l">Fill with Foreground</span><span class="sc-k"><kbd>Alt</kbd><kbd>Delete</kbd></span></div>
+        <div class="sc"><span class="sc-l">Fill with Background</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Delete</kbd></span></div>
+        <div class="sc"><span class="sc-l">Swap FG/BG Colors</span><span class="sc-k"><kbd>X</kbd></span></div>
+        <div class="sc"><span class="sc-l">Reset to B&W Colors</span><span class="sc-k"><kbd>D</kbd></span></div>
+        <div class="sc"><span class="sc-l">Open Color Picker</span><span class="sc-k">Click FG/BG swatch</span></div>
+        <div class="sc"><span class="sc-l">Curves</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>M</kbd></span></div>
+        <div class="sc"><span class="sc-l">Levels</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>L</kbd></span></div>
+        <div class="sc"><span class="sc-l">Hue/Saturation</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>U</kbd></span></div>
+        <div class="sc"><span class="sc-l">Color Balance</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>B</kbd></span></div>
+        <div class="sc"><span class="sc-l">Desaturate</span><span class="sc-k"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>U</kbd></span></div>
+      </div>
+
+      <h3><span class="h3-accent"></span>BRUSH SHORTCUTS</h3>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-l">Increase Brush Size</span><span class="sc-k"><kbd>]</kbd></span></div>
+        <div class="sc"><span class="sc-l">Decrease Brush Size</span><span class="sc-k"><kbd>[</kbd></span></div>
+        <div class="sc"><span class="sc-l">Harder Brush</span><span class="sc-k"><kbd>Shift</kbd><kbd>]</kbd></span></div>
+        <div class="sc"><span class="sc-l">Softer Brush</span><span class="sc-k"><kbd>Shift</kbd><kbd>[</kbd></span></div>
+        <div class="sc"><span class="sc-l">Opacity 10–100%</span><span class="sc-k"><kbd>1</kbd>–<kbd>0</kbd></span></div>
+        <div class="sc"><span class="sc-l">Flow 10–100%</span><span class="sc-k"><kbd>Shift</kbd><kbd>1</kbd>–<kbd>0</kbd></span></div>
+        <div class="sc"><span class="sc-l">Sample Color</span><span class="sc-k"><kbd>Alt</kbd>+click</span></div>
+        <div class="sc"><span class="sc-l">Brush Panel</span><span class="sc-k"><kbd>F5</kbd></span></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════
+         CH 21 — EXPORT
+    ═══════════════════════════ -->
+    <section class="section" id="export">
+      <div class="sec-hd">
+        <div class="sec-icon" style="background:linear-gradient(135deg,rgba(49,168,255,0.12),rgba(49,168,255,0.03))">💾</div>
+        <div class="sec-info">
+          <h2>EXPORT & SAVE</h2>
+          <p>The right export format for every purpose — social media, web, print, flex, visiting cards, and archiving your PSD source files.</p>
+        </div>
+      </div>
+
+      <h3><span class="h3-accent"></span>FILE FORMAT GUIDE</h3>
+      <div class="tbl">
+        <table class="tbl">
+          <thead><tr><th>Format</th><th>Use Case</th><th>Settings</th><th>File Size</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PSD</strong></td><td>Source/master file (always save this)</td><td>Keep all layers, full quality</td><td>Large (100MB+)</td></tr>
+            <tr><td><strong>JPG/JPEG</strong></td><td>Photos, social media, web banners</td><td>Quality 8–10 (80–100%), sRGB for screen</td><td>Small-Medium</td></tr>
+            <tr><td><strong>PNG</strong></td><td>Graphics with transparency, logos</td><td>PNG-24 for color, PNG-8 for icons</td><td>Medium</td></tr>
+            <tr><td><strong>TIFF</strong></td><td>Professional print, flex, hoarding</td><td>No compression or LZW, CMYK, 300 DPI</td><td>Very Large</td></tr>
+            <tr><td><strong>PDF (Photoshop)</strong></td><td>Press-ready print, visiting cards</td><td>PDF/X-1a or PDF Press Quality, with bleed</td><td>Medium-Large</td></tr>
+            <tr><td><strong>SVG</strong></td><td>Scalable logos, icons (use Illustrator)</td><td>Export from Photoshop not ideal for SVG</td><td>Very Small</td></tr>
+            <tr><td><strong>WebP</strong></td><td>Modern web use, smaller than JPG</td><td>File → Export As → WebP, quality 80</td><td>Very Small</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="h3-accent"></span>EXPORT WORKFLOWS</h3>
+      <div class="cb">
+        <div class="cb-top"><div class="cb-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div><div class="cb-title">Export Commands Reference</div></div>
+        <pre><span class="t-yellow"># FOR SOCIAL MEDIA / WEB:</span>
+<span class="t-green">File → Export → Export As</span>
+  Format: JPEG, Quality: 80-90
+  Color Space: sRGB
+  Resize: 1080×1080 or required size
+
+<span class="t-yellow"># FOR FLEX / PRINT (to print shop):</span>
+<span class="t-green">Image → Flatten Image</span>   <span class="t-gray">← Merge all layers first</span>
+<span class="t-green">File → Save As → TIFF</span>
+  Compression: None (or LZW)
+  Color Space: CMYK (or RGB if shop prefers)
+  Include: All layers OFF (flattened)
+
+<span class="t-yellow"># FOR VISITING CARD (to press printer):</span>
+<span class="t-green">File → Save As → Photoshop PDF</span>
+  PDF Preset: "Press Quality"
+  Output: CMYK
+  Include Vector Data: YES (for type)
+  Security: None
+
+<span class="t-yellow"># QUICK EXPORT (batch web export):</span>
+<span class="t-green">File → Export → Quick Export as PNG/JPG</span>
+  Configured in: File → Export → Export Preferences
+
+<span class="t-yellow"># FOR EMAIL / WHATSAPP (optimized size):</span>
+<span class="t-green">File → Export → Save for Web (Legacy)</span>
+  Format: JPEG, Quality 60-70
+  Image Size: 1200×628 max
+  Optimized: YES</pre>
+      </div>
+
+      <div class="note tip">
+        <span class="ni">💡</span>
+        <div><strong>Always Save PSD First:</strong> Before exporting to any final format, save your PSD source file. The PSD contains all your layers, adjustments, and text — you'll need it if the client requests changes. Establish this habit: <strong>PSD = source, JPG/PDF/TIFF = delivery.</strong></div>
+      </div>
+
+      <div class="practice">
+        <div class="p-head"><span class="p-badge pb-expert">Final Project</span><h4>Complete Commercial Design Package</h4></div>
+        <ol>
+          <li><strong>Client:</strong> A new Bengali clothing boutique "সিল্ক স্বপ্ন — Silk Shopno" in Kolkata needs a full design package</li>
+          <li><strong>Logo + Visiting Card:</strong> Design a simple text logo, create bilingual visiting card (90×55mm, both sides, 300 DPI CMYK)</li>
+          <li><strong>Shop Flex:</strong> 10×3 ft shop banner in Bengali with shop name, products (শাড়ি, কুর্তি, সালোয়ার), phone, address</li>
+          <li><strong>Facebook Banner:</strong> 1200×628px event banner for "Grand Opening Sale" — Bengali + English text, 50% off visual</li>
+          <li><strong>Instagram Post:</strong> 1080×1080px product post with cutout product photo, clean white background</li>
+          <li><strong>Color Grade:</strong> Apply warm cinematic grade to all product photos using Curves + Camera Raw</li>
+          <li><strong>Export Package:</strong> PSD masters for all, JPG for social, TIFF/PDF for print, organized in folders</li>
+        </ol>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</main><!-- /main -->
+
+<script>
+// Active nav
+function setActive(el) {
+  document.querySelectorAll('.nav-a').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total    = document.body.scrollHeight - window.innerHeight;
+  const pct      = Math.round((scrolled / total) * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+});
+
+// Scroll spy
+const sections  = document.querySelectorAll('section[id], div[id="intro"]');
+const navLinks  = document.querySelectorAll('.nav-a[href]');
+
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = '#' + e.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+    }
+  });
+}, { rootMargin: '-58px 0px -45% 0px', threshold: 0 });
+
+sections.forEach(s => spy.observe(s));
+
+// Smooth scroll
+document.querySelectorAll('[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const t = document.querySelector(this.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// Nav search filter
+function navFilter(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.nav-a').forEach(l => {
+    l.style.display = !q || l.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// Code copy (optional)
+document.querySelectorAll('.cb-copy').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const pre = btn.closest('.cb').querySelector('pre');
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  });
+});
+</script>
+</body>
+</html>

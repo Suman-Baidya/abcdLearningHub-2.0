@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlideHero — PowerPoint Practice Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f0e17;
+  --paper: #fffcf5;
+  --warm: #f5f0e8;
+  --border: #e2ddd4;
+  --red: #e63946;
+  --red-soft: #fdeced;
+  --blue: #1d3557;
+  --blue-mid: #457b9d;
+  --blue-soft: #e8f1f8;
+  --amber: #e9c46a;
+  --amber-soft: #fdf6e3;
+  --green: #2a9d8f;
+  --green-soft: #e6f5f3;
+  --violet: #7b2d8b;
+  --violet-soft: #f3e8f6;
+  --text: #1a1825;
+  --muted: #6b6880;
+  --lighter: #a8a4b8;
+  --shadow: 0 2px 20px rgba(15,14,23,0.08);
+  --shadow-lg: 0 8px 48px rgba(15,14,23,0.14);
+  --r: 12px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+  opacity:.5;
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky; top:0; z-index:200;
+  background: rgba(255,252,245,0.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1100px; margin:0 auto;
+  padding: 0 32px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+
+.logo-slides {
+  display: flex; gap: 3px; align-items: flex-end;
+}
+.logo-slide {
+  width: 7px; border-radius: 2px; background: var(--red);
+}
+.logo-slide:nth-child(1){height:16px; opacity:.4;}
+.logo-slide:nth-child(2){height:22px; opacity:.7;}
+.logo-slide:nth-child(3){height:18px;}
+.logo-slide:nth-child(4){height:12px; opacity:.5;}
+
+.logo-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+}
+.logo-name span { color: var(--red); }
+
+.header-right {
+  display: flex; align-items: center; gap: 16px;
+}
+
+.progress-pill {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--warm); border: 1px solid var(--border);
+  padding: 6px 16px; border-radius: 20px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+}
+
+.prog-bar-mini {
+  width: 60px; height: 5px;
+  background: var(--border); border-radius: 3px; overflow: hidden;
+}
+.prog-fill-mini {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--red), #f4845f);
+  border-radius: 3px;
+  transition: width .5s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  padding: 80px 32px 72px;
+}
+
+.hero-bg-slides {
+  position: absolute; inset:0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px;
+  opacity: .06;
+  transform: rotate(-8deg) scale(1.3);
+  pointer-events: none;
+}
+
+.bg-slide {
+  width: 180px; height: 110px;
+  background: white; border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(230,57,70,0.15);
+  border: 1px solid rgba(230,57,70,0.3);
+  color: #ff7b85;
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 24px;
+}
+
+.hero-eyebrow .pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--red); animation: blink 1.8s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(42px, 7vw, 88px);
+  line-height: .95;
+  color: #fff;
+  letter-spacing: -2px;
+  margin-bottom: 22px;
+}
+
+h1 .accent { color: var(--amber); font-style: italic; }
+h1 .line2 { display: block; }
+
+.hero-desc {
+  font-size: 17px; color: rgba(255,255,255,0.55);
+  max-width: 540px; line-height: 1.7; font-weight: 300;
+  margin-bottom: 36px;
+}
+
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+
+.hstat {
+  text-align: left;
+}
+.hstat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 36px; font-weight: 900; color: #fff;
+  line-height: 1;
+}
+.hstat-label {
+  font-size: 12px; color: rgba(255,255,255,.4);
+  text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;
+}
+
+/* ── FILTER TABS ── */
+.filter-section {
+  max-width: 1100px; margin: 0 auto;
+  padding: 36px 32px 0;
+}
+
+.section-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--lighter);
+  margin-bottom: 14px;
+}
+
+.filter-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ftab {
+  padding: 8px 20px; border-radius: 30px;
+  font-size: 13px; font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: transparent; color: var(--muted);
+  cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+}
+.ftab:hover { border-color: var(--ink); color: var(--ink); }
+.ftab.active {
+  background: var(--ink); border-color: var(--ink);
+  color: #fff;
+}
+.ftab-count {
+  font-size: 10px; padding: 1px 7px; border-radius: 8px;
+  background: rgba(255,255,255,.15); font-weight: 600;
+}
+.ftab:not(.active) .ftab-count { background: var(--warm); color: var(--lighter); }
+
+/* ── GRID ── */
+.grid-section {
+  max-width: 1100px; margin: 0 auto;
+  padding: 32px 32px 80px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* ── CARD ── */
+.pcard {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .28s cubic-bezier(.34,1.2,.64,1);
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
+}
+
+.pcard:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.pcard.open {
+  grid-column: span 1;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--ink), var(--shadow-lg);
+}
+
+/* Card visual banner */
+.card-banner {
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-banner .slide-preview {
+  width: 110px; height: 70px;
+  background: white; border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: 10px;
+  transition: transform .3s;
+}
+.pcard:hover .slide-preview { transform: rotate(-2deg) scale(1.05); }
+
+.slide-preview .sp-title-bar {
+  height: 8px; border-radius: 2px; width: 70%; margin-bottom: 6px;
+}
+.slide-preview .sp-line {
+  height: 4px; border-radius: 2px; margin-bottom: 3px;
+  background: rgba(0,0,0,0.12);
+}
+.slide-preview .sp-line.w80 { width: 80%; }
+.slide-preview .sp-line.w60 { width: 60%; }
+.slide-preview .sp-line.w50 { width: 50%; }
+.slide-preview .sp-img {
+  position: absolute; right: 8px; bottom: 8px;
+  width: 28px; height: 28px; border-radius: 4px;
+  opacity: .7;
+}
+
+/* Floating slide shadows */
+.card-banner .shadow-slide {
+  position: absolute;
+  width: 90px; height: 58px;
+  background: white; border-radius: 5px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  opacity: .5;
+}
+
+.card-body {
+  padding: 20px 22px;
+  flex: 1;
+  display: flex; flex-direction: column;
+}
+
+.card-meta {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px; flex-wrap: wrap;
+}
+
+.level-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+.card-level {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--lighter);
+}
+
+.card-tag {
+  font-size: 10px; font-weight: 600; padding: 2px 9px;
+  border-radius: 8px; text-transform: uppercase; letter-spacing: .5px;
+}
+
+.card-num {
+  font-size: 10px; color: var(--lighter);
+  font-family: 'DM Mono', monospace;
+  margin-left: auto;
+}
+
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px; font-weight: 700;
+  line-height: 1.3; color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.card-desc {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.65; flex: 1; font-weight: 300;
+}
+
+.card-footer {
+  margin-top: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.difficulty-stars {
+  display: flex; gap: 3px;
+}
+.star {
+  width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--border);
+}
+.star.fill { border-color: transparent; }
+
+.expand-arrow {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--warm); border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all .25s; color: var(--muted);
+}
+.pcard.open .expand-arrow {
+  background: var(--ink); border-color: var(--ink);
+  color: #fff; transform: rotate(180deg);
+}
+.pcard:not(.open):hover .expand-arrow { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ── ANSWER PANEL ── */
+.answer-panel {
+  display: none;
+  background: var(--warm);
+  border-top: 1.5px solid var(--border);
+  padding: 28px 24px;
+  animation: panelIn .25s ease;
+}
+@keyframes panelIn {
+  from{opacity:0;transform:translateY(-8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.pcard.open .answer-panel { display: block; }
+
+.panel-section { margin-bottom: 22px; }
+
+.panel-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--lighter);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.panel-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Real scenario box */
+.scenario-box {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: var(--r); padding: 18px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.scenario-icon { font-size: 28px; flex-shrink:0; }
+.scenario-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.scenario-text strong { color: var(--ink); }
+
+/* Slide blueprint */
+.slide-blueprint {
+  background: var(--ink);
+  border-radius: var(--r); padding: 20px;
+  aspect-ratio: 16/6;
+  display: flex; align-items: center; gap: 20px;
+  overflow: hidden; position: relative;
+}
+
+.blueprint-content { flex:1; }
+.bp-title { font-family:'Fraunces',serif; font-size:16px; color:#fff; font-weight:700; margin-bottom:8px; }
+.bp-lines { display:flex; flex-direction:column; gap:4px; }
+.bp-line { height:4px; border-radius:2px; background:rgba(255,255,255,.2); }
+.bp-line.w90{width:90%} .bp-line.w70{width:70%} .bp-line.w55{width:55%}
+
+.blueprint-side {
+  width: 100px; flex-shrink:0;
+  display: flex; flex-direction:column; gap:8px;
+}
+.bp-box { border-radius:6px; background:rgba(255,255,255,.1); }
+.bp-accent { height:3px; border-radius:2px; }
+
+/* Steps list */
+.steps-list {
+  counter-reset: s;
+  list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.steps-list li {
+  counter-increment: s;
+  display: flex; gap: 12px; align-items: flex-start;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 13px 16px;
+  font-size: 13px; color: var(--muted); line-height: 1.6;
+  transition: border-color .2s;
+}
+.steps-list li:hover { border-color: var(--ink); }
+.steps-list li::before {
+  content: counter(s);
+  min-width: 24px; height: 24px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: 'DM Mono', monospace;
+}
+.steps-list li strong { color: var(--ink); }
+
+/* Pro tips */
+.tip-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.tip-chip {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+  flex: 1; min-width: 200px;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.tip-chip .ti { font-size: 15px; flex-shrink:0; }
+
+/* Shortcut row */
+.shortcut-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.shortcut {
+  display: flex; align-items: center; gap: 6px;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 8px 12px;
+  font-size: 12px; color: var(--muted);
+}
+.kbd {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  background: var(--ink); color: #fff;
+  padding: 2px 8px; border-radius: 5px;
+}
+
+/* Checklist */
+.checklist {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.check-item {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 13px; cursor: pointer;
+  transition: all .2s; user-select: none;
+  color: var(--muted);
+}
+.check-item:hover { border-color: var(--green); }
+.check-item.checked { border-color: var(--green); background: var(--green-soft); color: var(--ink); }
+.check-box {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--border); flex-shrink:0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: transparent;
+  transition: all .2s;
+}
+.check-item.checked .check-box {
+  background: var(--green); border-color: var(--green); color: #fff;
+}
+
+/* Done btn */
+.done-row {
+  display: flex; gap: 10px; margin-top: 20px;
+}
+.btn-done {
+  flex: 1; padding: 12px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  border: 2px solid var(--ink); background: var(--ink); color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-done:hover { background: #fff; color: var(--ink); }
+.btn-done.done { background: var(--green); border-color: var(--green); }
+
+/* ── COLOR THEMES PER CARD ── */
+.theme-red .card-banner { background: linear-gradient(135deg, #c62828 0%, #e63946 50%, #f4845f 100%); }
+.theme-red .sp-title-bar { background: var(--red); }
+.theme-red .card-tag { background: var(--red-soft); color: var(--red); }
+.theme-red .level-dot { background: var(--red); }
+.theme-red .star.fill { background: var(--red); }
+
+.theme-blue .card-banner { background: linear-gradient(135deg, #0d2137 0%, #1d3557 50%, #457b9d 100%); }
+.theme-blue .sp-title-bar { background: var(--blue-mid); }
+.theme-blue .card-tag { background: var(--blue-soft); color: var(--blue); }
+.theme-blue .level-dot { background: var(--blue-mid); }
+.theme-blue .star.fill { background: var(--blue-mid); }
+.theme-blue.pcard.open { box-shadow: 0 0 0 2px var(--blue), var(--shadow-lg); }
+
+.theme-amber .card-banner { background: linear-gradient(135deg, #b08000 0%, #d4a017 50%, #e9c46a 100%); }
+.theme-amber .sp-title-bar { background: var(--amber); }
+.theme-amber .card-tag { background: var(--amber-soft); color: #7a5c00; }
+.theme-amber .level-dot { background: var(--amber); }
+.theme-amber .star.fill { background: var(--amber); }
+.theme-amber.pcard.open { box-shadow: 0 0 0 2px #c49a00, var(--shadow-lg); }
+
+.theme-green .card-banner { background: linear-gradient(135deg, #1a6b5e 0%, #2a9d8f 50%, #76c893 100%); }
+.theme-green .sp-title-bar { background: var(--green); }
+.theme-green .card-tag { background: var(--green-soft); color: var(--green); }
+.theme-green .level-dot { background: var(--green); }
+.theme-green .star.fill { background: var(--green); }
+.theme-green.pcard.open { box-shadow: 0 0 0 2px var(--green), var(--shadow-lg); }
+
+.theme-violet .card-banner { background: linear-gradient(135deg, #4a0e5a 0%, #7b2d8b 50%, #c77dff 100%); }
+.theme-violet .sp-title-bar { background: #c77dff; }
+.theme-violet .card-tag { background: var(--violet-soft); color: var(--violet); }
+.theme-violet .level-dot { background: var(--violet); }
+.theme-violet .star.fill { background: var(--violet); }
+.theme-violet.pcard.open { box-shadow: 0 0 0 2px var(--violet), var(--shadow-lg); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); padding: 48px 32px;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 28px; font-weight: 900; color: #fff;
+  letter-spacing: -0.5px; margin-bottom: 12px;
+}
+.footer-logo span { color: var(--amber); font-style: italic; }
+footer p { font-size: 13px; color: rgba(255,255,255,.35); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px) {
+  .header-inner, .filter-section, .grid-section, .hero { padding-left:16px; padding-right:16px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  h1 { letter-spacing: -1px; }
+}
+
+/* hidden filter */
+.pcard.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-slides">
+        <div class="logo-slide"></div><div class="logo-slide"></div>
+        <div class="logo-slide"></div><div class="logo-slide"></div>
+      </div>
+      <span class="logo-name">Slide<span>Hero</span></span>
+    </a>
+    <div class="header-right">
+      <div class="progress-pill">
+        <div class="prog-bar-mini"><div class="prog-fill-mini" id="prog-mini"></div></div>
+        <span id="prog-label">0 / 20 done</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-slides">
+    <div class="bg-slide"></div><div class="bg-slide"></div><div class="bg-slide"></div>
+    <div class="bg-slide"></div><div class="bg-slide"></div><div class="bg-slide"></div>
+    <div class="bg-slide"></div><div class="bg-slide"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="pulse"></span>
+      Real-World PowerPoint Training
+    </div>
+    <h1>
+      Master the<br>
+      <span class="accent">Art of Slides</span>
+      <span class="line2">in Real Life</span>
+    </h1>
+    <p class="hero-desc">
+      From business pitch decks to school presentations — 20 hands-on exercises covering every real scenario where PowerPoint matters.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num">20</div><div class="hstat-label">Exercises</div></div>
+      <div class="hstat"><div class="hstat-num">5</div><div class="hstat-label">Real Topics</div></div>
+      <div class="hstat"><div class="hstat-num">3</div><div class="hstat-label">Levels</div></div>
+      <div class="hstat"><div class="hstat-num">60+</div><div class="hstat-label">Pro Tips</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER -->
+<div class="filter-section">
+  <div class="section-eyebrow">Browse by category</div>
+  <div class="filter-tabs">
+    <button class="ftab active" onclick="filterCards('all',this)">All <span class="ftab-count">20</span></button>
+    <button class="ftab" onclick="filterCards('business',this)">💼 Business <span class="ftab-count">5</span></button>
+    <button class="ftab" onclick="filterCards('education',this)">🎓 Education <span class="ftab-count">4</span></button>
+    <button class="ftab" onclick="filterCards('design',this)">🎨 Design <span class="ftab-count">4</span></button>
+    <button class="ftab" onclick="filterCards('data',this)">📊 Data & Charts <span class="ftab-count">4</span></button>
+    <button class="ftab" onclick="filterCards('animation',this)">✨ Animation <span class="ftab-count">3</span></button>
+  </div>
+</div>
+
+<!-- GRID -->
+<div class="grid-section">
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- ═══════════ CARD 1 ═══════════ -->
+    <div class="pcard theme-red" data-cat="business" id="c1">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-8deg) translate(-50px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div class="sp-line w80"></div><div class="sp-line w60"></div><div class="sp-line w50"></div>
+          <div class="sp-img" style="background:rgba(230,57,70,.3);border-radius:4px;"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(55px,-5px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Beginner</span>
+          <span class="card-tag">Business</span>
+          <span class="card-num">01</span>
+        </div>
+        <div class="card-title">Company Introduction Deck</div>
+        <div class="card-desc">Create a 6-slide intro deck for a new startup. Cover mission, team, product, market, and contact.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🏢</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You've just launched "FreshBite" — a healthy meal delivery startup. Your first investor meeting is next Monday. You need a clean 6-slide deck to introduce the company to potential investors and partners.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Slide Structure Blueprint</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="slide-blueprint" style="aspect-ratio:16/5;">
+              <div class="blueprint-content">
+                <div class="bp-title">Slide 1 — Title / Cover</div>
+                <div class="bp-lines"><div class="bp-line w90"></div><div class="bp-line w55"></div></div>
+              </div>
+              <div class="blueprint-side">
+                <div class="bp-box" style="height:40px;"></div>
+                <div class="bp-accent" style="background:#e63946;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📍 <strong style="color:var(--ink)">Slide 1</strong> — Company name, tagline, logo</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🎯 <strong style="color:var(--ink)">Slide 2</strong> — Problem we solve</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">💡 <strong style="color:var(--ink)">Slide 3</strong> — Our solution / product</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📈 <strong style="color:var(--ink)">Slide 4</strong> — Market opportunity</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">👥 <strong style="color:var(--ink)">Slide 5</strong> — Team & credentials</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📞 <strong style="color:var(--ink)">Slide 6</strong> — Contact & call to action</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Open PowerPoint → <strong>New Presentation</strong> → Choose a clean professional theme (try "Ion" or "Facet")</li>
+            <li>Slide 1: Click the title box → type company name in large bold font. Add a short tagline below. Insert your logo via <strong>Insert → Pictures</strong></li>
+            <li>Use <strong>Slide Layout</strong> for each slide: Right-click slide → Layout → choose "Title and Content" or "Two Content"</li>
+            <li>Keep text minimal — max <strong>3 bullet points</strong> per slide. Use the "6×6 rule": 6 words per bullet, 6 bullets max</li>
+            <li>Apply <strong>consistent color scheme</strong>: Design tab → Variants → choose accent colors matching your brand</li>
+            <li>Final check: View → <strong>Slide Sorter</strong> to see all 6 slides together and adjust flow</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎨</span> Use only 2–3 brand colors. Investors trust consistency over creativity.</div>
+            <div class="tip-chip"><span class="ti">📏</span> Title font: 40–44pt. Body text: 20–24pt. Never go below 18pt.</div>
+            <div class="tip-chip"><span class="ti">🖼️</span> One high-quality image per slide beats 5 stock photos.</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Keyboard Shortcuts</div>
+          <div class="shortcut-row">
+            <div class="shortcut"><span class="kbd">Ctrl+M</span> New slide</div>
+            <div class="shortcut"><span class="kbd">Ctrl+D</span> Duplicate slide</div>
+            <div class="shortcut"><span class="kbd">F5</span> Present from start</div>
+            <div class="shortcut"><span class="kbd">Ctrl+Z</span> Undo</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c1')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 2 ═══════════ -->
+    <div class="pcard theme-blue" data-cat="business" id="c2">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-6deg) translate(-48px,8px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div class="sp-line w80"></div><div class="sp-line w60"></div>
+          <div class="sp-img" style="background:rgba(69,123,157,.4);border-radius:50%;"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(52px,-8px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Business</span>
+          <span class="card-num">02</span>
+        </div>
+        <div class="card-title">Quarterly Sales Report</div>
+        <div class="card-desc">Build a Q3 sales performance deck with KPIs, charts, regional breakdown, and next quarter targets.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">📊</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You're the Sales Manager at a retail company. Every quarter, you present performance data to the board. Create a Q3 report deck showing what worked, what didn't, and what's planned for Q4.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Slide Structure</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📌 <strong>Slide 1</strong> — Q3 Summary cover</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🔢 <strong>Slide 2</strong> — KPI Scorecard (Revenue, Units, NPS)</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📈 <strong>Slide 3</strong> — Monthly revenue bar chart</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🗺️ <strong>Slide 4</strong> — Regional performance table</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🏆 <strong>Slide 5</strong> — Top 5 products</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🎯 <strong>Slide 6</strong> — Q4 targets & action plan</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Slide 2 KPI cards: Insert → <strong>Shapes → Rectangle</strong>. Create 3 boxes side by side. In each, add the KPI name in small text and the number in large bold. Group them.</li>
+            <li>Slide 3 Chart: Insert → <strong>Chart → Bar Chart → Clustered Bar</strong>. Edit the data table that appears — type in Month and Revenue columns.</li>
+            <li>Format chart: Remove gridlines (click them → Delete). Change bar color to match theme. Add <strong>Data Labels</strong> (right-click bars → Add Data Labels).</li>
+            <li>Slide 4 Table: Insert → <strong>Table → 5×4</strong>. First row = header. Use <strong>Table Design tab</strong> → choose a "Medium Style" preset.</li>
+            <li>Add conditional arrows: Insert → Icons → search "up arrow" / "down arrow" to show growth/decline visually next to numbers.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🔴</span> Use red/green color coding for below/above target — universal and instantly understood.</div>
+            <div class="tip-chip"><span class="ti">📐</span> Align all elements: Select multiple → <strong>Shape Format → Align → Align Center</strong>.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c2')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 3 ═══════════ -->
+    <div class="pcard theme-amber" data-cat="education" id="c3">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-5deg) translate(-45px,12px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div class="sp-line w80"></div><div class="sp-line w70"></div><div class="sp-line w50"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(7deg) translate(50px,-3px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Beginner</span>
+          <span class="card-tag">Education</span>
+          <span class="card-num">03</span>
+        </div>
+        <div class="card-title">School Science Project Presentation</div>
+        <div class="card-desc">Create a 5-slide science fair presentation about the water cycle with visuals and labeled diagrams.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🌊</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Class 8 student Rina needs to present her science project on "The Water Cycle" to her class. She has 5 minutes and wants a visually rich, easy-to-follow presentation that earns top marks.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Slide Structure</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🌍 <strong>Slide 1</strong> — Title with water image background</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">💧 <strong>Slide 2</strong> — What is the water cycle?</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">☁️ <strong>Slide 3</strong> — Diagram with labels (SmartArt)</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🔬 <strong>Slide 4</strong> — Key stages explained</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">✅ <strong>Slide 5</strong> — Fun facts + conclusion</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Slide 1 background: Click slide → <strong>Design → Format Background → Picture or texture fill</strong> → insert a water/sky image. Set transparency to 60% so text stays readable.</li>
+            <li>Add a semi-transparent title box: Insert → Shape → Rectangle → set Fill to black 40% transparency. Type title on top.</li>
+            <li>Slide 3 SmartArt: Insert → <strong>SmartArt → Cycle → Basic Cycle</strong>. Click each box to type: Evaporation → Condensation → Precipitation → Collection → Transpiration.</li>
+            <li>Add callout arrows: Insert → Shapes → <strong>Callout shapes</strong> to add labels pointing to parts of the diagram.</li>
+            <li>Slide 4: Use <strong>Two Content layout</strong> — put stage name + icon on left, explanation on right.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🌈</span> Use a "sky blue" theme — it matches the topic and makes diagrams feel natural.</div>
+            <div class="tip-chip"><span class="ti">🎤</span> Add Speaker Notes (View → Notes) to remember what to say for each slide.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c3')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 4 ═══════════ -->
+    <div class="pcard theme-green" data-cat="design" id="c4">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-46px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div class="sp-line w70"></div><div class="sp-line w80"></div>
+          <div class="sp-img" style="background:rgba(42,157,143,.3);width:40px;height:20px;border-radius:3px;"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(50px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Design</span>
+          <span class="card-num">04</span>
+        </div>
+        <div class="card-title">Master Slide & Consistent Branding</div>
+        <div class="card-desc">Set up a Slide Master with your company logo, brand fonts, colors, and footer on every slide automatically.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🏷️</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You work at "GreenTech Solutions." Every department makes their own slides — but they all look different! Your boss wants a unified company template so all 50-slide decks look professional and on-brand.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Go to <strong>View → Slide Master</strong>. The first large slide is the "parent" — changes here affect all layouts below it.</li>
+            <li>Click the parent slide. Insert → <strong>Pictures</strong> → add company logo. Resize to ~1cm and drag to the bottom-left corner.</li>
+            <li>Set brand font: In Slide Master view → <strong>Slide Master tab → Fonts → Customize Fonts</strong>. Set Heading and Body fonts.</li>
+            <li>Set brand colors: <strong>Slide Master tab → Colors → Customize Colors</strong>. Set all 10 color slots to match your brand palette.</li>
+            <li>Edit the footer area at the bottom — add company name or slide number placeholder via <strong>Insert → Header & Footer</strong>.</li>
+            <li>Close Master View: <strong>Slide Master tab → Close Master View</strong>. Now every new slide inherits your branding.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">💾</span> Save as .potx (PowerPoint Template) so anyone in the company can use it as a starting file.</div>
+            <div class="tip-chip"><span class="ti">🔒</span> Lock background elements in Master so presenters can't accidentally delete the logo.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c4')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 5 ═══════════ -->
+    <div class="pcard theme-violet" data-cat="animation" id="c5">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-9deg) translate(-50px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar" style="background:#c77dff;"></div>
+          <div class="sp-line w80"></div><div class="sp-line w60"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(52px,-5px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Beginner</span>
+          <span class="card-tag">Animation</span>
+          <span class="card-num">05</span>
+        </div>
+        <div class="card-title">Animated Product Launch Slide</div>
+        <div class="card-desc">Use entrance animations to reveal a product name, tagline, and image one by one for a dramatic reveal effect.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🚀</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You're launching "ZenBrew" — a new herbal tea brand at a trade fair. You need one powerful slide that animates your product name and image on screen dramatically when you click, creating a "wow" moment.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Create a dark background slide. Type the product name "ZenBrew" in large text (80pt). Insert product image to the right.</li>
+            <li>Click the product image → <strong>Animations tab → Add Animation → Entrance → Zoom</strong>. This makes it zoom in on click.</li>
+            <li>Click the title text → Animations → Add Animation → <strong>Fly In</strong>. Set Direction to "From Left".</li>
+            <li>Open <strong>Animation Pane</strong> (Animations tab → Animation Pane). Reorder: image first, then title. Set title to start "After Previous" (auto after image).</li>
+            <li>Add tagline text below title → Animate with <strong>Fade</strong> → Start: "After Previous" → Duration: 1.5 sec.</li>
+            <li>Test: Press <strong>F5</strong> and click once — watch the reveal sequence.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">⚡</span> Keep animation duration 0.5–1 sec. Anything slower feels unprofessional in live presentations.</div>
+            <div class="tip-chip"><span class="ti">🚫</span> Never use "Bounce", "Spiral" or "Swivel" in business settings — they're distracting.</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Shortcuts</div>
+          <div class="shortcut-row">
+            <div class="shortcut"><span class="kbd">Alt+A</span> Animations tab</div>
+            <div class="shortcut"><span class="kbd">Shift+F5</span> Present current slide</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c5')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 6 ═══════════ -->
+    <div class="pcard theme-red" data-cat="data" id="c6">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-6deg) translate(-47px,8px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;gap:3px;margin-top:6px;align-items:flex-end;height:30px;">
+            <div style="width:8px;background:rgba(230,57,70,.6);height:100%;border-radius:2px 2px 0 0;"></div>
+            <div style="width:8px;background:rgba(230,57,70,.4);height:70%;border-radius:2px 2px 0 0;"></div>
+            <div style="width:8px;background:rgba(230,57,70,.8);height:85%;border-radius:2px 2px 0 0;"></div>
+            <div style="width:8px;background:rgba(230,57,70,.5);height:55%;border-radius:2px 2px 0 0;"></div>
+            <div style="width:8px;background:rgba(230,57,70,.9);height:95%;border-radius:2px 2px 0 0;"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(52px,-4px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Data & Charts</span>
+          <span class="card-num">06</span>
+        </div>
+        <div class="card-title">Sales Performance Bar Chart Slide</div>
+        <div class="card-desc">Build an impactful bar chart showing 5 products' sales, formatted with data labels, clean axes, and color highlights.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">📦</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> As Product Manager at a grocery chain, you need to show which of 5 product categories performed best this year. Your chart must be immediately readable by busy executives in less than 5 seconds.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Insert → <strong>Chart → Bar → Clustered Bar</strong>. An Excel-like datasheet opens. Replace sample data with: Products (Dairy, Produce, Snacks, Beverages, Frozen) and their revenue values.</li>
+            <li>Close the data window. Click the chart → <strong>Chart Design tab → Change Colors</strong> → pick a monochromatic single-color scheme for clean look.</li>
+            <li>Highlight the top performer: Click one bar (to select all) → click it again (to select just that one) → change fill to a bright accent color.</li>
+            <li>Add data labels: Right-click bars → <strong>Add Data Labels</strong>. Then right-click labels → Format Data Labels → check "Value", uncheck "Category".</li>
+            <li>Remove clutter: Click gridlines → Delete. Click Y-axis numbers → Delete. Click chart border → set to No Line.</li>
+            <li>Add a descriptive title above the chart. Use a bold number callout: e.g., "Dairy: +32% YoY" in a text box near the highlighted bar.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎯</span> Sort bars from highest to lowest — it's easier to read rankings visually.</div>
+            <div class="tip-chip"><span class="ti">🔢</span> Round all numbers to 1 decimal. ₹1.2M is cleaner than ₹1,234,567.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c6')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 7 ═══════════ -->
+    <div class="pcard theme-blue" data-cat="business" id="c7">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-8deg) translate(-46px,9px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;gap:3px;margin-top:8px;">
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(69,123,157,.5);"></div>
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(69,123,157,.8);"></div>
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(69,123,157,.3);"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(52px,-7px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Advanced</span>
+          <span class="card-tag">Business</span>
+          <span class="card-num">07</span>
+        </div>
+        <div class="card-title">Investor Pitch Deck (10 Slides)</div>
+        <div class="card-desc">Build a complete startup pitch following the Guy Kawasaki 10-slide rule with problem, solution, business model, and ask.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">💰</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You're pitching "EduBot AI" — an AI tutoring app — to a panel of 3 venture capitalists. You have exactly 10 minutes. Following Guy Kawasaki's rule: 10 slides, 20 minutes, 30pt font minimum.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">The 10-Slide Structure</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">1️⃣ <strong>Title</strong> — Company, name, contact</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">2️⃣ <strong>Problem</strong> — The pain point</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">3️⃣ <strong>Solution</strong> — Your product</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">4️⃣ <strong>Business Model</strong> — How you earn</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">5️⃣ <strong>Go-to-Market</strong> — Customer strategy</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">6️⃣ <strong>Competition</strong> — Your advantage</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">7️⃣ <strong>Team</strong> — Who you are</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">8️⃣ <strong>Projections</strong> — 3-year financials</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">9️⃣ <strong>Status & Timeline</strong></div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🔟 <strong>The Ask</strong> — Funding amount</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Slide 6 Competition Matrix: Insert → Table → 5 rows × 4 cols. Rows = competitors, Cols = key features. Use ✓ and ✗ symbols.</li>
+            <li>Slide 8 Financial chart: Insert → Chart → Line Chart. Show Year 1–3 projected revenue. Add a "Break-Even" annotation line.</li>
+            <li>Use <strong>Morph transition</strong> between slides for a premium flowing feel: Select all slides → Transitions → Morph.</li>
+            <li>Slide 10 "The Ask": Make it bold and simple. One large number (e.g., "$500K"), below it: "For 10% equity". Nothing else.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">📏</span> Kawasaki Rule: minimum 30pt font. If you need smaller text, you have too much content.</div>
+            <div class="tip-chip"><span class="ti">🖼️</span> Every slide should have ONE key message. If you can't say it in one sentence, cut it.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c7')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 8 ═══════════ -->
+    <div class="pcard theme-amber" data-cat="data" id="c8">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-6deg) translate(-46px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:50px;">
+            <div style="width:50px;height:50px;border-radius:50%;background:conic-gradient(rgba(233,196,106,.9) 0% 40%, rgba(233,196,106,.4) 40% 70%, rgba(233,196,106,.7) 70% 100%);"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(7deg) translate(54px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Beginner</span>
+          <span class="card-tag">Data & Charts</span>
+          <span class="card-num">08</span>
+        </div>
+        <div class="card-title">Budget Breakdown Pie Chart</div>
+        <div class="card-desc">Create a department budget pie chart with labels, percentages, an exploded slice for the largest category.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">💼</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Finance manager Anika presents the annual departmental budget to the leadership team. She needs a pie chart showing the % share of each department: HR 15%, IT 30%, Marketing 20%, Operations 25%, R&D 10%.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Insert → <strong>Chart → Pie → Pie</strong>. In the data table: Column A = Department names, Column B = percentages.</li>
+            <li>Explode the largest slice (IT 30%): Click the chart → click the IT slice → drag it outward slightly to "explode" it.</li>
+            <li>Add labels: Right-click → Add Data Labels → Format Data Labels → check <strong>Category Name + Percentage</strong>. Uncheck Value.</li>
+            <li>Change colors: Click each slice and change fill to distinct but harmonious colors from your theme palette.</li>
+            <li>Add a callout: Insert → Shapes → Oval Callout → point at IT slice → type "Largest spend: IT Infrastructure".</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🥧</span> Pie charts work best with 5 or fewer slices. More than 6 → use a bar chart instead.</div>
+            <div class="tip-chip"><span class="ti">↗️</span> Start the largest slice at the 12 o'clock position for natural reading order.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c8')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 9 ═══════════ -->
+    <div class="pcard theme-green" data-cat="education" id="c9">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-47px,11px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;gap:4px;margin-top:6px;">
+            <div style="width:12px;height:30px;background:rgba(42,157,143,.4);border-radius:2px;"></div>
+            <div style="width:12px;height:20px;background:rgba(42,157,143,.6);border-radius:2px;"></div>
+            <div style="width:12px;height:35px;background:rgba(42,157,143,.8);border-radius:2px;"></div>
+            <div style="width:12px;height:25px;background:rgba(42,157,143,.5);border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(50px,-8px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Education</span>
+          <span class="card-num">09</span>
+        </div>
+        <div class="card-title">Teacher's Lesson Plan Presentation</div>
+        <div class="card-desc">Design an engaging class lesson on "Climate Change" with activities, discussion questions, and timed segments.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🌿</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Geography teacher Mr. Hassan has a 45-minute class on Climate Change. He needs slides that not only present information but actively engage students with activities, polls, and discussion breaks.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Slide Structure</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">⏱️ <strong>0:00</strong> — Hook: Shocking stat image</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📖 <strong>0:05</strong> — Learning objectives</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🌍 <strong>0:10</strong> — Core content (causes)</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🗣️ <strong>0:25</strong> — Think-pair-share activity</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📊 <strong>0:35</strong> — CO₂ data trend chart</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">✅ <strong>0:42</strong> — Summary + homework</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Slide 1 Hook: Find a powerful before/after glacier image. Set as full-bleed background. Add minimal text overlay — just a statistic: "Arctic ice has lost 13% per decade."</li>
+            <li>Learning Objectives slide: Use <strong>SmartArt → Vertical Bullet List</strong> with 3 clear, action-oriented goals.</li>
+            <li>Activity slide: Use a bright yellow/green background to visually signal "different mode." Add a large timer graphic via Shapes.</li>
+            <li>Add <strong>Presenter View notes</strong> (View → Notes) with discussion questions and timing cues only the teacher sees.</li>
+            <li>Insert a <strong>hyperlink button</strong> on slide 5: Insert → Shapes → Action Button → "Forward" to jump to the homework slide if time runs short.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎨</span> Use a different background color for "activity" slides vs "content" slides — students know when to engage.</div>
+            <div class="tip-chip"><span class="ti">🔗</span> Embed a QR code linking to a Kahoot quiz for instant formative assessment at the end.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c9')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 10 ═══════════ -->
+    <div class="pcard theme-violet" data-cat="design" id="c10">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-8deg) translate(-47px,9px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar" style="background:#c77dff;"></div>
+          <div class="sp-line w80"></div>
+          <div style="width:100%;height:20px;background:linear-gradient(90deg,rgba(199,125,255,.3),rgba(199,125,255,.1));border-radius:3px;margin-top:6px;"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(52px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Design</span>
+          <span class="card-num">10</span>
+        </div>
+        <div class="card-title">Professional Photo Portfolio Deck</div>
+        <div class="card-desc">Create a stunning portfolio of 8 project images with captions, consistent layout, and smooth transitions.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">📷</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Freelance architect Priya is meeting a new client. She wants to show her 8 best completed projects in a sleek portfolio presentation that she can also email as a PDF.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Set slide size to <strong>Widescreen 16:9</strong>. Go to Design → Slide Size → Widescreen. Use a dark or white background for maximum image contrast.</li>
+            <li>Consistent image layout: Insert image → hold <strong>Shift and drag corners</strong> to resize proportionally. Use <strong>Align tools</strong> to position identically on each slide.</li>
+            <li>Crop to consistent ratio: Click image → <strong>Picture Format → Crop → Aspect Ratio → 16:9</strong> for all images.</li>
+            <li>Add a semi-transparent caption bar: Insert → Rectangle → set to black with 50% transparency → place at bottom of image → add project name text over it.</li>
+            <li>Apply <strong>Fade transition</strong> to all slides: Select all slides → Transitions → Fade → Duration 0.5s. This creates an elegant gallery feel.</li>
+            <li>Export as PDF: <strong>File → Export → Create PDF/XPS</strong>. This is perfect for emailing as a viewable portfolio.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">📐</span> Use <strong>Picture Layout</strong> (Format → Picture Layout) to auto-arrange multiple images in a grid cleanly.</div>
+            <div class="tip-chip"><span class="ti">🖼️</span> Compress images before inserting: Picture Format → Compress Pictures → Email (96ppi) to keep file size manageable.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c10')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 11 ═══════════ -->
+    <div class="pcard theme-red" data-cat="animation" id="c11">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-6deg) translate(-47px,9px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;gap:3px;margin-top:8px;align-items:center;">
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(230,57,70,.8);"></div>
+            <div style="flex:1;height:3px;background:rgba(230,57,70,.3);border-radius:1px;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(230,57,70,.5);"></div>
+            <div style="flex:1;height:3px;background:rgba(230,57,70,.3);border-radius:1px;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(230,57,70,.3);"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(53px,-5px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Advanced</span>
+          <span class="card-tag">Animation</span>
+          <span class="card-num">11</span>
+        </div>
+        <div class="card-title">Morph Transition Story Timeline</div>
+        <div class="card-desc">Use Morph transitions to animate a company timeline that smoothly flows from year to year with morphing elements.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🕰️</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> At a company's 10th anniversary celebration, you need to show a visual timeline of key milestones (2015–2025) that animates smoothly as you click through — like a movie, not a boring slide show.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Slide 1: Draw a horizontal line across the slide. Place a circle at the far left labeled "2015". Add text box above: "Company Founded".</li>
+            <li>Duplicate this slide. On Slide 2, move the year circle to the next position (2017). Change its label. Add a new milestone text box. <strong>Keep the line in the same position!</strong></li>
+            <li>Apply <strong>Morph</strong> transition to Slide 2: Transitions → Morph. PowerPoint automatically animates the circle sliding from 2015 to 2017 position.</li>
+            <li>Repeat: duplicate each slide, move the circle forward, add a new milestone. Apply Morph to each new slide.</li>
+            <li>Add milestone icons: Insert → Icons → search relevant icons (rocket, award, globe) → place near each year on the appropriate slide.</li>
+            <li>Optional: add a progress bar at the bottom that grows longer with each slide using the same Morph technique.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🔑</span> Morph works by matching object names. Rename objects: right-click → Edit Alt Text → give same name on both slides.</div>
+            <div class="tip-chip"><span class="ti">✨</span> Use Morph to animate zoom-ins — place the same image small on slide 1, large on slide 2. Morph makes it zoom smoothly.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c11')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 12 ═══════════ -->
+    <div class="pcard theme-blue" data-cat="data" id="c12">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-48px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:6px;">
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:30px;height:5px;background:rgba(69,123,157,.8);border-radius:2px;"></div><div style="font-size:7px;color:rgba(255,255,255,.4);">42%</div></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:20px;height:5px;background:rgba(69,123,157,.5);border-radius:2px;"></div><div style="font-size:7px;color:rgba(255,255,255,.4);">28%</div></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:14px;height:5px;background:rgba(69,123,157,.3);border-radius:2px;"></div><div style="font-size:7px;color:rgba(255,255,255,.4);">18%</div></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(52px,-7px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Data & Charts</span>
+          <span class="card-num">12</span>
+        </div>
+        <div class="card-title">Survey Results Infographic Slide</div>
+        <div class="card-desc">Turn raw survey data into a visual infographic slide with icon arrays, percentages, and comparison bars.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">📋</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> HR ran an employee satisfaction survey — 200 responses. Results: 68% satisfied with work-life balance, 42% want more remote work, 55% feel recognized. You need one compelling infographic slide for the all-hands meeting.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Create a 3-column layout using text boxes. Each column = one survey question + result.</li>
+            <li>For "68% satisfied": Insert a large text box → type "68%" in 80pt bold. Below it, add the question in 14pt. Then draw a thin horizontal bar using rectangles: a full-width background bar + a colored 68%-width bar on top.</li>
+            <li>Icon array for "42% want remote": Insert 10 person icons (Insert → Icons → person). Color 4 of them blue (representing 42%). Group them. Add label "4 in 10 employees".</li>
+            <li>For "55% feel recognized": Use a <strong>Donut chart</strong> (Insert → Chart → Doughnut) with 55% and 45% as data. Make the center hole large, and add "55%" as a text box in the center.</li>
+            <li>Add a headline at the top: "What Our Team Is Telling Us" in bold Fraunces/Playfair style font.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">👥</span> Icon arrays (people icons) are more human and impactful than bar charts for survey data.</div>
+            <div class="tip-chip"><span class="ti">💡</span> Highlight the most surprising stat with a bright color accent — it draws the eye immediately.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c12')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 13 ═══════════ -->
+    <div class="pcard theme-amber" data-cat="business" id="c13">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-45px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div class="sp-line w80"></div><div class="sp-line w60"></div>
+          <div style="width:100%;height:15px;background:linear-gradient(90deg,rgba(233,196,106,.5) 60%,rgba(233,196,106,.1) 100%);border-radius:2px;margin-top:6px;"></div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(52px,-4px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Beginner</span>
+          <span class="card-tag">Business</span>
+          <span class="card-num">13</span>
+        </div>
+        <div class="card-title">Project Status Report Slide</div>
+        <div class="card-desc">Build a weekly project status update with RAG (Red/Amber/Green) status indicators, progress bars, and blockers.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🚦</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Project manager Farhan reports to the steering committee every Monday. He needs a single-slide "dashboard" showing 5 workstreams, their status (on track / at risk / delayed), and % completion — readable in 30 seconds.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Create a table: Insert → Table → 6 rows × 4 cols. Columns: <strong>Workstream | Owner | % Complete | Status</strong>.</li>
+            <li>For the "% Complete" column: Add a thin background rectangle in each cell, then a colored rectangle on top representing the percentage width. Group each pair.</li>
+            <li>For "Status" column: Insert → Shapes → Oval. Create 3 small circles — one red, one amber, one green — and copy the appropriate one into each row.</li>
+            <li>Add a <strong>Summary box</strong> at the top: 3 large colored circles with numbers: "3 On Track | 1 At Risk | 1 Delayed".</li>
+            <li>Date/sprint label: Add "Week of [date]" in the header. This makes it reusable — just change the date each week.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🚦</span> RAG (Red/Amber/Green) is universally understood in business. Use exact colors: #cc0000 / #e6a817 / #009933.</div>
+            <div class="tip-chip"><span class="ti">📌</span> Keep this template saved — copy it each week and just update the numbers. 2 minutes to update.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c13')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 14 ═══════════ -->
+    <div class="pcard theme-green" data-cat="design" id="c14">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-6deg) translate(-46px,9px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:6px;">
+            <div style="height:18px;background:rgba(42,157,143,.3);border-radius:2px;"></div>
+            <div style="height:18px;background:rgba(42,157,143,.5);border-radius:2px;"></div>
+            <div style="height:18px;background:rgba(42,157,143,.6);border-radius:2px;"></div>
+            <div style="height:18px;background:rgba(42,157,143,.2);border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(52px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Advanced</span>
+          <span class="card-tag">Design</span>
+          <span class="card-num">14</span>
+        </div>
+        <div class="card-title">Full-Bleed Visual Impact Slide</div>
+        <div class="card-desc">Design a full-screen image slide with text overlay, gradient masks, and typographic hierarchy for maximum visual punch.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🌅</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You're opening a leadership conference keynote. The first slide needs to stop the room — a full-screen powerful image with a single bold statement that sets the emotional tone before you say a word.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Right-click slide → <strong>Format Background → Picture or Texture Fill</strong> → Insert image. Set "Offset" all to 0 for perfect full-bleed. Darken image using "Picture Corrections" → Brightness -20%.</li>
+            <li>Add a gradient overlay: Insert → Rectangle (full slide size) → Fill: Gradient → Linear → Angle 90° → Left stop: Black 70% opacity, Right stop: Black 0% opacity.</li>
+            <li>Add headline text in massive font (80–100pt). Use a light/white color. Position in lower-left for modern editorial feel.</li>
+            <li>Add a colored accent line: Insert → Line shape → make it 3px thick in brand color → place just above the headline.</li>
+            <li>Sub-headline in 24pt with 60% white opacity below the main headline. Conference name/date in 14pt at very bottom.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">📸</span> The best images have a clear subject with open space for text — avoid busy, cluttered images.</div>
+            <div class="tip-chip"><span class="ti">✏️</span> Never put text on the brightest part of an image. Use the gradient overlay to darken the text area.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c14')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 15 ═══════════ -->
+    <div class="pcard theme-violet" data-cat="education" id="c15">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-47px,9px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar" style="background:#c77dff;"></div>
+          <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;">
+            <div style="width:18px;height:18px;border-radius:3px;background:rgba(199,125,255,.5);"></div>
+            <div style="width:18px;height:18px;border-radius:3px;background:rgba(199,125,255,.3);"></div>
+            <div style="width:18px;height:18px;border-radius:3px;background:rgba(199,125,255,.7);"></div>
+            <div style="width:18px;height:18px;border-radius:3px;background:rgba(199,125,255,.2);"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(51px,-7px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Beginner</span>
+          <span class="card-tag">Education</span>
+          <span class="card-num">15</span>
+        </div>
+        <div class="card-title">College Thesis Defense Slides</div>
+        <div class="card-desc">Build a formal 12-slide academic thesis presentation with abstract, methodology, findings, and recommendations.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🎓</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Final-year student Nadia is defending her thesis "Impact of Social Media on Youth Mental Health" before a 5-member academic panel. She has 20 minutes and needs a formal, credible, well-structured presentation.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Structure</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📌 Title, name, institution, date</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📖 Research Overview & Abstract</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🔬 Methodology (sample, tools)</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">📊 Key Findings (3 charts)</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">🗣️ Discussion & Implications</div>
+            <div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--muted);">✅ Recommendations & Limitations</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Use a formal serif theme: Design → Browse Themes → or apply a neutral Academic theme. Avoid flashy colors.</li>
+            <li>Title slide: University logo top-left. Thesis title in 36pt center. Your name, supervisor, department, date in 18pt.</li>
+            <li>Methodology slide: Use <strong>SmartArt → Process → Basic Chevron Process</strong> to show your research steps visually.</li>
+            <li>Findings slides: One chart per finding. Insert chart → choose appropriate type. Add a "Key Takeaway" box at the bottom of each chart slide in a colored rectangle.</li>
+            <li>Add slide numbers: Insert → Header & Footer → check Slide Number → Apply to All.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎓</span> Academic rule: no more than 7 words per bullet point. Elaborate verbally — the panel reads faster than you speak.</div>
+            <div class="tip-chip"><span class="ti">📑</span> Prepare backup slides after slide 12 with detailed tables/data for panel Q&A — insert them but they won't show in normal flow.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c15')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 16 ═══════════ -->
+    <div class="pcard theme-red" data-cat="business" id="c16">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-8deg) translate(-46px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;gap:4px;margin-top:8px;">
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;background:rgba(230,57,70,.1);border-radius:3px;padding:4px;">
+              <div style="height:3px;background:rgba(230,57,70,.5);border-radius:1px;width:80%;"></div>
+              <div style="height:3px;background:rgba(230,57,70,.3);border-radius:1px;width:60%;"></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;background:rgba(230,57,70,.1);border-radius:3px;padding:4px;">
+              <div style="height:3px;background:rgba(230,57,70,.5);border-radius:1px;width:70%;"></div>
+              <div style="height:3px;background:rgba(230,57,70,.3);border-radius:1px;width:50%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(51px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Business</span>
+          <span class="card-num">16</span>
+        </div>
+        <div class="card-title">Comparison / Before-After Slide</div>
+        <div class="card-desc">Design a two-column comparison slide showing old process vs new solution, problem vs outcome, or competitor vs you.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">⚖️</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You're a consultant proposing a new HR system. You need one slide that vividly shows: "Current State (Manual, slow, error-prone)" vs "Future State (Automated, fast, accurate)" — compelling enough for the CFO to approve the budget.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Split the slide into two halves: Insert two large rectangles side by side. Left = grey/muted color ("Current State"). Right = your brand color ("Future State").</li>
+            <li>Label each half: "BEFORE" and "AFTER" in large text at the top of each box, or "Manual Process" vs "Automated System".</li>
+            <li>Add bullet points on each side with icons. Left side icons: ❌ 3 days to process / ❌ 12% error rate. Right side: ✅ 2 hours / ✅ 0.1% error rate.</li>
+            <li>Add a vertical dividing line with a VS icon or arrow in the center using Insert → Shapes.</li>
+            <li>At the bottom, add a summary callout: "Save 200 hours/month + ₹4.5L in operational costs" in a highlighted box.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎭</span> The visual contrast (dull grey vs vibrant color) subconsciously tells the story before they read a word.</div>
+            <div class="tip-chip"><span class="ti">💰</span> Always quantify the "after" — executives make decisions based on numbers, not descriptions.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c16')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 17 ═══════════ -->
+    <div class="pcard theme-green" data-cat="data" id="c17">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-6deg) translate(-46px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;gap:3px;margin-top:6px;align-items:flex-end;">
+            <div style="width:10px;height:20px;background:rgba(42,157,143,.8);border-radius:2px 2px 0 0;"></div>
+            <div style="width:10px;height:14px;background:rgba(42,157,143,.5);border-radius:2px 2px 0 0;"></div>
+            <div style="width:10px;height:28px;background:rgba(42,157,143,.9);border-radius:2px 2px 0 0;"></div>
+            <div style="width:10px;height:16px;background:rgba(42,157,143,.4);border-radius:2px 2px 0 0;"></div>
+            <div style="width:10px;height:22px;background:rgba(42,157,143,.7);border-radius:2px 2px 0 0;"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(52px,-5px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Advanced</span>
+          <span class="card-tag">Data & Charts</span>
+          <span class="card-num">17</span>
+        </div>
+        <div class="card-title">Multi-Chart Dashboard Slide</div>
+        <div class="card-desc">Create an executive dashboard with 4 mini-charts (line, bar, donut, KPI card) arranged on a single slide.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">📱</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> The CEO wants a single "one-pager" slide each Monday with the company's health metrics — revenue trend, customer count, churn rate, and NPS score — all visible at a glance without scrolling.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Divide slide into a 2×2 grid using guide lines: View → Guides → check. Drag guides to create 4 equal quadrants.</li>
+            <li>Top-left: Insert → Chart → Line → Monthly Revenue Trend (12 months). Remove all chrome except the line and axis labels.</li>
+            <li>Top-right: KPI card — Insert Rectangle → add "12,450" in 48pt bold → "Active Customers ↑8%" in 14pt below.</li>
+            <li>Bottom-left: Insert → Chart → Doughnut → Churn Rate (3.2% vs 96.8%). Add "3.2%" as a centered text box.</li>
+            <li>Bottom-right: NPS gauge — draw a semicircle using shapes, add a needle arrow, label "NPS: 67 (Excellent)".</li>
+            <li>Add a thin border around each quadrant and a shared title: "Weekly Business Dashboard – [Date]".</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎯</span> Use the same color palette for all 4 charts — visual consistency makes a dashboard feel "designed" not cobbled.</div>
+            <div class="tip-chip"><span class="ti">🔢</span> Every chart needs a "so what" label — not just "Revenue" but "Revenue: +12% vs last month ✅".</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c17')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 18 ═══════════ -->
+    <div class="pcard theme-amber" data-cat="design" id="c18">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-46px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap;">
+            <div style="width:12px;height:12px;border-radius:2px;background:rgba(233,196,106,.8);"></div>
+            <div style="width:12px;height:12px;border-radius:2px;background:rgba(233,196,106,.4);"></div>
+            <div style="width:12px;height:12px;border-radius:2px;background:rgba(233,196,106,.6);"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(52px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Design</span>
+          <span class="card-num">18</span>
+        </div>
+        <div class="card-title">SmartArt Process Flow Diagram</div>
+        <div class="card-desc">Build a visual process flow for onboarding, a sales funnel, or a supply chain using SmartArt and custom styling.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🔄</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Operations Manager Sanjay is presenting a new employee onboarding process to HR. He needs a clear visual showing the 6 stages from offer letter to 90-day check-in, with timing and responsibilities.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Insert → <strong>SmartArt → Process → Accent Process</strong>. This gives you chevron-shaped steps perfect for a flow.</li>
+            <li>Click each chevron and type the stages: "Offer Letter → Pre-boarding → Day 1 → Week 1 → Month 1 → 90-Day Review".</li>
+            <li>Customize colors: Click SmartArt → <strong>SmartArt Design → Change Colors → Colorful Accent Colors</strong>.</li>
+            <li>Convert to shapes for more control: SmartArt Design → <strong>Convert → Convert to Shapes</strong>. Now each chevron is an individual editable shape.</li>
+            <li>Add timing below each stage: Insert text boxes under each chevron: "Day 0", "Day 1–3", "Day 1", "Days 2–5", "Days 6–30", "Day 90".</li>
+            <li>Add owner icons: Place small person icons above each stage showing who's responsible (HR, Manager, IT).</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🔄</span> Always convert SmartArt to shapes before final formatting — SmartArt auto-adjusts can fight your design choices.</div>
+            <div class="tip-chip"><span class="ti">🎨</span> Use progressively darker shades of one color to show time passing — light → dark = past → future.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c18')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 19 ═══════════ -->
+    <div class="pcard theme-violet" data-cat="animation" id="c19">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-8deg) translate(-47px,10px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar" style="background:#c77dff;"></div>
+          <div style="display:flex;gap:2px;margin-top:6px;">
+            <div style="flex:1;height:30px;background:rgba(199,125,255,.3);border-radius:3px;"></div>
+            <div style="flex:1;height:30px;background:rgba(199,125,255,.5);border-radius:3px;margin-top:4px;"></div>
+            <div style="flex:1;height:30px;background:rgba(199,125,255,.2);border-radius:3px;margin-top:2px;"></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(5deg) translate(52px,-7px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Intermediate</span>
+          <span class="card-tag">Animation</span>
+          <span class="card-num">19</span>
+        </div>
+        <div class="card-title">Animated Build — Reveal Points One by One</div>
+        <div class="card-desc">Animate a 5-point argument slide so each bullet appears on click, keeping the audience focused on your current point.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star"></div><div class="star"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🗣️</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> You're presenting 5 reasons why your company should adopt remote work policy. If you show all 5 at once, people read ahead and stop listening. Use "build" animation to reveal each reason only when you're ready.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Type all 5 bullet points in a text box on the slide. They should all be visible while editing.</li>
+            <li>Click the text box → <strong>Animations → Add Animation → Entrance → Appear</strong>.</li>
+            <li>Open <strong>Animation Pane</strong>. You'll see 5 animation entries. Click each one → Effect Options → <strong>"By 1st Level Paragraphs"</strong> — this splits it into one animation per bullet.</li>
+            <li>Set each to <strong>"On Click"</strong> trigger. Now each click reveals the next bullet point.</li>
+            <li>Optional dimming effect: After each bullet is revealed, the previous one dims. Click a bullet animation → Effect tab → <strong>After animation: change color to light grey</strong>.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🎯</span> The dimming effect is a top TED-style technique — current point stays bright, past points fade — keeping focus.</div>
+            <div class="tip-chip"><span class="ti">⌨️</span> In Presenter View, you see all bullets while audience only sees revealed ones — a huge presenting advantage.</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c19')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ CARD 20 ═══════════ -->
+    <div class="pcard theme-blue" data-cat="education" id="c20">
+      <div class="card-banner">
+        <div class="shadow-slide" style="transform:rotate(-7deg) translate(-47px,9px)"></div>
+        <div class="slide-preview">
+          <div class="sp-title-bar"></div>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:6px;">
+            <div style="display:flex;align-items:center;gap:3px;"><div style="width:6px;height:6px;background:rgba(69,123,157,.8);border-radius:50%;"></div><div style="flex:1;height:3px;background:rgba(69,123,157,.3);border-radius:1px;"></div></div>
+            <div style="display:flex;align-items:center;gap:3px;"><div style="width:6px;height:6px;background:rgba(69,123,157,.5);border-radius:50%;"></div><div style="flex:1;height:3px;background:rgba(69,123,157,.2);border-radius:1px;"></div></div>
+            <div style="display:flex;align-items:center;gap:3px;"><div style="width:6px;height:6px;background:rgba(69,123,157,.3);border-radius:50%;"></div><div style="flex:1;height:3px;background:rgba(69,123,157,.15);border-radius:1px;"></div></div>
+          </div>
+        </div>
+        <div class="shadow-slide" style="transform:rotate(6deg) translate(53px,-6px)"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="level-dot"></div>
+          <span class="card-level">Advanced</span>
+          <span class="card-tag">Education</span>
+          <span class="card-num">20</span>
+        </div>
+        <div class="card-title">Interactive Hyperlinked Presentation</div>
+        <div class="card-desc">Build a non-linear menu-driven presentation where clicking topic buttons jumps to different sections — like a website.</div>
+        <div class="card-footer">
+          <div class="difficulty-stars">
+            <div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div><div class="star fill"></div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+      </div>
+      <div class="answer-panel">
+        <div class="panel-section">
+          <div class="panel-label">Real Scenario</div>
+          <div class="scenario-box">
+            <span class="scenario-icon">🖱️</span>
+            <div class="scenario-text">
+              <strong>Scenario:</strong> Training manager Deepa creates an onboarding presentation for new employees. Rather than linear slides, she wants a main menu where users click any topic (Company Culture / Benefits / IT Setup / Policies) and jump directly to that section.
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Step-by-Step</div>
+          <ul class="steps-list">
+            <li>Build your sections first: Create Slide 1 (Menu), then slides 3–6 for each section, with a "Home" button that returns to the menu.</li>
+            <li>Menu slide: Create 4 large clickable buttons using shapes. Label them: "Company Culture", "Benefits", "IT Setup", "Policies".</li>
+            <li>Add hyperlink to each button: Right-click shape → <strong>Link → This Document → select target slide</strong>. Click OK.</li>
+            <li>On each section's first slide, add a small "← Menu" button in the corner: same process, link it back to Slide 1.</li>
+            <li>Add a consistent navigation bar at the bottom of every slide: small buttons for each section using the same hyperlink method.</li>
+            <li>Test in Slide Show mode (F5): click each button to verify all links work correctly.</li>
+          </ul>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Pro Tips</div>
+          <div class="tip-row">
+            <div class="tip-chip"><span class="ti">🖱️</span> Use "hover" action (Insert → Action → Mouse Over → Hyperlink) for tooltip-style interactivity on menu buttons.</div>
+            <div class="tip-chip"><span class="ti">📱</span> This technique creates a self-navigating kiosk-style presentation — perfect for trade fair booths.</div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">Master Shortcuts</div>
+          <div class="shortcut-row">
+            <div class="shortcut"><span class="kbd">Ctrl+K</span> Insert hyperlink</div>
+            <div class="shortcut"><span class="kbd">Esc</span> Exit slide show</div>
+            <div class="shortcut"><span class="kbd">B</span> Black screen during show</div>
+            <div class="shortcut"><span class="kbd">Ctrl+P</span> Draw pointer</div>
+          </div>
+        </div>
+        <div class="done-row">
+          <button class="btn-done" onclick="toggleDone(event,'c20')">Mark as Complete ✓</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid -->
+</div><!-- /grid-section -->
+
+<footer>
+  <div class="footer-logo">Slide<span>Hero</span></div>
+  <p>20 Real-World PowerPoint Exercises · Beginner to Advanced · Practice. Create. Present.</p>
+</footer>
+
+<script>
+const doneSet = new Set();
+const TOTAL = 20;
+
+// Toggle card open/close
+function toggleCard(btn) {
+  // do nothing — handled by delegated click
+}
+
+document.getElementById('cardsGrid').addEventListener('click', function(e) {
+  const card = e.target.closest('.pcard');
+  if (!card) return;
+  const panel = card.querySelector('.answer-panel');
+  if (!panel) return;
+  // If clicking inside answer panel (not done btn), don't collapse
+  if (e.target.closest('.answer-panel') && !e.target.closest('.btn-done')) return;
+  if (e.target.closest('.btn-done')) return;
+  card.classList.toggle('open');
+});
+
+function toggleDone(e, id) {
+  e.stopPropagation();
+  const card = document.getElementById(id);
+  const btn = card.querySelector('.btn-done');
+  if (doneSet.has(id)) {
+    doneSet.delete(id);
+    btn.classList.remove('done');
+    btn.textContent = 'Mark as Complete ✓';
+  } else {
+    doneSet.add(id);
+    btn.classList.add('done');
+    btn.textContent = '✅ Completed!';
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const n = doneSet.size;
+  document.getElementById('prog-mini').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('prog-label').textContent = n + ' / ' + TOTAL + ' done';
+}
+
+function filterCards(cat, btn) {
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pcard').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+      card.classList.remove('open');
+    }
+  });
+}
+</script>
+</body>
+</html>

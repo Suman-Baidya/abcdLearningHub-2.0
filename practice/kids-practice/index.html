@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ABCD Gaming Hub 🎮</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#FFF9F0;overflow-x:hidden;min-height:100vh;}
+
+/* NAVBAR */
+nav{background:#fff;border-bottom:4px solid #FFD93D;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:65px;}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#FF6B35,#FF3D9A);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 10px rgba(255,107,53,0.4);}
+.brand-text{font-family:'Fredoka One',cursive;font-size:20px;color:#222;}
+.brand-text span{color:#FF6B35;}
+.nav-links{display:flex;gap:6px;}
+.nav-links a{text-decoration:none;color:#555;font-weight:700;font-size:14px;padding:7px 16px;border-radius:50px;transition:all .2s;}
+.nav-links a:hover{background:#FFD93D;color:#222;}
+.nav-btn{background:#FF6B35;color:#fff!important;border-radius:50px!important;box-shadow:0 3px 10px rgba(255,107,53,0.4);}
+.nav-btn:hover{background:#e55a25!important;transform:translateY(-1px);}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#FFF3E0 0%,#FFF9F0 40%,#F0FEFF 100%);padding:70px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(255,215,61,0.2) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(78,205,196,0.15) 0%,transparent 50%);pointer-events:none;}
+.float-row{display:flex;justify-content:center;gap:18px;margin-bottom:28px;flex-wrap:wrap;}
+.fe{font-size:38px;display:inline-block;animation:floatUp 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.12));}
+.fe:nth-child(1){animation-delay:0s;}.fe:nth-child(2){animation-delay:.2s;}.fe:nth-child(3){animation-delay:.4s;}.fe:nth-child(4){animation-delay:.6s;}.fe:nth-child(5){animation-delay:.8s;}
+@keyframes floatUp{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.hero-title{font-family:'Fredoka One',cursive;font-size:clamp(2.4rem,6vw,5rem);color:#222;line-height:1.1;margin-bottom:14px;}
+.hero-title .c1{color:#FF6B35;}.hero-title .c2{color:#FF3D9A;}.hero-title .c3{color:#4ECDC4;}
+.hero-desc{font-size:clamp(1rem,2vw,1.2rem);color:#666;font-weight:600;max-width:560px;margin:0 auto 36px;line-height:1.7;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;text-decoration:none;border:none;cursor:pointer;transition:all .22s;}
+.btn-orange{background:#FF6B35;color:#fff;box-shadow:0 5px 20px rgba(255,107,53,0.45),0 -3px 0 rgba(0,0,0,0.12) inset;}
+.btn-orange:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(255,107,53,0.5);}
+.btn-white{background:#fff;color:#222;border:3px solid #222;box-shadow:4px 4px 0 #222;}
+.btn-white:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #222;}
+.stat-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.stat{background:#fff;border:2.5px solid #222;border-radius:50px;padding:10px 22px;display:flex;align-items:center;gap:9px;box-shadow:3px 3px 0 #222;font-weight:800;font-size:14px;color:#222;}
+.stat span:first-child{font-size:20px;}
+
+/* WAVE */
+.wave{width:100%;display:block;margin-bottom:-2px;}
+
+/* GAMES SECTION */
+.games-sec{background:#fff;padding:70px 24px 80px;}
+.sec-head{text-align:center;margin-bottom:52px;}
+.sec-badge{display:inline-block;background:#FFD93D;border:2.5px solid #222;border-radius:50px;padding:6px 20px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#222;margin-bottom:16px;box-shadow:3px 3px 0 #222;}
+.sec-title{font-family:'Fredoka One',cursive;font-size:clamp(1.8rem,4vw,3rem);color:#222;line-height:1.1;margin-bottom:12px;}
+.sec-title span{color:#FF6B35;}
+.sec-desc{font-size:1rem;color:#777;max-width:520px;margin:0 auto;font-weight:600;line-height:1.7;}
+.games-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
+
+/* GAME CARD */
+.gcard{background:#fff;border:3px solid #222;border-radius:24px;padding:26px 24px;box-shadow:6px 6px 0 #222;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;color:inherit;}
+.gcard:hover{transform:translate(-4px,-4px);box-shadow:10px 10px 0 #222;}
+.gcard-live{border-color:#16A34A;box-shadow:6px 6px 0 #16A34A;}
+.gcard-live:hover{box-shadow:10px 10px 0 #16A34A;}
+.gcard-num{position:absolute;top:14px;right:18px;font-family:'Fredoka One',cursive;font-size:48px;color:#222;opacity:.05;line-height:1;pointer-events:none;}
+.gcard-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.gcard-icon{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2.5px solid #222;box-shadow:3px 3px 0 #222;transition:transform .2s;flex-shrink:0;}
+.gcard:hover .gcard-icon{transform:rotate(-8deg) scale(1.1);}
+.gcard-tag{font-size:11px;font-weight:800;padding:4px 12px;border-radius:50px;border:2px solid #222;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+.gcard-title{font-family:'Fredoka One',cursive;font-size:1.2rem;color:#222;margin-bottom:3px;line-height:1.2;}
+.gcard-sub{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:9px;}
+.gcard-desc{font-size:13.5px;color:#666;line-height:1.6;font-weight:600;margin-bottom:16px;}
+.gcard-footer{display:flex;align-items:center;justify-content:space-between;}
+.stars{font-size:13px;}.age{font-size:12px;font-weight:700;color:#999;}
+
+/* Coming Soon */
+.soon-tag{display:inline-flex;align-items:center;gap:6px;background:#222;color:#fff;font-size:11px;font-weight:800;padding:5px 14px;border-radius:50px;letter-spacing:.5px;}
+.dot-blink{width:7px;height:7px;border-radius:50%;background:#FFD93D;animation:blink 1.2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* Play Now button */
+.play-btn{display:inline-flex;align-items:center;gap:6px;background:#16A34A;color:#fff;font-size:12px;font-weight:800;padding:7px 16px;border-radius:50px;text-decoration:none;border:2px solid #15803D;box-shadow:3px 3px 0 #14532D;transition:all .2s;}
+.play-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #14532D;}
+
+/* TOPICS */
+.topics-sec{background:#FFF9F0;padding:70px 24px 70px;}
+.topics-grid{max-width:1100px;margin:40px auto 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+.tcard{background:#fff;border:2.5px solid #222;border-radius:18px;padding:22px 14px;text-align:center;box-shadow:4px 4px 0 #222;transition:transform .2s,box-shadow .2s;cursor:default;}
+.tcard:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 #222;}
+.tcard-icon{font-size:32px;display:block;margin-bottom:9px;}
+.tcard-name{font-size:13px;font-weight:800;color:#222;line-height:1.3;}
+
+/* CONTACT */
+.contact-sec{background:#222;color:#fff;padding:64px 24px 40px;}
+.contact-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.contact-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,4vw,3rem);line-height:1.1;margin-bottom:14px;}
+.contact-title span{color:#FFD93D;}
+.contact-desc{color:rgba(255,255,255,.55);font-size:14px;line-height:1.7;font-weight:600;}
+.clinks{display:flex;flex-direction:column;gap:14px;}
+.clink{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;text-decoration:none;color:#fff;font-weight:700;font-size:14px;transition:all .2s;}
+.clink:hover{background:rgba(255,255,255,.13);transform:translateX(5px);}
+.clink-ico{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.clink-lbl{font-size:10px;color:rgba(255,255,255,.45);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.clink-val{font-size:15px;font-weight:800;}
+.footer-bar{max-width:1100px;margin:36px auto 0;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.35);font-weight:600;}
+.heart{color:#FF3D9A;}
+
+/* WA */
+.wa{position:fixed;bottom:26px;right:26px;z-index:200;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,0.55);animation:waPop 2.5s ease-in-out infinite;}
+@keyframes waPop{0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.55),0 0 0 0 rgba(37,211,102,.35);}50%{box-shadow:0 4px 18px rgba(37,211,102,.55),0 0 0 14px rgba(37,211,102,0);}}
+.wa:hover{transform:scale(1.1);}
+
+@media(max-width:760px){.nav-links{display:none;}.games-grid{grid-template-columns:1fr;}.contact-inner{grid-template-columns:1fr;}.topics-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<a class="wa" href="https://wa.me/918944899747" target="_blank">💬</a>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="../../index.html">
+      <div class="brand-text"><span>ABCD</span> Gaming Hub</div>
+    </a>
+    <div class="nav-links">
+      <a href="#games">🎮 Games</a>
+      <a href="#learn">📚 Topics</a>
+      <a href="#contact">📬 Contact</a>
+      <a href="#games" class="nav-btn">Play Now 🚀</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="float-row">
+    <span class="fe">⌨️</span><span class="fe">🖱️</span><span class="fe">🖥️</span><span class="fe">🎮</span><span class="fe">🏆</span>
+  </div>
+  <h1 class="hero-title">Learn Computers<br/>The <span class="c1">Super</span> <span class="c2">Fun</span> <span class="c3">Way!</span></h1>
+  <p class="hero-desc">Welcome to <strong>ABCD Gaming Hub</strong> — where kids discover computers through <strong>amazing games &amp; adventures</strong>. No boring lessons — just pure fun! 🎉</p>
+  <div class="hero-btns">
+    <a href="#games" class="btn btn-orange">🕹️ Explore Games</a>
+    <a href="#learn" class="btn btn-white">📚 What We Learn</a>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><span>🎮</span><span>12 Games</span></div>
+    <div class="stat"><span>🧒</span><span>Ages 6–14</span></div>
+    <div class="stat"><span>🌏</span><span>EN + বাংলা</span></div>
+    <div class="stat"><span>🆓</span><span>100% Free</span></div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#FFF9F0;"><path d="M0,30 C360,65 1080,0 1440,35 L1440,60 L0,60 Z" fill="#fff"/></svg>
+
+<!-- GAMES -->
+<section class="games-sec" id="games">
+  <div class="sec-head">
+    <div class="sec-badge">🎮 Game Library</div>
+    <h2 class="sec-title">12 Amazing <span>Adventures</span><br/>Waiting for You!</h2>
+    <p class="sec-desc">Pick any game and start your computer learning journey. Every game teaches real skills — the fun way!</p>
+  </div>
+  <div class="games-grid" id="gamesGrid"></div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#fff;"><path d="M0,20 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#FFF9F0"/></svg>
+
+<!-- TOPICS -->
+<section class="topics-sec" id="learn">
+  <div class="sec-head">
+    <div class="sec-badge">📚 Curriculum</div>
+    <h2 class="sec-title">Real Skills,<br/><span>Real Learning!</span></h2>
+    <p class="sec-desc">Every game teaches something real — skills you'll use on computers forever!</p>
+  </div>
+  <div class="topics-grid" id="topicsGrid"></div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#FFF9F0;"><path d="M0,20 C360,55 1080,5 1440,35 L1440,60 L0,60 Z" fill="#222"/></svg>
+
+<!-- CONTACT -->
+<section class="contact-sec" id="contact">
+  <div class="contact-inner">
+    <div>
+      <h2 class="contact-title">Get In <span>Touch!</span> 👋</h2>
+      <p class="contact-desc">Have questions, suggestions, or want to collaborate? We'd love to hear from you! Reach out anytime — we're friendly and fast to respond. 😊</p>
+    </div>
+    <div class="clinks">
+      <a href="mailto:sb.abcd321@gmail.com" class="clink">
+        <div class="clink-ico">📧</div>
+        <div><div class="clink-lbl">Email Us</div><div class="clink-val">sb.abcd321@gmail.com</div></div>
+      </a>
+      <a href="https://wa.me/918944899747" target="_blank" class="clink">
+        <div class="clink-ico">💬</div>
+        <div><div class="clink-lbl">WhatsApp</div><div class="clink-val">8944899747</div></div>
+      </a>
+      <a href="tel:+918944899747" class="clink">
+        <div class="clink-ico">📞</div>
+        <div><div class="clink-lbl">Call Us</div><div class="clink-val">8944899747</div></div>
+      </a>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span>© 2025 ABCD Gaming Hub · Made with <span class="heart">❤️</span> for curious kids</span>
+    <span>sb.abcd321@gmail.com · 8944899747</span>
+  </div>
+</section>
+
+<script>
+// ════════════════════════════════════════════════
+//  GAMES DATA
+//  tag  → category label shown on the card
+//  link → path to the game file once it is built
+//         e.g.  "games/typingHeroes.html"
+//         set to null  →  shows "Coming Soon"
+// ════════════════════════════════════════════════
+var GAMES = [
+  {
+    title:"Click & Learn Adventures",sub:"Mastering the Mouse",
+    desc:"Master the mouse through playful challenges! Click, drag, and explore your way to becoming a mouse champion.",
+    icon:"🖱️",iconBg:"#FFF0F0",tag:"Mouse Skills",tagBg:"#FFE4E4",tagColor:"#CC2222",
+    stars:5,age:"6–10 yrs",link:"games/clickLearn.html"
+  },
+  {
+    title:"Keyboard Quest: Typing Heroes",sub:"Speed & Accuracy",
+    desc:"Kids level up as they improve typing speed and accuracy. Go from hunt-and-peck to speed typist hero!",
+    icon:"⌨️",iconBg:"#F0FFFE",tag:"Typing",tagBg:"#CCFAF7",tagColor:"#0D8C85",
+    stars:5,age:"7–12 yrs",link:"games/typingHeroes.html"
+  },
+  {
+    title:"Computer Parts Detective",sub:"Identify & Match",
+    desc:"A mystery game where students identify and match computer components. Can you crack the case, Detective?",
+    icon:"🔍",iconBg:"#FFFBF0",tag:"Hardware",tagBg:"#FFF4CC",tagColor:"#996600",
+    stars:4,age:"8–12 yrs",link:null
+  },
+  {
+    title:"Mouse Maze Challenge",sub:"Navigate & Explore",
+    desc:"Guide a character through exciting mazes using only your mouse skills. How fast can you find the exit?",
+    icon:"🌀",iconBg:"#F5F3FF",tag:"Mouse Skills",tagBg:"#EDE9FE",tagColor:"#5B21B6",
+    stars:4,age:"6–10 yrs",link:null
+  },
+  {
+    title:"Type & Triumph",sub:"Typing Race Game",
+    desc:"A thrilling typing race with fun rewards! Race against time, earn coins, and unlock awesome trophies!",
+    icon:"🏆",iconBg:"#FFF0F7",tag:"Typing",tagBg:"#FCE7F3",tagColor:"#9D174D",
+    stars:5,age:"8–14 yrs",link:null
+  },
+  {
+    title:"Tech Explorers: Inside the Computer",sub:"Virtual PC Adventure",
+    desc:"Go on an adventure inside a virtual PC to learn about all its parts. You're tiny — the CPU is HUGE!",
+    icon:"🖥️",iconBg:"#F0FFF9",tag:"Computer Parts",tagBg:"#D1FAE5",tagColor:"#065F46",
+    stars:5,age:"9–13 yrs",link:null
+  },
+  {
+    title:"Ctrl + Fun Academy",sub:"Shortcuts & Mini-Games",
+    desc:"Combine keyboard shortcuts, typing tricks, and mouse magic in exciting mini-games. Be a keyboard ninja!",
+    icon:"🎮",iconBg:"#FFFBF0",tag:"Mixed Skills",tagBg:"#FEF3C7",tagColor:"#92400E",
+    stars:4,age:"10–14 yrs",link:null
+  },
+  {
+    title:"Build-a-PC Junior",sub:"Drag & Drop Builder",
+    desc:"Drag and drop computer parts to assemble a computer correctly. Build your dream PC from scratch!",
+    icon:"🔧",iconBg:"#F0F7FF",tag:"Hardware",tagBg:"#DBEAFE",tagColor:"#1E40AF",
+    stars:5,age:"9–13 yrs",link:null
+  },
+  {
+    title:"Click, Tap, Type!",sub:"Multi-Level Learning",
+    desc:"A multi-level game teaching mouse clicks, keyboard use, and typing all in one big adventure!",
+    icon:"✨",iconBg:"#FFF5F5",tag:"All Skills",tagBg:"#FEE2E2",tagColor:"#991B1B",
+    stars:5,age:"7–12 yrs",link:null
+  },
+  {
+    title:"Digital Playground",sub:"Everyday Computer Fun",
+    desc:"A mix of puzzles and challenges about everyday computer use. The most fun you'll ever have learning!",
+    icon:"🌈",iconBg:"#F8F0FF",tag:"Puzzles",tagBg:"#EDE9FE",tagColor:"#4C1D95",
+    stars:5,age:"6–12 yrs",link:null
+  },
+  {
+    title:"Input vs Output Showdown",sub:"Sort & Classify",
+    desc:"Race to sort computer devices into Input and Output teams before time runs out! Scanners, printers, keyboards — who goes where?",
+    icon:"⚡",iconBg:"#FFFBEB",tag:"Input / Output",tagBg:"#FEF9C3",tagColor:"#854D0E",
+    stars:4,age:"7–11 yrs",link:null
+  },
+  {
+    title:"Software vs Hardware Heroes",sub:"Know the Difference",
+    desc:"An epic battle game where students match software and hardware items to their correct team. Learn the key difference through action!",
+    icon:"🛡️",iconBg:"#F0FFF4",tag:"Software & Hardware",tagBg:"#DCFCE7",tagColor:"#14532D",
+    stars:4,age:"8–13 yrs",link:null
+  }
+];
+
+var TOPICS = [
+  {icon:"⌨️",name:"Typing Speed"},{icon:"🖱️",name:"Mouse Control"},
+  {icon:"🖥️",name:"Computer Parts"},{icon:"📥",name:"Input Devices"},
+  {icon:"📤",name:"Output Devices"},{icon:"🔧",name:"Hardware"},
+  {icon:"💿",name:"Software"},{icon:"🧠",name:"CPU & Memory"},
+  {icon:"⌨️",name:"Keyboard Shortcuts"},{icon:"🌐",name:"Internet Basics"},
+  {icon:"🔒",name:"Computer Safety"},{icon:"🗂️",name:"Files & Folders"}
+];
+
+// ── render stars ──
+function makeStars(n){var s='';for(var i=0;i<5;i++)s+=i<n?'⭐':'☆';return s;}
+
+// ── render games ──
+var grid=document.getElementById('gamesGrid');
+GAMES.forEach(function(g,i){
+  var num=(i+1)<10?'0'+(i+1):''+(i+1);
+  var hasLink=g.link&&g.link.trim()!=='';
+
+  var card=document.createElement(hasLink?'a':'div');
+  card.className='gcard'+(hasLink?' gcard-live':'');
+  if(hasLink){card.href=g.link;card.style.cssText='text-decoration:none;display:block;color:inherit;';}
+
+  var footerBtn=hasLink
+    ?'<a href="'+g.link+'" class="play-btn">&#9654; Play Now</a>'
+    :'<div class="soon-tag"><div class="dot-blink"></div>Coming Soon</div>';
+
+  card.innerHTML=
+    '<div class="gcard-num">'+num+'</div>'+
+    '<div class="gcard-top">'+
+      '<div class="gcard-icon" style="background:'+g.iconBg+'">'+g.icon+'</div>'+
+      '<span class="gcard-tag" style="background:'+g.tagBg+';color:'+g.tagColor+'">'+g.tag+'</span>'+
+    '</div>'+
+    '<div class="gcard-title">'+g.title+'</div>'+
+    '<div class="gcard-sub">'+g.sub+'</div>'+
+    '<div class="gcard-desc">'+g.desc+'</div>'+
+    '<div class="gcard-footer">'+
+      '<div><div class="stars">'+makeStars(g.stars)+'</div><div class="age">👤 '+g.age+'</div></div>'+
+      footerBtn+
+    '</div>';
+  grid.appendChild(card);
+});
+
+// ── render topics ──
+var tg=document.getElementById('topicsGrid');
+TOPICS.forEach(function(t){
+  var d=document.createElement('div');
+  d.className='tcard';
+  d.innerHTML='<span class="tcard-icon">'+t.icon+'</span><div class="tcard-name">'+t.name+'</div>';
+  tg.appendChild(d);
+});
+</script>
+</body>
+</html>

@@ -75,9 +75,10 @@ const PROTECTED_URLS = {
    ═══════════════════════════════════════════════════════════════════ */
 const NAV_LINKS = [
   { label: "Home",        href: "#hero" },
-  { label: "Courses",     href: "#courses" },
+  { label: "Fields",     href: "#courses" },
+  { label: "Career",     href: "./career/career.html" },
   { label: "Suggest",      href: "#quiz" },
-  { label: "All Courses", href: "all-courses/index.html" },
+  { label: "Courses", href: "all-courses/index.html" },
   { label: "Contact",         href: "#contact" },
 ];
 
