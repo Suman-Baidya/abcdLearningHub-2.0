@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<title>🖥️ Tech Explorers: Inside the Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════
+   TECH EXPLORERS — Inside the Computer
+   Aesthetic: warm glowing sci-fi interior, mint/emerald + amber highlights
+   Fonts: Fredoka One (display) + Nunito (body) + Hind Siliguri (Bengali)
+═══════════════════════════════════════════════ */
+:root{
+  --bg:#071A14;--bg2:#0D2B20;--bg3:#122E24;
+  --mint:#00E5A0;--mint2:#00C880;--mint3:rgba(0,229,160,.15);
+  --amber:#FFB300;--amber2:#FF8C00;
+  --blue:#38BDF8;--pink:#FF6B9D;--purple:#C084FC;
+  --text:#E8FFF6;--text2:rgba(232,255,246,.65);
+  --card:rgba(0,229,160,.07);--cardborder:rgba(0,229,160,.2);
+  --glow:0 0 30px rgba(0,229,160,.25);
+  --r:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);user-select:none;-webkit-user-select:none;}
+.bn{font-family:'Hind Siliguri','Nunito',sans-serif;}
+
+/* ── SCANLINE + GRID BG ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(rgba(0,229,160,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,160,.03) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,229,160,.08) 0%,transparent 70%);
+}
+
+/* ── NAVBAR ── */
+nav{
+  position:fixed;top:0;left:0;right:0;height:56px;z-index:300;
+  background:rgba(7,26,20,.97);border-bottom:1.5px solid rgba(0,229,160,.25);
+  display:flex;align-items:center;padding:0 16px;gap:10px;backdrop-filter:blur(16px);
+}
+.nav-back{text-decoration:none;color:var(--mint);font-weight:800;font-size:12px;
+  padding:5px 14px;border-radius:40px;border:1.5px solid rgba(0,229,160,.35);transition:.2s;flex-shrink:0;}
+.nav-back:hover{background:rgba(0,229,160,.15);color:#fff;}
+.nav-title{font-family:'Fredoka One',cursive;font-size:clamp(13px,2.5vw,18px);
+  flex:1;text-align:center;color:var(--mint);letter-spacing:.5px;
+  text-shadow:0 0 16px rgba(0,229,160,.5);}
+.nav-title span{color:var(--amber);}
+.nav-right{display:flex;gap:7px;align-items:center;flex-shrink:0;}
+
+/* Language Toggle */
+.lang-btn{
+  display:flex;align-items:center;gap:0;
+  background:rgba(0,229,160,.1);border:1.5px solid rgba(0,229,160,.3);
+  border-radius:40px;padding:3px;cursor:pointer;transition:.2s;
+}
+.lb{padding:4px 11px;border-radius:40px;font-size:11px;font-weight:800;
+  transition:.2s;color:var(--text2);}
+.lb.on{background:var(--mint);color:#071A14;box-shadow:0 0 10px rgba(0,229,160,.4);}
+
+/* Stars pill */
+.star-pill{
+  background:rgba(255,179,0,.12);border:1.5px solid rgba(255,179,0,.3);
+  border-radius:40px;padding:4px 12px;
+  font-family:'Fredoka One',cursive;font-size:14px;color:var(--amber);
+  display:flex;align-items:center;gap:4px;
+}
+
+/* ── SCREENS ── */
+.sc{position:fixed;inset:0;z-index:10;overflow-y:auto;
+  display:flex;flex-direction:column;align-items:center;
+  padding:72px 16px 24px;padding-bottom:env(safe-area-inset-bottom,24px);}
+.sc.off{display:none!important;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 24px;border-radius:50px;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;
+  transition:.22s;white-space:nowrap;text-decoration:none;letter-spacing:.3px;}
+.btn:hover{transform:translateY(-2px);}
+.bgreen{background:linear-gradient(135deg,var(--mint2),var(--mint));color:#071A14;
+  box-shadow:0 5px 20px rgba(0,229,160,.45);}
+.bgreen:hover{box-shadow:0 9px 28px rgba(0,229,160,.6);}
+.bamber{background:linear-gradient(135deg,var(--amber2),var(--amber));color:#1a0a00;
+  box-shadow:0 5px 20px rgba(255,179,0,.4);}
+.bghost{background:rgba(0,229,160,.08);color:var(--mint);
+  border:1.5px solid rgba(0,229,160,.25);}
+.bghost:hover{background:rgba(0,229,160,.15);}
+.brow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1.5px solid var(--cardborder);
+  border-radius:var(--r);backdrop-filter:blur(16px);
+  box-shadow:var(--glow);}
+
+/* ══════════════════════════
+   MENU SCREEN — Enhanced
+══════════════════════════ */
+#scMenu{justify-content:flex-start;padding-top:66px;}
+.menu-wrap{max-width:700px;width:100%;display:flex;flex-direction:column;gap:14px;}
+
+/* Canvas hero */
+#heroCanvas{
+  width:100%;height:220px;border-radius:20px;display:block;
+  border:1.5px solid rgba(0,229,160,.25);
+  box-shadow:0 0 40px rgba(0,229,160,.12),0 8px 32px rgba(0,0,0,.5);
+  cursor:pointer;
+}
+
+/* Title block */
+.menu-title-block{text-align:center;padding:4px 0;}
+.menu-title{
+  font-family:'Fredoka One',cursive;font-size:clamp(2rem,7vw,3.2rem);
+  line-height:1;margin-bottom:4px;
+  background:linear-gradient(135deg,var(--mint) 0%,#7FFFDA 40%,var(--amber) 70%,#FFD080 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(0,229,160,.3));
+}
+.menu-tagline{
+  font-size:.88rem;color:var(--text2);font-weight:700;line-height:1.5;
+  display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+}
+.mtag-chip{
+  background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.25);
+  border-radius:40px;padding:3px 10px;font-size:10px;font-weight:800;
+  color:var(--mint);letter-spacing:.4px;white-space:nowrap;
+}
+
+/* Stats row */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:9px;
+}
+.sg{
+  background:rgba(0,0,0,.3);border:1.5px solid rgba(0,229,160,.18);
+  border-radius:16px;padding:12px 6px 10px;text-align:center;
+  transition:.2s;cursor:default;position:relative;overflow:hidden;
+}
+.sg::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at top,rgba(0,229,160,.06) 0%,transparent 65%);
+}
+.sg:hover{border-color:rgba(0,229,160,.4);transform:translateY(-2px);}
+.sg-ico{font-size:20px;display:block;margin-bottom:3px;}
+.sg-v{font-family:'Fredoka One',cursive;font-size:1.55rem;color:var(--mint);
+  display:block;line-height:1;margin-bottom:3px;}
+.sg-l{font-size:9px;color:var(--text2);font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+
+/* Parts preview strip */
+.parts-strip{
+  background:rgba(0,0,0,.25);border:1.5px solid rgba(0,229,160,.15);
+  border-radius:18px;padding:14px;
+}
+.ps-label{font-family:'Fredoka One',cursive;font-size:.88rem;color:var(--text2);
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;letter-spacing:.3px;}
+.ps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.ps-item{
+  background:rgba(0,229,160,.05);border:1px solid rgba(0,229,160,.12);
+  border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer;transition:.2s;
+  position:relative;
+}
+.ps-item:hover{background:rgba(0,229,160,.12);border-color:var(--mint);transform:scale(1.05);}
+.ps-item.ps-done{background:rgba(255,179,0,.08);border-color:rgba(255,179,0,.35);}
+.ps-item.ps-done::after{
+  content:'✓';position:absolute;top:4px;right:6px;
+  color:var(--amber);font-weight:900;font-size:10px;
+}
+.ps-ico{font-size:22px;display:block;margin-bottom:3px;}
+.ps-nm{font-size:9px;font-weight:800;color:var(--text2);
+  font-family:'Fredoka One',cursive;letter-spacing:.2px;}
+.ps-stars{font-size:8px;margin-top:2px;opacity:.8;}
+
+/* Daily streak banner */
+.streak-banner{
+  background:linear-gradient(135deg,rgba(255,140,0,.15),rgba(255,179,0,.08));
+  border:1.5px solid rgba(255,179,0,.3);border-radius:16px;
+  padding:12px 16px;display:flex;align-items:center;gap:12px;
+}
+.sb-ico{font-size:28px;flex-shrink:0;animation:flt 2.5s ease-in-out infinite;}
+.sb-text{flex:1;}
+.sb-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--amber);margin-bottom:1px;}
+.sb-sub{font-size:11px;color:var(--text2);font-weight:700;}
+.sb-fire{display:flex;gap:3px;}
+.sf{font-size:14px;transition:.3s;}
+.sf.on{filter:drop-shadow(0 0 4px rgba(255,140,0,.6));}
+.sf.off{opacity:.25;}
+
+/* Action buttons */
+.menu-btns{display:flex;gap:9px;}
+.menu-btns .btn{flex:1;padding:14px;font-size:14px;}
+
+
+/* ══════════════════════════
+   WORLD MAP SCREEN
+══════════════════════════ */
+#scMap{justify-content:flex-start;}
+.map-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--mint);
+  text-align:center;margin-bottom:4px;text-shadow:0 0 14px rgba(0,229,160,.4);}
+.map-sub{font-size:.85rem;color:var(--text2);text-align:center;margin-bottom:18px;font-weight:700;}
+
+/* PC Blueprint Map */
+.blueprint{
+  max-width:680px;width:100%;
+  background:rgba(0,229,160,.04);border:1.5px solid rgba(0,229,160,.2);
+  border-radius:20px;padding:16px;margin-bottom:20px;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  position:relative;
+}
+.blueprint::before{
+  content:'INSIDE YOUR PC';position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:3px;
+  color:rgba(0,229,160,.35);white-space:nowrap;
+}
+
+/* Part card on map */
+.pcard{
+  background:rgba(0,0,0,.25);border:1.5px solid rgba(0,229,160,.18);
+  border-radius:14px;padding:12px 10px;cursor:pointer;transition:.25s;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  position:relative;overflow:hidden;
+}
+.pcard:hover{transform:translateY(-3px) scale(1.02);
+  border-color:var(--mint);box-shadow:0 8px 24px rgba(0,229,160,.25);}
+.pcard.locked{opacity:.4;cursor:not-allowed;}
+.pcard.locked:hover{transform:none;box-shadow:none;}
+.pcard.done{border-color:rgba(255,179,0,.5);background:rgba(255,179,0,.06);}
+.pcard.done::after{
+  content:'✓';position:absolute;top:7px;right:10px;
+  color:var(--amber);font-weight:900;font-size:13px;
+}
+.pcard-ico{font-size:30px;line-height:1;
+  filter:drop-shadow(0 0 8px rgba(0,229,160,.4));}
+.pcard.locked .pcard-ico{filter:grayscale(1);}
+.pcard-n{font-family:'Fredoka One',cursive;font-size:.82rem;color:var(--text);
+  text-align:center;line-height:1.2;}
+.pcard-tag{font-size:9px;color:var(--text2);font-weight:700;letter-spacing:.5px;}
+.pcard-stars{display:flex;gap:1px;font-size:11px;}
+.pcard-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(0,229,160,.08) 0%,transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.pcard:hover .pcard-glow{opacity:1;}
+/* connecting wires */
+.wire{position:absolute;background:rgba(0,229,160,.15);z-index:0;}
+
+/* ══════════════════════════
+   EXPLORE SCREEN
+══════════════════════════ */
+#scExplore{justify-content:flex-start;}
+
+.explore-wrap{max-width:680px;width:100%;}
+
+/* Part header */
+.exp-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.exp-back-btn{background:rgba(0,229,160,.1);border:1.5px solid rgba(0,229,160,.25);
+  border-radius:40px;padding:7px 16px;cursor:pointer;
+  font-size:12px;font-weight:800;color:var(--mint);transition:.2s;}
+.exp-back-btn:hover{background:rgba(0,229,160,.2);}
+.exp-title{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--mint);}
+.exp-subtitle{font-size:.8rem;color:var(--text2);font-weight:700;}
+
+/* Giant part illustration */
+.part-stage{
+  background:rgba(0,0,0,.3);border:1.5px solid var(--cardborder);
+  border-radius:20px;padding:20px;margin-bottom:14px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  position:relative;overflow:hidden;min-height:180px;
+}
+.part-stage::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,229,160,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.part-art{
+  font-size:clamp(72px,18vw,100px);line-height:1;
+  animation:flt 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 28px rgba(0,229,160,.4));
+  cursor:pointer;transition:transform .2s;
+}
+.part-art:hover{transform:scale(1.08);}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.part-size-badge{
+  background:rgba(0,229,160,.15);border:1px solid rgba(0,229,160,.3);
+  border-radius:40px;padding:4px 14px;
+  font-size:11px;font-weight:800;color:var(--mint);letter-spacing:.5px;
+}
+
+/* Explorer tiny above part */
+.tiny-explorer{
+  position:absolute;top:10px;left:50%;transform:translateX(calc(-50% + 50px));
+  font-size:20px;animation:hover 2s ease-in-out infinite;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));
+}
+
+/* Fact cards */
+.facts-area{margin-bottom:14px;}
+.facts-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--amber);
+  margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+
+.fact-cards{display:flex;flex-direction:column;gap:8px;}
+.fact-item{
+  background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.2);
+  border-radius:13px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;
+  transition:.2s;cursor:pointer;animation:factIn .4s ease both;
+}
+@keyframes factIn{from{opacity:0;transform:translateX(-15px);}to{opacity:1;transform:translateX(0);}}
+.fact-item:hover{background:rgba(0,229,160,.1);transform:translateX(4px);}
+.fact-num{
+  width:26px;height:26px;border-radius:50%;background:var(--mint);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:13px;color:#071A14;
+  flex-shrink:0;box-shadow:0 0 8px rgba(0,229,160,.4);
+}
+.fact-text{font-size:.88rem;color:var(--text);font-weight:700;line-height:1.55;}
+.fact-text em{color:var(--mint);font-style:normal;font-weight:900;}
+
+/* Analogy card */
+.analogy-card{
+  background:linear-gradient(135deg,rgba(255,179,0,.1),rgba(255,140,0,.06));
+  border:1.5px solid rgba(255,179,0,.3);border-radius:15px;
+  padding:14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;
+}
+.analogy-ico{font-size:28px;flex-shrink:0;}
+.analogy-text{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.55;}
+.analogy-label{font-size:9px;color:var(--amber);font-weight:800;
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+
+/* ══════════════════════════
+   QUIZ SCREEN
+══════════════════════════ */
+#scQuiz{justify-content:flex-start;}
+.quiz-wrap{max-width:560px;width:100%;}
+
+.quiz-header{text-align:center;margin-bottom:18px;}
+.quiz-part-ico{font-size:48px;margin-bottom:4px;
+  animation:flt 3s ease-in-out infinite;display:block;
+  filter:drop-shadow(0 0 12px rgba(0,229,160,.4));}
+.quiz-part-name{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--mint);margin-bottom:6px;}
+.quiz-q-count{font-size:11px;color:var(--text2);font-weight:700;letter-spacing:1px;}
+.quiz-progress{
+  height:8px;background:rgba(255,255,255,.08);border-radius:50px;
+  overflow:hidden;margin-bottom:18px;border:1px solid rgba(255,255,255,.07);
+}
+.qpfill{height:100%;border-radius:50px;
+  background:linear-gradient(90deg,var(--mint2),var(--mint));
+  transition:width .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 0 6px rgba(0,229,160,.4);}
+
+.question-card{
+  background:var(--card);border:1.5px solid var(--cardborder);
+  border-radius:20px;padding:20px;margin-bottom:14px;
+  animation:cardIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cardIn{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
+.question-text{
+  font-family:'Fredoka One',cursive;font-size:clamp(1rem,2.8vw,1.25rem);
+  color:var(--text);line-height:1.5;margin-bottom:16px;text-align:center;
+}
+
+.answers{display:flex;flex-direction:column;gap:9px;}
+.ans-btn{
+  background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.14);
+  border-radius:13px;padding:13px 16px;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:800;
+  color:var(--text);text-align:left;transition:.2s;
+  display:flex;align-items:center;gap:10px;
+}
+.ans-btn:hover:not(:disabled){background:rgba(0,229,160,.1);border-color:var(--mint);
+  transform:translateX(4px);}
+.ans-btn.correct{background:rgba(0,229,160,.18);border-color:var(--mint);
+  color:var(--mint);animation:correct .4s ease;}
+.ans-btn.wrong{background:rgba(255,60,60,.14);border-color:#ff5555;color:#ff7777;}
+@keyframes correct{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+.ans-btn:disabled{cursor:default;}
+.ans-letter{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:13px;flex-shrink:0;}
+.ans-btn.correct .ans-letter{background:var(--mint);color:#071A14;}
+.ans-btn.wrong .ans-letter{background:rgba(255,60,60,.3);}
+
+/* Quiz feedback */
+.quiz-feedback{
+  background:rgba(0,229,160,.08);border:1.5px solid rgba(0,229,160,.25);
+  border-radius:14px;padding:13px 15px;margin-bottom:12px;
+  font-size:.9rem;font-weight:700;color:var(--text);line-height:1.6;
+  display:none;animation:cardIn .3s ease;
+}
+.quiz-feedback.show{display:block;}
+.qf-label{font-size:10px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:4px;}
+.qf-label.ok{color:var(--mint);}
+.qf-label.ng{color:#ff7777;}
+
+/* ══════════════════════════
+   RESULT / BADGE SCREEN
+══════════════════════════ */
+#scBadge{justify-content:center;}
+.badge-card{max-width:420px;width:100%;text-align:center;padding:32px;}
+
+.badge-anim{
+  font-size:80px;display:block;margin-bottom:10px;
+  animation:badgePop .9s cubic-bezier(.34,1.56,.64,1) both;
+  filter:drop-shadow(0 0 24px rgba(255,179,0,.5));
+}
+@keyframes badgePop{from{transform:scale(0) rotate(-180deg);opacity:0;}
+  to{transform:scale(1) rotate(0);opacity:1;}}
+.badge-name{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--amber);
+  margin-bottom:4px;}
+.badge-sub{font-size:.88rem;color:var(--text2);font-weight:700;margin-bottom:20px;}
+.badge-stars-row{display:flex;justify-content:center;gap:6px;margin-bottom:18px;}
+.bstar{font-size:36px;animation:starPop .5s cubic-bezier(.34,1.56,.64,1) both;}
+.bstar:nth-child(1){animation-delay:.1s;}
+.bstar:nth-child(2){animation-delay:.2s;}
+.bstar:nth-child(3){animation-delay:.3s;}
+@keyframes starPop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+.score-row{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.score-box{background:var(--card);border:1.5px solid var(--cardborder);
+  border-radius:14px;padding:13px 18px;text-align:center;min-width:80px;}
+.score-v{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--mint);}
+.score-l{font-size:9px;color:var(--text2);font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+
+/* ══════════════════════════
+   TROPHY ROOM
+══════════════════════════ */
+#scTrophy{justify-content:flex-start;}
+.trophy-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;max-width:680px;width:100%;margin-bottom:20px;
+}
+.tcard{background:var(--card);border:1.5px solid var(--cardborder);
+  border-radius:16px;padding:14px 10px;text-align:center;transition:.2s;}
+.tcard.unlocked{background:rgba(255,179,0,.08);border-color:rgba(255,179,0,.4);
+  box-shadow:0 4px 18px rgba(255,179,0,.1);}
+.tcard:not(.unlocked) .tcard-ico{filter:grayscale(1);opacity:.3;}
+.tcard-ico{font-size:32px;display:block;margin-bottom:6px;}
+.tcard-name{font-size:10px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.tcard-desc{font-size:9px;color:var(--text2);line-height:1.4;}
+
+/* ── PARTICLES ── */
+.burst-p{position:fixed;pointer-events:none;z-index:9999;font-size:16px;
+  animation:bFloat 1.1s ease-out forwards;}
+@keyframes bFloat{0%{opacity:1;transform:translateY(0) scale(1);}
+  100%{opacity:0;transform:translateY(-90px) scale(1.6) rotate(20deg);}}
+.conf-p{position:fixed;pointer-events:none;z-index:9999;
+  width:6px;height:6px;animation:cFly .9s ease-out forwards;}
+@keyframes cFly{0%{opacity:1;}100%{opacity:0;transform:var(--to);}}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:9999;
+  padding:9px 22px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1rem;
+  animation:tpop .75s ease forwards;white-space:nowrap;pointer-events:none;
+  border:2px solid rgba(255,255,255,.12);}
+.tok{background:rgba(0,180,100,.95);color:#fff;box-shadow:0 5px 20px rgba(0,180,100,.4);}
+.tng{background:rgba(220,50,50,.95);color:#fff;box-shadow:0 5px 20px rgba(220,50,50,.4);}
+.tip{background:rgba(200,130,0,.95);color:#fff;box-shadow:0 5px 20px rgba(200,130,0,.4);}
+@keyframes tpop{0%{opacity:0;transform:translateX(-50%) translateY(-16px) scale(.85);}
+  18%{opacity:1;transform:translateX(-50%) scale(1.04);}72%{opacity:1;}
+  100%{opacity:0;transform:translateX(-50%) translateY(-10px);}}
+
+/* ── CONFETTI LAYER ── */
+.clayer{position:fixed;inset:0;pointer-events:none;z-index:900;overflow:hidden;}
+.ccp{position:absolute;top:-16px;border-radius:3px;animation:ccpF linear forwards;}
+@keyframes ccpF{to{transform:translateY(115vh) rotate(960deg);}}
+
+/* ── ALL DONE ── */
+.alldone-card{max-width:480px;width:100%;text-align:center;padding:32px;}
+.ad-trophy{font-size:90px;display:block;margin-bottom:10px;
+  animation:badgePop .9s cubic-bezier(.34,1.56,.64,1);}
+.ad-title{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,5vw,2.4rem);
+  background:linear-gradient(135deg,var(--mint),var(--amber));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;}
+.ad-sub{font-size:.9rem;color:var(--text2);font-weight:700;margin-bottom:20px;line-height:1.6;}
+.ad-stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+
+@media(max-width:480px){
+  .blueprint{grid-template-columns:1fr 1fr;padding:12px;}
+  .pcard{padding:10px 8px;}
+  .part-art{font-size:72px;}
+  .trophy-grid{grid-template-columns:repeat(3,1fr);}
+  .prog-overview{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="clayer" id="confLayer"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-back" href="../index.html">← Hub</a>
+  <div class="nav-title" id="navTitle">🖥️ <span>Tech Explorers</span></div>
+  <div class="nav-right">
+    <div class="lang-btn" id="langToggle" onclick="toggleLang()">
+      <div class="lb on" id="lbEN">EN</div>
+      <div class="lb" id="lbBN">বাংলা</div>
+    </div>
+    <div class="star-pill" id="starPill">⭐ <span id="totalStars">0</span></div>
+  </div>
+</nav>
+
+<!-- ══════════ MENU ══════════ -->
+<div class="sc" id="scMenu">
+  <div class="menu-wrap">
+
+    <!-- Hero canvas animation -->
+    <canvas id="heroCanvas" onclick="heroClick()"></canvas>
+
+    <!-- Title -->
+    <div class="menu-title-block">
+      <h1 class="menu-title" id="mTitle">Tech Explorers</h1>
+      <div class="menu-tagline">
+        <span class="mtag-chip" id="mt1">🔬 You're TINY here!</span>
+        <span class="mtag-chip" id="mt2">8 Parts to Explore</span>
+        <span class="mtag-chip" id="mt3">EN + বাংলা</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-grid">
+      <div class="sg">
+        <span class="sg-ico">🗺️</span>
+        <span class="sg-v" id="sgExp">0</span>
+        <span class="sg-l" id="sgExpL">Explored</span>
+      </div>
+      <div class="sg">
+        <span class="sg-ico">⭐</span>
+        <span class="sg-v" id="sgStars">0</span>
+        <span class="sg-l" id="sgStarsL">Stars</span>
+      </div>
+      <div class="sg">
+        <span class="sg-ico">🏅</span>
+        <span class="sg-v" id="sgBadge">0</span>
+        <span class="sg-l" id="sgBadgeL">Badges</span>
+      </div>
+      <div class="sg">
+        <span class="sg-ico">🎯</span>
+        <span class="sg-v" id="sgAcc">-</span>
+        <span class="sg-l" id="sgAccL">Best Score</span>
+      </div>
+    </div>
+
+    <!-- Daily streak -->
+    <div class="streak-banner" id="streakBanner">
+      <div class="sb-ico">🔥</div>
+      <div class="sb-text">
+        <div class="sb-title" id="sbTitle">Keep your streak alive!</div>
+        <div class="sb-sub" id="sbSub">Explore a part every day to build your streak!</div>
+      </div>
+      <div class="sb-fire" id="sbFire">
+        <span class="sf off">🔥</span><span class="sf off">🔥</span>
+        <span class="sf off">🔥</span><span class="sf off">🔥</span>
+        <span class="sf off">🔥</span>
+      </div>
+    </div>
+
+    <!-- Parts preview -->
+    <div class="parts-strip">
+      <div class="ps-label" id="psLabel">🖥️ Computer Parts — tap to jump in!</div>
+      <div class="ps-grid" id="psGrid"></div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="menu-btns">
+      <button class="btn bgreen" onclick="goTo('scMap')" id="btnStart">🚀 Start Adventure!</button>
+      <button class="btn bghost" onclick="goTo('scTrophy')" id="btnTrophy">🏆 Badges</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ MAP ══════════ -->
+<div class="sc off" id="scMap">
+  <div class="map-title" id="mapTitle">🖥️ Inside the Computer</div>
+  <p class="map-sub" id="mapSub">Tap a part to explore! Complete all 8 to become a Tech Master! 🎉</p>
+
+  <div class="blueprint">
+    <!-- Part cards injected by JS -->
+  </div>
+
+  <div class="brow">
+    <button class="btn bghost" onclick="goTo('scMenu')" id="mapBack">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════ EXPLORE ══════════ -->
+<div class="sc off" id="scExplore">
+  <div class="explore-wrap">
+    <div class="exp-header">
+      <button class="exp-back-btn" onclick="goTo('scMap')" id="expBack">← Map</button>
+      <div>
+        <div class="exp-title" id="expTitle">CPU</div>
+        <div class="exp-subtitle" id="expSub">The Brain of the Computer</div>
+      </div>
+    </div>
+
+    <div class="part-stage">
+      <div class="tiny-explorer">🧒</div>
+      <div class="part-art" id="partArt" onclick="artClick()">🧠</div>
+      <div class="part-size-badge" id="partSizeBadge">🔬 You are TINY here!</div>
+    </div>
+
+    <div class="analogy-card">
+      <div class="analogy-ico" id="analogyIco">🧠</div>
+      <div>
+        <div class="analogy-label" id="analogyLabel">FUN ANALOGY</div>
+        <div class="analogy-text" id="analogyText">The CPU is like the BRAIN of a computer — it thinks, decides, and controls everything!</div>
+      </div>
+    </div>
+
+    <div class="facts-area">
+      <div class="facts-title" id="factsTitle">💡 Fun Facts</div>
+      <div class="fact-cards" id="factList"></div>
+    </div>
+
+    <div class="brow" style="margin-bottom:20px;">
+      <button class="btn bgreen" onclick="startQuiz()" id="btnQuiz">🎯 Take the Quiz!</button>
+      <button class="btn bghost" onclick="goTo('scMap')" id="btnBackMap">← Back to Map</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="sc off" id="scQuiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <span class="quiz-part-ico" id="qPartIco">🔬</span>
+      <div class="quiz-part-name" id="qPartName">CPU Quiz</div>
+      <div class="quiz-q-count" id="qCount">Question 1 of 4</div>
+    </div>
+    <div class="quiz-progress"><div class="qpfill" id="qpFill" style="width:0%"></div></div>
+
+    <div class="question-card">
+      <div class="question-text" id="qText">Question here?</div>
+      <div class="answers" id="answerList"></div>
+    </div>
+
+    <div class="quiz-feedback" id="qFeedback">
+      <div class="qf-label" id="qfLabel">CORRECT!</div>
+      <div id="qfText">Great job!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BADGE ══════════ -->
+<div class="sc off" id="scBadge">
+  <div class="badge-card card">
+    <span class="badge-anim" id="badgeIco">🏅</span>
+    <div class="badge-name" id="badgeName">CPU Master!</div>
+    <div class="badge-sub" id="badgeSub">You learned about the CPU!</div>
+    <div class="badge-stars-row">
+      <span class="bstar" id="bs1">⭐</span>
+      <span class="bstar" id="bs2">⭐</span>
+      <span class="bstar" id="bs3">⭐</span>
+    </div>
+    <div class="score-row">
+      <div class="score-box"><div class="score-v" id="bScore">4/4</div><div class="score-l" id="bScoreL">Correct</div></div>
+      <div class="score-box"><div class="score-v" id="bCoins">+30</div><div class="score-l" id="bCoinsL">Stars</div></div>
+    </div>
+    <div class="brow">
+      <button class="btn bgreen" id="badgeNext" onclick="nextPart()">Next Part →</button>
+      <button class="btn bghost" onclick="goTo('scMap')" id="badgeMap">🗺️ Map</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TROPHY ROOM ══════════ -->
+<div class="sc off" id="scTrophy">
+  <div style="max-width:680px;width:100%;">
+    <h2 style="font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--amber);text-align:center;margin-bottom:5px;" id="trophyTitle">🏆 My Badge Collection</h2>
+    <p style="text-align:center;color:var(--text2);font-size:.85rem;font-weight:700;margin-bottom:16px;" id="trophySub">Earn badges by exploring computer parts!</p>
+    <div class="trophy-grid" id="trophyGrid"></div>
+    <div class="brow"><button class="btn bghost" onclick="goTo('scMenu')" id="trophyBack">← Back</button></div>
+  </div>
+</div>
+
+<!-- ══════════ ALL DONE ══════════ -->
+<div class="sc off" id="scDone">
+  <div class="alldone-card card">
+    <span class="ad-trophy">🏆</span>
+    <h1 class="ad-title" id="adTitle">TECH MASTER! 🎉</h1>
+    <p class="ad-sub" id="adSub">You explored ALL 8 computer parts!<br/>You're a real Tech Explorer! 🚀</p>
+    <div class="ad-stats">
+      <div class="score-box"><div class="score-v" id="adStars">0</div><div class="score-l">Total Stars</div></div>
+      <div class="score-box"><div class="score-v">8/8</div><div class="score-l">Parts Done</div></div>
+    </div>
+    <div class="brow">
+      <button class="btn bgreen" onclick="goTo('scMap')" id="adReplay">🔁 Explore Again</button>
+      <button class="btn bamber" onclick="goTo('scTrophy')" id="adBadges">🏆 My Badges</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   TECH EXPLORERS: INSIDE THE COMPUTER
+   Full bilingual EN/Bengali educational adventure
+═══════════════════════════════════════════════════════════ */
+
+// ── LANGUAGE SYSTEM ──
+var lang='en';
+function toggleLang(){
+  lang = lang==='en'?'bn':'en';
+  document.getElementById('lbEN').className='lb'+(lang==='en'?' on':'');
+  document.getElementById('lbBN').className='lb'+(lang==='bn'?' on':'');
+  // Re-render everything
+  applyLang();
+  if(curPart!==null) renderExplorePage(curPart);
+  refreshMapPage();
+  refreshMenu();
+}
+
+// ── DATA: COMPUTER PARTS ──
+var PARTS = [
+  {
+    id:'cpu', ico:'🔬', art:'🔬',
+    badge:'⚡', badgeColor:'#00E5A0',
+    en:{
+      name:'CPU', full:'Central Processing Unit',
+      tagline:'The Brain of the Computer',
+      analogy:{ico:'🧠',text:'The CPU is like the <em>BRAIN</em> of your computer — it thinks about everything, makes all decisions, and tells every other part exactly what to do, billions of times per second!'},
+      sizeBadge:'🔬 You are 1 million times smaller than a CPU chip!',
+      facts:[
+        'The CPU can do <em>billions of calculations every second</em> — faster than you can blink even once!',
+        'Modern CPUs have up to <em>64 cores</em> — like having 64 mini-brains all working together at the same time!',
+        'CPU speed is measured in <em>GHz (Gigahertz)</em>. 3 GHz means 3 billion clock ticks every single second!',
+        'CPUs get very hot when working hard — they can reach <em>over 90°C</em> and need cooling to stay safe!',
+        'The first CPU ever made was the <em>Intel 4004 in 1971</em> — it was as powerful as a basic calculator!',
+        'Modern CPUs have <em>transistors smaller than a virus</em> — billions packed into a chip the size of your thumbnail!',
+        'CPUs have tiny <em>cache memory</em> built right inside them — super-fast storage just steps away from the processor!',
+      ],
+      quiz:[
+        {q:'What does CPU stand for?',a:['Central Processing Unit','Computer Power Unit','Control Program Unit','Central Print Unit'],correct:0,explain:'CPU means Central Processing Unit — it\'s the main brain that processes all information in your computer!'},
+        {q:'The CPU is like which part of your body?',a:['Heart','Hands','Brain','Eyes'],correct:2,explain:'Just like your brain controls your body, the CPU controls the whole computer — thinking and making decisions!'},
+        {q:'What is CPU speed measured in?',a:['Kilograms','GHz (Gigahertz)','Metres per second','Watts'],correct:1,explain:'CPU speed is measured in GHz. A 3 GHz CPU can do 3,000,000,000 operations every single second!'},
+        {q:'Why does a CPU need a cooling fan?',a:['To make music','Because it gets very hot','To spin the hard drive','To connect to WiFi'],correct:1,explain:'CPUs generate huge amounts of heat when working hard. Cooling fans prevent permanent damage from overheating!'},
+        {q:'What year was the very first CPU invented?',a:['1945','1971','1983','1995'],correct:1,explain:'The Intel 4004, released in 1971, was the world\'s first microprocessor CPU — and it was only as powerful as a calculator!'},
+        {q:'What is a CPU "core"?',a:['A type of wire','An independent processing unit inside the CPU','The cooling fan','The power connector'],correct:1,explain:'A core is an independent processor inside the CPU. More cores means the CPU can do more things at the same time!'},
+        {q:'What unit of temperature is used for CPUs?',a:['Fahrenheit','Kelvin','Celsius (°C)','Watts'],correct:2,explain:'CPU temperature is measured in Celsius. A busy CPU can reach 80-90°C — that\'s hotter than boiling water!'},
+        {q:'What is CPU "cache" memory?',a:['Internet storage','Super-fast memory built inside the CPU','The screen display','The sound card'],correct:1,explain:'Cache is ultra-fast memory inside the CPU itself. It stores data the CPU uses most often so it doesn\'t have to fetch it from slower RAM!'},
+        {q:'Which company made the world\'s first CPU?',a:['Apple','Samsung','Intel','AMD'],correct:2,explain:'Intel created the 4004, the world\'s first commercial microprocessor, in 1971. It had just 2,300 transistors!'},
+        {q:'How many transistors does a modern CPU have?',a:['About 1,000','About 1 million','Tens of billions','Exactly 64'],correct:2,explain:'A modern CPU like Apple M3 has over 25 billion transistors — each tinier than a virus! This is why they are so powerful!'},
+      ],
+    },
+    bn:{
+      name:'সিপিইউ', full:'সেন্ট্রাল প্রসেসিং ইউনিট',
+      tagline:'কম্পিউটারের মস্তিষ্ক',
+      analogy:{ico:'🧠',text:'সিপিইউ হলো তোমার কম্পিউটারের <em>মস্তিষ্কের মতো</em> — এটা সবকিছু ভাবে, সব সিদ্ধান্ত নেয়, এবং প্রতি সেকেন্ডে কোটি কোটি বার অন্য সব যন্ত্রাংশকে ঠিক কী করতে হবে তা বলে!'},
+      sizeBadge:'🔬 তুমি একটি CPU চিপের চেয়ে ১০ লক্ষ গুণ ছোট!',
+      facts:[
+        'সিপিইউ প্রতি সেকেন্ডে <em>কোটি কোটি হিসাব</em> করতে পারে — একবার চোখের পলকেরও দ্রুত!',
+        'আধুনিক সিপিইউতে <em>৬৪টি পর্যন্ত কোর</em> থাকে — যেন ৬৪টি মিনি-মস্তিষ্ক একসাথে কাজ করছে!',
+        'সিপিইউ গতি <em>GHz (গিগাহার্টজ)</em> তে মাপা হয়। ৩ GHz মানে প্রতি সেকেন্ডে ৩০০ কোটি ক্লক টিক!',
+        'কঠোর পরিশ্রম করলে CPU <em>৯০°C এর বেশি</em> গরম হতে পারে এবং নিরাপদ থাকতে কুলিং লাগে!',
+        'প্রথম CPU <em>১৯৭১ সালে Intel 4004</em> ছিল — এটি একটি সাধারণ ক্যালকুলেটরের মতো শক্তিশালী ছিল!',
+        'আধুনিক CPU তে <em>একটি ভাইরাসের চেয়ে ছোট ট্রানজিস্টর</em> থাকে — নখের আকারের চিপে কোটি কোটি!',
+        'CPU তে ভেতরে ছোট <em>ক্যাশ মেমোরি</em> থাকে — প্রসেসরের একদম কাছে অতি-দ্রুত স্টোরেজ!',
+      ],
+      quiz:[
+        {q:'CPU মানে কী?',a:['সেন্ট্রাল প্রসেসিং ইউনিট','কম্পিউটার পাওয়ার ইউনিট','কন্ট্রোল প্রোগ্রাম ইউনিট','সেন্ট্রাল প্রিন্ট ইউনিট'],correct:0,explain:'CPU মানে Central Processing Unit — এটি প্রধান মস্তিষ্ক যা তোমার কম্পিউটারের সব তথ্য প্রক্রিয়া করে!'},
+        {q:'সিপিইউ তোমার শরীরের কোন অংশের মতো?',a:['হৃদয়','হাত','মস্তিষ্ক','চোখ'],correct:2,explain:'যেমন তোমার মস্তিষ্ক শরীর নিয়ন্ত্রণ করে, সিপিইউ পুরো কম্পিউটার নিয়ন্ত্রণ করে — চিন্তা করে এবং সিদ্ধান্ত নেয়!'},
+        {q:'সিপিইউ গতি কীসে মাপা হয়?',a:['কিলোগ্রাম','GHz (গিগাহার্টজ)','মিটার প্রতি সেকেন্ড','ওয়াট'],correct:1,explain:'CPU গতি GHz তে মাপা হয়। ৩ GHz CPU প্রতি সেকেন্ডে ৩,০০০,০০০,০০০ অপারেশন করতে পারে!'},
+        {q:'সিপিইউতে কুলিং ফ্যান কেন দরকার?',a:['সঙ্গীত বাজাতে','কারণ এটি খুব গরম হয়','হার্ড ড্রাইভ ঘোরাতে','WiFi সংযোগ করতে'],correct:1,explain:'CPU কাজের সময় প্রচুর তাপ উৎপন্ন করে। কুলিং ফ্যান স্থায়ী ক্ষতি থেকে রক্ষা করে!'},
+        {q:'প্রথম CPU কোন সালে তৈরি হয়েছিল?',a:['১৯৪৫','১৯৭১','১৯৮৩','১৯৯৫'],correct:1,explain:'Intel 4004, ১৯৭১ সালে মুক্তি পেয়েছিল, বিশ্বের প্রথম মাইক্রোপ্রসেসর CPU — এবং এটি শুধু একটি ক্যালকুলেটরের মতো ছিল!'},
+        {q:'CPU "কোর" কী?',a:['এক ধরনের তার','CPU এর ভেতরে একটি স্বতন্ত্র প্রসেসিং ইউনিট','কুলিং ফ্যান','পাওয়ার সংযোগকারী'],correct:1,explain:'কোর হলো CPU এর ভেতরে একটি স্বতন্ত্র প্রসেসর। বেশি কোর মানে CPU একসাথে বেশি কাজ করতে পারে!'},
+        {q:'CPU তাপমাত্রা কোন এককে মাপা হয়?',a:['ফারেনহাইট','কেলভিন','সেলসিয়াস (°C)','ওয়াট'],correct:2,explain:'CPU তাপমাত্রা সেলসিয়াসে মাপা হয়। ব্যস্ত CPU ৮০-৯০°C পর্যন্ত পৌঁছাতে পারে — ফুটন্ত পানির চেয়ে গরম!'},
+        {q:'CPU "ক্যাশ" মেমোরি কী?',a:['ইন্টারনেট স্টোরেজ','CPU এর ভেতরে তৈরি অতি-দ্রুত মেমোরি','স্ক্রিন ডিসপ্লে','সাউন্ড কার্ড'],correct:1,explain:'ক্যাশ হলো CPU এর ভেতরে অতি-দ্রুত মেমোরি। এটি সবচেয়ে বেশি ব্যবহৃত ডেটা সংরক্ষণ করে যাতে ধীর RAM থেকে আনতে না হয়!'},
+        {q:'বিশ্বের প্রথম CPU কোন কোম্পানি তৈরি করেছিল?',a:['Apple','Samsung','Intel','AMD'],correct:2,explain:'Intel ১৯৭১ সালে 4004 তৈরি করেছিল, বিশ্বের প্রথম বাণিজ্যিক মাইক্রোপ্রসেসর। এতে মাত্র ২,৩০০ ট্রানজিস্টর ছিল!'},
+        {q:'একটি আধুনিক CPU তে কতটি ট্রানজিস্টর থাকে?',a:['প্রায় ১,০০০','প্রায় ১০ লক্ষ','দশ কোটিরও বেশি','ঠিক ৬৪টি'],correct:2,explain:'Apple M3 এর মতো আধুনিক CPU তে ২,৫০০ কোটিরও বেশি ট্রানজিস্টর আছে — প্রতিটি একটি ভাইরাসের চেয়ে ছোট!'},
+      ],
+    },
+  },
+  {
+    id:'ram', ico:'💾', art:'💾',
+    badge:'🧩', badgeColor:'#38BDF8',
+    en:{
+      name:'RAM', full:'Random Access Memory',
+      tagline:'The Quick-Thinking Desk',
+      analogy:{ico:'📚',text:'RAM is like your <em>school desk</em> — you keep your current books and homework on it. The bigger your desk, the more things you can work on at once! When school ends (power off), you clear the desk.'},
+      sizeBadge:'📏 RAM sticks are about the size of a chocolate bar!',
+      facts:[
+        'RAM <em>forgets everything</em> when you turn off the computer — it only holds temporary data while power is on!',
+        'More RAM lets you run more apps at the <em>same time without slowing down</em> — great for multitasking!',
+        'RAM is <em>20-50x faster</em> than even the fastest SSD — data is accessed in nanoseconds!',
+        'A typical gaming computer needs <em>16-32 GB of RAM</em> for smooth performance in modern games!',
+        'RAM stands for "Random Access" because you can jump to <em>any memory location instantly</em> — no need to search!',
+        'The earliest computers had only <em>a few kilobytes</em> of RAM. Your phone has millions of times more!',
+        'When RAM fills up, the computer uses the <em>hard drive as "virtual RAM"</em> — but it\'s much, much slower!',
+      ],
+      quiz:[
+        {q:'What does RAM stand for?',a:['Read All Memory','Random Access Memory','Rapid Action Module','Running Application Memory'],correct:1,explain:'RAM stands for Random Access Memory — it quickly stores data that your computer is currently using!'},
+        {q:'What happens to RAM data when you turn off the computer?',a:['Saved forever','Deleted — RAM is temporary!','Moves to CPU','Goes to the internet'],correct:1,explain:'RAM only holds temporary data! Always save your work before turning off — everything in RAM is wiped clean!'},
+        {q:'RAM is like which everyday object?',a:['A filing cabinet','Your school desk','A bookshelf','A drawer'],correct:1,explain:'RAM is like your desk — you keep current work on it. Your hard drive is the filing cabinet for long-term storage!'},
+        {q:'What does MORE RAM allow you to do?',a:['Make the computer louder','Run more apps at the same time','Print faster','Connect to WiFi better'],correct:1,explain:'More RAM means you can have more programs open at once without the computer slowing down — perfect for multitasking!'},
+        {q:'How fast is RAM compared to an SSD?',a:['Slower than SSD','Same speed','20-50 times faster','Twice as fast'],correct:2,explain:'RAM is 20-50x faster than even the fastest SSD! This is why computers keep active data in RAM instead of storage!'},
+        {q:'Why is it called "Random Access" Memory?',a:['Because it stores random things','You can jump to any location instantly','It randomly deletes data','It only works randomly'],correct:1,explain:'"Random Access" means you can go directly to ANY memory location instantly without reading through other data first — super efficient!'},
+        {q:'What happens when your RAM is full?',a:['Computer explodes','Computer uses hard drive as "virtual RAM" (much slower)','Computer gets more RAM','Apps work faster'],correct:1,explain:'When RAM fills up, Windows/Mac use hard drive space as "virtual RAM" — but this is much slower, making the computer feel sluggish!'},
+        {q:'A typical gaming PC needs how much RAM?',a:['1-2 GB','4 GB','16-32 GB','1 TB'],correct:2,explain:'Modern games need 16-32 GB of RAM for smooth performance! Older games from the 2000s only needed 256 MB!'},
+        {q:'Which of these is stored in RAM while you work?',a:['Your installed programs (permanently)','The document you\'re currently typing','Your saved photos','The operating system install files'],correct:1,explain:'The document you\'re typing right now is in RAM! That\'s why you must save it — when power goes off, RAM data disappears!'},
+        {q:'RAM was first used in computers in approximately which decade?',a:['1940s','1960s','1980s','2000s'],correct:1,explain:'Core magnetic RAM was first used in computers in the 1950s-60s. Modern DRAM (Dynamic RAM) was invented in 1968 by Robert Dennard!'},
+      ],
+    },
+    bn:{
+      name:'র‍্যাম', full:'র‍্যান্ডম অ্যাক্সেস মেমোরি',
+      tagline:'দ্রুত চিন্তার ডেস্ক',
+      analogy:{ico:'📚',text:'র‍্যাম হলো তোমার <em>স্কুলের ডেস্কের মতো</em> — তুমি বর্তমান বই ও হোমওয়ার্ক সেখানে রাখো। ডেস্ক যত বড়, একসাথে তত বেশি কাজ করতে পারবে! স্কুল শেষে (পাওয়ার অফ) ডেস্ক পরিষ্কার করে নাও।'},
+      sizeBadge:'📏 র‍্যাম স্টিক চকলেট বারের মতো আকারের!',
+      facts:[
+        'কম্পিউটার বন্ধ করলে র‍্যাম <em>সব ভুলে যায়</em> — বিদ্যুৎ থাকলেই শুধু সাময়িক ডেটা রাখে!',
+        'বেশি RAM দিয়ে <em>একসাথে বেশি অ্যাপ চালানো যায় ধীর না হয়ে</em> — মাল্টিটাস্কিংয়ের জন্য দারুণ!',
+        'র‍্যাম দ্রুততম SSD এর চেয়েও <em>২০-৫০ গুণ দ্রুত</em> — ডেটা ন্যানোসেকেন্ডে অ্যাক্সেস হয়!',
+        'একটি গেমিং কম্পিউটারে মসৃণ পারফরম্যান্সের জন্য সাধারণত <em>১৬-৩২ GB র‍্যাম</em> প্রয়োজন!',
+        'RAM এর মানে "র‍্যান্ডম অ্যাক্সেস" কারণ তুমি <em>যেকোনো মেমোরি লোকেশনে তাৎক্ষণিক যেতে পারো</em>!',
+        'প্রাথমিক কম্পিউটারে মাত্র <em>কয়েক কিলোবাইট</em> র‍্যাম ছিল। তোমার ফোনে কোটি গুণ বেশি আছে!',
+        'র‍্যাম ভরে গেলে কম্পিউটার <em>হার্ড ড্রাইভকে "ভার্চুয়াল র‍্যাম" হিসেবে ব্যবহার করে</em> — কিন্তু অনেক ধীর!',
+      ],
+      quiz:[
+        {q:'RAM মানে কী?',a:['Read All Memory','Random Access Memory','Rapid Action Module','Running Application Memory'],correct:1,explain:'RAM মানে Random Access Memory — এটি কম্পিউটার বর্তমানে যে ডেটা ব্যবহার করছে তা দ্রুত সংরক্ষণ করে!'},
+        {q:'কম্পিউটার বন্ধ করলে RAM এর ডেটা কী হয়?',a:['চিরকাল সংরক্ষিত হয়','মুছে যায় — RAM সাময়িক!','CPU তে যায়','ইন্টারনেটে যায়'],correct:1,explain:'RAM শুধু সাময়িক ডেটা রাখে! বন্ধ করার আগে সবসময় কাজ সেভ করো — RAM এর সব ডেটা পরিষ্কার হয়ে যায়!'},
+        {q:'RAM কোন দৈনন্দিন জিনিসের মতো?',a:['ফাইলিং ক্যাবিনেট','তোমার স্কুলের ডেস্ক','বইয়ের তাক','ড্রয়ার'],correct:1,explain:'র‍্যাম ডেস্কের মতো — বর্তমান কাজ সেখানে রাখো। হার্ড ড্রাইভ দীর্ঘমেয়াদী স্টোরেজের জন্য ফাইলিং ক্যাবিনেটের মতো!'},
+        {q:'বেশি RAM দিয়ে কী করতে পারবে?',a:['কম্পিউটার জোরে বাজাতে','একসাথে বেশি অ্যাপ চালাতে','দ্রুত প্রিন্ট করতে','ভালো WiFi সংযোগ করতে'],correct:1,explain:'বেশি RAM মানে কম্পিউটার ধীর না হয়ে একসাথে বেশি প্রোগ্রাম খোলা রাখা যায় — মাল্টিটাস্কিংয়ের জন্য নিখুঁত!'},
+        {q:'SSD এর তুলনায় RAM কতটা দ্রুত?',a:['SSD এর চেয়ে ধীর','একই গতি','২০-৫০ গুণ দ্রুত','দ্বিগুণ দ্রুত'],correct:2,explain:'RAM এমনকি দ্রুততম SSD এর চেয়েও ২০-৫০ গুণ দ্রুত! এই কারণেই কম্পিউটার সক্রিয় ডেটা RAM এ রাখে!'},
+        {q:'"র‍্যান্ডম অ্যাক্সেস" মেমোরি কেন বলা হয়?',a:['কারণ এটি র‍্যান্ডম জিনিস সংরক্ষণ করে','যেকোনো লোকেশনে তাৎক্ষণিক যাওয়া যায়','এটি র‍্যান্ডমলি ডেটা মুছে','শুধু র‍্যান্ডমলি কাজ করে'],correct:1,explain:'"র‍্যান্ডম অ্যাক্সেস" মানে অন্য ডেটা না পড়েই সরাসরি যেকোনো মেমোরি লোকেশনে যাওয়া যায় — অতি দক্ষ!'},
+        {q:'তোমার RAM ভরে গেলে কী হয়?',a:['কম্পিউটার বিস্ফোরিত হয়','কম্পিউটার হার্ড ড্রাইভকে "ভার্চুয়াল র‍্যাম" হিসেবে ব্যবহার করে (অনেক ধীর)','কম্পিউটার আরও RAM পায়','অ্যাপ দ্রুত কাজ করে'],correct:1,explain:'RAM ভরে গেলে Windows/Mac হার্ড ড্রাইভ স্পেসকে "ভার্চুয়াল র‍্যাম" হিসেবে ব্যবহার করে — কিন্তু এটি অনেক ধীর!'},
+        {q:'একটি গেমিং PC তে সাধারণত কতটুকু RAM লাগে?',a:['১-২ GB','৪ GB','১৬-৩২ GB','১ TB'],correct:2,explain:'আধুনিক গেমগুলির মসৃণ পারফরম্যান্সের জন্য ১৬-৩২ GB RAM লাগে! ২০০০ এর দশকের পুরনো গেমগুলির মাত্র ২৫৬ MB লাগত!'},
+        {q:'কাজ করার সময় এগুলির মধ্যে কোনটি RAM এ সংরক্ষিত থাকে?',a:['ইন্সটল করা প্রোগ্রাম (স্থায়ীভাবে)','তুমি এখন যে ডকুমেন্ট টাইপ করছ','তোমার সেভ করা ছবি','অপারেটিং সিস্টেম ইন্সটল ফাইল'],correct:1,explain:'তুমি এখন যে ডকুমেন্ট টাইপ করছ সেটি RAM এ আছে! তাই সেভ করা জরুরি — বিদ্যুৎ গেলে RAM এর ডেটা হারিয়ে যায়!'},
+        {q:'RAM প্রথম কোন দশকে কম্পিউটারে ব্যবহৃত হয়?',a:['১৯৪০ এর দশক','১৯৬০ এর দশক','১৯৮০ এর দশক','২০০০ এর দশক'],correct:1,explain:'কোর ম্যাগনেটিক RAM প্রথম ১৯৫০-৬০ এর দশকে কম্পিউটারে ব্যবহৃত হয়েছিল। আধুনিক DRAM ১৯৬৮ সালে Robert Dennard আবিষ্কার করেছিলেন!'},
+      ],
+    },
+  },
+  {
+    id:'gpu', ico:'🎮', art:'🎮',
+    badge:'🎨', badgeColor:'#C084FC',
+    en:{
+      name:'GPU', full:'Graphics Processing Unit',
+      tagline:'The Super-Fast Artist',
+      analogy:{ico:'🎨',text:'The GPU is like a <em>super-fast artist with 10,000 paintbrushes</em> — it draws every pixel you see on screen, millions of times per second! Without it, video games would be impossible!'},
+      sizeBadge:'🖼️ GPUs can draw up to 144 full pictures every second!',
+      facts:[
+        'GPUs can process <em>thousands of small tasks at the exact same time</em> — perfect for drawing complex 3D scenes!',
+        'Without a GPU, you couldn\'t play <em>any video games</em> or watch smooth HD videos on your computer!',
+        'High-end GPUs are also used for <em>AI and machine learning</em> — they help train AI models like ChatGPT!',
+        'A powerful GPU can have up to <em>16,000 cores</em> — way more than a CPU with its 8-64 cores!',
+        'The GPU <em>has its own RAM</em> called VRAM (Video RAM) — high-end cards can have 24 GB of VRAM!',
+        'The first dedicated GPU was the <em>NVIDIA GeForce 256</em>, released in 1999 — it was revolutionary!',
+        'Modern GPUs can perform <em>over 100 trillion operations per second</em> — teraflops of computing power!',
+      ],
+      quiz:[
+        {q:'What does GPU stand for?',a:['General Processing Unit','Graphics Processing Unit','Game Power Unit','Global Print Utility'],correct:1,explain:'GPU means Graphics Processing Unit — it handles all the visual output you see on your screen!'},
+        {q:'What is the GPU mainly responsible for?',a:['Playing sounds','Drawing images on screen','Saving files','Connecting to internet'],correct:1,explain:'The GPU is responsible for creating all the graphics — every pixel on your screen is drawn by the GPU!'},
+        {q:'What happens if a computer has no GPU?',a:['Works perfectly','Cannot play games or watch HD video','Runs faster','Uses less electricity'],correct:1,explain:'Without a GPU, the CPU struggles to display graphics — no video games, no HD videos, no smooth animations!'},
+        {q:'GPUs are also used for which modern technology?',a:['Making phone calls','AI and machine learning','Printing documents','Playing music'],correct:1,explain:'GPUs are excellent at parallel processing, making them perfect for training AI models and machine learning!'},
+        {q:'What is VRAM?',a:['Very Rapid Access Memory','Video RAM — the GPU\'s own memory','Vertical RAM','Virtual RAM'],correct:1,explain:'VRAM (Video RAM) is dedicated memory built right into the GPU — it stores textures, frame buffers, and graphics data!'},
+        {q:'How many cores can a powerful GPU have?',a:['About 8','About 64','Up to 16,000','Exactly 4'],correct:2,explain:'While CPUs have 8-64 cores, powerful GPUs like NVIDIA H100 have over 16,000 cores — all working in parallel for graphics!'},
+        {q:'The first dedicated GPU was released in which year?',a:['1985','1999','2005','2010'],correct:1,explain:'The NVIDIA GeForce 256, released in 1999, is considered the first dedicated GPU. It revolutionized 3D graphics in games!'},
+        {q:'What does a GPU do 144 times per second in gaming?',a:['Saves game data','Draws a complete image on screen','Connects to the internet','Runs game physics'],correct:1,explain:'At 144Hz, the GPU draws 144 complete screen images every second — this makes movement look incredibly smooth!'},
+        {q:'Which company makes the most popular gaming GPUs?',a:['Intel','Samsung','NVIDIA and AMD','Apple'],correct:2,explain:'NVIDIA (GeForce series) and AMD (Radeon series) are the two main GPU makers for gaming computers!'},
+        {q:'What unit measures GPU performance?',a:['GHz','Teraflops (TFLOPS)','Megapixels','Watts'],correct:1,explain:'GPU performance is measured in TFLOPS (Teraflops) — trillions of floating-point operations per second! A modern GPU can exceed 100 TFLOPS!'},
+      ],
+    },
+    bn:{
+      name:'জিপিইউ', full:'গ্রাফিক্স প্রসেসিং ইউনিট',
+      tagline:'অতি-দ্রুত শিল্পী',
+      analogy:{ico:'🎨',text:'GPU হলো <em>১০,০০০ তুলি সহ একজন অতি-দ্রুত শিল্পীর মতো</em> — এটি তুমি স্ক্রিনে যা দেখছ প্রতিটি পিক্সেল আঁকে, প্রতি সেকেন্ডে লক্ষ লক্ষ বার! এছাড়া ভিডিও গেম অসম্ভব হতো!'},
+      sizeBadge:'🖼️ GPU প্রতি সেকেন্ডে ১৪৪টি পূর্ণ ছবি আঁকতে পারে!',
+      facts:[
+        'GPU একসাথে <em>হাজার হাজার ছোট কাজ প্রক্রিয়া</em> করতে পারে — জটিল 3D দৃশ্য আঁকার জন্য নিখুঁত!',
+        'GPU ছাড়া তুমি কোনো <em>ভিডিও গেম খেলতে</em> বা মসৃণ HD ভিডিও দেখতে পারতে না!',
+        'উচ্চ-মানের GPU <em>AI ও মেশিন লার্নিং</em> এ ব্যবহৃত হয় — ChatGPT এর মতো AI মডেল প্রশিক্ষণে সাহায্য করে!',
+        'শক্তিশালী GPU তে <em>১৬,০০০টি পর্যন্ত কোর</em> থাকতে পারে — CPU এর ৮-৬৪ কোরের চেয়ে অনেক বেশি!',
+        'GPU এর <em>নিজস্ব RAM</em> আছে যাকে VRAM বলে — উচ্চ-মানের কার্ডে ২৪ GB VRAM থাকতে পারে!',
+        'প্রথম ডেডিকেটেড GPU ছিল <em>NVIDIA GeForce 256</em>, ১৯৯৯ সালে মুক্তিপ্রাপ্ত!',
+        'আধুনিক GPU <em>প্রতি সেকেন্ডে ১০০ ট্রিলিয়নেরও বেশি অপারেশন</em> করতে পারে — টেরাফ্লপ শক্তি!',
+      ],
+      quiz:[
+        {q:'GPU মানে কী?',a:['General Processing Unit','Graphics Processing Unit','Game Power Unit','Global Print Utility'],correct:1,explain:'GPU মানে Graphics Processing Unit — এটি তোমার স্ক্রিনে যত ভিজ্যুয়াল আউটপুট দেখো তা পরিচালনা করে!'},
+        {q:'GPU প্রধানত কীসের জন্য দায়ী?',a:['শব্দ বাজানো','স্ক্রিনে ছবি আঁকা','ফাইল সংরক্ষণ','ইন্টারনেট সংযোগ'],correct:1,explain:'GPU সব গ্রাফিক্স তৈরির জন্য দায়ী — তোমার স্ক্রিনের প্রতিটি পিক্সেল GPU আঁকে!'},
+        {q:'কম্পিউটারে GPU না থাকলে কী হবে?',a:['নিখুঁতভাবে কাজ করবে','গেম খেলতে বা HD ভিডিও দেখতে পারবে না','দ্রুত চলবে','কম বিদ্যুৎ ব্যবহার করবে'],correct:1,explain:'GPU ছাড়া CPU গ্রাফিক্স প্রদর্শনে সংগ্রাম করবে — কোনো ভিডিও গেম নেই, কোনো HD ভিডিও নেই!'},
+        {q:'GPU কোন আধুনিক প্রযুক্তিতেও ব্যবহৃত হয়?',a:['ফোন কল করতে','AI এবং মেশিন লার্নিং','নথি প্রিন্ট করতে','সঙ্গীত বাজাতে'],correct:1,explain:'GPU সমান্তরাল প্রক্রিয়াকরণে চমৎকার, তাই AI মডেল প্রশিক্ষণ ও মেশিন লার্নিংয়ের জন্য নিখুঁত!'},
+        {q:'VRAM কী?',a:['Very Rapid Access Memory','ভিডিও RAM — GPU এর নিজস্ব মেমোরি','Vertical RAM','Virtual RAM'],correct:1,explain:'VRAM (ভিডিও RAM) হলো GPU তে তৈরি ডেডিকেটেড মেমোরি — এটি টেক্সচার, ফ্রেম বাফার এবং গ্রাফিক্স ডেটা সংরক্ষণ করে!'},
+        {q:'একটি শক্তিশালী GPU তে কতটি কোর থাকতে পারে?',a:['প্রায় ৮টি','প্রায় ৬৪টি','১৬,০০০টি পর্যন্ত','ঠিক ৪টি'],correct:2,explain:'CPU তে ৮-৬৪ কোর থাকে, কিন্তু NVIDIA H100 এর মতো শক্তিশালী GPU তে ১৬,০০০ এর বেশি কোর থাকে!'},
+        {q:'প্রথম ডেডিকেটেড GPU কোন সালে মুক্তি পেয়েছিল?',a:['১৯৮৫','১৯৯৯','২০০৫','২০১০'],correct:1,explain:'NVIDIA GeForce 256, ১৯৯৯ সালে মুক্তিপ্রাপ্ত, প্রথম ডেডিকেটেড GPU হিসেবে বিবেচিত। এটি গেমে 3D গ্রাফিক্সে বিপ্লব এনেছিল!'},
+        {q:'গেমিংয়ে GPU প্রতি সেকেন্ডে ১৪৪ বার কী করে?',a:['গেম ডেটা সেভ করে','স্ক্রিনে একটি সম্পূর্ণ ছবি আঁকে','ইন্টারনেটে সংযোগ করে','গেম ফিজিক্স চালায়'],correct:1,explain:'১৪৪Hz এ GPU প্রতি সেকেন্ডে ১৪৪টি সম্পূর্ণ স্ক্রিন ছবি আঁকে — এটি আন্দোলনকে অবিশ্বাস্যভাবে মসৃণ দেখায়!'},
+        {q:'সবচেয়ে জনপ্রিয় গেমিং GPU কোন কোম্পানি তৈরি করে?',a:['Intel','Samsung','NVIDIA এবং AMD','Apple'],correct:2,explain:'NVIDIA (GeForce সিরিজ) এবং AMD (Radeon সিরিজ) গেমিং কম্পিউটারের দুটি প্রধান GPU প্রস্তুতকারক!'},
+        {q:'GPU পারফরম্যান্স কোন একক দিয়ে মাপা হয়?',a:['GHz','টেরাফ্লপস (TFLOPS)','মেগাপিক্সেল','ওয়াট'],correct:1,explain:'GPU পারফরম্যান্স TFLOPS (টেরাফ্লপস) এ মাপা হয় — প্রতি সেকেন্ডে ট্রিলিয়ন ফ্লোটিং-পয়েন্ট অপারেশন!'},
+      ],
+    },
+  },
+  {
+    id:'hdd', ico:'💿', art:'💿',
+    badge:'📦', badgeColor:'#FFB300',
+    en:{
+      name:'Storage', full:'Hard Drive / SSD',
+      tagline:'The Giant Memory Vault',
+      analogy:{ico:'🗄️',text:'Storage is like a <em>giant filing cabinet</em> — it keeps ALL your files, photos, games and programs safe forever, even when the computer is completely turned off!'},
+      sizeBadge:'📦 A 1TB drive holds about 250,000 photos!',
+      facts:[
+        'Unlike RAM, storage <em>keeps your data forever</em> — even without any power at all!',
+        'SSDs (Solid State Drives) have <em>no moving parts</em> — they\'re much faster and quieter than spinning hard drives!',
+        'A traditional hard drive spinning disk can rotate at <em>7,200 RPM</em> — 120 times every single second!',
+        'Modern SSDs can be as small as a <em>postage stamp</em> but hold terabytes of data — amazing miniaturization!',
+        'SSDs are up to <em>10x faster</em> than traditional hard drives at reading and writing data!',
+        'The world\'s largest hard drive can store <em>100 Terabytes</em> — that\'s 100 million megabytes!',
+        'Hard drives were invented in <em>1956 by IBM</em> — the first one weighed over 1 ton and held just 5 MB!',
+      ],
+      quiz:[
+        {q:'Which of these stores data permanently (even when power is off)?',a:['RAM','CPU Cache','Hard Drive / SSD','Display Card'],correct:2,explain:'Hard drives and SSDs store data permanently! Your files stay safe even after turning off the computer.'},
+        {q:'What makes an SSD better than a traditional Hard Drive?',a:['Cheaper','Faster and quieter with no moving parts','Holds less data','Uses more electricity'],correct:1,explain:'SSDs have no moving parts — they are much faster and quieter than traditional spinning hard drives!'},
+        {q:'Storage is like which everyday object?',a:['A school desk','A window','A giant filing cabinet','A doorbell'],correct:2,explain:'Storage is like a filing cabinet — it keeps all your important files and data organized and safe for long-term!'},
+        {q:'How fast can a traditional hard drive spin?',a:['10 times per minute','100 RPM','7,200 RPM','1 time per second'],correct:2,explain:'Traditional hard drives spin at 7,200 RPM (rotations per minute) — incredibly fast spinning platters!'},
+        {q:'How much faster is an SSD compared to a traditional hard drive?',a:['Same speed','Twice as fast','Up to 10 times faster','100 times faster'],correct:2,explain:'SSDs are up to 10x faster than traditional hard drives because they have no mechanical parts to slow them down!'},
+        {q:'When were hard drives invented?',a:['1940','1956','1970','1985'],correct:1,explain:'IBM invented the hard drive in 1956. The first model, called RAMAC 305, weighed over 1 ton and held just 5 MB!'},
+        {q:'What is the measurement unit for large storage?',a:['Megahertz','Terabytes (TB)','Watts','Pixels'],correct:1,explain:'Storage is measured in Terabytes (TB). 1 TB = 1,000 GB = 1 trillion bytes. That\'s about 250,000 photos!'},
+        {q:'What does SSD stand for?',a:['Super Speed Drive','Solid State Drive','Storage System Device','System Software Disk'],correct:1,explain:'SSD stands for Solid State Drive — "solid state" means no moving mechanical parts, making it fast and durable!'},
+        {q:'A modern M.2 SSD is approximately how big?',a:['Size of a book','Size of a pizza','Size of a stick of gum','Size of a car battery'],correct:2,explain:'Modern M.2 SSDs are about 8cm long — the size of a stick of gum or a postage stamp! Yet they hold terabytes of data!'},
+        {q:'What is the world\'s largest hard drive capacity?',a:['10 TB','50 TB','100 TB','500 GB'],correct:2,explain:'As of 2024, enterprise hard drives can store up to 100 Terabytes — that\'s 100 million megabytes of data!'},
+      ],
+    },
+    bn:{
+      name:'স্টোরেজ', full:'হার্ড ড্রাইভ / SSD',
+      tagline:'বিশাল মেমোরি ভল্ট',
+      analogy:{ico:'🗄️',text:'স্টোরেজ হলো একটি <em>বিশাল ফাইলিং ক্যাবিনেটের মতো</em> — এটি তোমার সব ফাইল, ছবি, গেম এবং প্রোগ্রাম চিরকালের জন্য নিরাপদ রাখে, কম্পিউটার সম্পূর্ণ বন্ধ থাকলেও!'},
+      sizeBadge:'📦 ১TB ড্রাইভে প্রায় ২,৫০,০০০ ছবি রাখা যায়!',
+      facts:[
+        'র‍্যামের মতো নয়, স্টোরেজ <em>তোমার ডেটা চিরকাল রাখে</em> — কোনো বিদ্যুৎ ছাড়াও!',
+        'SSD তে <em>কোনো চলন্ত যন্ত্রাংশ নেই</em> — স্পিনিং হার্ড ড্রাইভের চেয়ে অনেক দ্রুত ও শান্ত!',
+        'ঐতিহ্যবাহী হার্ড ড্রাইভ <em>মিনিটে ৭,২০০ RPM</em> এ ঘুরতে পারে — প্রতি সেকেন্ডে ১২০ বার!',
+        'আধুনিক SSD <em>ডাকটিকিটের মতো ছোট</em> কিন্তু টেরাবাইট ডেটা ধারণ করে — অবিশ্বাস্য ক্ষুদ্রকরণ!',
+        'SSD ডেটা পড়া ও লেখায় ঐতিহ্যবাহী হার্ড ড্রাইভের চেয়ে <em>১০ গুণ পর্যন্ত দ্রুত</em>!',
+        'বিশ্বের বৃহত্তম হার্ড ড্রাইভে <em>১০০ টেরাবাইট</em> রাখা যায় — ১০ কোটি মেগাবাইট!',
+        'হার্ড ড্রাইভ <em>১৯৫৬ সালে IBM আবিষ্কার করে</em> — প্রথমটির ওজন ১ টনেরও বেশি ছিল এবং মাত্র ৫ MB ধারণ করত!',
+      ],
+      quiz:[
+        {q:'এগুলির মধ্যে কোনটি স্থায়ীভাবে ডেটা সংরক্ষণ করে (বিদ্যুৎ বন্ধ হলেও)?',a:['RAM','CPU Cache','হার্ড ড্রাইভ / SSD','ডিসপ্লে কার্ড'],correct:2,explain:'হার্ড ড্রাইভ ও SSD স্থায়ীভাবে ডেটা সংরক্ষণ করে! কম্পিউটার বন্ধ করার পরেও তোমার ফাইল নিরাপদ!'},
+        {q:'SSD ঐতিহ্যবাহী হার্ড ড্রাইভের চেয়ে কীসে ভালো?',a:['সস্তা','দ্রুততর ও শান্ত, কোনো চলন্ত যন্ত্রাংশ নেই','কম ডেটা ধারণ করে','বেশি বিদ্যুৎ ব্যবহার করে'],correct:1,explain:'SSD তে কোনো চলন্ত যন্ত্রাংশ নেই — ঐতিহ্যবাহী স্পিনিং হার্ড ড্রাইভের চেয়ে অনেক দ্রুত ও শান্ত!'},
+        {q:'স্টোরেজ কোন দৈনন্দিন জিনিসের মতো?',a:['স্কুলের ডেস্ক','জানালা','বিশাল ফাইলিং ক্যাবিনেট','দরজার ঘণ্টা'],correct:2,explain:'স্টোরেজ ফাইলিং ক্যাবিনেটের মতো — দীর্ঘমেয়াদে তোমার সব গুরুত্বপূর্ণ ফাইল সংগঠিত ও নিরাপদ রাখে!'},
+        {q:'একটি ঐতিহ্যবাহী হার্ড ড্রাইভ কত দ্রুত ঘুরতে পারে?',a:['মিনিটে ১০ বার','১০০ RPM','৭,২০০ RPM','সেকেন্ডে ১ বার'],correct:2,explain:'ঐতিহ্যবাহী হার্ড ড্রাইভ ৭,২০০ RPM (প্রতি মিনিটে ঘূর্ণন) এ ঘুরতে পারে — অবিশ্বাস্যভাবে দ্রুত ঘোরানো থালা!'},
+        {q:'SSD ঐতিহ্যবাহী হার্ড ড্রাইভের চেয়ে কতটা দ্রুত?',a:['একই গতি','দ্বিগুণ দ্রুত','১০ গুণ পর্যন্ত দ্রুত','১০০ গুণ দ্রুত'],correct:2,explain:'SSD ঐতিহ্যবাহী হার্ড ড্রাইভের চেয়ে ১০ গুণ পর্যন্ত দ্রুত কারণ এতে গতি কমানোর যান্ত্রিক অংশ নেই!'},
+        {q:'হার্ড ড্রাইভ কখন আবিষ্কৃত হয়েছিল?',a:['১৯৪০','১৯৫৬','১৯৭০','১৯৮৫'],correct:1,explain:'IBM ১৯৫৬ সালে হার্ড ড্রাইভ আবিষ্কার করে। প্রথম মডেল RAMAC 305 এর ওজন ছিল ১ টনেরও বেশি এবং মাত্র ৫ MB ধারণ করত!'},
+        {q:'বড় স্টোরেজ পরিমাপের একক কী?',a:['মেগাহার্টজ','টেরাবাইট (TB)','ওয়াট','পিক্সেল'],correct:1,explain:'স্টোরেজ টেরাবাইট (TB) এ মাপা হয়। ১ TB = ১,০০০ GB = ১ ট্রিলিয়ন বাইট। প্রায় ২,৫০,০০০ ছবি!'},
+        {q:'SSD মানে কী?',a:['Super Speed Drive','Solid State Drive','Storage System Device','System Software Disk'],correct:1,explain:'SSD মানে Solid State Drive — "সলিড স্টেট" মানে কোনো চলন্ত যান্ত্রিক অংশ নেই, তাই দ্রুত ও টেকসই!'},
+        {q:'একটি আধুনিক M.2 SSD প্রায় কত বড়?',a:['বইয়ের আকার','পিজ্জার আকার','চুইংগামের স্টিকের আকার','গাড়ির ব্যাটারির আকার'],correct:2,explain:'আধুনিক M.2 SSD প্রায় ৮ সেমি লম্বা — চুইংগাম স্টিক বা ডাকটিকিটের মতো! তবুও টেরাবাইট ডেটা ধারণ করে!'},
+        {q:'বিশ্বের বৃহত্তম হার্ড ড্রাইভের ধারণক্ষমতা কত?',a:['১০ TB','৫০ TB','১০০ TB','৫০০ GB'],correct:2,explain:'২০২৪ সাল পর্যন্ত, এন্টারপ্রাইজ হার্ড ড্রাইভ ১০০ টেরাবাইট পর্যন্ত সংরক্ষণ করতে পারে — ১০ কোটি মেগাবাইট!'},
+      ],
+    },
+  },
+  {
+    id:'motherboard', ico:'🔧', art:'🔧',
+    badge:'🌐', badgeColor:'#00E5A0',
+    en:{
+      name:'Motherboard', full:'Main Circuit Board',
+      tagline:'The City Highway System',
+      analogy:{ico:'🏙️',text:'The motherboard is like a <em>city\'s entire road network</em> — all the roads (circuits) connect every building (component). Without roads, nothing could reach anything — the whole city stops working!'},
+      sizeBadge:'🗺️ The motherboard connects ALL computer parts together!',
+      facts:[
+        'The motherboard has tiny <em>electrical pathways called traces</em> that carry data between parts at the speed of light!',
+        'Every single component in a computer — CPU, RAM, GPU — plugs into the motherboard. It\'s the <em>central hub</em>!',
+        'Motherboards have a <em>BIOS/UEFI chip</em> that is the very first thing to run when you press the power button!',
+        'Modern motherboards are made with <em>multiple layers of circuits</em> sandwiched together — up to 12 layers!',
+        'The motherboard contains the <em>chipset</em> — a set of chips that manage data traffic between components!',
+        'Modern motherboards have <em>PCIe slots</em> where you can plug in powerful GPUs, SSDs, and other expansion cards!',
+        'The first IBM PC motherboard in 1981 had just <em>62 kilobytes of ROM</em> — modern ones support 128 GB RAM!',
+      ],
+      quiz:[
+        {q:'What is the motherboard\'s main job?',a:['Store your files','Connect all computer parts together','Display graphics','Play sounds'],correct:1,explain:'The motherboard connects ALL components — without it, the CPU, RAM, and other parts couldn\'t communicate!'},
+        {q:'The motherboard is like which real-world system?',a:['A swimming pool','A city\'s road network','A bookshelf','A television set'],correct:1,explain:'Like a city\'s roads connecting every building, the motherboard\'s circuits connect every computer component!'},
+        {q:'What is the BIOS/UEFI chip?',a:['A type of RAM','The first thing that runs when you power on','A cooling device','A storage device'],correct:1,explain:'The BIOS/UEFI chip runs first when you power on — it checks all components are working before loading the OS!'},
+        {q:'What are the tiny electrical pathways on a motherboard called?',a:['Rivers','Traces','Lanes','Tunnels'],correct:1,explain:'Electrical pathways on a motherboard are called "traces" — they carry data signals between CPU, RAM, and other parts!'},
+        {q:'What is the motherboard "chipset"?',a:['A set of decorative chips','Chips that manage data traffic between components','The CPU itself','The cooling system'],correct:1,explain:'The chipset manages the flow of data between the CPU, RAM, storage, and other devices on the motherboard!'},
+        {q:'What are PCIe slots used for?',a:['Plugging in the power cord','Adding GPUs, SSDs and expansion cards','Connecting monitors','Installing the operating system'],correct:1,explain:'PCIe (Peripheral Component Interconnect Express) slots let you add powerful GPUs, fast NVMe SSDs, and other expansion cards!'},
+        {q:'How many layers can a modern motherboard have?',a:['Just 1 layer','2-3 layers','Up to 12 layers','Exactly 4'],correct:2,explain:'Modern motherboards are made of multiple copper circuit layers laminated together — some have up to 12 layers!'},
+        {q:'Where does the CPU sit on the motherboard?',a:['Anywhere convenient','In the RAM slot','In the CPU socket','Behind the board'],correct:2,explain:'The CPU has its own dedicated socket on the motherboard — it\'s a special slot that matches the CPU\'s pin configuration!'},
+        {q:'What powers the motherboard\'s BIOS chip when the computer is off?',a:['Nothing — it turns off too','A tiny CMOS battery','The hard drive','The internet'],correct:1,explain:'A small coin-sized CMOS battery on the motherboard keeps the BIOS settings and clock running even when the power is off!'},
+        {q:'The first IBM PC motherboard (1981) could support how much RAM?',a:['Up to 640 KB','Up to 128 GB','4 MB maximum','Unlimited'],correct:0,explain:'The original 1981 IBM PC motherboard supported a maximum of 640 KB RAM. Modern motherboards can handle 128 GB or more!'},
+      ],
+    },
+    bn:{
+      name:'মাদারবোর্ড', full:'মেইন সার্কিট বোর্ড',
+      tagline:'শহরের হাইওয়ে সিস্টেম',
+      analogy:{ico:'🏙️',text:'মাদারবোর্ড হলো <em>শহরের পুরো রাস্তার নেটওয়ার্কের মতো</em> — সমস্ত রাস্তা (সার্কিট) প্রতিটি ভবনকে (উপাদান) সংযুক্ত করে। রাস্তা ছাড়া কিছুই কোথাও পৌঁছাতে পারত না!'},
+      sizeBadge:'🗺️ মাদারবোর্ড সমস্ত কম্পিউটার যন্ত্রাংশ একসাথে সংযুক্ত করে!',
+      facts:[
+        'মাদারবোর্ডে ছোট <em>বৈদ্যুতিক পথ আছে যাকে ট্রেস বলে</em> যা আলোর গতিতে যন্ত্রাংশের মধ্যে ডেটা বহন করে!',
+        'কম্পিউটারের প্রতিটি উপাদান — CPU, RAM, GPU — মাদারবোর্ডে প্লাগ করে। এটি <em>কেন্দ্রীয় হাব</em>!',
+        'মাদারবোর্ডে একটি <em>BIOS/UEFI চিপ</em> আছে যা পাওয়ার বোতাম চাপলে সবার আগে চালু হয়!',
+        'আধুনিক মাদারবোর্ড <em>একাধিক সার্কিট স্তরে</em> তৈরি — ১২টি পর্যন্ত স্তর একসাথে চাপা!',
+        'মাদারবোর্ডে <em>চিপসেট</em> আছে — উপাদানগুলির মধ্যে ডেটা ট্র্যাফিক পরিচালনা করা চিপের সেট!',
+        'আধুনিক মাদারবোর্ডে <em>PCIe স্লট</em> আছে যেখানে শক্তিশালী GPU, SSD ও অন্যান্য কার্ড যোগ করা যায়!',
+        '১৯৮১ সালের প্রথম IBM PC মাদারবোর্ডে মাত্র <em>৬২ কিলোবাইট ROM</em> ছিল — আধুনিকগুলি ১২৮ GB RAM সমর্থন করে!',
+      ],
+      quiz:[
+        {q:'মাদারবোর্ডের প্রধান কাজ কী?',a:['ফাইল সংরক্ষণ','সমস্ত কম্পিউটার যন্ত্রাংশ সংযুক্ত করা','গ্রাফিক্স প্রদর্শন','শব্দ বাজানো'],correct:1,explain:'মাদারবোর্ড সমস্ত উপাদান সংযুক্ত করে — এছাড়া CPU, RAM ও অন্যান্য যন্ত্রাংশ যোগাযোগ করতে পারত না!'},
+        {q:'মাদারবোর্ড কোন বাস্তব-জগতের সিস্টেমের মতো?',a:['সুইমিং পুল','শহরের রাস্তার নেটওয়ার্ক','বইয়ের তাক','টেলিভিশন সেট'],correct:1,explain:'শহরের রাস্তা প্রতিটি ভবন সংযুক্ত করার মতো, মাদারবোর্ডের সার্কিট প্রতিটি কম্পিউটার উপাদান সংযুক্ত করে!'},
+        {q:'BIOS/UEFI চিপ কী?',a:['এক ধরনের RAM','পাওয়ার অন করলে প্রথমে চালু হয় এমন কিছু','একটি শীতলকারী যন্ত্র','একটি স্টোরেজ ডিভাইস'],correct:1,explain:'BIOS/UEFI চিপ পাওয়ার অন করলে প্রথমে চলে — OS লোড করার আগে সব উপাদান কাজ করছে কিনা পরীক্ষা করে!'},
+        {q:'মাদারবোর্ডের ছোট বৈদ্যুতিক পথগুলিকে কী বলে?',a:['নদী','ট্রেস','লেন','টানেল'],correct:1,explain:'মাদারবোর্ডে বৈদ্যুতিক পথগুলিকে "ট্রেস" বলে — এগুলি CPU, RAM ও অন্যান্য অংশের মধ্যে ডেটা সংকেত বহন করে!'},
+        {q:'মাদারবোর্ড "চিপসেট" কী?',a:['সাজসজ্জার চিপের সেট','উপাদানগুলির মধ্যে ডেটা ট্র্যাফিক পরিচালনাকারী চিপ','CPU নিজেই','কুলিং সিস্টেম'],correct:1,explain:'চিপসেট CPU, RAM, স্টোরেজ ও অন্যান্য ডিভাইসের মধ্যে ডেটার প্রবাহ পরিচালনা করে!'},
+        {q:'PCIe স্লট কীসের জন্য ব্যবহৃত হয়?',a:['পাওয়ার কর্ড লাগাতে','GPU, SSD ও এক্সপ্যানশন কার্ড যোগ করতে','মনিটর সংযোগ করতে','অপারেটিং সিস্টেম ইন্সটল করতে'],correct:1,explain:'PCIe স্লট শক্তিশালী GPU, দ্রুত NVMe SSD ও অন্যান্য এক্সপ্যানশন কার্ড যোগ করার সুবিধা দেয়!'},
+        {q:'একটি আধুনিক মাদারবোর্ডে কতটি স্তর থাকতে পারে?',a:['মাত্র ১টি স্তর','২-৩টি স্তর','১২টি পর্যন্ত স্তর','ঠিক ৪টি'],correct:2,explain:'আধুনিক মাদারবোর্ড একসাথে চাপা একাধিক তামার সার্কিট স্তর দিয়ে তৈরি — কিছুতে ১২টি পর্যন্ত স্তর থাকে!'},
+        {q:'মাদারবোর্ডে CPU কোথায় বসে?',a:['যেকোনো সুবিধাজনক জায়গায়','RAM স্লটে','CPU সকেটে','বোর্ডের পেছনে'],correct:2,explain:'CPU তার মাদারবোর্ডে নিজস্ব ডেডিকেটেড সকেট আছে — এটি CPU এর পিন কনফিগারেশনের সাথে মিলে এমন বিশেষ স্লট!'},
+        {q:'কম্পিউটার বন্ধ থাকলে মাদারবোর্ডের BIOS চিপ কীসে চলে?',a:['কিছুই না — এটাও বন্ধ হয়','একটি ছোট CMOS ব্যাটারি','হার্ড ড্রাইভ','ইন্টারনেট'],correct:1,explain:'মাদারবোর্ডে একটি মুদ্রার আকারের CMOS ব্যাটারি আছে যা বিদ্যুৎ বন্ধ থাকলেও BIOS সেটিংস ও ঘড়ি চালু রাখে!'},
+        {q:'প্রথম IBM PC মাদারবোর্ড (১৯৮১) কতটুকু RAM সমর্থন করতে পারত?',a:['৬৪০ KB পর্যন্ত','১২৮ GB পর্যন্ত','সর্বোচ্চ ৪ MB','সীমাহীন'],correct:0,explain:'মূল ১৯৮১ IBM PC মাদারবোর্ড সর্বোচ্চ ৬৪০ KB RAM সমর্থন করত। আধুনিক মাদারবোর্ড ১২৮ GB বা তার বেশি পরিচালনা করতে পারে!'},
+      ],
+    },
+  },
+  {
+    id:'psu', ico:'⚡', art:'⚡',
+    badge:'🔋', badgeColor:'#FFB300',
+    en:{
+      name:'Power Supply', full:'PSU — Power Supply Unit',
+      tagline:'The Heart that Pumps Energy',
+      analogy:{ico:'❤️',text:'The PSU is like your computer\'s <em>heart</em> — just as your heart pumps blood carrying oxygen to every organ, the PSU pumps electricity to every single component in exactly the right amounts!'},
+      sizeBadge:'⚡ The PSU converts wall power into computer power!',
+      facts:[
+        'The PSU converts <em>AC power</em> (from the wall socket) into <em>DC power</em> that computer parts can safely use!',
+        'Without the PSU, <em>nothing in the computer works at all</em> — it\'s the source of all electrical energy!',
+        'PSUs have a <em>watt rating</em> — a gaming PC might need 750W or more to power its hungry GPU!',
+        'PSUs have built-in <em>protection circuits</em> that stop dangerous power surges from frying your expensive components!',
+        'PSU efficiency is rated with <em>80 PLUS certification</em> — Gold or Platinum rated PSUs waste less energy as heat!',
+        'The PSU converts <em>230V AC from the wall</em> into multiple voltages: 12V, 5V, and 3.3V for different parts!',
+        'Modular PSUs let you <em>remove unused cables</em> — keeping your computer case neat and improving airflow!',
+      ],
+      quiz:[
+        {q:'What does PSU stand for?',a:['Personal Storage Unit','Power Supply Unit','Processing System Unit','Print Server Unit'],correct:1,explain:'PSU means Power Supply Unit — it powers all the components in your computer!'},
+        {q:'What does the PSU convert?',a:['Heat to cold','AC power to DC power','Sound to images','Data to files'],correct:1,explain:'The PSU converts AC (Alternating Current) from the wall socket to DC (Direct Current) that computer parts can use!'},
+        {q:'The PSU is like which part of your body?',a:['Lungs','Brain','Heart','Stomach'],correct:2,explain:'Like your heart pumps blood to every organ, the PSU distributes electrical power to every computer component!'},
+        {q:'What unit measures PSU power output?',a:['Kilograms','Litres','Watts','Metres'],correct:2,explain:'PSU power is measured in Watts. A gaming PC might need a 750W power supply to handle its powerful GPU!'},
+        {q:'What is "80 PLUS" certification for PSUs?',a:['It means the PSU has 80 ports','An efficiency rating — higher rated PSUs waste less energy','It means 80 watt maximum','A brand name'],correct:1,explain:'80 PLUS is an efficiency standard. Gold and Platinum rated PSUs convert more electricity into useful power, wasting less as heat!'},
+        {q:'What voltages does a PSU provide to different computer parts?',a:['Just 230V like the wall','12V, 5V, and 3.3V for different components','Only 5V for everything','100V for everything'],correct:1,explain:'The PSU converts wall power to 12V (for CPU/GPU), 5V (for USB/storage), and 3.3V (for RAM/motherboard logic)!'},
+        {q:'What are PSU "protection circuits" for?',a:['Making the computer faster','Stopping dangerous power surges from damaging components','Playing better audio','Saving energy when gaming'],correct:1,explain:'PSU protection circuits guard against overvoltage, overcurrent, and short circuits — preventing expensive damage!'},
+        {q:'What happens without a PSU?',a:['Computer runs on battery only','Nothing in the computer works at all','Only RAM works','Only the CPU works'],correct:1,explain:'Without the PSU, the computer has no power at all! Every component — CPU, RAM, GPU — needs the PSU\'s electrical supply!'},
+        {q:'What is a "modular PSU"?',a:['A PSU with a built-in fan','A PSU where you can remove unused cables','A very small PSU','A wireless PSU'],correct:1,explain:'Modular PSUs allow you to only connect the cables you actually need, keeping the computer case tidy and improving airflow!'},
+        {q:'The PSU takes power from the wall at approximately:',a:['1.5V (like a battery)','12V (like a car battery)','230V AC (mains electricity)','9V (like a transistor radio)'],correct:2,explain:'The PSU takes standard mains electricity (230V AC in most countries) and converts it down to the low voltages computer parts need!'},
+      ],
+    },
+    bn:{
+      name:'পাওয়ার সাপ্লাই', full:'PSU — পাওয়ার সাপ্লাই ইউনিট',
+      tagline:'শক্তি পাম্প করা হৃদয়',
+      analogy:{ico:'❤️',text:'PSU হলো তোমার কম্পিউটারের <em>হৃদয়ের মতো</em> — যেমন হৃদয় অক্সিজেন বহনকারী রক্ত প্রতিটি অঙ্গে পাম্প করে, PSU ঠিক সঠিক পরিমাণে প্রতিটি উপাদানে বিদ্যুৎ পাম্প করে!'},
+      sizeBadge:'⚡ PSU দেওয়ালের বিদ্যুৎকে কম্পিউটারের বিদ্যুতে রূপান্তরিত করে!',
+      facts:[
+        'PSU দেওয়ালের সকেট থেকে <em>AC বিদ্যুৎ</em>কে কম্পিউটার যন্ত্রাংশ নিরাপদে ব্যবহার করতে পারে এমন <em>DC বিদ্যুতে</em> রূপান্তরিত করে!',
+        'PSU ছাড়া <em>কম্পিউটারে কিছুই কাজ করে না</em> — এটি সমস্ত বৈদ্যুতিক শক্তির উৎস!',
+        'PSU তে <em>ওয়াট রেটিং</em> থাকে — একটি গেমিং PC তে তার ক্ষুধার্ত GPU চালাতে ৭৫০W বা তার বেশি প্রয়োজন হতে পারে!',
+        'PSU তে অন্তর্নির্মিত <em>সুরক্ষা সার্কিট</em> আছে যা বিপজ্জনক বিদ্যুৎ বৃদ্ধি থেকে দামি উপাদান রক্ষা করে!',
+        'PSU দক্ষতা <em>80 PLUS সার্টিফিকেশন</em> দিয়ে রেট করা হয় — গোল্ড বা প্লাটিনাম রেটেড PSU কম শক্তি তাপ হিসেবে নষ্ট করে!',
+        'PSU দেওয়াল থেকে <em>২৩০V AC কে</em> বিভিন্ন ভোল্টেজে রূপান্তরিত করে: বিভিন্ন অংশের জন্য ১২V, ৫V এবং ৩.৩V!',
+        'মডুলার PSU তোমাকে <em>অব্যবহৃত কেবল সরিয়ে রাখতে</em> দেয় — কম্পিউটার কেস পরিপাটি ও বায়ুপ্রবাহ উন্নত রাখে!',
+      ],
+      quiz:[
+        {q:'PSU মানে কী?',a:['Personal Storage Unit','Power Supply Unit','Processing System Unit','Print Server Unit'],correct:1,explain:'PSU মানে Power Supply Unit — এটি তোমার কম্পিউটারের সমস্ত উপাদানে শক্তি সরবরাহ করে!'},
+        {q:'PSU কী রূপান্তরিত করে?',a:['তাপ থেকে ঠান্ডা','AC বিদ্যুৎ থেকে DC বিদ্যুৎ','শব্দ থেকে ছবি','ডেটা থেকে ফাইল'],correct:1,explain:'PSU দেওয়ালের সকেট থেকে AC (পর্যায়ক্রমিক কারেন্ট) কে DC (সরাসরি কারেন্ট) তে রূপান্তরিত করে!'},
+        {q:'PSU তোমার শরীরের কোন অংশের মতো?',a:['ফুসফুস','মস্তিষ্ক','হৃদয়','পেট'],correct:2,explain:'যেমন হৃদয় প্রতিটি অঙ্গে রক্ত পাম্প করে, PSU প্রতিটি কম্পিউটার উপাদানে বৈদ্যুতিক শক্তি বিতরণ করে!'},
+        {q:'PSU শক্তি আউটপুট কোন একক দিয়ে মাপা হয়?',a:['কিলোগ্রাম','লিটার','ওয়াট','মিটার'],correct:2,explain:'PSU শক্তি ওয়াটে মাপা হয়। একটি গেমিং PC তে তার শক্তিশালী GPU চালাতে ৭৫০W পাওয়ার সাপ্লাই প্রয়োজন!'},
+        {q:'PSU এর "80 PLUS" সার্টিফিকেশন কী?',a:['PSU তে ৮০টি পোর্ট আছে মানে','দক্ষতার রেটিং — উচ্চতর রেটেড PSU কম শক্তি নষ্ট করে','সর্বোচ্চ ৮০ ওয়াট মানে','একটি ব্র্যান্ডের নাম'],correct:1,explain:'80 PLUS হলো দক্ষতার মান। গোল্ড ও প্লাটিনাম রেটেড PSU আরও বেশি বিদ্যুৎকে দরকারী শক্তিতে রূপান্তরিত করে!'},
+        {q:'PSU বিভিন্ন কম্পিউটার যন্ত্রাংশে কোন ভোল্টেজ সরবরাহ করে?',a:['দেওয়ালের মতো ২৩০V','বিভিন্ন উপাদানের জন্য ১২V, ৫V এবং ৩.৩V','সব কিছুর জন্য শুধু ৫V','সব কিছুর জন্য ১০০V'],correct:1,explain:'PSU দেওয়ালের বিদ্যুৎকে CPU/GPU এর জন্য ১২V, USB/স্টোরেজের জন্য ৫V, এবং RAM/মাদারবোর্ড লজিকের জন্য ৩.৩V এ রূপান্তরিত করে!'},
+        {q:'PSU "সুরক্ষা সার্কিট" কীসের জন্য?',a:['কম্পিউটার দ্রুততর করতে','বিপজ্জনক বিদ্যুৎ বৃদ্ধি থেকে উপাদান রক্ষা করতে','ভালো অডিও চালাতে','গেমিংয়ে শক্তি সঞ্চয় করতে'],correct:1,explain:'PSU সুরক্ষা সার্কিট অতিরিক্ত ভোল্টেজ, অতিরিক্ত কারেন্ট ও শর্ট সার্কিট থেকে রক্ষা করে — দামি ক্ষতি রোধ করে!'},
+        {q:'PSU ছাড়া কী হবে?',a:['কম্পিউটার শুধু ব্যাটারিতে চলবে','কম্পিউটারে কিছুই কাজ করবে না','শুধু RAM কাজ করবে','শুধু CPU কাজ করবে'],correct:1,explain:'PSU ছাড়া কম্পিউটারে আদৌ কোনো শক্তি নেই! প্রতিটি উপাদান — CPU, RAM, GPU — PSU এর বৈদ্যুতিক সরবরাহ প্রয়োজন!'},
+        {q:'"মডুলার PSU" কী?',a:['একটি ফ্যান সহ PSU','যেখানে অব্যবহৃত কেবল সরানো যায় এমন PSU','একটি অতি ছোট PSU','একটি বেতার PSU'],correct:1,explain:'মডুলার PSU তোমাকে শুধুমাত্র প্রয়োজনীয় কেবল সংযুক্ত করতে দেয়, কম্পিউটার কেস পরিপাটি রাখে ও বায়ুপ্রবাহ উন্নত করে!'},
+        {q:'PSU দেওয়াল থেকে প্রায় কত ভোল্ট নেয়?',a:['১.৫V (ব্যাটারির মতো)','১২V (গাড়ির ব্যাটারির মতো)','২৩০V AC (মেইন বিদ্যুৎ)','৯V (ট্রানজিস্টর রেডিওর মতো)'],correct:2,explain:'PSU স্ট্যান্ডার্ড মেইন বিদ্যুৎ (বেশিরভাগ দেশে ২৩০V AC) নেয় এবং কম্পিউটার যন্ত্রাংশের প্রয়োজনীয় কম ভোল্টেজে রূপান্তরিত করে!'},
+      ],
+    },
+  },
+  {
+    id:'fan', ico:'🌀', art:'🌀',
+    badge:'❄️', badgeColor:'#38BDF8',
+    en:{
+      name:'Cooling Fan', full:'CPU & Case Cooling System',
+      tagline:'The Temperature Guardian',
+      analogy:{ico:'🌬️',text:'The cooling fan is like your computer\'s <em>lungs</em> — it breathes in cool air and breathes out hot air, keeping everything running at a safe temperature, just like your lungs keep your body cool!'},
+      sizeBadge:'💨 CPU fans can spin at over 3,000 RPM!',
+      facts:[
+        'Without cooling, a CPU can reach <em>over 100°C</em> in minutes — hot enough to permanently damage the chip!',
+        'Some high-end gaming computers use <em>liquid cooling systems</em> — water pipes carry heat away more efficiently than fans!',
+        'RGB fans don\'t just look spectacular — they are real fans that <em>actually do cool</em> the components!',
+        'Thermal paste between the CPU and cooler helps <em>conduct heat 50x more efficiently</em> than air alone!',
+        'Large case fans are actually <em>quieter AND more effective</em> than small fans — bigger, slower blades move more air!',
+        'Some extreme computers use <em>liquid nitrogen cooling</em> to reach temperatures below -100°C for record-breaking speeds!',
+        'Modern laptops use <em>heat pipes</em> — sealed copper tubes with liquid inside that transfer heat with no moving parts!',
+      ],
+      quiz:[
+        {q:'What is the main job of a cooling fan?',a:['Make music','Keep components at safe temperature','Store data','Connect to internet'],correct:1,explain:'Cooling fans prevent components from overheating — without them, the CPU could reach over 100°C and get permanently damaged!'},
+        {q:'The cooling fan is like which part of your body?',a:['Heart','Eyes','Lungs','Fingers'],correct:2,explain:'Like your lungs circulate air to regulate body temperature, cooling fans circulate air to keep the computer safe!'},
+        {q:'What do high-end computers use instead of regular fans?',a:['Ice blocks','Liquid cooling (water pipes)','Bigger cases','More RAM'],correct:1,explain:'Liquid cooling uses water or special liquid to carry heat away from components — even more effective than air cooling!'},
+        {q:'What can a CPU reach without cooling?',a:['10°C','30°C','Over 100°C','50°C'],correct:2,explain:'Without cooling, CPUs can reach over 100°C — hot enough to permanently damage the chip! Cooling is absolutely essential!'},
+        {q:'What is thermal paste?',a:['Glue for sticking components','A heat-conducting material between CPU and cooler','Food for the computer','A type of RAM'],correct:1,explain:'Thermal paste fills microscopic gaps between the CPU and cooler, conducting heat 50x more efficiently than air gaps alone!'},
+        {q:'Why are large case fans better than small fans?',a:['They look cooler','They spin faster','They move more air at quieter speeds','They use more electricity'],correct:2,explain:'Larger, slower-spinning fans can move more air volume than small fast fans, making them quieter AND more effective!'},
+        {q:'What is liquid nitrogen cooling used for?',a:['Regular daily use','Extreme overclocking to break speed records','Cooling food inside the computer','Normal gaming'],correct:1,explain:'Liquid nitrogen (-196°C) is used by extreme overclockers trying to break CPU speed records. It\'s not for everyday use!'},
+        {q:'What are heat pipes used for in laptops?',a:['Connecting to WiFi','Transferring heat away with no moving parts','Playing sound','Charging the battery'],correct:1,explain:'Heat pipes are sealed copper tubes with liquid inside. Heat vaporizes the liquid, travels to the fins, and cools back to liquid — no fan needed for the pipe itself!'},
+        {q:'What happens if you apply too much thermal paste?',a:['Nothing changes','The CPU gets cooler','It can actually insulate and trap heat, making cooling worse','The computer runs faster'],correct:2,explain:'Too much thermal paste can actually make cooling worse! The right amount is a pea-sized dot — thermal paste works in thin layers!'},
+        {q:'RPM in fan speeds stands for:',a:['Really Powerful Motor','Rotations Per Minute','Resistance Per Megahertz','Random Power Measurement'],correct:1,explain:'RPM stands for Rotations Per Minute. A CPU fan might spin at 1,000-3,000+ RPM. Higher RPM generally means more airflow but also more noise!'},
+      ],
+    },
+    bn:{
+      name:'কুলিং ফ্যান', full:'CPU ও কেস কুলিং সিস্টেম',
+      tagline:'তাপমাত্রা রক্ষাকারী',
+      analogy:{ico:'🌬️',text:'কুলিং ফ্যান হলো তোমার কম্পিউটারের <em>ফুসফুসের মতো</em> — এটি ঠান্ডা বায়ু শ্বাস নেয় এবং গরম বায়ু ছাড়ে, ঠিক যেমন তোমার ফুসফুস শরীরকে ঠান্ডা রাখে!'},
+      sizeBadge:'💨 CPU ফ্যান ৩,০০০ RPM এর বেশি ঘুরতে পারে!',
+      facts:[
+        'শীতলকরণ ছাড়া, CPU মিনিটের মধ্যে <em>১০০°C এর বেশি</em> হতে পারে — চিপ স্থায়ীভাবে ক্ষতিগ্রস্ত হওয়ার জন্য যথেষ্ট!',
+        'কিছু উচ্চ-মানের গেমিং কম্পিউটারে <em>তরল শীতলকরণ সিস্টেম</em> ব্যবহার হয় — পানির পাইপ ফ্যানের চেয়ে দক্ষতার সাথে তাপ দূরে বহন করে!',
+        'RGB ফ্যান শুধু দেখতে চমৎকার নয় — এগুলি আসল ফ্যান যা <em>সত্যিই উপাদান ঠান্ডা রাখে</em>!',
+        'CPU ও কুলারের মধ্যে তাপীয় পেস্ট শুধু বাতাসের চেয়ে <em>৫০ গুণ বেশি দক্ষতায়</em> তাপ পরিচালনা করতে সাহায্য করে!',
+        'বড় কেস ফ্যান আসলে ছোট ফ্যানের চেয়ে <em>শান্ত এবং বেশি কার্যকর</em> — বড় ধীর ব্লেড বেশি বায়ু সরায়!',
+        'কিছু চরম কম্পিউটারে <em>তরল নাইট্রোজেন কুলিং</em> ব্যবহার হয় রেকর্ড-ভাঙা গতির জন্য -১০০°C এর নিচে তাপমাত্রায়!',
+        'আধুনিক ল্যাপটপে <em>হিট পাইপ</em> ব্যবহার হয় — ভেতরে তরল সহ সিল করা তামার নল কোনো চলন্ত অংশ ছাড়াই তাপ স্থানান্তর করে!',
+      ],
+      quiz:[
+        {q:'কুলিং ফ্যানের প্রধান কাজ কী?',a:['সঙ্গীত তৈরি করা','উপাদানগুলিকে নিরাপদ তাপমাত্রায় রাখা','ডেটা সংরক্ষণ','ইন্টারনেট সংযোগ'],correct:1,explain:'কুলিং ফ্যান উপাদানগুলিকে অতিরিক্ত গরম হওয়া থেকে বাধা দেয় — এছাড়া CPU ১০০°C এর বেশি হতে পারে এবং স্থায়ীভাবে ক্ষতিগ্রস্ত হতে পারে!'},
+        {q:'কুলিং ফ্যান তোমার শরীরের কোন অংশের মতো?',a:['হৃদয়','চোখ','ফুসফুস','আঙুল'],correct:2,explain:'যেমন তোমার ফুসফুস শ্বাস-প্রশ্বাস দিয়ে শরীরের তাপমাত্রা নিয়ন্ত্রণ করে, কুলিং ফ্যান বায়ু সঞ্চালন করে কম্পিউটারকে নিরাপদ রাখে!'},
+        {q:'উচ্চ-মানের কম্পিউটার সাধারণ ফ্যানের পরিবর্তে কী ব্যবহার করে?',a:['বরফের টুকরো','তরল শীতলকরণ (পানির পাইপ)','বড় কেস','বেশি RAM'],correct:1,explain:'তরল শীতলকরণ উপাদান থেকে তাপ দূরে বহন করতে পানি বা বিশেষ তরল ব্যবহার করে — বায়ু শীতলকরণের চেয়েও বেশি কার্যকর!'},
+        {q:'শীতলকরণ ছাড়া CPU কত তাপমাত্রায় পৌঁছাতে পারে?',a:['১০°C','৩০°C','১০০°C এর বেশি','৫০°C'],correct:2,explain:'শীতলকরণ ছাড়া CPU ১০০°C এর বেশি হতে পারে — চিপ স্থায়ীভাবে ক্ষতিগ্রস্ত করার জন্য যথেষ্ট! শীতলকরণ একেবারেই অপরিহার্য!'},
+        {q:'তাপীয় পেস্ট কী?',a:['উপাদান আঠা লাগানোর আঠা','CPU ও কুলারের মধ্যে তাপ-পরিবাহী উপাদান','কম্পিউটারের খাবার','এক ধরনের RAM'],correct:1,explain:'তাপীয় পেস্ট CPU ও কুলারের মধ্যে অণুবীক্ষণিক ফাঁক পূরণ করে, একা বায়ুর চেয়ে ৫০ গুণ বেশি দক্ষতায় তাপ পরিচালনা করে!'},
+        {q:'বড় কেস ফ্যান ছোট ফ্যানের চেয়ে কেন ভালো?',a:['দেখতে ভালো লাগে','দ্রুত ঘোরে','শান্ত গতিতে বেশি বায়ু সরায়','বেশি বিদ্যুৎ ব্যবহার করে'],correct:2,explain:'বড়, ধীরে ঘোরানো ফ্যান ছোট দ্রুত ফ্যানের চেয়ে বেশি বায়ু পরিমাণ সরাতে পারে, তাই শান্ত এবং বেশি কার্যকর!'},
+        {q:'তরল নাইট্রোজেন কুলিং কীসের জন্য ব্যবহৃত হয়?',a:['সাধারণ দৈনন্দিন ব্যবহারের জন্য','গতির রেকর্ড ভাঙতে চরম ওভারক্লকিংয়ের জন্য','কম্পিউটারের ভেতরে খাবার ঠান্ডা করতে','স্বাভাবিক গেমিংয়ের জন্য'],correct:1,explain:'তরল নাইট্রোজেন (-১৯৬°C) চরম ওভারক্লকারদের দ্বারা CPU গতির রেকর্ড ভাঙতে ব্যবহৃত হয়। এটি দৈনন্দিন ব্যবহারের জন্য নয়!'},
+        {q:'ল্যাপটপে হিট পাইপ কীসের জন্য ব্যবহৃত হয়?',a:['WiFi সংযোগ করতে','কোনো চলন্ত অংশ ছাড়াই তাপ দূরে স্থানান্তর করতে','শব্দ বাজাতে','ব্যাটারি চার্জ করতে'],correct:1,explain:'হিট পাইপ হলো ভেতরে তরল সহ সিল করা তামার নল। তাপ তরলকে বাষ্পীভূত করে, ফিনে ভ্রমণ করে এবং আবার তরলে ঠান্ডা হয়!'},
+        {q:'অতিরিক্ত তাপীয় পেস্ট লাগালে কী হয়?',a:['কিছু পরিবর্তন হয় না','CPU আরও ঠান্ডা হয়','আসলে তাপ আটকে শীতলকরণ আরও খারাপ হতে পারে','কম্পিউটার দ্রুত চলে'],correct:2,explain:'অতিরিক্ত তাপীয় পেস্ট আসলে শীতলকরণ আরও খারাপ করতে পারে! মটরশুটির আকারের ডট যথেষ্ট — তাপীয় পেস্ট পাতলা স্তরে কাজ করে!'},
+        {q:'ফ্যান গতিতে RPM মানে কী?',a:['Really Powerful Motor','Rotations Per Minute (প্রতি মিনিটে ঘূর্ণন)','Resistance Per Megahertz','Random Power Measurement'],correct:1,explain:'RPM মানে Rotations Per Minute (প্রতি মিনিটে ঘূর্ণন)। CPU ফ্যান ১,০০০-৩,০০০+ RPM এ ঘুরতে পারে। বেশি RPM মানে সাধারণত বেশি বায়ুপ্রবাহ কিন্তু বেশি গোলমাল!'},
+      ],
+    },
+  },
+  {
+    id:'keyboard', ico:'⌨️', art:'⌨️',
+    badge:'🎹', badgeColor:'#FF6B9D',
+    en:{
+      name:'Keyboard', full:'Input Device — Keyboard',
+      tagline:'Your Voice to the Computer',
+      analogy:{ico:'🗣️',text:'The keyboard is like your <em>voice to the computer</em> — every key you press is a letter, number, or command sent directly to the computer. It\'s the primary way YOU talk to the machine!'},
+      sizeBadge:'⌨️ A standard full-size keyboard has exactly 104 keys!',
+      facts:[
+        'The keyboard layout is called <em>QWERTY</em> — named after the first 6 letters on the top-left row!',
+        'QWERTY was designed in the <em>1860s for typewriters</em> — originally to prevent typewriter jams, not for speed!',
+        'Some keyboards can register up to <em>N-key rollover</em> — meaning ALL keys pressed simultaneously are detected!',
+        'Mechanical keyboards have <em>individual switches</em> under each key — they last for 50-100 million key presses!',
+        'The fastest typists in the world can type at over <em>200 words per minute</em> — about 17 keystrokes per second!',
+        'There are <em>alternative keyboard layouts</em> like Dvorak and Colemak, designed to be more efficient than QWERTY!',
+        'Keyboards communicate with the computer via <em>USB or Bluetooth</em> — wireless keyboards have batteries inside!',
+      ],
+      quiz:[
+        {q:'What is a keyboard used for?',a:['Display images','Input text and commands into a computer','Store data','Cool the computer'],correct:1,explain:'A keyboard is an input device — you use it to type text, give commands, and interact with your computer!'},
+        {q:'What is the standard keyboard layout called?',a:['ABCDEF','QWERTY','TYPEFAST','KEYROW'],correct:1,explain:'QWERTY is named after the first 6 letters on the top row: Q-W-E-R-T-Y! This layout has been used since the 1860s!'},
+        {q:'How many keys does a standard full-size keyboard have?',a:['52','78','104','256'],correct:2,explain:'A standard full-size keyboard has exactly 104 keys — including letters, numbers, function keys, and special keys!'},
+        {q:'What makes mechanical keyboards special?',a:['They are wireless','Individual switches under each key','They are waterproof','They glow automatically'],correct:1,explain:'Mechanical keyboards have individual physical switches under each key — tactile feedback and they last millions of key presses!'},
+        {q:'What is "N-key rollover" in keyboards?',a:['The key that rolls things','All simultaneously pressed keys are correctly detected','The number of keys that can glow','A wireless feature'],correct:1,explain:'N-key rollover means the keyboard can correctly register ALL keys pressed at the same time — essential for gaming!'},
+        {q:'Why was the QWERTY layout originally designed?',a:['To help people type faster','To prevent typewriter jams','To be easier to learn','To look attractive'],correct:1,explain:'QWERTY was designed in the 1860s to reduce typewriter jams by separating commonly used letter pairs across the keyboard!'},
+        {q:'How fast can the world\'s fastest typists type?',a:['50 WPM','100 WPM','Over 200 WPM','500 WPM'],correct:2,explain:'The world\'s fastest typists can exceed 200 words per minute! Barbara Blackburn held the record at 212 WPM sustained!'},
+        {q:'How long do mechanical keyboard switches last?',a:['About 1,000 presses','About 100,000 presses','50-100 million presses','Exactly 10 million presses'],correct:2,explain:'Mechanical keyboard switches are rated for 50-100 million key presses — that could last decades of daily use!'},
+        {q:'What are Dvorak and Colemak?',a:['Types of RAM','Alternative keyboard layouts designed for efficiency','Gaming keyboard brands','Types of mechanical switches'],correct:1,explain:'Dvorak (1936) and Colemak (2006) are alternative keyboard layouts designed to be more ergonomic and efficient than QWERTY!'},
+        {q:'How does a wireless keyboard connect to the computer?',a:['By magic','Through a wire','Via Bluetooth or a USB receiver','Through WiFi router'],correct:2,explain:'Wireless keyboards connect via Bluetooth or a small USB dongle receiver. They have batteries inside to power the wireless transmission!'},
+      ],
+    },
+    bn:{
+      name:'কীবোর্ড', full:'ইনপুট ডিভাইস — কীবোর্ড',
+      tagline:'কম্পিউটারে তোমার কণ্ঠস্বর',
+      analogy:{ico:'🗣️',text:'কীবোর্ড হলো কম্পিউটারে <em>তোমার কণ্ঠস্বরের মতো</em> — প্রতিটি কী যা তুমি টিপো সেটি সরাসরি কম্পিউটারে পাঠানো একটি অক্ষর, সংখ্যা বা আদেশ। এটি তুমি মেশিনের সাথে কথা বলার প্রাথমিক উপায়!'},
+      sizeBadge:'⌨️ একটি স্ট্যান্ডার্ড ফুল-সাইজ কীবোর্ডে ঠিক ১০৪টি কী থাকে!',
+      facts:[
+        'কীবোর্ড লেআউটকে <em>QWERTY</em> বলা হয় — শীর্ষ-বাম সারির প্রথম ৬টি অক্ষরের নামে!',
+        'QWERTY <em>১৮৬০ এর দশকে টাইপরাইটারের জন্য</em> ডিজাইন করা হয়েছিল — মূলত টাইপরাইটার জ্যাম প্রতিরোধ করতে!',
+        'কিছু কীবোর্ড <em>N-কী রোলওভার</em> পর্যন্ত শনাক্ত করতে পারে — একসাথে চাপা সব কী শনাক্ত হয়!',
+        'মেকানিক্যাল কীবোর্ডে প্রতিটি কীর নিচে <em>পৃথক সুইচ</em> থাকে — ৫-১০ কোটি কী টিপ পর্যন্ত স্থায়ী হয়!',
+        'বিশ্বের দ্রুততম টাইপিস্টরা <em>মিনিটে ২০০ শব্দের বেশি</em> টাইপ করতে পারেন — প্রতি সেকেন্ডে প্রায় ১৭ কী!',
+        '<em>Dvorak ও Colemak</em> এর মতো বিকল্প কীবোর্ড লেআউট আছে, যা QWERTY এর চেয়ে বেশি দক্ষ হওয়ার জন্য ডিজাইন করা!',
+        'কীবোর্ড <em>USB বা Bluetooth</em> এর মাধ্যমে কম্পিউটারের সাথে যোগাযোগ করে — বেতার কীবোর্ডে ভেতরে ব্যাটারি থাকে!',
+      ],
+      quiz:[
+        {q:'কীবোর্ড কীসের জন্য ব্যবহৃত হয়?',a:['ছবি প্রদর্শন','কম্পিউটারে টেক্সট ও কমান্ড ইনপুট','ডেটা সংরক্ষণ','কম্পিউটার ঠান্ডা করা'],correct:1,explain:'কীবোর্ড একটি ইনপুট ডিভাইস — তুমি এটি দিয়ে টেক্সট টাইপ করো, কমান্ড দাও এবং কম্পিউটারের সাথে ইন্টারঅ্যাক্ট করো!'},
+        {q:'স্ট্যান্ডার্ড কীবোর্ড লেআউটকে কী বলা হয়?',a:['ABCDEF','QWERTY','TYPEFAST','KEYROW'],correct:1,explain:'QWERTY শীর্ষ সারির প্রথম ৬টি অক্ষর থেকে নামকরণ! এই লেআউট ১৮৬০ এর দশক থেকে ব্যবহৃত হচ্ছে!'},
+        {q:'একটি স্ট্যান্ডার্ড ফুল-সাইজ কীবোর্ডে কতটি কী আছে?',a:['৫২','৭৮','১০৪','২৫৬'],correct:2,explain:'স্ট্যান্ডার্ড ফুল-সাইজ কীবোর্ডে ঠিক ১০৪টি কী থাকে — অক্ষর, সংখ্যা, ফাংশন কী এবং বিশেষ কী সহ!'},
+        {q:'মেকানিক্যাল কীবোর্ড কীসের জন্য বিশেষ?',a:['এগুলি বেতার','প্রতিটি কীর নিচে পৃথক সুইচ','এগুলি জলরোধী','এগুলি স্বয়ংক্রিয়ভাবে জ্বলে'],correct:1,explain:'মেকানিক্যাল কীবোর্ডে প্রতিটি কীর নিচে পৃথক ফিজিক্যাল সুইচ থাকে — স্পর্শকাতর প্রতিক্রিয়া এবং লক্ষ লক্ষ কী টিপ পর্যন্ত স্থায়ী!'},
+        {q:'কীবোর্ডে "N-কী রোলওভার" কী?',a:['যে কী জিনিস রোল করে','একসাথে চাপা সব কী সঠিকভাবে শনাক্ত হয়','কতটি কী জ্বলতে পারে','একটি বেতার বৈশিষ্ট্য'],correct:1,explain:'N-কী রোলওভার মানে কীবোর্ড একসাথে চাপা সব কী সঠিকভাবে নিবন্ধন করতে পারে — গেমিংয়ের জন্য অপরিহার্য!'},
+        {q:'কেন QWERTY লেআউট মূলত ডিজাইন করা হয়েছিল?',a:['মানুষকে দ্রুত টাইপ করতে সাহায্য করতে','টাইপরাইটার জ্যাম প্রতিরোধ করতে','শিখতে সহজ করতে','দেখতে আকর্ষণীয় করতে'],correct:1,explain:'QWERTY ১৮৬০ এর দশকে কীবোর্ড জুড়ে সাধারণত ব্যবহৃত অক্ষর জোড়া আলাদা করে টাইপরাইটার জ্যাম কমাতে ডিজাইন করা হয়েছিল!'},
+        {q:'বিশ্বের দ্রুততম টাইপিস্টরা কত দ্রুত টাইপ করতে পারেন?',a:['৫০ WPM','১০০ WPM','২০০ WPM এর বেশি','৫০০ WPM'],correct:2,explain:'বিশ্বের দ্রুততম টাইপিস্টরা মিনিটে ২০০ শব্দের বেশি করতে পারেন! Barbara Blackburn ধারাবাহিকভাবে ২১২ WPM রেকর্ড রেখেছিলেন!'},
+        {q:'মেকানিক্যাল কীবোর্ড সুইচ কতক্ষণ স্থায়ী হয়?',a:['প্রায় ১,০০০ টিপ','প্রায় ১,০০,০০০ টিপ','৫-১০ কোটি টিপ','ঠিক ১ কোটি টিপ'],correct:2,explain:'মেকানিক্যাল কীবোর্ড সুইচ ৫-১০ কোটি কী টিপ পর্যন্ত রেট করা হয় — প্রতিদিনের ব্যবহারে দশকের পর দশক স্থায়ী হতে পারে!'},
+        {q:'Dvorak ও Colemak কী?',a:['RAM এর ধরন','দক্ষতার জন্য ডিজাইন করা বিকল্প কীবোর্ড লেআউট','গেমিং কীবোর্ড ব্র্যান্ড','মেকানিক্যাল সুইচের ধরন'],correct:1,explain:'Dvorak (১৯৩৬) ও Colemak (২০০৬) হলো বিকল্প কীবোর্ড লেআউট যা QWERTY এর চেয়ে বেশি এরগোনমিক ও দক্ষ হওয়ার জন্য ডিজাইন করা!'},
+        {q:'বেতার কীবোর্ড কম্পিউটারের সাথে কীভাবে সংযুক্ত হয়?',a:['জাদু দিয়ে','একটি তার দিয়ে','Bluetooth বা USB রিসিভার দিয়ে','WiFi রাউটারের মাধ্যমে'],correct:2,explain:'বেতার কীবোর্ড Bluetooth বা একটি ছোট USB ডঙ্গল রিসিভার দিয়ে সংযুক্ত হয়। বেতার ট্রান্সমিশন চালাতে ভেতরে ব্যাটারি থাকে!'},
+      ],
+    },
+  },
+];
+
+
+// ── SAVE / LOAD ──
+var sv;
+(function(){
+  try{sv=JSON.parse(localStorage.getItem('te_v2')||'{}');}catch(e){sv={};}
+  sv.done=sv.done||{};
+  sv.stars=sv.stars||{};
+  sv.totalStars=sv.totalStars||0;
+  sv.streak=sv.streak||0;
+  sv.plays=sv.plays||0;
+  sv.bestAcc=sv.bestAcc||0;
+})();
+function persist(){try{localStorage.setItem('te_v2',JSON.stringify(sv));}catch(e){}}
+
+// ── GAME STATE ──
+var curPart=null, quizIdx=0, quizScore=0, quizQuestions=[];
+
+// ── UTILS ──
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function T(en,bn){return lang==='bn'?bn:en;}
+function toast(msg,cls){
+  var e=document.createElement('div');e.className='toast '+(cls||'tok');
+  e.textContent=msg;document.body.appendChild(e);
+  setTimeout(function(){e.parentNode&&e.parentNode.removeChild(e);},1300);
+}
+function burst(x,y,emojis){
+  emojis.forEach(function(em,i){
+    var p=document.createElement('div');p.className='burst-p';
+    p.textContent=em;p.style.left=x+'px';p.style.top=y+'px';
+    p.style.animationDelay=(.05*i)+'s';
+    document.body.appendChild(p);
+    setTimeout(function(){p.parentNode&&p.parentNode.removeChild(p);},1100);
+  });
+}
+function confetti(){
+  var w=document.getElementById('confLayer');w.innerHTML='';
+  var c=['#00E5A0','#FFB300','#38BDF8','#FF6B9D','#C084FC','#AAFF00'];
+  for(var i=0;i<80;i++){
+    var e=document.createElement('div');e.className='ccp';
+    e.style.cssText='left:'+rnd(0,100)+'vw;background:'+c[i%c.length]+
+      ';width:'+rnd(7,13)+'px;height:'+rnd(7,13)+'px;border-radius:'+(rnd(0,1)?'50%':'3px')+
+      ';animation-duration:'+rnd(1100,2300)+'ms;animation-delay:'+rnd(0,600)+'ms;';
+    w.appendChild(e);
+  }
+  setTimeout(function(){w.innerHTML='';},2800);
+}
+function artClick(){
+  var p=PARTS[curPart];
+  toast(T('🎉 Amazing! That\'s the '+p.en.name+'!','🎉 অসাধারণ! এটাই '+p.bn.name+'!'),'tok');
+  var art=document.getElementById('partArt');
+  art.style.animation='none';void art.offsetHeight;
+  art.style.animation='badgePop .6s cubic-bezier(.34,1.56,.64,1)';
+}
+
+// ── SCREENS ──
+var ALL=['scMenu','scMap','scExplore','scQuiz','scBadge','scTrophy','scDone'];
+function goTo(id){
+  ALL.forEach(function(s){document.getElementById(s).classList.add('off');});
+  document.getElementById(id).classList.remove('off');
+  if(id==='scMenu') refreshMenu();
+  if(id==='scMap') refreshMapPage();
+  if(id==='scTrophy') renderTrophies();
+}
+
+// ── MENU ──
+function refreshMenu(){
+  var bn=lang==='bn';
+  var done=Object.keys(sv.done).length;
+  // Stats
+  document.getElementById('sgExp').textContent=done;
+  document.getElementById('sgStars').textContent=sv.totalStars;
+  document.getElementById('sgBadge').textContent=done;
+  var bestAcc=sv.bestAcc||0;
+  document.getElementById('sgAcc').textContent=bestAcc>0?bestAcc+'%':'-';
+  document.getElementById('totalStars').textContent=sv.totalStars;
+  // Streak banner
+  var streak=sv.streak||0;
+  var fires=document.querySelectorAll('#sbFire .sf');
+  fires.forEach(function(f,i){f.className='sf '+(i<Math.min(streak,5)?'on':'off');});
+  if(streak>=5){
+    document.getElementById('sbTitle').textContent=bn?'🔥 '+streak+' দিনের ধারা!':'🔥 '+streak+' day streak!';
+    document.getElementById('sbSub').textContent=bn?'অবিশ্বাস্য! তুমি একজন টেক মাস্টার!':'Incredible! You\'re a Tech Master!';
+  } else if(streak>0){
+    document.getElementById('sbTitle').textContent=bn?''+streak+' দিনের ধারা চলছে!':''+streak+' day streak going!';
+    document.getElementById('sbSub').textContent=bn?'প্রতিদিন একটি যন্ত্রাংশ অন্বেষণ করো!':'Explore a part every day to keep it going!';
+  } else {
+    document.getElementById('sbTitle').textContent=bn?'তোমার ধারা শুরু করো!':'Start your streak today!';
+    document.getElementById('sbSub').textContent=bn?'প্রতিদিন অন্বেষণ করে ধারা তৈরি করো!':'Explore a part every day to build a streak!';
+  }
+  // Parts preview strip
+  buildPartsStrip();
+  applyLang();
+  // Init hero canvas
+  setTimeout(initHeroCanvas, 80);
+}
+
+function buildPartsStrip(){
+  var bn=lang==='bn';
+  var g=document.getElementById('psGrid');if(!g)return;
+  g.innerHTML='';
+  PARTS.forEach(function(p,i){
+    var done=sv.done[p.id];
+    var stars=sv.stars[p.id]||0;
+    var nm=bn?p.bn.name:p.en.name;
+    var el=document.createElement('div');
+    el.className='ps-item'+(done?' ps-done':'');
+    var starsHtml='';
+    for(var s=0;s<3;s++) starsHtml+=(s<stars?'⭐':'☆');
+    el.innerHTML='<span class="ps-ico">'+p.ico+'</span>'+
+      '<div class="ps-nm">'+nm+'</div>'+
+      '<div class="ps-stars">'+starsHtml+'</div>';
+    (function(idx){el.onclick=function(){openPart(idx);};})(i);
+    g.appendChild(el);
+  });
+  document.getElementById('psLabel').textContent=bn?'🖥️ কম্পিউটার যন্ত্রাংশ — ট্যাপ করে ঢুকে পড়ো!':'🖥️ Computer Parts — tap to jump in!';
+}
+
+/* ── HERO CANVAS ── */
+var heroAnim=null;
+function initHeroCanvas(){
+  var cv=document.getElementById('heroCanvas');
+  if(!cv)return;
+  if(heroAnim){cancelAnimationFrame(heroAnim);}
+  var ctx=cv.getContext('2d');
+  cv.width=cv.offsetWidth*window.devicePixelRatio||cv.offsetWidth;
+  cv.height=cv.offsetHeight*window.devicePixelRatio||cv.offsetHeight;
+  ctx.scale(window.devicePixelRatio||1,window.devicePixelRatio||1);
+  var W=cv.offsetWidth,H=cv.offsetHeight;
+
+  // Floating parts with labels
+  var items=[
+    {ico:'🔬',lbl:'CPU',x:W*.15,y:H*.35,vx:.28,vy:.18,r:0,vr:.008,s:2.2},
+    {ico:'💾',lbl:'RAM',x:W*.55,y:H*.2,vx:-.22,vy:.24,r:.4,vr:-.007,s:1.8},
+    {ico:'🎮',lbl:'GPU',x:W*.8,y:H*.6,vx:-.18,vy:-.2,r:.8,vr:.009,s:2.0},
+    {ico:'💿',lbl:'SSD',x:W*.3,y:H*.75,vx:.25,vy:-.22,r:1.2,vr:-.006,s:1.6},
+    {ico:'🔧',lbl:'MB', x:W*.65,y:H*.78,vx:.2,vy:.18,r:2.0,vr:.007,s:1.7},
+    {ico:'⚡',lbl:'PSU',x:W*.1,y:H*.65,vx:.22,vy:-.25,r:3.0,vr:-.008,s:1.5},
+    {ico:'🌀',lbl:'FAN',x:W*.45,y:H*.5,vx:-.26,vy:.2,r:4.0,vr:.011,s:1.4},
+    {ico:'⌨️',lbl:'KB', x:W*.85,y:H*.25,vx:.18,vy:.22,r:5.0,vr:-.007,s:1.6},
+  ];
+  // Tiny explorer
+  var exp={x:W*.5,y:H*.5,tx:W*.5,ty:H*.5,vx:0,vy:0};
+  var t=0;
+
+  function draw(){
+    heroAnim=requestAnimationFrame(draw);
+    t+=0.016;
+    ctx.clearRect(0,0,W,H);
+
+    // Dark bg with grid
+    ctx.fillStyle='#071A14';
+    ctx.fillRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle='rgba(0,229,160,.04)';
+    ctx.lineWidth=1;
+    for(var gx=0;gx<W;gx+=32){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();}
+    for(var gy=0;gy<H;gy+=32){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+    // Glow center
+    var g2=ctx.createRadialGradient(W/2,H/2,10,W/2,H/2,W*.6);
+    g2.addColorStop(0,'rgba(0,229,160,.07)');g2.addColorStop(1,'rgba(0,229,160,0)');
+    ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
+
+    // Draw circuit lines between items
+    ctx.lineWidth=1;
+    for(var ci=0;ci<items.length-1;ci++){
+      var a=items[ci],b=items[(ci+2)%items.length];
+      var alpha=0.06+0.04*Math.sin(t+ci);
+      ctx.strokeStyle='rgba(0,229,160,'+alpha+')';
+      ctx.beginPath();ctx.moveTo(a.x,a.y);
+      ctx.lineTo((a.x+b.x)/2,a.y);
+      ctx.lineTo(b.x,b.y);ctx.stroke();
+    }
+
+    // Draw and bounce items
+    items.forEach(function(it){
+      it.x+=it.vx;it.y+=it.vy;it.r+=it.vr;
+      if(it.x<20||it.x>W-20)it.vx*=-1;
+      if(it.y<16||it.y>H-16)it.vy*=-1;
+      ctx.save();
+      ctx.translate(it.x,it.y);
+      ctx.rotate(Math.sin(t*.8+it.r)*.12);
+      // Glow
+      ctx.shadowColor='rgba(0,229,160,.5)';ctx.shadowBlur=14;
+      ctx.font=(it.s*14)+'px serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(it.ico,0,0);
+      ctx.shadowBlur=0;
+      // Label
+      ctx.font='bold 9px Nunito,sans-serif';
+      ctx.fillStyle='rgba(0,229,160,.7)';
+      ctx.fillText(it.lbl,0,it.s*10);
+      ctx.restore();
+    });
+
+    // Explorer follows mouse, drifts otherwise
+    var dx=exp.tx-exp.x,dy=exp.ty-exp.y;
+    exp.x+=dx*.04;exp.y+=dy*.04;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1){
+      exp.tx=W*(.2+.6*Math.random());
+      exp.ty=H*(.2+.6*Math.random());
+    }
+    ctx.font='22px serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.shadowColor='rgba(255,179,0,.5)';ctx.shadowBlur=10;
+    ctx.fillText('🧒',exp.x,exp.y);
+    ctx.shadowBlur=0;
+
+    // Title overlay
+    ctx.textAlign='center';
+    ctx.font='bold '+clamp(W*.045,14,22)+'px Fredoka One,cursive';
+    ctx.fillStyle='rgba(0,229,160,.45)';
+    ctx.fillText('TAP A PART TO EXPLORE!',W/2,H*.93);
+  }
+  draw();
+}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+function heroClick(){
+  var items=document.querySelectorAll('.ps-item');
+  if(items.length>0){
+    var rnd=Math.floor(Math.random()*PARTS.length);
+    openPart(rnd);
+  }
+}
+function applyLang(){
+  var bn=lang==='bn';
+  // Nav
+  document.getElementById('navTitle').innerHTML='🖥️ <span>'+(bn?'টেক এক্সপ্লোরার্স':'Tech Explorers')+'</span>';
+  // Menu stats labels
+  if(document.getElementById('sgExpL')) document.getElementById('sgExpL').textContent=bn?'অন্বেষণ করা':'Explored';
+  if(document.getElementById('sgStarsL')) document.getElementById('sgStarsL').textContent=bn?'তারা':'Stars';
+  if(document.getElementById('sgBadgeL')) document.getElementById('sgBadgeL').textContent=bn?'ব্যাজ':'Badges';
+  if(document.getElementById('sgAccL')) document.getElementById('sgAccL').textContent=bn?'সেরা স্কোর':'Best Score';
+  if(document.getElementById('mt1')) document.getElementById('mt1').textContent=bn?'🔬 তুমি এখানে ক্ষুদ্র!':'🔬 You\'re TINY here!';
+  if(document.getElementById('mt2')) document.getElementById('mt2').textContent=bn?'৮টি যন্ত্রাংশ অন্বেষণ':'8 Parts to Explore';
+  if(document.getElementById('mTitle')) document.getElementById('mTitle').textContent=bn?'টেক এক্সপ্লোরার্স':'Tech Explorers';
+  if(document.getElementById('btnStart')) document.getElementById('btnStart').textContent=bn?'🚀 অ্যাডভেঞ্চার শুরু!':'🚀 Start Adventure!';
+  if(document.getElementById('btnTrophy')) document.getElementById('btnTrophy').textContent=bn?'🏆 ব্যাজ':'🏆 Badges';
+}
+// ── MAP ──
+function refreshMapPage(){
+  var bn=lang==='bn';
+  document.getElementById('mapTitle').textContent=bn?'🖥️ কম্পিউটারের ভেতরে':'🖥️ Inside the Computer';
+  document.getElementById('mapSub').textContent=bn?
+    'একটি যন্ত্রাংশ ট্যাপ করো! সব ৮টি সম্পূর্ণ করে টেক মাস্টার হও! 🎉':
+    'Tap a part to explore! Complete all 8 to become a Tech Master! 🎉';
+  document.getElementById('mapBack').textContent=bn?'← পিছনে':'← Back';
+
+  var bp=document.querySelector('.blueprint');bp.innerHTML='';
+  var totalDone=0;
+  PARTS.forEach(function(p,i){
+    var done=sv.done[p.id];
+    var stars=sv.stars[p.id]||0;
+    if(done)totalDone++;
+    var d=document.createElement('div');
+    d.className='pcard'+(done?' done':'');
+    var starsHtml='';
+    for(var s=0;s<3;s++) starsHtml+='<span style="opacity:'+(s<stars?1:.2)+'">⭐</span>';
+    var nm=bn?p.bn.name:p.en.name;
+    var tag=bn?p.bn.tagline:p.en.tagline;
+    d.innerHTML=
+      '<div class="pcard-glow"></div>'+
+      '<div class="pcard-ico">'+p.ico+'</div>'+
+      '<div class="pcard-n">'+nm+'</div>'+
+      '<div class="pcard-tag">'+tag.substring(0,22)+(tag.length>22?'…':'')+'</div>'+
+      '<div class="pcard-stars">'+starsHtml+'</div>';
+    d.onclick=function(){openPart(i);};
+    bp.appendChild(d);
+  });
+}
+
+// ── EXPLORE ──
+function openPart(idx){
+  curPart=idx;
+  renderExplorePage(idx);
+  goTo('scExplore');
+}
+
+function renderExplorePage(idx){
+  var p=PARTS[idx];
+  var bn=lang==='bn';
+  var d=bn?p.bn:p.en;
+
+  document.getElementById('expBack').textContent=bn?'← মানচিত্র':'← Map';
+  document.getElementById('expTitle').textContent=d.name;
+  document.getElementById('expSub').textContent=d.full;
+  document.getElementById('partArt').textContent=p.art;
+  document.getElementById('partSizeBadge').textContent=d.sizeBadge;
+  document.getElementById('analogyIco').textContent=d.analogy.ico;
+  document.getElementById('analogyLabel').textContent=bn?'মজার উপমা':'FUN ANALOGY';
+  document.getElementById('analogyText').innerHTML=d.analogy.text;
+  document.getElementById('factsTitle').textContent=bn?'💡 মজার তথ্য':'💡 Fun Facts';
+  document.getElementById('btnQuiz').textContent=bn?'🎯 কুইজ দাও!':'🎯 Take the Quiz!';
+  document.getElementById('btnBackMap').textContent=bn?'← মানচিত্রে ফিরুন':'← Back to Map';
+
+  // Facts with animation delays
+  var fl=document.getElementById('factList');fl.innerHTML='';
+  d.facts.forEach(function(f,i){
+    var e=document.createElement('div');e.className='fact-item';
+    e.style.animationDelay=(i*.1)+'s';
+    e.innerHTML='<div class="fact-num">'+(i+1)+'</div>'+
+      '<div class="fact-text">'+f+'</div>';
+    fl.appendChild(e);
+  });
+
+  if(bn){
+    document.getElementById('factList').classList.add('bn');
+    document.getElementById('analogyText').classList.add('bn');
+  }
+}
+
+// ── QUIZ ──
+function startQuiz(){
+  var p=PARTS[curPart];
+  var bn=lang==='bn';
+  var d=bn?p.bn:p.en;
+  quizQuestions=d.quiz.slice();
+  quizIdx=0;quizScore=0;
+  sv.plays++;persist();
+
+  document.getElementById('qPartIco').textContent=p.ico;
+  document.getElementById('qPartName').textContent=d.name+(bn?' কুইজ':' Quiz');
+  document.getElementById('qFeedback').classList.remove('show');
+  document.getElementById('qFeedback').className='quiz-feedback';
+
+  goTo('scQuiz');
+  showQuestion();
+}
+
+function showQuestion(){
+  var q=quizQuestions[quizIdx];
+  var bn=lang==='bn';
+  var total=quizQuestions.length;
+
+  document.getElementById('qCount').textContent=
+    T('Question '+(quizIdx+1)+' of '+total,'প্রশ্ন '+(quizIdx+1)+' / '+total);
+  document.getElementById('qpFill').style.width=((quizIdx/total)*100)+'%';
+  document.getElementById('qText').textContent=q.q;
+  if(bn){document.getElementById('qText').classList.add('bn');}
+  else{document.getElementById('qText').classList.remove('bn');}
+
+  // Reset feedback
+  var fb=document.getElementById('qFeedback');
+  fb.classList.remove('show');
+
+  // Re-trigger card animation
+  var qcard=document.querySelector('.question-card');
+  if(qcard){qcard.style.animation='none';void qcard.offsetHeight;qcard.style.animation='';}
+
+  var al=document.getElementById('answerList');al.innerHTML='';
+  var letters=['A','B','C','D'];
+  q.a.forEach(function(ans,i){
+    var b=document.createElement('button');
+    b.className='ans-btn'+(bn?' bn':'');
+    b.innerHTML='<span class="ans-letter">'+letters[i]+'</span>'+esc(ans);
+    (function(idx,btn){
+      btn.onclick=function(){checkAnswer(idx,btn,q);};
+    })(i,b);
+    al.appendChild(b);
+  });
+}
+
+function checkAnswer(chosen,btn,q){
+  // Disable all buttons immediately
+  var allBtns=document.querySelectorAll('.ans-btn');
+  allBtns.forEach(function(b){b.disabled=true;b.style.pointerEvents='none';});
+
+  var fb=document.getElementById('qFeedback');
+  var fbl=document.getElementById('qfLabel');
+  var fbt=document.getElementById('qfText');
+
+  if(chosen===q.correct){
+    btn.classList.add('correct');
+    quizScore++;
+    fbl.className='qf-label ok';
+    fbl.textContent=T('✅ CORRECT!','✅ সঠিক!');
+    fbt.textContent=q.explain;
+    fbt.className=lang==='bn'?'bn':'';
+    burst(window.innerWidth/2,window.innerHeight*.4,['⭐','🎉','✨','🌟']);
+    toast(T('🎉 Correct!','🎉 সঠিক!'),'tok');
+  } else {
+    btn.classList.add('wrong');
+    if(allBtns[q.correct])allBtns[q.correct].classList.add('correct');
+    fbl.className='qf-label ng';
+    fbl.textContent=T('❌ Not quite!','❌ ঠিক নয়!');
+    fbt.textContent=q.explain;
+    fbt.className=lang==='bn'?'bn':'';
+  }
+  fb.classList.add('show');
+
+  setTimeout(function(){
+    quizIdx++;
+    if(quizIdx<quizQuestions.length){
+      showQuestion();
+    } else {
+      showBadge();
+    }
+  },2000);
+}
+
+// ── BADGE ──
+function showBadge(){
+  var p=PARTS[curPart];
+  var bn=lang==='bn';
+  var d=bn?p.bn:p.en;
+  var total=quizQuestions.length;
+  var stars=quizScore>=total?3:quizScore>=Math.ceil(total*.6)?2:quizScore>=1?1:0;
+  var acc=total>0?Math.round(quizScore/total*100):0;
+
+  // Save progress
+  sv.done[p.id]=true;
+  var prevStars=sv.stars[p.id]||0;
+  if(stars>prevStars){
+    sv.totalStars+=stars-prevStars;
+    sv.stars[p.id]=stars;
+  }
+  sv.streak++;
+  if(acc>sv.bestAcc){sv.bestAcc=acc;}
+  document.getElementById('totalStars').textContent=sv.totalStars;
+  persist();
+
+  // Badge UI
+  document.getElementById('badgeIco').textContent=p.badge;
+  document.getElementById('badgeName').textContent=d.name+(bn?' ব্যাজ!':(stars>=3?' Master!':' Badge!'));
+  document.getElementById('badgeSub').textContent=T('You learned about the '+d.name+'!','তুমি '+d.name+' সম্পর্কে শিখেছ!');
+
+  // Stars animation
+  var starEmojis=['⭐','⭐','⭐'];
+  ['bs1','bs2','bs3'].forEach(function(id,i){
+    var el=document.getElementById(id);
+    el.textContent=i<stars?'⭐':'☆';
+    el.style.opacity=i<stars?1:0.3;
+  });
+
+  document.getElementById('bScore').textContent=quizScore+'/'+total;
+  document.getElementById('bCoins').textContent='+'+sv.totalStars;
+  document.getElementById('bScoreL').textContent=bn?'সঠিক':'Correct';
+  document.getElementById('bCoinsL').textContent=bn?'মোট তারা':'Total Stars';
+
+  // Next button
+  var nextIdx=curPart+1;
+  var nb=document.getElementById('badgeNext');
+  var bm=document.getElementById('badgeMap');
+  bm.textContent=bn?'🗺️ মানচিত্র':'🗺️ Map';
+  if(nextIdx<PARTS.length){
+    nb.textContent=T('Next Part → ','পরবর্তী →')+(bn?PARTS[nextIdx].bn.name:PARTS[nextIdx].en.name);
+    nb.style.display='';
+  } else {
+    nb.textContent=T('🏆 See All Badges!','🏆 সব ব্যাজ দেখো!');
+    nb.onclick=function(){
+      var done=Object.keys(sv.done).length;
+      if(done>=8){confetti();goTo('scDone');}
+      else goTo('scTrophy');
+    };
+  }
+
+  if(stars>=3) confetti();
+  goTo('scBadge');
+}
+
+function nextPart(){
+  var n=curPart+1;
+  if(n<PARTS.length) openPart(n);
+  else{
+    if(Object.keys(sv.done).length>=PARTS.length){confetti();goTo('scDone');}
+    else goTo('scMap');
+  }
+}
+
+// ── TROPHIES ──
+function renderTrophies(){
+  var bn=lang==='bn';
+  document.getElementById('trophyTitle').textContent=bn?'🏆 আমার ব্যাজ সংগ্রহ':'🏆 My Badge Collection';
+  document.getElementById('trophySub').textContent=bn?'কম্পিউটার যন্ত্রাংশ অন্বেষণ করে ব্যাজ অর্জন করো!':
+    'Earn badges by exploring computer parts!';
+  document.getElementById('trophyBack').textContent=bn?'← পিছনে':'← Back';
+  var g=document.getElementById('trophyGrid');g.innerHTML='';
+  PARTS.forEach(function(p){
+    var earned=sv.done[p.id];
+    var stars=sv.stars[p.id]||0;
+    var d=bn?p.bn:p.en;
+    var el=document.createElement('div');el.className='tcard'+(earned?' unlocked':'');
+    el.innerHTML='<span class="tico">'+p.badge+'</span>'+
+      '<div class="tnm">'+d.name+'</div>'+
+      '<div class="tdc">'+(earned?T('Earned! '+(['','⭐','⭐⭐','⭐⭐⭐'][stars]),['','⭐','⭐⭐','⭐⭐⭐'][stars]+' অর্জিত!'):T('Not yet explored','এখনো অন্বেষণ হয়নি'))+'</div>';
+    g.appendChild(el);
+  });
+}
+
+// ── ALL DONE ──
+function renderDone(){
+  var bn=lang==='bn';
+  document.getElementById('adTitle').textContent=bn?'টেক মাস্টার! 🎉':'TECH MASTER! 🎉';
+  document.getElementById('adSub').innerHTML=bn?
+    'তুমি সব ৮টি কম্পিউটার যন্ত্রাংশ অন্বেষণ করেছ!<br/>তুমি একজন সত্যিকারের টেক এক্সপ্লোরার! 🚀':
+    'You explored ALL 8 computer parts!<br/>You\'re a real Tech Explorer! 🚀';
+  document.getElementById('adStars').textContent=sv.totalStars;
+  document.getElementById('adReplay').textContent=bn?'🔁 আবার অন্বেষণ করো':'🔁 Explore Again';
+  document.getElementById('adBadges').textContent=bn?'🏆 আমার ব্যাজ':'🏆 My Badges';
+}
+
+// ── BOOT ──
+goTo('scMenu');
+</script>
+</body>
+</html>

@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🔍 Computer Parts Detective</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Special+Elite&family=Nunito:wght@600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#F5EDD6; --paper2:#EDE0C0; --paper3:#E0D0A8;
+  --amber:#C8860A; --amber2:#E8A020; --amber3:#FFF0C0;
+  --brown:#5C3A1E; --brown2:#8B5E3C;
+  --ink:#1C1008; --red:#C0392B; --red2:#E74C3C;
+  --green:#1E8449; --green2:#27AE60; --blue:#1A5276;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{height:100%;}
+body{
+  font-family:'Nunito',sans-serif;
+  background-color:#2C1A0E;
+  background-image:
+    radial-gradient(ellipse at 0% 0%,rgba(200,134,10,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 100% 100%,rgba(92,58,30,.3) 0%,transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  min-height:100%; user-select:none; -webkit-user-select:none; overflow-x:hidden;
+}
+.bn{font-family:'Hind Siliguri',sans-serif!important;}
+
+/* NAVBAR */
+nav{
+  background:linear-gradient(135deg,#1C1008,#2C1A0E);
+  border-bottom:3px solid var(--amber);
+  padding:0 14px; position:sticky; top:0; z-index:500;
+  box-shadow:0 4px 24px rgba(0,0,0,.5);
+}
+.nav-inner{
+  max-width:960px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  height:58px; gap:8px;
+}
+.back-btn{
+  display:inline-flex; align-items:center; gap:5px;
+  text-decoration:none; font-weight:800; font-size:12px; color:var(--amber2);
+  padding:6px 12px; border-radius:6px;
+  border:1.5px solid rgba(200,134,10,.4); transition:all .2s; flex-shrink:0;
+}
+.back-btn:hover{background:rgba(200,134,10,.15); color:#fff;}
+.nav-brand{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(12px,2.5vw,17px); color:var(--amber2);
+  display:flex; align-items:center; gap:7px;
+  flex:1; justify-content:center; letter-spacing:.03em;
+}
+.nav-right{display:flex; gap:7px; align-items:center; flex-shrink:0;}
+.hpill{
+  display:flex; align-items:center; gap:4px;
+  background:rgba(200,134,10,.12);
+  border:1.5px solid rgba(200,134,10,.35); border-radius:6px;
+  padding:4px 10px; font-weight:900; font-size:13px; color:var(--amber2);
+}
+
+/* LANGUAGE TOGGLE */
+.lang-toggle{
+  display:flex; align-items:center; gap:0;
+  background:rgba(0,0,0,.35);
+  border:2px solid rgba(200,134,10,.5); border-radius:30px;
+  overflow:hidden; flex-shrink:0;
+}
+.lang-btn{
+  padding:5px 12px; font-size:11px; font-weight:900;
+  cursor:pointer; border:none; background:transparent;
+  color:rgba(200,134,10,.6); transition:all .2s;
+  white-space:nowrap; letter-spacing:.3px;
+}
+.lang-btn.active{
+  background:linear-gradient(135deg,var(--amber),var(--amber2));
+  color:var(--ink); border-radius:28px;
+}
+.lang-btn:hover:not(.active){color:var(--amber2);}
+
+/* SCREENS */
+.screen{
+  position:fixed; inset:0; z-index:400;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:20px 16px; text-align:center; overflow-y:auto;
+}
+.screen.off{display:none;}
+#scStart{background:radial-gradient(ellipse at 50% 30%,#3D2008 0%,#1C1008 65%);}
+#scModes,#scClear,#scOver,#scDone,#scSkip{background:rgba(28,16,8,.9);backdrop-filter:blur(4px);}
+
+/* MANILA */
+.manila{
+  background:var(--paper); border:2px solid var(--paper3);
+  border-radius:4px 14px 14px 14px; padding:24px 28px;
+  max-width:600px; width:100%;
+  box-shadow:0 2px 0 var(--paper3),0 22px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.5);
+  position:relative; text-align:center;
+}
+.manila::before{
+  content:''; position:absolute; top:-16px; left:18px;
+  width:55px; height:18px; background:var(--amber2);
+  border-radius:4px 4px 0 0; box-shadow:0 -2px 0 var(--amber);
+}
+.stamp{
+  display:inline-block; font-family:'Special Elite',cursive;
+  font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  padding:3px 12px; border:2.5px solid currentColor; border-radius:3px;
+  transform:rotate(-6deg); opacity:.75; position:absolute;
+}
+.stamp-solved{color:var(--green); top:20px; right:18px; transform:rotate(-12deg);}
+.stamp-case  {color:var(--red);   top:20px; right:18px; transform:rotate(-8deg);}
+.case-icon{
+  font-size:clamp(56px,12vw,80px); display:block; margin-bottom:10px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.3));
+  animation:caseFloat 3s ease-in-out infinite;
+}
+@keyframes caseFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-12px) rotate(2deg);}}
+.case-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4.5vw,2.8rem);color:var(--ink);line-height:1.1;margin-bottom:8px;}
+.case-title .hi{color:var(--amber);}
+.case-title .red{color:var(--red);}
+.case-title .grn{color:var(--green);}
+.case-sub{font-size:.9rem;color:var(--brown2);font-weight:700;line-height:1.75;margin-bottom:22px;}
+.case-sub strong{color:var(--brown);}
+
+/* BUTTONS */
+.btns{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 22px;border-radius:6px;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;
+  text-decoration:none;transition:all .2s;white-space:nowrap;
+}
+.btn-amber{background:linear-gradient(135deg,var(--amber),var(--amber2));color:var(--ink);box-shadow:0 4px 16px rgba(200,134,10,.45),0 -3px 0 rgba(0,0,0,.2) inset;border:2px solid rgba(0,0,0,.1);}
+.btn-amber:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(200,134,10,.5);}
+.btn-red{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 4px 14px rgba(192,57,43,.4),0 -3px 0 rgba(0,0,0,.2) inset;}
+.btn-red:hover{transform:translateY(-3px);}
+.btn-ghost{background:rgba(245,237,214,.1);color:var(--paper2);border:1.5px solid rgba(245,237,214,.2);}
+.btn-ghost:hover{background:rgba(245,237,214,.2);}
+.btn-brown{background:linear-gradient(135deg,var(--brown),var(--brown2));color:var(--paper);box-shadow:0 4px 14px rgba(92,58,30,.4),0 -3px 0 rgba(0,0,0,.2) inset;}
+.btn-brown:hover{transform:translateY(-3px);}
+
+/* CASE CARDS */
+.mode-grid{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:680px;margin-bottom:18px;}
+.case-card{
+  background:var(--paper); border:2px solid var(--paper3);
+  border-radius:4px 10px 10px 10px; padding:14px 12px; width:110px;
+  cursor:pointer; text-align:center; transition:all .22s;
+  box-shadow:0 4px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.4);
+  position:relative;
+}
+.case-card::before{content:'';position:absolute;top:-9px;left:10px;width:32px;height:10px;background:var(--amber2);border-radius:3px 3px 0 0;}
+.case-card:hover{transform:translateY(-5px) rotate(1deg);box-shadow:0 14px 30px rgba(0,0,0,.4);}
+.case-card.locked{opacity:.35;cursor:not-allowed;filter:sepia(.6);}
+.case-card.locked:hover{transform:none;}
+.case-card.solved{border-color:var(--green);}
+.case-card.solved::after{content:'✓';position:absolute;top:6px;right:7px;color:var(--green);font-weight:900;font-size:13px;}
+.cc-num{font-family:'Special Elite',cursive;font-size:8px;color:var(--brown2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.cc-ico{font-size:26px;display:block;margin-bottom:5px;}
+.cc-name{font-family:'Playfair Display',serif;font-size:.75rem;color:var(--ink);line-height:1.2;margin-bottom:4px;}
+.cc-stars{font-size:11px;}
+
+/* STAT BOXES */
+.stat-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0 20px;}
+.sbox{background:var(--paper3);border:2px solid var(--brown2);border-radius:8px;padding:11px 16px;min-width:76px;text-align:center;box-shadow:3px 3px 0 var(--brown2);}
+.sbox-v{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--amber);display:block;line-height:1;margin-bottom:3px;}
+.sbox-l{font-size:9px;font-weight:900;color:var(--brown2);text-transform:uppercase;letter-spacing:1px;}
+
+/* GAME AREA */
+#gameArea{max-width:960px;margin:0 auto;padding:12px 12px 36px;}
+
+/* TOP HUD */
+.ghud{
+  background:linear-gradient(135deg,var(--paper),var(--paper2));
+  border:2px solid var(--brown2);border-radius:10px;
+  padding:9px 14px;margin-bottom:10px;
+  display:grid;grid-template-columns:auto 1fr auto auto auto;
+  align-items:center;gap:9px;
+  box-shadow:4px 4px 0 var(--brown),inset 0 1px 0 rgba(255,255,255,.4);
+}
+.gh-badge{
+  font-family:'Special Elite',cursive;font-size:.8rem;color:var(--paper);
+  background:linear-gradient(135deg,var(--brown),var(--brown2));
+  padding:4px 12px;border-radius:5px;
+  border:1.5px solid rgba(0,0,0,.2);box-shadow:2px 2px 0 rgba(0,0,0,.25);
+  white-space:nowrap;letter-spacing:.5px;
+}
+.gh-prog{display:flex;flex-direction:column;gap:3px;}
+.prog-rail{background:var(--paper3);border:2px solid var(--brown2);border-radius:50px;height:12px;overflow:hidden;}
+.prog-fill{
+  height:100%;border-radius:50px;
+  background:linear-gradient(90deg,var(--amber),var(--amber2),#FFD700);
+  background-size:200% 100%;transition:width .45s cubic-bezier(.34,1.56,.64,1);
+  animation:goldSh 2s linear infinite;
+}
+@keyframes goldSh{0%{background-position:0% 0;}100%{background-position:200% 0;}}
+.prog-lbl{font-size:10px;font-weight:800;color:var(--brown2);text-align:center;}
+.gh-score{font-family:'Playfair Display',serif;font-size:1rem;color:var(--amber);white-space:nowrap;}
+.t-wrap{position:relative;width:44px;height:44px;flex-shrink:0;}
+.tsv{position:absolute;inset:0;transform:rotate(-90deg);}
+.t-bg{fill:none;stroke:var(--paper3);stroke-width:5;}
+.t-arc{fill:none;stroke:var(--amber);stroke-width:5;stroke-linecap:round;stroke-dasharray:125.7;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .4s;}
+.t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.9rem;color:var(--brown);}
+.skip-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--paper3);border:2px solid var(--brown2);border-radius:6px;
+  padding:5px 11px;font-size:11px;font-weight:900;color:var(--brown);cursor:pointer;
+  box-shadow:2px 2px 0 var(--brown2);transition:all .18s;white-space:nowrap;
+}
+.skip-btn:hover{background:var(--amber3);border-color:var(--amber);transform:translate(-1px,-1px);}
+
+/* CLUE BANNER */
+.clue-banner{
+  background:var(--paper);border:2px solid var(--brown2);border-radius:10px;
+  padding:11px 16px;margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:4px 4px 0 var(--brown),inset 0 1px 0 rgba(255,255,255,.5);
+  position:relative;overflow:hidden;animation:banSlide .3s ease;
+}
+@keyframes banSlide{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.clue-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--amber),var(--amber2));}
+.cb-ico{font-size:26px;flex-shrink:0;margin-left:4px;}
+.cb-case{font-family:'Special Elite',cursive;font-size:.65rem;color:var(--amber);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:2px;}
+.cb-head{font-family:'Playfair Display',serif;font-size:1rem;color:var(--ink);display:block;margin-bottom:1px;}
+.cb-sub{font-size:.78rem;font-weight:700;color:var(--brown2);display:block;line-height:1.4;}
+
+/* GAME BOX */
+#gameBox{
+  background:var(--paper);border:2px solid var(--brown2);border-radius:12px;
+  overflow:hidden;box-shadow:6px 6px 0 var(--brown),inset 0 1px 0 rgba(255,255,255,.5);
+  min-height:360px;position:relative;
+}
+#gameBox::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(139,94,60,.07) 27px,rgba(139,94,60,.07) 28px);
+  background-position:0 12px;
+}
+
+/* EVIDENCE MODE */
+.evidence-zone{padding:24px 20px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.evidence-card{
+  background:linear-gradient(145deg,var(--paper2),var(--paper3));
+  border:2px solid var(--brown2);border-radius:8px;
+  padding:22px 28px;text-align:center;
+  box-shadow:4px 4px 0 var(--brown),inset 0 1px 0 rgba(255,255,255,.4);
+  position:relative;min-width:250px;max-width:400px;width:100%;
+}
+.ev-exhibit{position:absolute;top:8px;left:10px;font-family:'Special Elite',cursive;font-size:8px;color:var(--amber);letter-spacing:2px;}
+.ev-icon{font-size:clamp(3.5rem,10vw,5.5rem);display:block;margin-bottom:8px;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.2));animation:evIn .4s cubic-bezier(.34,1.7,.64,1);}
+@keyframes evIn{from{transform:scale(0) rotate(-15deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.ev-clue{font-size:clamp(.82rem,2vw,.95rem);color:var(--brown);line-height:1.65;border-top:1px dashed var(--brown2);padding-top:9px;margin-top:4px;}
+.ev-full{font-family:'Special Elite',cursive;font-size:.7rem;color:var(--amber);letter-spacing:1px;display:block;margin-bottom:4px;}
+
+.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;max-width:420px;}
+.choice{
+  background:var(--paper);border:2.5px solid var(--brown2);border-radius:8px;
+  padding:11px 14px;cursor:pointer;
+  font-size:13px;font-weight:800;color:var(--ink);text-align:center;
+  box-shadow:3px 3px 0 var(--brown2);transition:all .18s;
+  animation:choIn .3s cubic-bezier(.34,1.5,.64,1) both;
+}
+.choice:nth-child(1){animation-delay:.04s;} .choice:nth-child(2){animation-delay:.08s;}
+.choice:nth-child(3){animation-delay:.12s;} .choice:nth-child(4){animation-delay:.16s;}
+@keyframes choIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.choice:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--brown);background:var(--amber3);}
+.choice.correct{background:linear-gradient(135deg,#D5F5E3,#A9DFBF);border-color:var(--green);box-shadow:3px 3px 0 var(--green);color:var(--green);animation:cFlash .4s ease;}
+.choice.wrong  {background:linear-gradient(135deg,#FADBD8,#F1948A);border-color:var(--red);  box-shadow:3px 3px 0 var(--red);  color:var(--red);  animation:cShake .35s ease;}
+.choice.disabled{pointer-events:none;opacity:.55;}
+@keyframes cFlash{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+@keyframes cShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
+
+/* MATCH MODE */
+.match-zone{padding:18px 14px;position:relative;z-index:1;display:flex;gap:14px;}
+.match-col{flex:1;display:flex;flex-direction:column;gap:9px;}
+.match-col-title{font-family:'Special Elite',cursive;font-size:.7rem;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;text-align:center;}
+.match-part{
+  background:var(--paper2);border:2.5px solid var(--brown2);border-radius:8px;
+  padding:10px 12px;cursor:pointer;
+  font-size:12px;font-weight:800;color:var(--ink);
+  box-shadow:3px 3px 0 var(--brown2);transition:all .18s;
+  display:flex;align-items:center;gap:7px;
+}
+.match-part:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--brown);background:var(--amber3);}
+.match-part.selected{border-color:var(--amber);background:var(--amber3);box-shadow:3px 3px 0 var(--amber);transform:translate(-2px,-2px);}
+.match-part.matched{border-color:var(--green);background:linear-gradient(135deg,#D5F5E3,#A9DFBF);box-shadow:3px 3px 0 var(--green);color:var(--green);pointer-events:none;opacity:.8;}
+.match-part.wf{animation:cShake .3s ease;}
+.mp-ico{font-size:18px;flex-shrink:0;}
+.match-func{
+  background:linear-gradient(135deg,var(--paper3),var(--paper2));
+  border:2.5px solid var(--brown2);border-radius:8px;
+  padding:10px 12px;cursor:pointer;
+  font-size:11px;font-weight:700;color:var(--brown);
+  box-shadow:3px 3px 0 var(--brown2);transition:all .18s;line-height:1.4;text-align:center;
+}
+.match-func:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--brown);background:var(--amber3);}
+.match-func.sel-t{border-color:var(--amber);background:var(--amber3);box-shadow:3px 3px 0 var(--amber);}
+.match-func.matched{border-color:var(--green);background:linear-gradient(135deg,#D5F5E3,#A9DFBF);box-shadow:3px 3px 0 var(--green);color:var(--green);pointer-events:none;opacity:.8;}
+.match-func.wt{animation:cShake .3s ease;}
+
+/* LABEL MODE */
+.label-zone{padding:16px 14px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.diagram-wrap{
+  position:relative;
+  background:linear-gradient(145deg,#1A2530,#0D1520);
+  border:3px solid var(--brown);border-radius:12px;
+  padding:20px;width:100%;max-width:520px;
+  box-shadow:inset 0 2px 12px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.3);
+}
+.diagram-wrap::before{content:'CRIME SCENE — COMPUTER DIAGRAM';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:var(--ink);font-family:'Special Elite',cursive;font-size:8px;letter-spacing:2px;padding:2px 10px;border-radius:3px;white-space:nowrap;}
+.diag-drop{
+  position:absolute;min-width:82px;min-height:26px;
+  border:2px dashed rgba(200,134,10,.5);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:rgba(200,134,10,.65);
+  transition:all .2s;background:rgba(200,134,10,.05);
+  font-family:'Special Elite',cursive;letter-spacing:.5px;
+}
+.diag-drop.over{border-color:var(--amber2);background:rgba(200,134,10,.18);color:var(--amber2);}
+.diag-drop.filled{border-color:var(--green);background:rgba(30,132,73,.2);color:var(--green2);border-style:solid;font-size:10px;}
+.diag-drop.wd{animation:cShake .3s ease;}
+
+.label-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:520px;}
+.label-chip{
+  background:var(--paper2);border:2.5px solid var(--brown2);border-radius:50px;
+  padding:6px 14px;cursor:grab;
+  font-size:11px;font-weight:900;color:var(--ink);
+  box-shadow:3px 3px 0 var(--brown2);transition:all .18s;
+  animation:choIn .3s cubic-bezier(.34,1.7,.64,1) both;
+  display:flex;align-items:center;gap:5px;
+}
+.label-chip:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--brown);background:var(--amber3);}
+.label-chip.dragging{opacity:.4;cursor:grabbing;}
+.label-chip.used{display:none;}
+
+/* SPEED QUIZ MODE */
+.speed-zone{padding:24px 20px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.speed-q{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(.95rem,2.5vw,1.3rem);color:var(--ink);
+  text-align:center;max-width:520px;line-height:1.55;
+  padding:14px 18px;
+  background:var(--paper2);border:2px solid var(--brown2);border-radius:8px;
+  box-shadow:3px 3px 0 var(--brown2);
+  animation:evIn .3s cubic-bezier(.34,1.7,.64,1);
+}
+.q-clue-label{font-family:'Special Elite',cursive;font-size:.65rem;color:var(--amber);letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:5px;}
+.speed-choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;max-width:460px;}
+
+/* BOSS MODE */
+.boss-zone{padding:18px 14px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.boss-banner{
+  font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--red);text-align:center;
+  padding:9px 18px;background:linear-gradient(135deg,#FADBD8,var(--paper2));
+  border:2.5px solid var(--red);border-radius:8px;box-shadow:3px 3px 0 var(--red);
+  width:100%;max-width:500px;animation:bossIn .4s cubic-bezier(.34,1.5,.64,1);
+}
+@keyframes bossIn{from{transform:scale(.6) rotate(-3deg);}to{transform:scale(1) rotate(0);}}
+.boss-banner em{display:block;font-size:.72rem;font-family:'Special Elite',cursive;color:var(--brown2);letter-spacing:1px;margin-top:1px;}
+.sort-bins{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%;max-width:620px;}
+.sort-bin{flex:1;min-width:140px;}
+.bin-head{padding:8px 12px;border-radius:7px 7px 0 0;font-family:'Special Elite',cursive;font-size:.75rem;letter-spacing:1.5px;color:#fff;text-align:center;border:2.5px solid rgba(0,0,0,.15);border-bottom:none;}
+.bin-head.ih{background:linear-gradient(135deg,#1A5276,#2980B9);}
+.bin-head.oh{background:linear-gradient(135deg,#5C3A1E,#8B5E3C);}
+.bin-head.sh{background:linear-gradient(135deg,#4A235A,#7D3C98);}
+.bin-head.ph{background:linear-gradient(135deg,#1E8449,#27AE60);}
+.bin-drop{
+  min-height:86px;border:2.5px dashed var(--brown2);border-top:none;border-radius:0 0 8px 8px;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;padding:8px;
+  background:var(--paper3);transition:all .2s;
+}
+.bin-drop.over{border-color:var(--amber2);background:var(--amber3);border-style:solid;}
+.bin-drop.cb  {border-color:var(--green);border-style:solid;background:linear-gradient(135deg,#D5F5E3,#A9DFBF);}
+.bin-drop.wb  {animation:cShake .3s;}
+.placed-part{background:var(--paper);border:2px solid var(--brown2);border-radius:50px;padding:4px 10px;font-size:11px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:4px;animation:choIn .25s cubic-bezier(.34,1.7,.64,1);}
+.bin-ph{font-size:10px;color:#aaa;font-family:'Special Elite',cursive;letter-spacing:1px;}
+.sort-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:580px;}
+.sort-chip{
+  background:var(--paper2);border:2.5px solid var(--brown2);border-radius:50px;
+  padding:8px 16px;cursor:grab;
+  font-size:12px;font-weight:900;color:var(--ink);
+  box-shadow:3px 3px 0 var(--brown2);transition:all .18s;
+  display:flex;align-items:center;gap:6px;
+  animation:choIn .3s cubic-bezier(.34,1.7,.64,1) both;
+}
+.sort-chip:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--brown);background:var(--amber3);}
+.sort-chip.dragging{opacity:.4;cursor:grabbing;}
+
+/* SCORE POP / TOAST / CONFETTI */
+.spop{position:fixed;pointer-events:none;z-index:600;font-family:'Playfair Display',serif;font-size:1.5rem;animation:spA .85s ease forwards;}
+.spop.pos{color:var(--amber2);} .spop.neg{color:var(--red);}
+@keyframes spA{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-65px) scale(1.2);}}
+.toast{
+  position:fixed;top:64px;left:50%;z-index:700;transform:translateX(-50%);pointer-events:none;
+  font-size:.95rem;padding:9px 22px;border-radius:5px;letter-spacing:.3px;
+  border:2.5px solid var(--brown);box-shadow:4px 4px 0 var(--brown);
+  animation:tA .72s ease forwards;white-space:nowrap;max-width:90vw;
+}
+.toast.ok {background:linear-gradient(135deg,#D5F5E3,#A9DFBF);color:var(--green);}
+.toast.bad{background:linear-gradient(135deg,#FADBD8,#F1948A);color:var(--red);}
+.toast.tip{background:var(--amber3);color:var(--brown);}
+@keyframes tA{0%{opacity:0;transform:translateX(-50%) translateY(-16px) scale(.88);}18%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.04);}25%{transform:translateX(-50%) scale(1);}72%{opacity:1;}100%{opacity:0;transform:translateX(-50%) translateY(-8px);}}
+.conf-layer{position:fixed;inset:0;pointer-events:none;z-index:550;overflow:hidden;}
+.cp{position:absolute;top:-18px;animation:cpF linear forwards;}
+@keyframes cpF{0%{transform:translateY(0) rotate(0);}100%{transform:translateY(108vh) rotate(900deg);}}
+
+/* RESPONSIVE */
+@media(max-width:560px){
+  .ghud{grid-template-columns:auto 1fr auto auto;gap:5px;}
+  .gh-badge{font-size:.68rem;padding:3px 9px;}
+  .skip-btn{font-size:10px;padding:4px 9px;}
+  .choices-grid,.speed-choices{grid-template-columns:1fr;}
+  .match-zone{flex-direction:column;}
+  .sort-bins{flex-direction:column;align-items:center;}
+  .sort-bin{min-width:240px;width:100%;}
+  .manila{padding:18px 16px;}
+  .lang-btn{padding:4px 8px;font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="back-btn" href="../index.html">← Hub</a>
+    <div class="nav-brand">🔍 <span id="navTitle">Computer Parts Detective</span></div>
+    <div class="nav-right">
+      <div class="hpill">⭐ <span id="hudSc">0</span></div>
+      <div class="hpill">❤️ <span id="hudLv">3</span></div>
+      <!-- LANGUAGE TOGGLE -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+        <button class="lang-btn"        id="btnBN" onclick="setLang('bn')">বাং</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- GAME AREA -->
+<div id="gameArea">
+  <div class="ghud" id="topHud" style="display:none">
+    <div class="gh-badge" id="ghBadge">CASE 01</div>
+    <div class="gh-prog">
+      <div class="prog-rail"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <div class="prog-lbl" id="progLbl">0 / 0</div>
+    </div>
+    <div class="gh-score">🏅 <span id="ghSc">0</span></div>
+    <div class="t-wrap">
+      <svg class="tsv" width="44" height="44" viewBox="0 0 44 44">
+        <circle class="t-bg" cx="22" cy="22" r="18"/>
+        <circle class="t-arc" id="tArc" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="0"/>
+      </svg>
+      <div class="t-num" id="tNum">30</div>
+    </div>
+    <button class="skip-btn" id="skipBtn" onclick="onSkip()">⏭ Skip</button>
+  </div>
+  <div class="clue-banner" id="clueBanner" style="display:none">
+    <div class="cb-ico" id="cbIco">🔍</div>
+    <div>
+      <span class="cb-case" id="cbCase">CASE FILE 01</span>
+      <span class="cb-head" id="cbHead">Evidence ID</span>
+      <span class="cb-sub"  id="cbSub">Identify the part!</span>
+    </div>
+  </div>
+  <div id="gameBox"></div>
+</div>
+
+<!-- OVERLAYS -->
+<div class="screen" id="scStart">
+  <div class="manila">
+    <div class="stamp stamp-case" id="stampOpen">OPEN</div>
+    <span class="case-icon">🔍</span>
+    <h1 class="case-title" id="startTitle">Computer Parts<br/><span class="hi">Detective</span></h1>
+    <p class="case-sub" id="startSub">A <strong>mystery</strong> unfolds inside every computer...<br/>Identify parts, match clues, label diagrams &amp; crack the case!<br/>Can you become the <strong>Master Detective</strong>? 🕵️</p>
+    <div class="btns">
+      <button class="btn btn-amber" onclick="showCases()" id="btnOpenCases">📁 Open Case Files</button>
+      <a href="../index.html" class="btn btn-ghost" id="btnHub">← Hub</a>
+    </div>
+  </div>
+</div>
+
+<div class="screen off" id="scModes">
+  <div class="manila" style="max-width:680px;">
+    <span style="font-size:30px;display:block;margin-bottom:7px;">📁</span>
+    <h1 class="case-title" style="font-size:1.7rem;" id="modesTitle">Choose Your <span class="hi">Case</span></h1>
+    <p class="case-sub" style="margin-bottom:16px;" id="modesSub">Each case teaches computer parts in a different way. Solve all 5 to become a Master Detective!</p>
+    <div class="mode-grid" id="caseGrid"></div>
+    <div class="btns"><button class="btn btn-ghost" onclick="show('scStart')" id="btnBack">← Back</button></div>
+  </div>
+</div>
+
+<div class="screen off" id="scClear">
+  <div class="manila">
+    <div class="stamp stamp-solved" id="stampSolved">SOLVED</div>
+    <span class="case-icon" id="clrIco">✅</span>
+    <h1 class="case-title"><span class="grn" id="clearTitle">Case Closed!</span></h1>
+    <div class="stat-row" id="clrStats"></div>
+    <p class="case-sub" id="clrMsg">Excellent detective work!</p>
+    <div class="btns">
+      <button class="btn btn-amber" id="clrNext" onclick="goNext()">Next Case ➡️</button>
+      <button class="btn btn-brown" onclick="replay()" id="btnRetry">🔁 Retry</button>
+      <button class="btn btn-ghost"  onclick="showCases()" id="btnCaseFiles">📁 Case Files</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen off" id="scSkip">
+  <div class="manila">
+    <span class="case-icon" style="font-size:56px;animation-duration:2s;">⏭</span>
+    <h1 class="case-title" id="skipTitle">Skip This <span class="red">Case?</span></h1>
+    <p class="case-sub" id="skipSub">Skipping earns <strong>0 stars</strong> but unlocks the next case. You can replay anytime!</p>
+    <div class="btns">
+      <button class="btn btn-red"   onclick="doSkip()"     id="btnYesSkip">⏭ Yes, Skip!</button>
+      <button class="btn btn-brown" onclick="cancelSkip()" id="btnKeepGoing">← Keep Investigating</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen off" id="scOver">
+  <div class="manila">
+    <div class="stamp stamp-case" id="stampFailed">FAILED</div>
+    <span class="case-icon" style="font-size:60px;">💔</span>
+    <h1 class="case-title"><span class="red" id="overTitle">Case Unsolved!</span></h1>
+    <p class="case-sub" id="overMsg">Every great detective fails sometimes. Study the clues and try again!</p>
+    <div class="btns">
+      <button class="btn btn-amber" onclick="replay()"    id="btnReinv">🔁 Reinvestigate</button>
+      <button class="btn btn-red"   onclick="doSkip()"    id="btnSkipCase">⏭ Skip Case</button>
+      <button class="btn btn-ghost" onclick="showCases()" id="btnCF2">📁 Case Files</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen off" id="scDone">
+  <div class="manila" style="max-width:520px;background:linear-gradient(145deg,#FFF9E6,#F5EDD6);">
+    <div class="stamp stamp-solved" id="stampMaster">MASTER</div>
+    <span style="font-size:4.5rem;display:block;margin-bottom:8px;animation:caseFloat 3s ease-in-out infinite;filter:drop-shadow(0 8px 20px rgba(200,134,10,.4));">🏆</span>
+    <h1 class="case-title"><span class="hi" id="doneT1">Master</span><br/><span class="grn" id="doneT2">Detective!</span></h1>
+    <div class="stat-row" id="doneStats"></div>
+    <p class="case-sub" id="doneMsg">You solved all the cases!</p>
+    <div class="btns">
+      <button class="btn btn-amber" onclick="launchCase(1)" id="btnPlayAgain">🔁 Play Again</button>
+      <button class="btn btn-brown" onclick="showCases()"   id="btnCF3">📁 Case Files</button>
+      <a href="../index.html" class="btn btn-ghost" id="btnHub2">← Hub</a>
+    </div>
+  </div>
+</div>
+
+<div class="conf-layer" id="confLayer"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BILINGUAL COMPUTER PARTS DETECTIVE
+   Lang: 'en' (English) | 'bn' (Bengali)
+   5 Cases × 10+ questions each
+═══════════════════════════════════════════════════════════ */
+
+/* ─── ACTIVE LANGUAGE ─── */
+var LANG = 'en';
+
+/* ─── ALL STATIC UI STRINGS ─── */
+var UI = {
+  en:{
+    navTitle:'Computer Parts Detective',
+    stampOpen:'OPEN', stampSolved:'SOLVED', stampFailed:'FAILED', stampMaster:'MASTER',
+    startTitle:'Computer Parts <span class="hi">Detective</span>',
+    startSub:'A <strong>mystery</strong> unfolds inside every computer...<br/>Identify parts, match clues, label diagrams &amp; crack the case!<br/>Can you become the <strong>Master Detective</strong>? 🕵️',
+    btnOpenCases:'📁 Open Case Files', btnHub:'← Hub',
+    modesTitle:'Choose Your <span class="hi">Case</span>',
+    modesSub:'Each case teaches computer parts a different way. Solve all 5 to become a Master Detective!',
+    btnBack:'← Back',
+    clearTitle:'Case Closed!', clrMsg_pool:['Outstanding detective skills! 🔍','Brilliant! You cracked it! 🏆','Excellent work! Case CLOSED! ✅','Superb investigation! 🎉'],
+    btnNext:'Next Case ➡️', btnRetry:'🔁 Retry', btnCaseFiles:'📁 Case Files',
+    skipTitle:'Skip This <span class="red">Case?</span>',
+    skipSub:'Skipping earns <strong>0 stars</strong> but unlocks the next case. You can replay anytime!',
+    btnYesSkip:'⏭ Yes, Skip!', btnKeepGoing:'← Keep Investigating',
+    overTitle:'Case Unsolved!',
+    overMsg_lives:'Time ran out! {n} {l} remaining. Re-open the case!',
+    overMsg_dead:'You\'ve run out of leads! Study the evidence and try again!',
+    btnReinv:'🔁 Reinvestigate', btnSkipCase:'⏭ Skip Case',
+    doneT1:'Master', doneT2:'Detective!',
+    doneMsg_pool:['PERFECT! You know computers inside out! 🏆','Gold Badge Detective! Incredible knowledge!','Silver Badge! Keep solving cases!','Bronze Badge! Promising detective — replay!'],
+    btnPlayAgain:'🔁 Play Again',
+    /* in-game */
+    caseFile:'CASE FILE', caseLabel:'Case',
+    ghBadge:'CASE',
+    skipBtn:'⏭ Skip',
+    /* evidence */
+    exhibit:'EXHIBIT',
+    toastCorrect:['Correct! That\'s the {full}! ✅','Perfect! The {full}! 🌟','Right answer! {full} ✅'],
+    toastWrong:'Not quite! It was the {full} {ico}',
+    /* match */
+    mcTitle1:'🔍 Parts', mcTitle2:'📋 Functions',
+    toastMatchOk:'Match found! 🔗✅', toastMatchFirst:'First click a part on the left! 👈',
+    toastMatchBad:'Wrong match! Look at the clues again 🔍',
+    /* label */
+    diagramTitle:'CRIME SCENE — COMPUTER DIAGRAM',
+    toastLabelOk:'Correct label! ✅', toastLabelBad:'Wrong spot! Find where it belongs 🔍',
+    /* speed */
+    qLabel:'CLUE', toastSpeedOk:['Correct! 🎉','Nice detective work! 🔍','Spot on! ✅','Brilliant! 🌟'],
+    toastSpeedBad:'Wrong! The answer was: {a}',
+    /* boss */
+    bossBannerTitle:'🏆 BOSS BATTLE: Sort ALL Computer Parts!',
+    bossBannerSub:'Drag each part into the correct category bin',
+    toastBossOk:'Correct category! ✅', toastBossBad:'Wrong category! Think again 🔍',
+    binInput:'📥 INPUT', binOutput:'📤 OUTPUT', binStorage:'💾 STORAGE', binProcess:'⚙️ PROCESSOR',
+    binPh:'Drop here',
+    timeUp:'⏰ Time\'s up! The case goes cold...',
+    sboxScore:'Score', sboxStars:'Stars', sboxTime:'Time Left', sboxLives:'Lives',
+  },
+  bn:{
+    navTitle:'কম্পিউটার পার্টস ডিটেকটিভ',
+    stampOpen:'খোলা', stampSolved:'সমাধান', stampFailed:'ব্যর্থ', stampMaster:'মাস্টার',
+    startTitle:'কম্পিউটার পার্টস <span class="hi">ডিটেকটিভ</span>',
+    startSub:'প্রতিটি কম্পিউটারের ভেতরে লুকিয়ে আছে <strong>রহস্য</strong>...<br/>যন্ত্রাংশ চেনো, ক্লু মেলাও, ডায়াগ্রাম লেবেল করো!<br/>তুমি কি <strong>মাস্টার ডিটেকটিভ</strong> হতে পারবে? 🕵️',
+    btnOpenCases:'📁 কেস ফাইল খোলো', btnHub:'← হোম',
+    modesTitle:'তোমার <span class="hi">কেস</span> বেছে নাও',
+    modesSub:'প্রতিটি কেসে কম্পিউটার যন্ত্রাংশ শেখার আলাদা পদ্ধতি আছে। সব ৫টি কেস সমাধান করে মাস্টার ডিটেকটিভ হও!',
+    btnBack:'← ফিরে যাও',
+    clearTitle:'কেস সমাধান হয়েছে!', clrMsg_pool:['অসাধারণ ডিটেকটিভ দক্ষতা! 🔍','দারুণ! তুমি রহস্য ভেদ করেছ! 🏆','চমৎকার কাজ! কেস বন্ধ! ✅','সুপার তদন্ত! 🎉'],
+    btnNext:'পরের কেস ➡️', btnRetry:'🔁 আবার চেষ্টা', btnCaseFiles:'📁 কেস ফাইল',
+    skipTitle:'এই কেস <span class="red">এড়িয়ে যাবে?</span>',
+    skipSub:'এড়িয়ে গেলে <strong>০ তারা</strong> পাবে কিন্তু পরের কেস খুলবে। যেকোনো সময় আবার খেলতে পারবে!',
+    btnYesSkip:'⏭ হ্যাঁ, এড়িয়ে যাও!', btnKeepGoing:'← তদন্ত চালিয়ে যাও',
+    overTitle:'কেস অসমাধান!',
+    overMsg_lives:'সময় শেষ! {n}টি {l} বাকি আছে। কেস আবার খোলো!',
+    overMsg_dead:'সব সুযোগ শেষ! প্রমাণ ভালো করে পড়ো এবং আবার চেষ্টা করো!',
+    btnReinv:'🔁 পুনরায় তদন্ত করো', btnSkipCase:'⏭ কেস এড়াও',
+    doneT1:'মাস্টার', doneT2:'ডিটেকটিভ!',
+    doneMsg_pool:['পারফেক্ট! কম্পিউটার সম্পর্কে তুমি সব জানো! 🏆','গোল্ড ব্যাজ ডিটেকটিভ! অবিশ্বাস্য জ্ঞান!','সিলভার ব্যাজ! কেস সমাধান করতে থাকো!','ব্রোঞ্জ ব্যাজ! আবার খেলো!'],
+    btnPlayAgain:'🔁 আবার খেলো',
+    caseFile:'কেস ফাইল', caseLabel:'কেস',
+    ghBadge:'কেস',
+    skipBtn:'⏭ এড়াও',
+    exhibit:'প্রমাণ',
+    toastCorrect:['সঠিক! এটা হলো {full}! ✅','নিখুঁত! {full}! 🌟','সঠিক উত্তর! {full} ✅'],
+    toastWrong:'ভুল! এটা ছিল {full} {ico}',
+    mcTitle1:'🔍 যন্ত্রাংশ', mcTitle2:'📋 কাজ',
+    toastMatchOk:'মিল পাওয়া গেছে! 🔗✅', toastMatchFirst:'আগে বাম দিকের যন্ত্রাংশে ক্লিক করো! 👈',
+    toastMatchBad:'ভুল মিল! আবার ক্লু দেখো 🔍',
+    diagramTitle:'অপরাধ দৃশ্য — কম্পিউটার ডায়াগ্রাম',
+    toastLabelOk:'সঠিক লেবেল! ✅', toastLabelBad:'ভুল জায়গা! কোথায় যাবে খোঁজো 🔍',
+    qLabel:'ক্লু', toastSpeedOk:['সঠিক! 🎉','চমৎকার ডিটেকটিভ! 🔍','একদম ঠিক! ✅','অসাধারণ! 🌟'],
+    toastSpeedBad:'ভুল! উত্তর ছিল: {a}',
+    bossBannerTitle:'🏆 বস যুদ্ধ: সব কম্পিউটার পার্টস সাজাও!',
+    bossBannerSub:'প্রতিটি যন্ত্রাংশ সঠিক বিভাগের বাক্সে টেনে রাখো',
+    toastBossOk:'সঠিক বিভাগ! ✅', toastBossBad:'ভুল বিভাগ! আবার ভাবো 🔍',
+    binInput:'📥 ইনপুট', binOutput:'📤 আউটপুট', binStorage:'💾 স্টোরেজ', binProcess:'⚙️ প্রসেসর',
+    binPh:'এখানে রাখো',
+    timeUp:'⏰ সময় শেষ! কেস ঠান্ডা হয়ে গেল...',
+    sboxScore:'স্কোর', sboxStars:'তারা', sboxTime:'সময় বাকি', sboxLives:'জীবন',
+  }
+};
+function t(k){return UI[LANG][k]||UI['en'][k]||k;}
+function tr(k,vars){
+  var s=t(k);
+  if(vars)Object.keys(vars).forEach(function(v){s=s.replace(new RegExp('{'+v+'}','g'),vars[v]);});
+  return s;
+}
+function tpick(k){var arr=t(k);return arr[rnd(0,arr.length-1)];}
+function bnClass(){return LANG==='bn'?' bn':'';}
+
+/* ─── PARTS DATA (bilingual) ─── */
+var PARTS_DATA={
+  en:[
+    {id:'cpu',  name:'CPU',           full:'Central Processing Unit', ico:'🧠', cat:'process',
+     clue:'The brain of the computer. It processes all instructions and calculations.'},
+    {id:'ram',  name:'RAM',           full:'Random Access Memory',    ico:'📋', cat:'storage',
+     clue:'Temporary memory that stores data the computer is currently using.'},
+    {id:'hdd',  name:'Hard Drive',    full:'HDD / Hard Disk Drive',   ico:'💾', cat:'storage',
+     clue:'Permanent storage that keeps your files, photos and programs.'},
+    {id:'mon',  name:'Monitor',       full:'Display Screen',          ico:'🖥️', cat:'output',
+     clue:'Shows you text, images and videos — an output device.'},
+    {id:'kb',   name:'Keyboard',      full:'Input Keyboard',          ico:'⌨️', cat:'input',
+     clue:'You type letters and numbers with it — an input device.'},
+    {id:'mouse',name:'Mouse',         full:'Pointing Device',         ico:'🖱️', cat:'input',
+     clue:'You move it to control the cursor on screen — an input device.'},
+    {id:'psu',  name:'Power Supply',  full:'PSU / Power Supply Unit', ico:'🔌', cat:'process',
+     clue:'Converts electricity from the wall into power for computer parts.'},
+    {id:'gpu',  name:'GPU',           full:'Graphics Processing Unit',ico:'🎮', cat:'process',
+     clue:'The graphics card that makes images and videos look amazing.'},
+    {id:'mb',   name:'Motherboard',   full:'Main Circuit Board',      ico:'🔧', cat:'process',
+     clue:'The main circuit board that connects ALL other parts together.'},
+    {id:'spk',  name:'Speakers',      full:'Audio Output Device',     ico:'🔊', cat:'output',
+     clue:'You hear sound through them — they are an output device.'},
+    {id:'print',name:'Printer',       full:'Hard Copy Output Device', ico:'🖨️', cat:'output',
+     clue:'Prints documents and photos on paper — an output device.'},
+    {id:'cam',  name:'Webcam',        full:'Video Input Device',      ico:'📷', cat:'input',
+     clue:'Captures video and photos — an input device.'},
+    {id:'ssd',  name:'SSD',           full:'Solid State Drive',       ico:'💿', cat:'storage',
+     clue:'Faster storage than HDD — saves data without any moving parts.'},
+    {id:'usb',  name:'USB Drive',     full:'USB Flash Storage',       ico:'🔑', cat:'storage',
+     clue:'Tiny portable storage you can carry in your pocket.'},
+    {id:'mic',  name:'Microphone',    full:'Audio Input Device',      ico:'🎤', cat:'input',
+     clue:'Captures your voice — an input device used for recording.'},
+    {id:'fan',  name:'CPU Fan',       full:'Cooling System',          ico:'❄️', cat:'process',
+     clue:'Keeps the CPU cool so it does not overheat while working.'},
+    {id:'net',  name:'Network Card',  full:'NIC / Network Interface', ico:'📡', cat:'process',
+     clue:'Connects your computer to the internet and other networks.'},
+    {id:'touch',name:'Touchscreen',   full:'Touch Input Display',     ico:'👆', cat:'input',
+     clue:'A screen you can control with your fingers — both input and output.'},
+    {id:'scan', name:'Scanner',       full:'Image Input Device',      ico:'🖨️', cat:'input',
+     clue:'Converts physical documents and photos into digital files.'},
+    {id:'cd',   name:'CD/DVD Drive',  full:'Optical Drive',           ico:'📀', cat:'storage',
+     clue:'Reads and writes CDs and DVDs to store or play data.'},
+  ],
+  bn:[
+    {id:'cpu',  name:'সিপিইউ',         full:'সেন্ট্রাল প্রসেসিং ইউনিট', ico:'🧠', cat:'process',
+     clue:'কম্পিউটারের মস্তিষ্ক। এটি সমস্ত নির্দেশ ও হিসাব প্রক্রিয়া করে।'},
+    {id:'ram',  name:'র‍্যাম',           full:'র‍্যান্ডম অ্যাকসেস মেমোরি',  ico:'📋', cat:'storage',
+     clue:'সাময়িক মেমোরি যা কম্পিউটার এখন ব্যবহার করছে সেই তথ্য রাখে।'},
+    {id:'hdd',  name:'হার্ড ড্রাইভ',    full:'হার্ড ডিস্ক ড্রাইভ',        ico:'💾', cat:'storage',
+     clue:'স্থায়ী স্টোরেজ যেখানে তোমার ফাইল, ছবি ও প্রোগ্রাম সংরক্ষিত থাকে।'},
+    {id:'mon',  name:'মনিটর',           full:'ডিসপ্লে স্ক্রিন',           ico:'🖥️', cat:'output',
+     clue:'লেখা, ছবি ও ভিডিও দেখায় — এটি একটি আউটপুট ডিভাইস।'},
+    {id:'kb',   name:'কীবোর্ড',          full:'ইনপুট কীবোর্ড',            ico:'⌨️', cat:'input',
+     clue:'এটি দিয়ে অক্ষর ও সংখ্যা টাইপ করো — একটি ইনপুট ডিভাইস।'},
+    {id:'mouse',name:'মাউস',            full:'পয়েন্টিং ডিভাইস',          ico:'🖱️', cat:'input',
+     clue:'এটি নাড়িয়ে স্ক্রিনে কার্সর নিয়ন্ত্রণ করো — একটি ইনপুট ডিভাইস।'},
+    {id:'psu',  name:'পাওয়ার সাপ্লাই',  full:'পিএসইউ / পাওয়ার সাপ্লাই ইউনিট',ico:'🔌', cat:'process',
+     clue:'দেয়ালের বিদ্যুৎকে কম্পিউটার যন্ত্রাংশের উপযোগী শক্তিতে রূপান্তরিত করে।'},
+    {id:'gpu',  name:'জিপিইউ',           full:'গ্রাফিক্স প্রসেসিং ইউনিট',  ico:'🎮', cat:'process',
+     clue:'গ্রাফিক্স কার্ড যা ছবি ও ভিডিও অসাধারণ দেখায়।'},
+    {id:'mb',   name:'মাদারবোর্ড',       full:'মূল সার্কিট বোর্ড',          ico:'🔧', cat:'process',
+     clue:'মূল সার্কিট বোর্ড যা সমস্ত যন্ত্রাংশকে একসাথে সংযুক্ত করে।'},
+    {id:'spk',  name:'স্পিকার',          full:'অডিও আউটপুট ডিভাইস',        ico:'🔊', cat:'output',
+     clue:'এর মাধ্যমে শব্দ শুনতে পাও — এটি একটি আউটপুট ডিভাইস।'},
+    {id:'print',name:'প্রিন্টার',         full:'হার্ড কপি আউটপুট ডিভাইস',   ico:'🖨️', cat:'output',
+     clue:'কাগজে ডকুমেন্ট ও ছবি প্রিন্ট করে — একটি আউটপুট ডিভাইস।'},
+    {id:'cam',  name:'ওয়েবক্যাম',        full:'ভিডিও ইনপুট ডিভাইস',        ico:'📷', cat:'input',
+     clue:'ভিডিও ও ছবি ধারণ করে — একটি ইনপুট ডিভাইস।'},
+    {id:'ssd',  name:'এসএসডি',           full:'সলিড স্টেট ড্রাইভ',          ico:'💿', cat:'storage',
+     clue:'হার্ড ড্রাইভের চেয়ে দ্রুত স্টোরেজ — কোনো নড়াচড়ার যন্ত্রাংশ নেই।'},
+    {id:'usb',  name:'ইউএসবি ড্রাইভ',    full:'ইউএসবি ফ্ল্যাশ স্টোরেজ',    ico:'🔑', cat:'storage',
+     clue:'পকেটে নিয়ে যাওয়া যায় এমন ছোট্ট বহনযোগ্য স্টোরেজ।'},
+    {id:'mic',  name:'মাইক্রোফোন',       full:'অডিও ইনপুট ডিভাইস',         ico:'🎤', cat:'input',
+     clue:'তোমার কণ্ঠস্বর ধারণ করে — রেকর্ডিংয়ের জন্য ব্যবহৃত ইনপুট ডিভাইস।'},
+    {id:'fan',  name:'সিপিইউ ফ্যান',     full:'কুলিং সিস্টেম',             ico:'❄️', cat:'process',
+     clue:'সিপিইউকে ঠান্ডা রাখে যাতে কাজের সময় অতিরিক্ত গরম না হয়।'},
+    {id:'net',  name:'নেটওয়ার্ক কার্ড', full:'নেটওয়ার্ক ইন্টারফেস কার্ড',  ico:'📡', cat:'process',
+     clue:'কম্পিউটারকে ইন্টারনেট ও অন্য নেটওয়ার্কের সাথে সংযুক্ত করে।'},
+    {id:'touch',name:'টাচস্ক্রিন',       full:'টাচ ইনপুট ডিসপ্লে',          ico:'👆', cat:'input',
+     clue:'আঙুল দিয়ে নিয়ন্ত্রণ করা যায় এমন স্ক্রিন — ইনপুট ও আউটপুট উভয়ই।'},
+    {id:'scan', name:'স্ক্যানার',         full:'ইমেজ ইনপুট ডিভাইস',          ico:'🖨️', cat:'input',
+     clue:'কাগজের ডকুমেন্ট ও ছবিকে ডিজিটাল ফাইলে রূপান্তরিত করে।'},
+    {id:'cd',   name:'সিডি/ডিভিডি ড্রাইভ',full:'অপটিক্যাল ড্রাইভ',          ico:'📀', cat:'storage',
+     clue:'সিডি ও ডিভিডি পড়ে ও লেখে — তথ্য সংরক্ষণ বা চালানোর জন্য।'},
+  ]
+};
+
+function PARTS(){return PARTS_DATA[LANG];}
+function getPart(id){var ps=PARTS();for(var i=0;i<ps.length;i++)if(ps[i].id===id)return ps[i];return null;}
+
+/* ─── CASES CONFIG (bilingual names/descs built dynamically) ─── */
+var CASES_RAW=[
+  {n:1, ico:'🔍', time:90, total:10,
+   name:{en:'Evidence ID',         bn:'প্রমাণ চিহ্নিত করো'},
+   desc:{en:'See the part clue and pick the correct name from 4 choices!',
+         bn:'যন্ত্রাংশের ক্লু দেখো এবং ৪টি বিকল্প থেকে সঠিক নাম বেছে নাও!'},
+   type:'evidence',
+   partIds:['cpu','ram','kb','mouse','mon','psu','gpu','mb','spk','print']},
+
+  {n:2, ico:'🔗', time:90, total:10,
+   name:{en:'Match the Clues',     bn:'ক্লু মেলাও'},
+   desc:{en:'Click a part on the left, then click its matching function on the right!',
+         bn:'বাম দিকে যন্ত্রাংশে ক্লিক করো, তারপর ডান দিকে সঠিক কাজে ক্লিক করো!'},
+   type:'match',
+   pairIds:[
+     {id:'cpu',   fn:{en:'Processes all instructions — the brain!',     bn:'সব নির্দেশ প্রক্রিয়া করে — মস্তিষ্ক!'}},
+     {id:'ram',   fn:{en:'Temporary working memory for active tasks',   bn:'সক্রিয় কাজের জন্য সাময়িক মেমোরি'}},
+     {id:'hdd',   fn:{en:'Permanently stores files and programs',       bn:'ফাইল ও প্রোগ্রাম স্থায়ীভাবে সংরক্ষণ করে'}},
+     {id:'mon',   fn:{en:'Displays images, text and video on screen',   bn:'স্ক্রিনে ছবি, লেখা ও ভিডিও দেখায়'}},
+     {id:'psu',   fn:{en:'Powers all computer components',              bn:'কম্পিউটারের সমস্ত যন্ত্রাংশকে শক্তি দেয়'}},
+     {id:'gpu',   fn:{en:'Renders graphics and video',                  bn:'গ্রাফিক্স ও ভিডিও রেন্ডার করে'}},
+     {id:'kb',    fn:{en:'Lets you type letters and numbers',           bn:'অক্ষর ও সংখ্যা টাইপ করতে দেয়'}},
+     {id:'mouse', fn:{en:'Controls the cursor by moving it',            bn:'নাড়িয়ে কার্সর নিয়ন্ত্রণ করে'}},
+     {id:'mb',    fn:{en:'Connects ALL other parts together',           bn:'সমস্ত যন্ত্রাংশকে একসাথে সংযুক্ত করে'}},
+     {id:'spk',   fn:{en:'Plays audio and sounds',                      bn:'অডিও ও শব্দ বাজায়'}},
+   ]},
+
+  {n:3, ico:'🗺️', time:110, total:10,
+   name:{en:'Label the Scene',     bn:'দৃশ্য লেবেল করো'},
+   desc:{en:'Drag the correct labels onto the computer diagram!',
+         bn:'সঠিক লেবেলগুলো কম্পিউটার ডায়াগ্রামের উপর টেনে রাখো!'},
+   type:'label',
+   placements:[
+     {id:'cpu',   x:'28%',y:'35%',w:'88px'},
+     {id:'ram',   x:'54%',y:'28%',w:'88px'},
+     {id:'gpu',   x:'28%',y:'55%',w:'98px'},
+     {id:'mb',    x:'50%',y:'52%',w:'115px'},
+     {id:'psu',   x:'12%',y:'55%',w:'92px'},
+     {id:'fan',   x:'28%',y:'18%',w:'88px'},
+     {id:'hdd',   x:'54%',y:'68%',w:'100px'},
+     {id:'ssd',   x:'12%',y:'35%',w:'88px'},
+     {id:'spk',   x:'72%',y:'35%',w:'88px'},
+     {id:'net',   x:'72%',y:'55%',w:'115px'},
+   ]},
+
+  {n:4, ico:'⚡', time:60, total:10,
+   name:{en:'Speed Quiz',          bn:'স্পিড কুইজ'},
+   desc:{en:'Answer 10 questions as fast as you can before time runs out!',
+         bn:'সময় শেষ হওয়ার আগে যত দ্রুত সম্ভব ১০টি প্রশ্নের উত্তর দাও!'},
+   type:'speed'},
+
+  {n:5, ico:'🏆', time:110, total:16,
+   name:{en:'Boss Round',          bn:'বস রাউন্ড'},
+   desc:{en:'Sort ALL 16 computer parts into the correct categories! BOSS BATTLE!',
+         bn:'সব ১৬টি কম্পিউটার যন্ত্রাংশ সঠিক বিভাগে সাজাও! বস যুদ্ধ!'},
+   type:'boss',
+   itemIds:['kb','mouse','cam','mic','touch','scan','mon','spk','print','hdd','ssd','usb','cd','cpu','gpu','mb']},
+];
+
+function getCaseName(cs){return cs.name[LANG]||cs.name.en;}
+function getCaseDesc(cs){return cs.desc[LANG]||cs.desc.en;}
+
+/* ─── STATE ─── */
+var G={
+  case:1, score:0, lives:3, active:false,
+  t:60, tFull:60, tLast:null, tRAF:null,
+  done:0, total:0,
+  unlocked:[true,false,false,false,false],
+  stars:[0,0,0,0,0], scores:[0,0,0,0,0],
+  dragEl:null, selectedPart:null,
+};
+
+(function(){
+  try{
+    var d=JSON.parse(localStorage.getItem('abcd_det3')||'{}');
+    if(d.u)G.unlocked=d.u; if(d.s)G.stars=d.s; if(d.sc)G.scores=d.sc;
+    if(d.lang)LANG=d.lang;
+  }catch(e){}
+})();
+function persist(){
+  try{localStorage.setItem('abcd_det3',JSON.stringify({u:G.unlocked,s:G.stars,sc:G.scores,lang:LANG}));}catch(e){}
+}
+
+/* ─── HELPERS ─── */
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(arr){return arr[rnd(0,arr.length-1)];}
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=rnd(0,i);var tmp=a[i];a[i]=a[j];a[j]=tmp;}return a;}
+function starsFor(sc,mx){var p=sc/mx;return p>=.85?3:p>=.6?2:1;}
+function starStr(n){var s='';for(var i=0;i<3;i++)s+=i<n?'⭐':'☆';return s;}
+
+function toast(msg,type){
+  var el=document.createElement('div');
+  el.className='toast '+(type||'ok')+(LANG==='bn'?' bn':'');
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},1150);
+}
+function spop(msg,x,y,cls){
+  var el=document.createElement('div');
+  el.className='spop '+(cls||'pos');
+  el.textContent=msg;
+  el.style.left=(x||window.innerWidth/2-20)+'px';
+  el.style.top=(y||200)+'px';
+  document.body.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},900);
+}
+function confetti(){
+  var w=document.getElementById('confLayer'); w.innerHTML='';
+  var c=['#C8860A','#E8A020','#FFD700','#C0392B','#5C3A1E','#8B5E3C','#1E8449','#2980B9','#8E44AD'];
+  for(var i=0;i<100;i++){
+    var el=document.createElement('div'); el.className='cp';
+    el.style.left=rnd(0,100)+'vw';
+    el.style.background=c[i%c.length];
+    el.style.width=rnd(7,14)+'px'; el.style.height=rnd(7,14)+'px';
+    el.style.borderRadius=rnd(0,1)?'50%':'3px';
+    el.style.animationDuration=rnd(1000,2200)+'ms';
+    el.style.animationDelay=rnd(0,500)+'ms';
+    w.appendChild(el);
+  }
+  setTimeout(function(){w.innerHTML='';},2800);
+}
+
+/* ─── LANGUAGE SWITCH ─── */
+function setLang(l){
+  LANG=l;
+  document.getElementById('btnEN').classList.toggle('active', l==='en');
+  document.getElementById('btnBN').classList.toggle('active', l==='bn');
+  applyUIText();
+  persist();
+  /* if in-game, just update banner texts without rebuilding */
+  var cb=document.getElementById('clueBanner');
+  if(cb.style.display!=='none' && G.active){
+    var cs=CASES_RAW[G.case-1];
+    document.getElementById('cbCase').textContent=t('caseFile')+' #0'+G.case;
+    document.getElementById('cbHead').textContent=t('caseLabel')+' '+G.case+': '+getCaseName(cs);
+    document.getElementById('cbSub').textContent=getCaseDesc(cs);
+  }
+}
+
+function applyUIText(){
+  var isBn = LANG==='bn';
+  var bodyFont = isBn ? "'Hind Siliguri', sans-serif" : "'Nunito', sans-serif";
+  /* Apply body font everywhere */
+  document.body.style.fontFamily = bodyFont;
+  /* Update all static text elements */
+  se('navTitle', t('navTitle'));
+  sie('stampOpen',   t('stampOpen'));
+  sie('stampSolved', t('stampSolved'));
+  sie('stampFailed', t('stampFailed'));
+  sie('stampMaster', t('stampMaster'));
+  sh('startTitle', t('startTitle'));
+  sh('startSub',   t('startSub'));
+  se('btnOpenCases', t('btnOpenCases'));
+  se('btnHub',       t('btnHub'));
+  sh('modesTitle',   t('modesTitle'));
+  se('modesSub',     t('modesSub'));
+  se('btnBack',      t('btnBack'));
+  sh('clearTitle',   t('clearTitle'));
+  se('btnRetry',     t('btnRetry'));
+  se('btnCaseFiles', t('btnCaseFiles'));
+  sh('skipTitle',    t('skipTitle'));
+  sh('skipSub',      t('skipSub'));
+  se('btnYesSkip',   t('btnYesSkip'));
+  se('btnKeepGoing', t('btnKeepGoing'));
+  sh('overTitle',    t('overTitle'));
+  se('btnReinv',     t('btnReinv'));
+  se('btnSkipCase',  t('btnSkipCase'));
+  se('btnCF2',       t('btnCF2')||t('btnCaseFiles'));
+  se('doneT1',       t('doneT1'));
+  se('doneT2',       t('doneT2'));
+  se('btnPlayAgain', t('btnPlayAgain'));
+  se('btnCF3',       t('btnCF3')||t('btnCaseFiles'));
+  se('btnHub2',      t('btnHub')||'← Hub');
+  se('skipBtn',      t('skipBtn'));
+  /* rebuild case grid if visible */
+  if(!document.getElementById('scModes').classList.contains('off')) buildCaseGrid();
+}
+function se(id,txt){var el=document.getElementById(id);if(el)el.textContent=txt;}
+function sie(id,txt){var el=document.getElementById(id);if(el){el.textContent=txt;}}
+function sh(id,html){var el=document.getElementById(id);if(el)el.innerHTML=html;}
+
+/* ─── OVERLAY ─── */
+var SCREENS=['scStart','scModes','scClear','scSkip','scOver','scDone'];
+function hideAll(){SCREENS.forEach(function(id){document.getElementById(id).classList.add('off');});}
+function show(id){hideAll();document.getElementById(id).classList.remove('off');}
+
+/* ─── START / CASE SELECT ─── */
+function showCases(){
+  stopTimer(); G.active=false;
+  document.getElementById('topHud').style.display='none';
+  document.getElementById('clueBanner').style.display='none';
+  document.getElementById('gameBox').innerHTML='';
+  buildCaseGrid(); show('scModes');
+}
+function buildCaseGrid(){
+  var g=document.getElementById('caseGrid'); g.innerHTML='';
+  CASES_RAW.forEach(function(cs,i){
+    var locked=!G.unlocked[i];
+    var stars=G.stars[i]||0;
+    var d=document.createElement('div');
+    d.className='case-card'+(locked?' locked':'')+(stars>0?' solved':'');
+    d.innerHTML=
+      '<div class="cc-num'+(LANG==='bn'?' bn':'')+'">'+t('caseFile')+' #0'+(i+1)+'</div>'+
+      '<span class="cc-ico">'+(locked?'🔒':cs.ico)+'</span>'+
+      '<div class="cc-name'+(LANG==='bn'?' bn':'')+'">'+getCaseName(cs)+'</div>'+
+      '<div class="cc-stars">'+starStr(stars)+'</div>';
+    if(!locked)(function(n){d.onclick=function(){launchCase(n);};})(i+1);
+    g.appendChild(d);
+  });
+}
+
+/* ─── LAUNCH CASE ─── */
+function launchCase(n){
+  stopTimer();
+  G.case=n; G.score=0; G.lives=3; G.active=true; G.done=0;
+  G.selectedPart=null; G.dragEl=null;
+  updateNav(); hideAll();
+
+  var cs=CASES_RAW[n-1];
+  var hud=document.getElementById('topHud');
+  hud.style.display='grid';
+  document.getElementById('ghBadge').textContent=t('ghBadge')+' 0'+n;
+
+  var cb=document.getElementById('clueBanner');
+  cb.style.display='flex';
+  document.getElementById('cbIco').textContent=cs.ico;
+  document.getElementById('cbCase').textContent=t('caseFile')+' #0'+n;
+  document.getElementById('cbHead').textContent=t('caseLabel')+' '+n+': '+getCaseName(cs);
+  document.getElementById('cbSub').textContent=getCaseDesc(cs);
+
+  updateProg(0,cs.total);
+  document.getElementById('gameBox').innerHTML='';
+
+  switch(cs.type){
+    case 'evidence': buildEvidence(cs); break;
+    case 'match':    buildMatch(cs);    break;
+    case 'label':    buildLabel(cs);    break;
+    case 'speed':    buildSpeed(cs);    break;
+    case 'boss':     buildBoss(cs);     break;
+  }
+  startTimer(cs.time);
+}
+function replay(){hideAll(); G.active=true; launchCase(G.case);}
+function goNext(){
+  hideAll();
+  var nxt=G.case+1;
+  if(nxt>5){showAllDone();return;}
+  G.unlocked[nxt-1]=true; persist();
+  G.case=nxt; G.score=0; G.lives=3; G.active=true;
+  updateNav(); launchCase(nxt);
+}
+
+/* ─── TIMER ─── */
+var CIRC2=2*Math.PI*18; /* r=18 for smaller ring */
+function startTimer(s){
+  stopTimer(); G.t=s; G.tFull=s; G.tLast=performance.now(); tickTimer();
+}
+function tickTimer(){
+  if(!G.active)return;
+  var now=performance.now();
+  G.t=Math.max(0,G.t-(now-G.tLast)/1000); G.tLast=now;
+  var pct=G.t/G.tFull, off=CIRC2*(1-pct);
+  var arc=document.getElementById('tArc'), num=document.getElementById('tNum');
+  if(arc){arc.style.strokeDasharray=(CIRC2+' '+CIRC2);arc.style.strokeDashoffset=off;arc.style.stroke=pct>.5?'#C8860A':pct>.25?'#E8A020':'#C0392B';}
+  if(num)num.textContent=Math.ceil(G.t);
+  if(G.t<=0){onTimeOut();return;}
+  G.tRAF=requestAnimationFrame(tickTimer);
+}
+function stopTimer(){if(G.tRAF){cancelAnimationFrame(G.tRAF);G.tRAF=null;}}
+function onTimeOut(){
+  if(!G.active)return;
+  G.active=false; G.lives--; updateNav();
+  toast(t('timeUp'),'bad');
+  setTimeout(function(){
+    if(G.lives<=0) showOver(t('overMsg_dead'));
+    else showOver(tr('overMsg_lives',{n:G.lives, l:G.lives===1?(LANG==='bn'?'জীবন':'life'):(LANG==='bn'?'জীবন':'lives')}));
+  },700);
+}
+
+/* ─── NAV / PROG ─── */
+function updateNav(){
+  document.getElementById('hudSc').textContent=G.score;
+  document.getElementById('hudLv').textContent=G.lives;
+  document.getElementById('ghSc').textContent=G.score;
+}
+function updateProg(done,total){
+  if(done!==undefined)G.done=done;
+  if(total!==undefined)G.total=total;
+  var pct=G.total?Math.round(G.done/G.total*100):0;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progLbl').textContent=G.done+' / '+G.total;
+}
+function addScore(pts,x,y){G.score+=pts; updateNav(); spop('+'+pts,x,y,'pos');}
+function subScore(pts){G.score=Math.max(0,G.score-pts); updateNav(); spop('-'+pts,window.innerWidth/2,220,'neg');}
+
+/* ─── SKIP ─── */
+function onSkip(){if(!G.active)return;G.active=false;stopTimer();show('scSkip');}
+function cancelSkip(){hideAll();G.active=true;G.tLast=performance.now();tickTimer();}
+function doSkip(){
+  hideAll(); G.unlocked[G.case-1]=true;
+  var nxt=G.case+1;
+  if(nxt<=5)G.unlocked[nxt-1]=true;
+  persist();
+  if(nxt>5){showAllDone();return;}
+  G.case=nxt; G.score=0; G.lives=3; G.active=true;
+  updateNav(); launchCase(nxt);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CASE 1 — EVIDENCE ID (10 parts)
+═══════════════════════════════════════════════════════════ */
+var evQueue=[], evIdx=0;
+function buildEvidence(cs){
+  var allParts=PARTS();
+  var ids=cs.partIds || allParts.slice(0,10).map(function(p){return p.id;});
+  evQueue=shuffle(ids.map(function(id){return getPart(id)||allParts[0];}));
+  evIdx=0;
+  updateProg(0,evQueue.length);
+  renderEv();
+}
+function renderEv(){
+  if(!G.active)return;
+  var gb=document.getElementById('gameBox');
+  var part=evQueue[evIdx];
+  if(!part){onClear();return;}
+  var allParts=PARTS();
+  var wrongs=shuffle(allParts.filter(function(p){return p.id!==part.id;})).slice(0,3);
+  var choices=shuffle([part].concat(wrongs));
+
+  gb.innerHTML=
+    '<div class="evidence-zone">'+
+      '<div class="evidence-card">'+
+        '<div class="ev-exhibit'+(LANG==='bn'?' bn':'')+'">'+t('exhibit')+' '+String.fromCharCode(64+evIdx+1)+'</div>'+
+        '<span class="ev-icon">'+part.ico+'</span>'+
+        '<div class="ev-full'+(LANG==='bn'?' bn':'')+'">'+part.full+'</div>'+
+        '<div class="ev-clue'+(LANG==='bn'?' bn':'')+'">'+part.clue+'</div>'+
+      '</div>'+
+      '<div class="choices-grid" id="choG"></div>'+
+    '</div>';
+
+  var grid=gb.querySelector('#choG');
+  choices.forEach(function(c){
+    var btn=document.createElement('div');
+    btn.className='choice'+(LANG==='bn'?' bn':'');
+    btn.innerHTML='<span style="font-size:17px;margin-right:5px;">'+c.ico+'</span>'+c.name;
+    btn.addEventListener('click',function(){
+      if(!G.active)return;
+      grid.querySelectorAll('.choice').forEach(function(b){b.classList.add('disabled');});
+      if(c.id===part.id){
+        btn.classList.add('correct');
+        addScore(20, btn.getBoundingClientRect().left+40, btn.getBoundingClientRect().top);
+        toast(tr(pick(t('toastCorrect')),{full:part.full}),'ok');
+        evIdx++; updateProg(evIdx,evQueue.length);
+        setTimeout(function(){if(evIdx>=evQueue.length)onClear();else renderEv();},850);
+      } else {
+        btn.classList.add('wrong');
+        grid.querySelectorAll('.choice').forEach(function(b){if(b.textContent.indexOf(part.name)>=0)b.classList.add('correct');});
+        subScore(5);
+        toast(tr(t('toastWrong'),{full:part.full,ico:part.ico}),'bad');
+        evIdx++; updateProg(evIdx,evQueue.length);
+        setTimeout(function(){if(evIdx>=evQueue.length)onClear();else renderEv();},1400);
+      }
+    });
+    grid.appendChild(btn);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CASE 2 — MATCH THE CLUES (10 pairs shown 5 at a time, 2 rounds)
+═══════════════════════════════════════════════════════════ */
+var matchRounds=[], matchRoundIdx=0, matchedTotal=0, matchRoundTotal=0;
+function buildMatch(cs){
+  var pairs=shuffle(cs.pairIds.slice()).map(function(p){
+    return {id:p.id, func:p.fn[LANG]||p.fn.en};
+  });
+  /* split into 2 rounds of 5 */
+  matchRounds=[pairs.slice(0,5), pairs.slice(5,10)];
+  matchRoundIdx=0; matchedTotal=0; matchRoundTotal=10;
+  updateProg(0,matchRoundTotal);
+  G.selectedPart=null;
+  renderMatchRound();
+}
+function renderMatchRound(){
+  if(!G.active)return;
+  var pairs=matchRounds[matchRoundIdx];
+  if(!pairs){onClear();return;}
+  var gb=document.getElementById('gameBox');
+  var funcs=shuffle(pairs.map(function(p){return p.func;}));
+  var roundMatched=0;
+
+  gb.innerHTML=
+    '<div class="match-zone">'+
+      '<div class="match-col"><div class="match-col-title'+(LANG==='bn'?' bn':'')+'">'+t('mcTitle1')+'</div><div id="pCol"></div></div>'+
+      '<div class="match-col"><div class="match-col-title'+(LANG==='bn'?' bn':'')+'">'+t('mcTitle2')+'</div><div id="fCol"></div></div>'+
+    '</div>';
+
+  var pCol=gb.querySelector('#pCol'), fCol=gb.querySelector('#fCol');
+  pairs.forEach(function(p){
+    var part=getPart(p.id);
+    var el=document.createElement('div');
+    el.className='match-part'; el.dataset.id=p.id;
+    el.innerHTML='<span class="mp-ico">'+part.ico+'</span><span class="mp-label'+(LANG==='bn'?' bn':'')+'">'+part.name+'</span>';
+    el.addEventListener('click',function(){
+      if(!G.active||el.classList.contains('matched'))return;
+      pCol.querySelectorAll('.match-part').forEach(function(b){b.classList.remove('selected');});
+      el.classList.add('selected'); G.selectedPart=p.id;
+    });
+    pCol.appendChild(el);
+  });
+
+  funcs.forEach(function(func){
+    var matchId=null;
+    pairs.forEach(function(p){if(p.func===func)matchId=p.id;});
+    var el=document.createElement('div');
+    el.className='match-func'+(LANG==='bn'?' bn':''); el.textContent=func;
+    el.addEventListener('click',function(){
+      if(!G.active||el.classList.contains('matched'))return;
+      if(!G.selectedPart){toast(t('toastMatchFirst'),'tip');return;}
+      if(G.selectedPart===matchId){
+        el.classList.add('matched');
+        var selEl=pCol.querySelector('[data-id="'+G.selectedPart+'"]');
+        if(selEl){selEl.classList.add('matched');selEl.classList.remove('selected');}
+        addScore(20, el.getBoundingClientRect().left, el.getBoundingClientRect().top);
+        toast(t('toastMatchOk'),'ok');
+        roundMatched++; matchedTotal++;
+        updateProg(matchedTotal,matchRoundTotal);
+        G.selectedPart=null;
+        if(roundMatched>=pairs.length){
+          matchRoundIdx++;
+          setTimeout(function(){
+            if(matchedTotal>=matchRoundTotal) onClear();
+            else renderMatchRound();
+          },700);
+        }
+      } else {
+        el.classList.add('wt'); setTimeout(function(){el.classList.remove('wt');},400);
+        var s=pCol.querySelector('.selected');
+        if(s){s.classList.add('wf');setTimeout(function(){s.classList.remove('wf');},400);}
+        subScore(5);
+        toast(t('toastMatchBad'),'bad');
+        G.selectedPart=null;
+        pCol.querySelectorAll('.match-part').forEach(function(b){b.classList.remove('selected');});
+      }
+    });
+    fCol.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CASE 3 — LABEL THE SCENE (10 labels)
+═══════════════════════════════════════════════════════════ */
+function buildLabel(cs){
+  var gb=document.getElementById('gameBox');
+  var placed=0;
+  var pls=cs.placements;
+  updateProg(0,pls.length);
+
+  /* Build label name per language */
+  function getLabelName(id){
+    var p=getPart(id); return p?p.name:id;
+  }
+
+  var dropHtml='';
+  pls.forEach(function(pl){
+    dropHtml+='<div class="diag-drop" id="drop_'+pl.id+'" data-id="'+pl.id+'" style="left:'+pl.x+';top:'+pl.y+';width:'+pl.w+'">'+getLabelName(pl.id)+'?</div>';
+  });
+
+  var diagramTitle=t('diagramTitle');
+  gb.innerHTML=
+    '<div class="label-zone">'+
+      '<div class="diagram-wrap" id="diagWrap">'+
+        '<div style="position:relative;width:100%;padding-bottom:66%;background:linear-gradient(145deg,#1A2530,#0D1520);border-radius:8px;overflow:hidden;">'+
+          '<div style="position:absolute;left:8%;top:12%;width:84%;height:74%;background:linear-gradient(145deg,#1A3A1A,#0D2010);border:2px solid rgba(0,200,100,.2);border-radius:8px;"></div>'+
+          '<div style="position:absolute;left:52%;top:22%;width:5%;height:52%;background:rgba(0,150,200,.15);border:1px solid rgba(0,150,200,.3);border-radius:2px;"></div>'+
+          '<div style="position:absolute;left:59%;top:22%;width:5%;height:52%;background:rgba(0,150,200,.1);border:1px solid rgba(0,150,200,.2);border-radius:2px;"></div>'+
+          '<div style="position:absolute;left:66%;top:22%;width:5%;height:52%;background:rgba(0,150,200,.08);border:1px solid rgba(0,150,200,.15);border-radius:2px;"></div>'+
+          '<div style="position:absolute;left:25%;top:28%;width:13%;height:18%;background:rgba(100,200,100,.1);border:2px solid rgba(100,200,100,.3);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(100,200,100,.4);font-size:1.2vw;">▦</div>'+
+          '<div style="position:absolute;left:10%;top:28%;width:13%;height:18%;background:rgba(0,200,200,.08);border:2px solid rgba(0,200,200,.2);border-radius:3px;"></div>'+
+          '<div style="position:absolute;left:25%;top:50%;width:20%;height:11%;background:rgba(200,100,200,.1);border:2px solid rgba(200,100,200,.25);border-radius:2px;"></div>'+
+          '<div style="position:absolute;left:10%;top:50%;width:12%;height:28%;background:rgba(200,150,0,.1);border:2px solid rgba(200,150,0,.2);border-radius:3px;"></div>'+
+          '<div style="position:absolute;left:52%;top:64%;width:16%;height:12%;background:rgba(100,100,255,.1);border:2px solid rgba(100,100,255,.2);border-radius:2px;"></div>'+
+          '<div style="position:absolute;right:2%;top:30%;width:12%;height:14%;background:rgba(255,200,0,.08);border:2px solid rgba(255,200,0,.2);border-radius:3px;"></div>'+
+          '<div style="position:absolute;right:2%;top:50%;width:14%;height:16%;background:rgba(200,100,100,.08);border:2px solid rgba(200,100,100,.2);border-radius:3px;"></div>'+
+          dropHtml+
+        '</div>'+
+      '</div>'+
+      '<div class="label-chips" id="chipPool"></div>'+
+    '</div>';
+
+  /* fix diagram title */
+  var dw=gb.querySelector('#diagWrap');
+  if(dw) dw.style.setProperty('--diag-title',"'"+diagramTitle+"'");
+
+  var pool=gb.querySelector('#chipPool');
+  var chipOrder=shuffle(pls.slice());
+  chipOrder.forEach(function(pl,idx){
+    var chip=document.createElement('div');
+    chip.className='label-chip'+(LANG==='bn'?' bn':'');
+    chip.id='chip_'+pl.id; chip.dataset.id=pl.id;
+    chip.style.animationDelay=(idx*0.06)+'s';
+    var part=getPart(pl.id);
+    chip.innerHTML=(part?part.ico+' ':'') + getLabelName(pl.id);
+    chip.draggable=true;
+
+    chip.addEventListener('dragstart',function(e){G.dragEl=chip;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    chip.addEventListener('dragend',function(){chip.classList.remove('dragging');});
+    chip.addEventListener('touchstart',function(e){G.dragEl=chip;chip.style.opacity='.4';},{passive:true});
+    chip.addEventListener('touchmove',function(e){
+      e.preventDefault();
+      var t2=e.touches[0];
+      gb.querySelectorAll('.diag-drop').forEach(function(d){d.classList.remove('over');});
+      var ov=document.elementFromPoint(t2.clientX,t2.clientY);
+      var drop=ov&&(ov.classList.contains('diag-drop')?ov:ov.closest&&ov.closest('.diag-drop'));
+      if(drop)drop.classList.add('over');
+    },{passive:false});
+    chip.addEventListener('touchend',function(e){
+      chip.style.opacity='1';
+      gb.querySelectorAll('.diag-drop').forEach(function(d){d.classList.remove('over');});
+      var t2=e.changedTouches[0];
+      var ov=document.elementFromPoint(t2.clientX,t2.clientY);
+      var drop=ov&&(ov.classList.contains('diag-drop')?ov:ov.closest&&ov.closest('.diag-drop'));
+      if(drop)doLabelDrop(drop,chip,pls.length,function(){placed++;updateProg(placed,pls.length);if(placed>=pls.length)onClear();});
+    });
+    pool.appendChild(chip);
+  });
+
+  gb.querySelectorAll('.diag-drop').forEach(function(drop){
+    drop.addEventListener('dragover',function(e){e.preventDefault();drop.classList.add('over');});
+    drop.addEventListener('dragleave',function(){drop.classList.remove('over');});
+    drop.addEventListener('drop',function(e){
+      e.preventDefault();drop.classList.remove('over');
+      doLabelDrop(drop,G.dragEl,pls.length,function(){placed++;updateProg(placed,pls.length);if(placed>=pls.length)onClear();});
+    });
+  });
+}
+function doLabelDrop(drop,chip,total,onSuccess){
+  if(!chip||!G.active)return;
+  if(drop.classList.contains('filled'))return;
+  if(drop.dataset.id===chip.dataset.id){
+    drop.classList.add('filled'); drop.innerHTML=chip.innerHTML;
+    chip.classList.add('used');
+    addScore(20,drop.getBoundingClientRect().left,drop.getBoundingClientRect().top);
+    toast(t('toastLabelOk'),'ok');
+    onSuccess();
+  } else {
+    drop.classList.add('wd'); setTimeout(function(){drop.classList.remove('wd');},400);
+    subScore(5);
+    toast(t('toastLabelBad'),'bad');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CASE 4 — SPEED QUIZ (10 questions)
+═══════════════════════════════════════════════════════════ */
+var speedQs=[], speedIdx=0;
+function buildSpeed(cs){
+  var allParts=PARTS();
+  speedQs=[];
+  var catNames={
+    input:  {en:'INPUT device',      bn:'ইনপুট ডিভাইস'},
+    output: {en:'OUTPUT device',     bn:'আউটপুট ডিভাইস'},
+    storage:{en:'STORAGE device',    bn:'স্টোরেজ ডিভাইস'},
+    process:{en:'PROCESSOR / component', bn:'প্রসেসর / উপাদান'},
+  };
+  function catName(cat){return catNames[cat][LANG]||catNames[cat].en;}
+
+  allParts.forEach(function(p){
+    /* Q1: identify from clue */
+    var wn1=shuffle(allParts.filter(function(x){return x.id!==p.id;})).slice(0,3).map(function(x){return x.name;});
+    speedQs.push({
+      q: p.ico+' — '+p.clue,
+      answer: p.name,
+      choices: shuffle([p.name].concat(wn1)),
+      ico: p.ico
+    });
+    /* Q2: category */
+    var allCats=['input','output','storage','process'].map(catName);
+    var correctCat=catName(p.cat);
+    var wrongCats=allCats.filter(function(c){return c!==correctCat;});
+    speedQs.push({
+      q: p.ico+' '+p.full+' '+( LANG==='bn' ? '— কোন ধরনের ডিভাইস?' : '— what type of device?'),
+      answer: correctCat,
+      choices: shuffle([correctCat].concat(wrongCats)),
+      ico: p.ico
+    });
+  });
+  speedQs=shuffle(speedQs).slice(0,cs.total||10);
+  speedIdx=0;
+  updateProg(0,speedQs.length);
+  renderSpeedQ();
+}
+function renderSpeedQ(){
+  if(!G.active)return;
+  if(speedIdx>=speedQs.length){onClear();return;}
+  var q=speedQs[speedIdx];
+  var gb=document.getElementById('gameBox');
+  gb.innerHTML=
+    '<div class="speed-zone">'+
+      '<div class="speed-q'+(LANG==='bn'?' bn':'')+'">'+
+        '<span class="q-clue-label'+(LANG==='bn'?' bn':'')+'">'+t('qLabel')+' #'+(speedIdx+1)+'</span>'+
+        q.q+
+      '</div>'+
+      '<div class="speed-choices" id="sCho"></div>'+
+    '</div>';
+  var sc=gb.querySelector('#sCho');
+  q.choices.forEach(function(ch,i){
+    var btn=document.createElement('div');
+    btn.className='choice'+(LANG==='bn'?' bn':'');
+    btn.style.animationDelay=(i*0.06)+'s';
+    btn.textContent=ch;
+    btn.addEventListener('click',function(){
+      if(!G.active)return;
+      sc.querySelectorAll('.choice').forEach(function(b){b.classList.add('disabled');});
+      if(ch===q.answer){
+        btn.classList.add('correct');
+        addScore(15, btn.getBoundingClientRect().left+40, btn.getBoundingClientRect().top);
+        toast(pick(t('toastSpeedOk')),'ok');
+        speedIdx++; updateProg(speedIdx,speedQs.length);
+        setTimeout(renderSpeedQ,700);
+      } else {
+        btn.classList.add('wrong');
+        sc.querySelectorAll('.choice').forEach(function(b){if(b.textContent===q.answer)b.classList.add('correct');});
+        subScore(5);
+        toast(tr(t('toastSpeedBad'),{a:q.answer}),'bad');
+        speedIdx++; updateProg(speedIdx,speedQs.length);
+        setTimeout(renderSpeedQ,1300);
+      }
+    });
+    sc.appendChild(btn);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CASE 5 — BOSS ROUND (16 parts, 4 categories)
+═══════════════════════════════════════════════════════════ */
+function buildBoss(cs){
+  var gb=document.getElementById('gameBox');
+  var allParts=PARTS();
+  var ids=cs.itemIds||allParts.map(function(p){return p.id;});
+  var items=shuffle(ids.map(function(id){
+    var p=getPart(id)||allParts[0];
+    return {ico:p.ico, label:p.name, cat:p.cat};
+  }));
+  updateProg(0,items.length);
+  var placed=0;
+
+  gb.innerHTML=
+    '<div class="boss-zone">'+
+      '<div class="boss-banner'+(LANG==='bn'?' bn':'')+'">'+t('bossBannerTitle')+'<em>'+t('bossBannerSub')+'</em></div>'+
+      '<div class="sort-bins">'+
+        '<div class="sort-bin"><div class="bin-head ih'+(LANG==='bn'?' bn':'')+'">'+t('binInput')+'</div><div class="bin-drop" id="binI" data-cat="input"><span class="bin-ph'+(LANG==='bn'?' bn':'')+'">'+t('binPh')+'</span></div></div>'+
+        '<div class="sort-bin"><div class="bin-head oh'+(LANG==='bn'?' bn':'')+'">'+t('binOutput')+'</div><div class="bin-drop" id="binO" data-cat="output"><span class="bin-ph'+(LANG==='bn'?' bn':'')+'">'+t('binPh')+'</span></div></div>'+
+        '<div class="sort-bin"><div class="bin-head sh'+(LANG==='bn'?' bn':'')+'">'+t('binStorage')+'</div><div class="bin-drop" id="binS" data-cat="storage"><span class="bin-ph'+(LANG==='bn'?' bn':'')+'">'+t('binPh')+'</span></div></div>'+
+        '<div class="sort-bin"><div class="bin-head ph'+(LANG==='bn'?' bn':'')+'">'+t('binProcess')+'</div><div class="bin-drop" id="binP" data-cat="process"><span class="bin-ph'+(LANG==='bn'?' bn':'')+'">'+t('binPh')+'</span></div></div>'+
+      '</div>'+
+      '<div class="sort-pool" id="sortPool"></div>'+
+    '</div>';
+
+  var pool=gb.querySelector('#sortPool');
+  items.forEach(function(item,idx){
+    var chip=document.createElement('div');
+    chip.className='sort-chip'+(LANG==='bn'?' bn':'');
+    chip.dataset.cat=item.cat;
+    chip.style.animationDelay=(idx*0.04)+'s';
+    chip.innerHTML=item.ico+' '+item.label;
+    chip.draggable=true;
+
+    chip.addEventListener('dragstart',function(e){G.dragEl=chip;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    chip.addEventListener('dragend',function(){chip.classList.remove('dragging');});
+    chip.addEventListener('touchstart',function(e){G.dragEl=chip;chip.style.opacity='.4';},{passive:true});
+    chip.addEventListener('touchmove',function(e){
+      e.preventDefault();
+      var t2=e.touches[0];
+      gb.querySelectorAll('.bin-drop').forEach(function(b){b.classList.remove('over');});
+      var ov=document.elementFromPoint(t2.clientX,t2.clientY);
+      var bin=ov&&(ov.classList.contains('bin-drop')?ov:ov.closest&&ov.closest('.bin-drop'));
+      if(bin)bin.classList.add('over');
+    },{passive:false});
+    chip.addEventListener('touchend',function(e){
+      chip.style.opacity='1';
+      gb.querySelectorAll('.bin-drop').forEach(function(b){b.classList.remove('over');});
+      var t2=e.changedTouches[0];
+      var ov=document.elementFromPoint(t2.clientX,t2.clientY);
+      var bin=ov&&(ov.classList.contains('bin-drop')?ov:ov.closest&&ov.closest('.bin-drop'));
+      if(bin)doBossDrop(bin,chip,function(){placed++;updateProg(placed,items.length);if(placed>=items.length)onClear();});
+    });
+    pool.appendChild(chip);
+  });
+
+  gb.querySelectorAll('.bin-drop').forEach(function(bin){
+    bin.addEventListener('dragover',function(e){e.preventDefault();bin.classList.add('over');});
+    bin.addEventListener('dragleave',function(){bin.classList.remove('over');});
+    bin.addEventListener('drop',function(e){
+      e.preventDefault(); bin.classList.remove('over');
+      doBossDrop(bin,G.dragEl,function(){placed++;updateProg(placed,items.length);if(placed>=items.length)onClear();});
+    });
+  });
+}
+function doBossDrop(bin,chip,onSuccess){
+  if(!chip||!G.active)return;
+  var ph=bin.querySelector('.bin-ph');if(ph)ph.style.display='none';
+  if(chip.dataset.cat===bin.dataset.cat){
+    var placed=document.createElement('div');
+    placed.className='placed-part'+(LANG==='bn'?' bn':'');
+    placed.innerHTML=chip.innerHTML;
+    bin.appendChild(placed);
+    if(chip.parentNode)chip.parentNode.removeChild(chip);
+    bin.classList.add('cb');
+    addScore(15, bin.getBoundingClientRect().left+40, bin.getBoundingClientRect().top);
+    toast(t('toastBossOk'),'ok');
+    onSuccess();
+  } else {
+    bin.classList.add('wb'); setTimeout(function(){bin.classList.remove('wb');},450);
+    subScore(5); updateNav();
+    toast(t('toastBossBad'),'bad');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ON CLEAR / OVER / ALL DONE
+═══════════════════════════════════════════════════════════ */
+function onClear(){
+  if(!G.active)return;
+  G.active=false; stopTimer();
+  var cs=CASES_RAW[G.case-1];
+  var maxPts=[200,200,200,150,240];
+  var stars=starsFor(G.score, maxPts[G.case-1]||200);
+  if(stars>G.stars[G.case-1])G.stars[G.case-1]=stars;
+  G.scores[G.case-1]=G.score;
+  G.unlocked[G.case-1]=true;
+  if(G.case<5)G.unlocked[G.case]=true;
+  persist(); confetti();
+
+  document.getElementById('clrIco').textContent=cs.ico;
+  document.getElementById('clrStats').innerHTML=
+    '<div class="sbox"><span class="sbox-v">'+G.score+'</span><span class="sbox-l'+(LANG==='bn'?' bn':'')+'">'+t('sboxScore')+'</span></div>'+
+    '<div class="sbox"><span class="sbox-v">'+starStr(stars)+'</span><span class="sbox-l'+(LANG==='bn'?' bn':'')+'">'+t('sboxStars')+'</span></div>'+
+    '<div class="sbox"><span class="sbox-v">'+Math.ceil(G.t)+'s</span><span class="sbox-l'+(LANG==='bn'?' bn':'')+'">'+t('sboxTime')+'</span></div>'+
+    '<div class="sbox"><span class="sbox-v">'+G.lives+'</span><span class="sbox-l'+(LANG==='bn'?' bn':'')+'">'+t('sboxLives')+'</span></div>';
+
+  document.getElementById('clearTitle').innerHTML=t('clearTitle');
+  document.getElementById('clrMsg').textContent=pick(t('clrMsg_pool'));
+  var nb=document.getElementById('clrNext');
+  nb.textContent=G.case>=5?'🏆 '+t('doneT2'):'➡️ '+t('btnNext');
+  show('scClear');
+}
+
+function showOver(msg){
+  G.active=false; stopTimer();
+  document.getElementById('overMsg').textContent=msg;
+  show('scOver');
+}
+
+function showAllDone(){
+  stopTimer();
+  var total=G.scores.reduce(function(a,b){return a+b;},0);
+  var ts=G.stars.reduce(function(a,b){return a+b;},0);
+  var msgs=t('doneMsg_pool');
+  var msg=ts>=14?msgs[0]:ts>=11?msgs[1]:ts>=8?msgs[2]:msgs[3];
+
+  document.getElementById('doneStats').innerHTML=
+    '<div class="sbox"><span class="sbox-v">'+total+'</span><span class="sbox-l'+(LANG==='bn'?' bn':'')+'">'+t('sboxScore')+'</span></div>'+
+    '<div class="sbox"><span class="sbox-v">'+ts+'/15</span><span class="sbox-l'+(LANG==='bn'?' bn':'')+'">'+t('sboxStars')+'</span></div>'+
+    '<div class="sbox"><span class="sbox-v">5/5</span><span class="sbox-l">Cases</span></div>';
+  document.getElementById('doneMsg').textContent=msg;
+  document.getElementById('doneT1').textContent=t('doneT1');
+  document.getElementById('doneT2').textContent=t('doneT2');
+  confetti(); show('scDone');
+}
+
+/* ─── BOOT ─── */
+applyUIText();
+/* sync lang toggle buttons */
+document.getElementById('btnEN').classList.toggle('active', LANG==='en');
+document.getElementById('btnBN').classList.toggle('active', LANG==='bn');
+show('scStart');
+</script>
+</body>
+</html>
