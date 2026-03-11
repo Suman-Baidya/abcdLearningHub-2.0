@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<title>🔧 Build-a-PC Junior</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root{
+  --bg:#FFF8ED;--bg2:#FFF0D6;
+  --ink:#1A1A2E;--ink2:#374151;--ink3:#6B7280;
+  --blue:#1D5CE5;--blueL:#DBEAFE;--blueD:#1241B3;
+  --green:#15803D;--greenL:#DCFCE7;--greenD:#14532D;
+  --orange:#EA6C00;--orangeL:#FFF7ED;
+  --red:#DC2626;--redL:#FEE2E2;
+  --yellow:#D97706;--yellowL:#FEF9C3;
+  --purple:#7C3AED;--purpleL:#EDE9FE;
+  --cyan:#0E7490;--cyanL:#CFFAFE;
+  --pink:#BE185D;--pinkL:#FCE7F3;
+  --sh:4px 4px 0 var(--ink);
+  --sh2:6px 6px 0 var(--ink);
+  --sh3:3px 3px 0 var(--ink);
+  --nav:58px;
+  --r:14px;--r2:20px;--r3:26px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;touch-action:manipulation;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);
+  user-select:none;-webkit-user-select:none;}
+.bn,.bn *{font-family:'Hind Siliguri','Nunito',sans-serif!important;}
+
+/* background deco */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 38% at 88% 8%,rgba(59,130,246,.08),transparent 60%),
+  radial-gradient(ellipse 45% 32% at 8% 92%,rgba(234,108,0,.07),transparent 60%);}
+
+/* ══════════════════════════════════════════
+   NAV — 3-zone grid so title NEVER squeezes
+══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav);z-index:600;
+  background:#fff;border-bottom:3px solid var(--ink);box-shadow:0 3px 0 var(--ink);
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;
+  padding:0 10px;gap:6px;
+}
+.nav-back{
+  text-decoration:none;color:var(--ink);font-weight:900;font-size:11px;
+  padding:5px 12px;border-radius:50px;border:2.5px solid var(--ink);background:#fff;
+  box-shadow:var(--sh3);transition:.15s;white-space:nowrap;
+}
+.nav-back:hover{transform:translate(-2px,-2px);box-shadow:var(--sh);}
+.nav-center{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;overflow:hidden;}
+.nav-title{
+  font-family:'Fredoka One',cursive;font-size:clamp(13px,3.2vw,20px);
+  color:var(--blue);letter-spacing:.4px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;line-height:1.1;
+}
+.nav-pips{display:flex;gap:4px;align-items:center;}
+.nav-pip{width:8px;height:8px;border-radius:50%;background:rgba(26,26,46,.12);border:2px solid rgba(26,26,46,.18);transition:.3s;flex-shrink:0;}
+.nav-pip.done{background:var(--green);border-color:var(--green);}
+.nav-pip.cur{background:var(--blue);border-color:var(--blue);box-shadow:0 0 5px rgba(29,92,229,.5);}
+.nav-right{display:flex;align-items:center;gap:6px;}
+.nav-score{background:var(--yellowL);border:2px solid var(--ink);border-radius:50px;
+  padding:4px 10px;font-weight:900;font-size:11px;box-shadow:var(--sh3);white-space:nowrap;}
+.lang-toggle{display:flex;border:2.5px solid var(--ink);border-radius:50px;overflow:hidden;box-shadow:var(--sh3);}
+.lb{padding:4px 11px;font-weight:900;font-size:11px;cursor:pointer;background:#fff;color:var(--ink3);border:none;transition:.15s;}
+.lb.on{background:var(--blue);color:#fff;}
+
+/* ══════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════ */
+/* Both screens sit below the fixed nav */
+.sc{position:fixed;top:var(--nav);left:0;right:0;bottom:0;z-index:10;background:var(--bg);}
+.sc.off{display:none!important;}
+.sc-in{animation:scIn .38s cubic-bezier(.2,.7,0,1.2) both;}
+@keyframes scIn{from{opacity:0;transform:translateY(12px)scale(.97)}to{opacity:1;transform:none}}
+
+/* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 22px;border-radius:50px;border:2.5px solid var(--ink);
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;cursor:pointer;
+  transition:.15s;white-space:nowrap;box-shadow:var(--sh);text-decoration:none;}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:var(--sh2);}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+.bb{background:var(--blue);color:#fff;}
+.bg{background:var(--green);color:#fff;}
+.bw{background:#fff;color:var(--ink);}
+
+/* ══════════════════════════════════════════
+   HOME SCREEN
+══════════════════════════════════════════ */
+#scHome{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+.home-inner{
+  display:flex;flex-direction:column;align-items:center;
+  gap:16px;padding:16px 12px 32px;
+  max-width:780px;margin:0 auto;
+}
+.home-hero{
+  width:100%;position:relative;
+  background:linear-gradient(145deg,#EBF4FF 0%,#FFF8ED 60%,#F0FFF4 100%);
+  border:3px solid var(--ink);border-radius:var(--r3);
+  padding:24px 20px 22px;box-shadow:var(--sh2);text-align:center;
+}
+.home-hero::before{content:'⚙️';position:absolute;right:-8px;top:-12px;font-size:62px;opacity:.07;pointer-events:none;}
+.home-hero::after{content:'🔩';position:absolute;left:-6px;bottom:-8px;font-size:52px;opacity:.07;pointer-events:none;}
+.mascot{font-size:clamp(56px,11vw,72px);display:block;animation:mascotBob 2.5s ease-in-out infinite;
+  filter:drop-shadow(3px 5px 0 rgba(26,26,46,.1));margin-bottom:10px;}
+@keyframes mascotBob{0%,100%{transform:translateY(0)rotate(-3deg)}50%{transform:translateY(-12px)rotate(3deg)}}
+.home-title{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,5vw,2.4rem);color:var(--blue);
+  line-height:1.05;margin-bottom:6px;text-shadow:3px 3px 0 rgba(29,92,229,.1);}
+.home-sub{font-size:.87rem;color:var(--ink2);font-weight:700;line-height:1.65;margin-bottom:18px;max-width:480px;margin-left:auto;margin-right:auto;}
+.home-sub strong{color:var(--blue);}
+.home-cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+/* levels grid — 8 cards */
+.section-head{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.levels-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;}
+.wcard{background:#fff;border:2.5px solid var(--ink);border-radius:var(--r);
+  padding:10px 6px 8px;text-align:center;cursor:pointer;transition:.18s;
+  box-shadow:var(--sh);position:relative;}
+.wcard:hover:not(.locked){transform:translate(-2px,-3px);box-shadow:var(--sh2);}
+.wcard:active:not(.locked){transform:translate(1px,1px);box-shadow:var(--sh3);}
+.wcard.locked{opacity:.4;cursor:not-allowed;filter:grayscale(.5);}
+.wcard.won{background:var(--greenL);}
+.wc-ico{font-size:clamp(22px,5vw,30px);display:block;margin-bottom:4px;}
+.wc-name{font-size:9px;font-weight:900;line-height:1.3;margin-bottom:3px;color:var(--ink);}
+.wc-stars{font-size:9px;letter-spacing:1px;display:block;margin-bottom:2px;}
+.wc-diff{display:inline-block;padding:2px 7px;border-radius:50px;font-size:7.5px;font-weight:900;letter-spacing:.4px;}
+.wc-lock{position:absolute;top:4px;right:5px;font-size:11px;}
+.wc-parts{font-size:8px;color:var(--ink3);font-weight:700;margin-top:2px;}
+
+/* how-to */
+.howto-box{width:100%;background:#fff;border:2.5px solid var(--ink);
+  border-radius:var(--r2);padding:15px 18px;box-shadow:var(--sh);}
+.ht-head{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:10px;}
+.ht-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.ht-step{display:flex;gap:8px;align-items:flex-start;background:var(--bg);border-radius:11px;padding:8px 9px;}
+.ht-n{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;
+  font-family:'Fredoka One',cursive;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ht-t{font-size:10.5px;font-weight:700;color:var(--ink2);line-height:1.45;}
+
+/* ══════════════════════════════════════════
+   GAME SCREEN
+   Outer = scroll container (like #scHome)
+   Inner = centred column, flex, fills height
+══════════════════════════════════════════ */
+#scGame{
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+/* inner wrapper — centred, capped, flex column */
+.game-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;          /* centres all children horizontally */
+  gap:8px;
+  padding:10px 12px 20px;      /* 20px space at bottom */
+  width:100%;
+  max-width:980px;
+  margin:0 auto;               /* centres the wrapper itself */
+  /* fill at least full visible height so panels stretch properly */
+  min-height:calc(100vh - var(--nav));
+  box-sizing:border-box;
+}
+
+/* timer pill */
+.timer-pill{
+  background:var(--redL);border:2px solid var(--red);border-radius:50px;
+  padding:4px 12px;font-weight:900;font-size:12px;color:var(--red);
+  box-shadow:var(--sh3);white-space:nowrap;animation:timerPulse 1s ease infinite;
+}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.7}}
+.timer-pill.ok{background:var(--yellowL);border-color:var(--yellow);color:var(--yellow);animation:none;}
+
+/* game header — full width of inner wrapper */
+.game-top{display:flex;align-items:center;gap:7px;width:100%;flex-shrink:0;}
+.level-badge{background:var(--blue);color:#fff;font-family:'Fredoka One',cursive;font-size:12px;
+  padding:5px 13px;border-radius:50px;border:2px solid var(--ink);box-shadow:var(--sh3);flex-shrink:0;}
+.game-title{flex:1;min-width:0;font-family:'Fredoka One',cursive;
+  font-size:clamp(11px,2.3vw,17px);color:var(--ink);text-align:center;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hud-pills{display:flex;gap:5px;flex-shrink:0;}
+.hpill{display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:50px;
+  border:2px solid var(--ink);font-weight:900;font-size:11px;box-shadow:var(--sh3);white-space:nowrap;}
+
+/* progress bar — full width */
+.prog-wrap{width:100%;flex-shrink:0;}
+.prog-track{height:12px;background:var(--bg2);border:2px solid var(--ink);border-radius:50px;overflow:hidden;position:relative;}
+.prog-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--blue),#60A5FA);
+  transition:width .45s cubic-bezier(.34,1.56,.64,1);position:relative;}
+.prog-fill::after{content:'';position:absolute;top:2px;left:4px;right:4px;height:4px;background:rgba(255,255,255,.4);border-radius:50px;}
+.prog-label{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:900;color:var(--ink3);}
+
+/* difficulty ribbon */
+.diff-ribbon{display:flex;align-items:center;gap:6px;margin-top:4px;}
+.diff-tag{padding:2px 10px;border-radius:50px;font-size:9px;font-weight:900;letter-spacing:.4px;border:1.5px solid rgba(26,26,46,.18);}
+.diff-hint{color:var(--ink3);font-size:9.5px;font-weight:700;}
+
+/* ── GAME LAYOUT: parts panel + build area ── */
+.game-layout{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:10px;
+  width:100%;
+  /* explicit height: viewport minus nav minus header minus progress minus gaps/padding */
+  height:calc(100vh - var(--nav) - 42px - 46px - 20px - 32px);
+  min-height:320px;   /* never collapse below this */
+}
+
+/* ── PARTS PANEL — scrolls its own cards ── */
+.parts-panel{
+  background:#fff;border:3px solid var(--ink);border-radius:var(--r2);
+  padding:9px 7px;box-shadow:var(--sh);
+  display:flex;flex-direction:column;gap:6px;
+  overflow-y:auto;       /* ← left panel scrolls independently */
+  overflow-x:hidden;
+  scrollbar-width:thin;scrollbar-color:var(--blue) transparent;
+}
+.parts-panel::-webkit-scrollbar{width:4px;}
+.parts-panel::-webkit-scrollbar-thumb{background:var(--blue);border-radius:4px;}
+.pp-hdr{font-family:'Fredoka One',cursive;font-size:.88rem;color:var(--ink);text-align:center;
+  padding-bottom:6px;border-bottom:2px dashed rgba(26,26,46,.13);flex-shrink:0;}
+
+/* ── PART CARDS ── */
+.part-card{
+  background:var(--bg);border:2.5px solid var(--ink);border-radius:12px;
+  padding:7px 7px 5px;cursor:grab;transition:all .18s;text-align:center;
+  box-shadow:var(--sh3);flex-shrink:0;
+}
+.part-card:hover{transform:translate(-2px,-2px);box-shadow:var(--sh);}
+.part-card:active,.part-card.dragging{cursor:grabbing;opacity:.5;transform:scale(.93);box-shadow:1px 1px 0 var(--ink);}
+.part-card.placed{opacity:.2;pointer-events:none;filter:grayscale(.7);}
+.part-card.decoy{border-style:dashed;border-color:rgba(26,26,46,.4);background:rgba(26,26,46,.03);}
+.pc-emoji{font-size:clamp(22px,4.2vw,28px);display:block;margin-bottom:2px;line-height:1;}
+.pc-name{font-size:9.5px;font-weight:900;color:var(--ink);line-height:1.25;margin-bottom:2px;}
+.pc-tag{display:inline-block;padding:1.5px 7px;border-radius:50px;font-size:7px;font-weight:900;}
+
+/* ── BUILD AREA — scrolls slots internally ── */
+.build-area{
+  background:#fff;border:3px solid var(--ink);border-radius:var(--r2);
+  padding:10px 11px;box-shadow:var(--sh);
+  display:flex;flex-direction:column;gap:8px;
+  overflow-y:auto;overflow-x:hidden;
+  position:relative;
+}
+.build-area.glowing{animation:buildGlow .5s ease-in-out 4;}
+@keyframes buildGlow{0%,100%{box-shadow:var(--sh)}50%{box-shadow:0 0 28px rgba(21,128,61,.5),var(--sh);border-color:var(--green);}}
+.build-top{display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:8px;border-bottom:2px dashed rgba(26,26,46,.1);flex-shrink:0;}
+.build-name{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--blue);}
+.build-tip{font-size:9.5px;font-weight:700;color:var(--ink3);}
+
+/* ── SLOTS GRID ── */
+.slots-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;align-content:start;}
+.slots-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+
+/* ── SLOT ── */
+.slot{
+  border:2.5px dashed rgba(26,26,46,.2);border-radius:13px;
+  min-height:72px;padding:8px 7px 7px;text-align:center;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:default;background:rgba(26,26,46,.015);position:relative;
+}
+.slot.hover{border-color:var(--blue);background:var(--blueL);transform:scale(1.03);box-shadow:0 0 0 3px rgba(59,130,246,.2);}
+.slot.filled{border-style:solid;border-color:var(--green);background:var(--greenL);}
+.slot.shake{animation:slotShake .4s ease;border-color:var(--red);background:var(--redL);}
+@keyframes slotShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}60%{transform:translateX(8px)}80%{transform:translateX(-4px)}}
+.slot.snap{animation:slotSnap .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes slotSnap{0%,100%{transform:scale(1)}45%{transform:scale(1.08)}}
+/* slot contents — visibility driven by level config */
+.slot-ghost{font-size:clamp(22px,4vw,26px);opacity:.18;display:block;margin-bottom:2px;}
+.slot-ghost.hidden-ghost{display:none;}
+.slot-lbl{font-size:9px;font-weight:900;color:rgba(26,26,46,.32);line-height:1.3;}
+.slot-lbl.hidden-lbl{visibility:hidden;font-size:0;}
+.slot-sub{font-size:7.5px;font-weight:700;color:rgba(26,26,46,.2);margin-top:1px;}
+.slot-num{font-size:11px;font-weight:900;color:rgba(26,26,46,.2);margin-bottom:2px;}
+.slot-placed-ico{font-size:clamp(24px,4vw,30px);display:block;animation:icoIn .38s cubic-bezier(.34,1.56,.64,1);}
+@keyframes icoIn{from{transform:scale(0)rotate(-20deg)}to{transform:scale(1)rotate(0)}}
+.slot-placed-name{font-size:9px;font-weight:900;color:var(--greenD);margin-top:2px;line-height:1.25;}
+.slot-check{position:absolute;top:5px;right:6px;font-size:14px;animation:icoIn .35s cubic-bezier(.34,1.56,.64,1);}
+
+/* ── HINT BAR ── */
+.hint-bar{background:var(--yellowL);border:2px solid var(--yellow);border-radius:10px;
+  padding:6px 11px;display:flex;gap:7px;align-items:center;
+  font-size:10.5px;font-weight:700;color:var(--ink2);animation:hintSlide .35s ease;flex-shrink:0;}
+@keyframes hintSlide{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hint-bar.hidden{display:none;}
+
+/* ══════════════════════════════════════════
+   DIFFICULTY MODE BADGE (shown in game)
+══════════════════════════════════════════ */
+.mode-badge{
+  position:absolute;top:8px;left:10px;z-index:5;
+  padding:3px 10px;border-radius:50px;font-size:9px;font-weight:900;
+  border:2px solid var(--ink);letter-spacing:.4px;box-shadow:var(--sh3);
+}
+
+/* ══════════════════════════════════════════
+   FUN FACT POPUP
+══════════════════════════════════════════ */
+.fact-popup{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:700;
+  max-width:390px;width:calc(100% - 24px);background:#fff;border:3px solid var(--ink);
+  border-radius:var(--r2);padding:13px 34px 13px 14px;box-shadow:var(--sh2);
+  animation:factPop .45s cubic-bezier(.34,1.56,.64,1);display:flex;gap:10px;align-items:flex-start;}
+.fact-popup.hidden{display:none;}
+@keyframes factPop{from{opacity:0;transform:translateX(-50%)translateY(18px)}to{opacity:1;transform:translateX(-50%)translateY(0)}}
+.fact-ico{font-size:30px;flex-shrink:0;}
+.fact-body{flex:1;min-width:0;}
+.fact-badge{display:inline-block;padding:2px 9px;border-radius:50px;font-size:8.5px;font-weight:900;letter-spacing:.5px;margin-bottom:4px;}
+.fact-title{font-family:'Fredoka One',cursive;font-size:.92rem;color:var(--blue);margin-bottom:2px;}
+.fact-text{font-size:11px;font-weight:700;color:var(--ink2);line-height:1.55;}
+.fact-x{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;
+  background:var(--ink);color:#fff;font-size:11px;font-weight:900;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.15s;}
+.fact-x:hover{background:var(--red);}
+
+/* ══════════════════════════════════════════
+   QUIZ OVERLAY
+══════════════════════════════════════════ */
+.quiz-ov{position:fixed;inset:0;z-index:800;background:rgba(26,26,46,.72);
+  backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:14px;}
+.quiz-ov.hidden{display:none;}
+.quiz-card{background:#fff;border:3px solid var(--ink);border-radius:var(--r3);
+  max-width:440px;width:100%;padding:22px 18px;box-shadow:var(--sh2);
+  animation:scIn .38s cubic-bezier(.2,.7,0,1.2);max-height:90vh;overflow-y:auto;}
+.quiz-top{text-align:center;margin-bottom:14px;}
+.quiz-big-ico{font-size:52px;display:block;margin-bottom:6px;animation:mascotBob 2s ease-in-out infinite;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--blue);margin-bottom:4px;}
+.quiz-q{font-size:.88rem;font-weight:700;color:var(--ink2);line-height:1.55;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0;}
+.qopt{background:var(--bg);border:2.5px solid var(--ink);border-radius:12px;padding:10px 9px;
+  cursor:pointer;transition:.18s;font-weight:800;font-size:.82rem;text-align:center;box-shadow:var(--sh3);}
+.qopt:hover:not([disabled]){transform:translate(-2px,-2px);box-shadow:var(--sh);background:var(--blueL);}
+.qopt.correct{background:var(--greenL)!important;border-color:var(--green)!important;color:var(--greenD)!important;}
+.qopt.wrong{background:var(--redL)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.quiz-fb{border-radius:11px;padding:9px 13px;font-weight:800;font-size:.86rem;text-align:center;display:none;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:var(--greenL);color:var(--greenD);}
+.quiz-fb.ng{background:var(--redL);color:var(--red);}
+
+/* ══════════════════════════════════════════
+   LEVEL COMPLETE
+══════════════════════════════════════════ */
+.done-ov{position:fixed;inset:0;z-index:850;background:rgba(26,26,46,.72);
+  backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:14px;}
+.done-ov.hidden{display:none;}
+.done-card{background:linear-gradient(145deg,#EBF4FF,#FFF8ED 55%,#F0FFF4);
+  border:3px solid var(--ink);border-radius:var(--r3);max-width:420px;width:100%;
+  padding:24px 20px;box-shadow:var(--sh2);text-align:center;
+  animation:scIn .5s cubic-bezier(.2,.7,0,1.2);max-height:92vh;overflow-y:auto;}
+.done-trophy{font-size:clamp(60px,13vw,82px);display:block;margin-bottom:7px;
+  animation:trophySpin .9s cubic-bezier(.34,1.56,.64,1);}
+@keyframes trophySpin{from{transform:scale(0)rotate(-180deg)}to{transform:scale(1)rotate(0)}}
+.done-title{font-family:'Fredoka One',cursive;font-size:clamp(1.55rem,4.5vw,2rem);color:var(--blue);margin-bottom:4px;}
+.done-sub{font-size:.86rem;font-weight:700;color:var(--ink2);margin-bottom:13px;line-height:1.6;}
+.done-stars{display:flex;justify-content:center;gap:7px;margin-bottom:13px;}
+.dstar{font-size:38px;filter:grayscale(1);opacity:.2;transition:.3s;}
+.dstar.lit{filter:none;opacity:1;animation:starPop .55s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes starPop{from{transform:scale(0)rotate(-40deg)}to{transform:scale(1)rotate(0)}}
+.done-stats{display:flex;gap:7px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
+.dstat{background:#fff;border:2px solid var(--ink);border-radius:13px;padding:8px 14px;
+  box-shadow:var(--sh3);text-align:center;min-width:72px;}
+.dstat-v{font-family:'Fredoka One',cursive;font-size:1.45rem;color:var(--blue);}
+.dstat-l{font-size:8px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;}
+.done-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+
+/* ══════════════════════════════════════════
+   PARTICLES, CONFETTI, TOAST
+══════════════════════════════════════════ */
+.clayer{position:fixed;inset:0;pointer-events:none;z-index:900;overflow:hidden;}
+.cp{position:absolute;top:-16px;border-radius:3px;animation:cpfall linear forwards;}
+@keyframes cpfall{to{transform:translateY(108vh)rotate(1080deg);opacity:0;}}
+.particle{position:fixed;pointer-events:none;z-index:901;font-size:18px;animation:partFly .9s ease-out forwards;}
+@keyframes partFly{0%{opacity:1;transform:translateY(0)scale(1)}100%{opacity:0;transform:translateY(-90px)scale(1.4)rotate(22deg)}}
+.score-pop{position:fixed;pointer-events:none;z-index:902;font-family:'Fredoka One',cursive;
+  font-size:1.25rem;animation:scoreFly .75s ease-out forwards;}
+@keyframes scoreFly{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
+.sp-ok{color:var(--green);}
+.sp-ng{color:var(--red);}
+.toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);z-index:999;
+  padding:8px 20px;border-radius:50px;font-weight:900;font-size:12.5px;
+  border:2.5px solid var(--ink);box-shadow:var(--sh);animation:toastAnim .95s ease forwards;
+  white-space:nowrap;pointer-events:none;}
+.t-ok{background:var(--greenL);color:var(--greenD);}
+.t-ng{background:var(--redL);color:var(--red);}
+.t-tip{background:var(--yellowL);color:#713F12;}
+@keyframes toastAnim{
+  0%{opacity:0;transform:translateX(-50%)translateY(-14px)scale(.8)}
+  15%{opacity:1;transform:translateX(-50%)scale(1.04)}
+  75%{opacity:1}
+  100%{opacity:0;transform:translateX(-50%)translateY(-10px)}
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:620px){
+  .nav-score{display:none;}
+  /* game-inner: no bottom padding override needed, just tighten */
+  .game-inner{padding:8px 8px 16px;gap:6px;}
+  /* stack panels vertically on mobile */
+  .game-layout{
+    grid-template-columns:1fr;
+    height:auto;        /* let content determine height on mobile */
+    min-height:0;
+  }
+  /* parts panel: horizontal scroll row on mobile */
+  .parts-panel{
+    flex-direction:row;flex-wrap:nowrap;
+    overflow-x:auto;overflow-y:hidden;
+    padding:7px 6px;gap:5px;
+    height:auto;max-height:100px;
+    scrollbar-width:thin;
+  }
+  .pp-hdr{display:none;}
+  .part-card{min-width:64px;flex-shrink:0;}
+  /* build area has natural height on mobile */
+  .build-area{min-height:280px;overflow-y:visible;}
+  .levels-grid{grid-template-columns:repeat(4,1fr);gap:5px;}
+  .ht-grid{grid-template-columns:1fr;}
+  .quiz-opts{grid-template-columns:1fr;}
+  .slots-grid{gap:5px;}
+  .slot{min-height:60px;}
+}
+@media(max-width:380px){
+  .levels-grid{grid-template-columns:repeat(2,1fr);}
+  .wc-diff,.wc-parts{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="clayer" id="cLayer"></div>
+
+<!-- FUN FACT -->
+<div class="fact-popup hidden" id="factPopup">
+  <span class="fact-ico" id="factIco">💡</span>
+  <div class="fact-body">
+    <div class="fact-badge" id="factBadge">Fun Fact!</div>
+    <div class="fact-title" id="factTitle">Did You Know?</div>
+    <div class="fact-text" id="factText"></div>
+  </div>
+  <button class="fact-x" onclick="hideFact()">✕</button>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-ov hidden" id="quizOv">
+  <div class="quiz-card">
+    <div class="quiz-top">
+      <span class="quiz-big-ico" id="qIco">🧠</span>
+      <div class="quiz-title" id="qTitle">Quick Quiz!</div>
+      <div class="quiz-q" id="qQ"></div>
+    </div>
+    <div class="quiz-opts" id="qOpts"></div>
+    <div class="quiz-fb" id="qFb"></div>
+    <div style="text-align:center;margin-top:11px">
+      <button class="btn bb" id="qNext" onclick="closeQuiz()" style="display:none"></button>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL COMPLETE -->
+<div class="done-ov hidden" id="doneOv">
+  <div class="done-card">
+    <span class="done-trophy" id="doneTrophy">🏆</span>
+    <div class="done-title" id="doneTitle">Level Complete!</div>
+    <div class="done-sub" id="doneSub"></div>
+    <div class="done-stars">
+      <span class="dstar">⭐</span><span class="dstar">⭐</span><span class="dstar">⭐</span>
+    </div>
+    <div class="done-stats">
+      <div class="dstat"><div class="dstat-v" id="dScore">0</div><div class="dstat-l" id="dScoreL">Score</div></div>
+      <div class="dstat"><div class="dstat-v" id="dAcc">100%</div><div class="dstat-l" id="dAccL">Accuracy</div></div>
+      <div class="dstat"><div class="dstat-v" id="dTime">0s</div><div class="dstat-l" id="dTimeL">Time</div></div>
+    </div>
+    <div class="done-btns">
+      <button class="btn bb" id="dNext"></button>
+      <button class="btn bw" id="dHome" onclick="goHome()"></button>
+      <button class="btn bw" id="dRetry" onclick="retryLevel()"></button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-back" href="../index.html">← Hub</a>
+  <div class="nav-center">
+    <div class="nav-title" id="navTitle">🔧 Build-a-PC Junior</div>
+    <div class="nav-pips" id="navPips">
+      <div class="nav-pip"></div><div class="nav-pip"></div><div class="nav-pip"></div>
+      <div class="nav-pip"></div><div class="nav-pip"></div><div class="nav-pip"></div>
+      <div class="nav-pip"></div><div class="nav-pip"></div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-score">⭐ <span id="navStars">0</span></div>
+    <div class="lang-toggle">
+      <button class="lb on" id="lbEN" onclick="setLang('en')">EN</button>
+      <button class="lb" id="lbBN" onclick="setLang('bn')">বাং</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ HOME ════ -->
+<div class="sc sc-in" id="scHome">
+  <div class="home-inner">
+    <div class="home-hero">
+      <span class="mascot">🖥️</span>
+      <div class="home-title" id="homeTitle">Build-a-PC Junior!</div>
+      <div class="home-sub" id="homeSub">Drag parts into the <strong>right slots</strong> to build a computer! Progress from beginner to PC Master! 🎉</div>
+      <div class="home-cta">
+        <button class="btn bb" id="btnPlay" onclick="quickPlay()">▶ Start!</button>
+        <button class="btn bw" id="btnLevels" onclick="document.getElementById('lvSection').scrollIntoView({behavior:'smooth'})">🗺️ Levels</button>
+      </div>
+    </div>
+
+    <div style="width:100%" id="lvSection">
+      <div class="section-head" id="worldsTitle">🏆 Choose Your Level</div>
+      <div class="levels-grid" id="worldsGrid"></div>
+    </div>
+
+    <div class="howto-box">
+      <div class="ht-head" id="htHead">📖 How to Play</div>
+      <div class="ht-grid">
+        <div class="ht-step"><div class="ht-n">1</div><div class="ht-t" id="ht1">Drag parts from the left panel into the matching slots!</div></div>
+        <div class="ht-step"><div class="ht-n">2</div><div class="ht-t" id="ht2">Slots show ghost hints — they get harder as you progress!</div></div>
+        <div class="ht-step"><div class="ht-n">3</div><div class="ht-t" id="ht3">Higher levels add decoy parts, time limits & hidden labels!</div></div>
+        <div class="ht-step"><div class="ht-n">4</div><div class="ht-t" id="ht4">Answer a quiz after each level to earn bonus stars! ⭐</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ GAME ════ -->
+<div class="sc off" id="scGame">
+ <div class="game-inner">
+  <div class="game-top">
+    <div class="level-badge" id="gBadge">Level 1</div>
+    <div class="game-title" id="gTitle">Basic PC</div>
+    <div class="hud-pills">
+      <div class="hpill" style="background:var(--blueL);color:var(--blue);border-color:rgba(29,92,229,.3)">⚡ <span id="hScore">0</span></div>
+      <div class="hpill" style="background:var(--greenL);color:var(--green);border-color:rgba(21,128,61,.3)">🎯 <span id="hAcc">100%</span></div>
+      <div class="timer-pill ok hidden" id="timerPill">⏱ 90s</div>
+    </div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+      <div class="prog-label" id="progLbl">0/0</div>
+    </div>
+    <div class="diff-ribbon">
+      <span class="diff-tag" id="diffTag">Easy</span>
+      <span class="diff-hint" id="diffHint">Full labels shown</span>
+    </div>
+  </div>
+  <div class="game-layout">
+    <div class="parts-panel" id="partsPanel">
+      <div class="pp-hdr" id="ppHdr">🎒 Parts Box</div>
+    </div>
+    <div class="build-area" id="buildArea">
+      <div class="build-top">
+        <div class="build-name" id="buildName">🖥️ My PC</div>
+        <div class="build-tip" id="buildTip">💡 Drag parts into slots!</div>
+      </div>
+      <div class="slots-grid" id="slotsGrid"></div>
+      <div class="hint-bar hidden" id="hintBar">
+        <span style="font-size:16px;flex-shrink:0">💡</span>
+        <span id="hintTxt">Hint</span>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BUILD-A-PC JUNIOR  v3  |  8 Progressive Levels
+   Beginner → Master  ·  EN/বাং bilingual  ·  Drag+Touch
+═══════════════════════════════════════════════════════════ */
+var LANG='en';
+
+/* ──────── STRINGS ──────── */
+var STR={
+en:{
+  navTitle:'🔧 Build-a-PC Junior',
+  homeTitle:'Build-a-PC Junior!',
+  homeSub:'Drag parts into the <strong>right slots</strong> to build a computer! Progress from beginner to PC Master! 🎉',
+  btnPlay:'▶ Start!',btnLevels:'🗺️ Levels',
+  worldsTitle:'🏆 Choose Your Level',
+  htHead:'📖 How to Play',
+  ht1:'Drag parts from the left panel into the matching slots!',
+  ht2:'Slots show ghost hints — they get harder as you progress!',
+  ht3:'Higher levels add decoy parts, time limits & hidden labels!',
+  ht4:'Answer a quiz after each level to earn bonus stars! ⭐',
+  ppHdr:'🎒 Parts Box',
+  buildTip:'💡 Drag parts into slots!',
+  score:'Score',accuracy:'Accuracy',time:'Time',
+  levelDone:'Level Complete!',
+  perfect:"🎉 Perfect! You're a PC genius!",
+  great:'🚀 Great build! Keep it up!',
+  ok:'💪 Good try! Keep practicing!',
+  nextLevel:'Next Level →',menu:'🏠 Menu',retry:'🔄 Retry',
+  quizTitle:'Quick Quiz!',
+  quizCorrect:"✅ Correct! You're brilliant!",
+  quizWrong:'❌ Oops! Answer was: ',
+  continueTxt:'Continue →',
+  wrongSlot:'❌ Wrong slot! Think again!',
+  hint:'Hint:',funFact:'🧠 Fun Fact!',
+  allDone:"🎊 All 8 levels done! You're a PC Master!",
+  diff_1:'Beginner',diff_2:'Easy',diff_3:'Intermediate',diff_4:'Intermediate+',
+  diff_5:'Advanced',diff_6:'Hard',diff_7:'Expert',diff_8:'Master',
+  level:'Level',
+  timeout:'⏱ Time\'s up! Try again!',
+  timedMode:'Timed Mode!',
+},
+bn:{
+  navTitle:'🔧 পিসি বানাও!',
+  homeTitle:'পিসি বানাও জুনিয়র!',
+  homeSub:'পার্টগুলো <strong>সঠিক স্লটে</strong> টেনে কম্পিউটার বানাও! শিক্ষার্থী থেকে পিসি মাস্টার হও! 🎉',
+  btnPlay:'▶ শুরু!',btnLevels:'🗺️ লেভেল',
+  worldsTitle:'🏆 লেভেল বেছে নাও',
+  htHead:'📖 কীভাবে খেলবে',
+  ht1:'বাম দিকের বাক্স থেকে পার্ট সঠিক স্লটে টেনে দাও!',
+  ht2:'স্লটে ছায়া-ইঙ্গিত দেখায় — কঠিন হলে ইঙ্গিত কম থাকে!',
+  ht3:'উচ্চ লেভেলে ডিকয় পার্ট, সময়সীমা ও লুকানো লেবেল থাকে!',
+  ht4:'প্রতিটি লেভেলের পরে কুইজে বোনাস তারা জিতো! ⭐',
+  ppHdr:'🎒 পার্টসের বাক্স',
+  buildTip:'💡 পার্টগুলো স্লটে টেনে দাও!',
+  score:'স্কোর',accuracy:'নির্ভুলতা',time:'সময়',
+  levelDone:'লেভেল সম্পন্ন!',
+  perfect:'🎉 নিখুঁত! তুমি পিসি বিশেষজ্ঞ!',
+  great:'🚀 দারুণ! এগিয়ে চলো!',
+  ok:'💪 ভালো চেষ্টা! অনুশীলন চালিয়ে যাও!',
+  nextLevel:'পরবর্তী লেভেল →',menu:'🏠 মেনু',retry:'🔄 আবার চেষ্টা',
+  quizTitle:'দ্রুত কুইজ!',
+  quizCorrect:'✅ সঠিক! তুমি দারুণ!',
+  quizWrong:'❌ ভুল! উত্তর ছিল: ',
+  continueTxt:'এগিয়ে যাও →',
+  wrongSlot:'❌ ভুল স্লট! আবার ভাবো!',
+  hint:'ইঙ্গিত:',funFact:'🧠 মজার তথ্য!',
+  allDone:'🎊 ৮টি লেভেল শেষ! তুমি পিসি মাস্টার!',
+  diff_1:'শিক্ষার্থী',diff_2:'সহজ',diff_3:'মধ্যবর্তী',diff_4:'মধ্যবর্তী+',
+  diff_5:'উন্নত',diff_6:'কঠিন',diff_7:'বিশেষজ্ঞ',diff_8:'মাস্টার',
+  level:'লেভেল',
+  timeout:'⏱ সময় শেষ! আবার চেষ্টা করো!',
+  timedMode:'সময়ভিত্তিক!',
+}};
+function s(k){return(STR[LANG]||STR.en)[k]||STR.en[k]||k;}
+
+/* ──────── PARTS ──────── */
+var PARTS={
+  cpu:{emoji:'🧠',en:'CPU',bn:'সিপিইউ',tagEn:'Processor',tagBn:'প্রসেসর',tagBg:'#DBEAFE',tagC:'#1E40AF',
+    factEn:'The CPU is the <strong>brain</strong>! It does billions of calculations per second. Modern CPUs have multiple cores — Intel Core i9 has 24 cores!',
+    factBn:'সিপিইউ হলো কম্পিউটারের <strong>মস্তিষ্ক</strong>! প্রতি সেকেন্ডে কোটি কোটি হিসাব করে। Intel Core i9-এ ২৪টি কোর আছে!'},
+  ram:{emoji:'💾',en:'RAM',bn:'র‍্যাম',tagEn:'Memory',tagBn:'মেমোরি',tagBg:'#D1FAE5',tagC:'#065F46',
+    factEn:'RAM is <strong>short-term memory</strong>! It forgets everything when you turn off the PC. 16GB RAM holds about 400 million text characters!',
+    factBn:'র‍্যাম হলো <strong>স্বল্পমেয়াদী স্মৃতি</strong>! পিসি বন্ধ করলে সব ভুলে যায়। ১৬ জিবি র‍্যামে প্রায় ৪০ কোটি অক্ষর সংরক্ষণ হয়!'},
+  gpu:{emoji:'🎮',en:'GPU',bn:'জিপিইউ',tagEn:'Graphics Card',tagBn:'গ্রাফিক্স কার্ড',tagBg:'#EDE9FE',tagC:'#4C1D95',
+    factEn:'GPU draws every pixel! The RTX 4090 has <strong>16,384 cores</strong> — way more than a CPU. Essential for gaming and AI!',
+    factBn:'জিপিইউ প্রতিটি পিক্সেল আঁকে! RTX 4090-এ <strong>১৬,৩৮৪ কোর</strong> আছে। গেমিং ও AI-এর জন্য অপরিহার্য!'},
+  psu:{emoji:'🔋',en:'PSU',bn:'পাওয়ার সাপ্লাই',tagEn:'Power Supply',tagBn:'বিদ্যুৎ সরবরাহ',tagBg:'#FEF3C7',tagC:'#92400E',
+    factEn:'PSU converts wall electricity (AC) to safe PC voltages (DC). A bad PSU can <strong>destroy all other parts</strong>!',
+    factBn:'পিএসইউ দেওয়ালের বিদ্যুৎ (AC) থেকে পিসির নিরাপদ ভোল্টেজ (DC) তৈরি করে। খারাপ PSU <strong>সব পার্ট নষ্ট</strong> করতে পারে!'},
+  mb:{emoji:'🗂️',en:'Motherboard',bn:'মাদারবোর্ড',tagEn:'Main Board',tagBn:'মূল বোর্ড',tagBg:'#FEE2E2',tagC:'#991B1B',
+    factEn:'The motherboard connects <strong>everything</strong>! It has hundreds of tiny circuits. The largest motherboards are called E-ATX and fit in big tower cases.',
+    factBn:'মাদারবোর্ড <strong>সব কিছু</strong> সংযুক্ত করে! এতে শত শত ক্ষুদ্র সার্কিট আছে। সবচেয়ে বড় মাদারবোর্ডকে E-ATX বলে।'},
+  hdd:{emoji:'💿',en:'Hard Drive',bn:'হার্ড ড্রাইভ',tagEn:'HDD Storage',tagBn:'HDD স্টোরেজ',tagBg:'#FCE7F3',tagC:'#9D174D',
+    factEn:'HDD spins a magnetic disk at <strong>7,200 RPM</strong>! That\'s faster than a washing machine. Data is stored as magnetic patterns.',
+    factBn:'HDD চুম্বকীয় ডিস্ক <strong>৭,২০০ RPM</strong>-এ ঘোরায়! ওয়াশিং মেশিনের চেয়ে দ্রুত। ডেটা চুম্বকীয় প্যাটার্ন হিসেবে সংরক্ষিত।'},
+  ssd:{emoji:'⚡',en:'SSD',bn:'এসএসডি',tagEn:'Fast Storage',tagBn:'দ্রুত স্টোরেজ',tagBg:'#FFF7ED',tagC:'#C2410C',
+    factEn:'SSD has <strong>no moving parts</strong>! Uses flash memory chips. NVMe SSDs can read at 7,000 MB/s — an HDD does only 150 MB/s!',
+    factBn:'SSD-তে <strong>কোনো চলমান অংশ নেই</strong>! ফ্ল্যাশ মেমোরি ব্যবহার করে। NVMe SSD প্রতি সেকেন্ডে ৭,০০০ এমবি পড়ে — HDD মাত্র ১৫০ এমবি!'},
+  cooler:{emoji:'❄️',en:'CPU Cooler',bn:'সিপিইউ কুলার',tagEn:'Cooling',tagBn:'ঠান্ডা করা',tagBg:'#CFFAFE',tagC:'#0E7490',
+    factEn:'Without cooling, a CPU hits <strong>100°C and dies in seconds!</strong> Top-end coolers use liquid metal as thermal paste — it conducts heat 70× better.',
+    factBn:'কুলিং ছাড়া CPU <strong>১০০°সে-তে মুহূর্তেই নষ্ট!</strong> উচ্চমানের কুলার লিকুইড মেটাল ব্যবহার করে — তাপ পরিবাহিতা ৭০ গুণ বেশি।'},
+  monitor:{emoji:'🖥️',en:'Monitor',bn:'মনিটর',tagEn:'Display/Output',tagBn:'ডিসপ্লে/আউটপুট',tagBg:'#F0FFF9',tagC:'#065F46',
+    factEn:'Monitor is an <strong>OUTPUT device</strong>! 4K has 8.3 million pixels. Gaming monitors refresh at 360Hz — each frame lasts just 2.8 milliseconds!',
+    factBn:'মনিটর একটি <strong>আউটপুট ডিভাইস</strong>! 4K-তে ৮.৩ মিলিয়ন পিক্সেল। গেমিং মনিটর ৩৬০Hz — প্রতিটি ফ্রেম মাত্র ২.৮ মিলিসেকেন্ড!'},
+  keyboard:{emoji:'⌨️',en:'Keyboard',bn:'কীবোর্ড',tagEn:'Input Device',tagBn:'ইনপুট ডিভাইস',tagBg:'#FFF0F7',tagC:'#9D174D',
+    factEn:'Keyboard is an <strong>INPUT device</strong>! Mechanical keyboards use individual switches per key. World record typing speed: <strong>216 words per minute!</strong>',
+    factBn:'কীবোর্ড একটি <strong>ইনপুট ডিভাইস</strong>! মেকানিক্যাল কীবোর্ডে প্রতিটি কী আলাদা সুইচ। বিশ্ব রেকর্ড: <strong>প্রতি মিনিটে ২১৬ শব্দ!</strong>'},
+  mouse:{emoji:'🖱️',en:'Mouse',bn:'মাউস',tagEn:'Input Device',tagBn:'ইনপুট ডিভাইস',tagBg:'#FFF0F7',tagC:'#9D174D',
+    factEn:'Mouse is an <strong>INPUT device</strong>! The first mouse was wood (1964). Gaming mice track at <strong>36,000 DPI</strong> — 25× sharper than standard!',
+    factBn:'মাউস একটি <strong>ইনপুট ডিভাইস</strong>! প্রথম মাউস কাঠের (১৯৬৪)। গেমিং মাউস <strong>৩৬,০০০ DPI</strong> ট্র্যাক করে!'},
+  wifi:{emoji:'📡',en:'WiFi Card',bn:'ওয়াইফাই কার্ড',tagEn:'Networking',tagBn:'নেটওয়ার্কিং',tagBg:'#F0FFF9',tagC:'#065F46',
+    factEn:'WiFi uses <strong>radio waves</strong> to send data! WiFi 7 can reach <strong>46 Gbps</strong>. That\'s fast enough to download 50 movies in one second!',
+    factBn:'ওয়াইফাই <strong>রেডিও তরঙ্গে</strong> ডেটা পাঠায়! WiFi 7 <strong>৪৬ জিবিপিএস</strong> পৌঁছাতে পারে। এক সেকেন্ডে ৫০টি মুভি ডাউনলোড!'},
+  speakers:{emoji:'🔊',en:'Speakers',bn:'স্পিকার',tagEn:'Audio Output',tagBn:'অডিও আউটপুট',tagBg:'#FEF3C7',tagC:'#92400E',
+    factEn:'Speakers are <strong>OUTPUT devices</strong>! They vibrate a cone to create sound. Humans hear 20–20,000 Hz. Bats hear up to 110,000 Hz!',
+    factBn:'স্পিকার <strong>আউটপুট ডিভাইস</strong>! শঙ্কু কম্পিত করে শব্দ তৈরি করে। মানুষ ২০–২০,০০০ Hz শোনে। বাদুড় ১,১০,০০০ Hz পর্যন্ত শোনে!'},
+  optical:{emoji:'💿',en:'Optical Drive',bn:'অপটিক্যাল ড্রাইভ',tagEn:'CD/DVD Drive',tagBn:'সিডি/ডিভিডি',tagBg:'#F8F0FF',tagC:'#4C1D95',
+    factEn:'Optical drive reads discs with a <strong>laser!</strong> A Blu-ray disc spins at 10,000 RPM at its inner edge. One disc can hold up to 128GB!',
+    factBn:'অপটিক্যাল ড্রাইভ <strong>লেজার দিয়ে</strong> ডিস্ক পড়ে! ব্লু-রে ডিস্ক ভেতরে ১০,০০০ RPM-এ ঘোরে। এক ডিস্কে ১২৮ জিবি পর্যন্ত!'},
+  casefan:{emoji:'🌀',en:'Case Fan',bn:'কেস ফ্যান',tagEn:'Airflow',tagBn:'এয়ারফ্লো',tagBg:'#CFFAFE',tagC:'#0E7490',
+    factEn:'Case fans move hot air <strong>out of the PC!</strong> High-end gaming cases have 10+ fans. Some fans have RGB lighting for style.',
+    factBn:'কেস ফ্যান গরম বায়ু <strong>পিসি থেকে বের করে!</strong> হাই-এন্ড গেমিং কেসে ১০+ ফ্যান থাকে। কিছু ফ্যানে RGB আলো আছে।'},
+  networkcard:{emoji:'🌐',en:'Network Card',bn:'নেটওয়ার্ক কার্ড',tagEn:'LAN/Ethernet',tagBn:'ল্যান/ইথারনেট',tagBg:'#F0FFF9',tagC:'#065F46',
+    factEn:'Network card connects via <strong>Ethernet cable</strong>! Wired connections are faster and more stable than WiFi. 10 Gigabit Ethernet moves 10,000 Mbps!',
+    factBn:'নেটওয়ার্ক কার্ড <strong>ইথারনেট কেবলে</strong> সংযুক্ত হয়! তারযুক্ত সংযোগ ওয়াইফাইয়ের চেয়ে দ্রুত ও স্থিতিশীল। ১০ জিগাবিট ইথারনেট ১০,০০০ এমবিপিএস!'},
+};
+
+/* ──────────────────────────────────────────────
+   LEVEL CONFIG
+   difficulty properties explained:
+   showGhost     — slot shows emoji ghost (true=shown)
+   showLabel     — slot shows part name (true=shown)
+   showCategory  — slot shows category tag
+   showSlotNum   — slot shows a number only (true for hardest)
+   hasDecoys     — panel has extra wrong parts
+   timerSecs     — 0 = no timer
+   hintAllowed   — player can get hint on wrong drop
+   quizCount     — number of quizzes after level
+────────────────────────────────────────────── */
+var LEVELS=[
+  /* ── L1 BEGINNER ── */
+  {
+    id:0,emoji:'🌱',
+    en:'Beginner Build',bn:'শিক্ষার্থী বিল্ড',
+    descEn:'Full hints! Just match the labels.',descBn:'পূর্ণ ইঙ্গিত! লেবেল মিলাও।',
+    nameEn:'My Very First PC',nameBn:'আমার প্রথম পিসি',
+    diff:1,parts:['mb','cpu','ram','hdd','psu'],
+    borderColor:'#6EE7B7',
+    showGhost:true,showLabel:true,showCategory:true,showSlotNum:false,
+    hasDecoys:false,timerSecs:0,hintAllowed:true,quizCount:1,
+    quizzes:[
+      {q_en:'What is the BRAIN of a computer?',q_bn:'কম্পিউটারের মস্তিষ্ক কোনটি?',
+       opts:['CPU','RAM','HDD','PSU'],correct:0},
+    ]
+  },
+  /* ── L2 EASY ── */
+  {
+    id:1,emoji:'🔰',
+    en:'Easy Build',bn:'সহজ বিল্ড',
+    descEn:'Labels still shown. More parts!',descBn:'লেবেল আছে। বেশি পার্ট!',
+    nameEn:'Home Computer',nameBn:'হোম কম্পিউটার',
+    diff:2,parts:['mb','cpu','ram','hdd','psu','monitor'],
+    borderColor:'#86EFAC',
+    showGhost:true,showLabel:true,showCategory:true,showSlotNum:false,
+    hasDecoys:false,timerSecs:0,hintAllowed:true,quizCount:1,
+    quizzes:[
+      {q_en:'Which stores files permanently?',q_bn:'কোনটি স্থায়ীভাবে ফাইল রাখে?',
+       opts:['RAM','Hard Drive','CPU','PSU'],correct:1},
+      {q_en:'Monitor is which type of device?',q_bn:'মনিটর কোন ধরনের ডিভাইস?',
+       opts:['Input','Processing','Storage','Output'],correct:3},
+    ]
+  },
+  /* ── L3 INTERMEDIATE ── */
+  {
+    id:2,emoji:'⚙️',
+    en:'Intermediate',bn:'মধ্যবর্তী',
+    descEn:'Ghost hints only — no name labels!',descBn:'শুধু ছায়া-ইঙ্গিত — কোনো নাম নেই!',
+    nameEn:'Gaming Setup',nameBn:'গেমিং সেটআপ',
+    diff:3,parts:['mb','cpu','ram','gpu','ssd','cooler','psu'],
+    borderColor:'#FDE68A',
+    showGhost:true,showLabel:false,showCategory:true,showSlotNum:false,
+    hasDecoys:false,timerSecs:0,hintAllowed:true,quizCount:1,
+    quizzes:[
+      {q_en:'GPU stands for?',q_bn:'GPU মানে কী?',
+       opts:['Graphics Processing Unit','General Power Unit','Game Play Upgrade','Gigabyte Processing Utility'],correct:0},
+      {q_en:'Which is faster: SSD or HDD?',q_bn:'কোনটি দ্রুত: SSD নাকি HDD?',
+       opts:['HDD','Same','SSD','Neither'],correct:2},
+    ]
+  },
+  /* ── L4 INTERMEDIATE+ ── */
+  {
+    id:3,emoji:'🖥️',
+    en:'Intermediate+',bn:'মধ্যবর্তী+',
+    descEn:'Ghost hints + 2 decoy parts in panel!',descBn:'ছায়া-ইঙ্গিত + প্যানেলে ২টি ভুল পার্ট!',
+    nameEn:'Office Workstation',nameBn:'অফিস ওয়ার্কস্টেশন',
+    diff:4,parts:['mb','cpu','ram','ssd','monitor','keyboard','mouse'],
+    borderColor:'#FCD34D',
+    showGhost:true,showLabel:false,showCategory:false,showSlotNum:false,
+    hasDecoys:true,decoyCount:2,decoyPool:['speakers','wifi','optical','hdd'],
+    timerSecs:0,hintAllowed:true,quizCount:2,
+    quizzes:[
+      {q_en:'Keyboard is which type of device?',q_bn:'কীবোর্ড কোন ধরনের ডিভাইস?',
+       opts:['Output','Input','Storage','Processing'],correct:1},
+      {q_en:'What does RAM forget when PC turns off?',q_bn:'পিসি বন্ধ হলে র‍্যাম কী ভুলে যায়?',
+       opts:['Nothing','Permanent files','All current data','The date'],correct:2},
+    ]
+  },
+  /* ── L5 ADVANCED ── */
+  {
+    id:4,emoji:'🔥',
+    en:'Advanced',bn:'উন্নত',
+    descEn:'No ghost, no label. Category clue only!',descBn:'কোনো ছায়া নেই, কোনো লেবেল নেই!',
+    nameEn:'Pro Gaming Rig',nameBn:'প্রো গেমিং রিগ',
+    diff:5,parts:['mb','cpu','ram','gpu','ssd','cooler','psu','monitor'],
+    borderColor:'#F97316',
+    showGhost:false,showLabel:false,showCategory:true,showSlotNum:false,
+    hasDecoys:true,decoyCount:3,decoyPool:['hdd','optical','speakers','keyboard','mouse'],
+    timerSecs:0,hintAllowed:false,quizCount:2,
+    quizzes:[
+      {q_en:'CPU Cooler prevents what?',q_bn:'CPU কুলার কী রোধ করে?',
+       opts:['Power cuts','Overheating','Slow internet','Low memory'],correct:1},
+      {q_en:'Which part CONNECTS all other parts?',q_bn:'কোন পার্ট বাকি সব পার্ট সংযুক্ত করে?',
+       opts:['PSU','GPU','Motherboard','RAM'],correct:2},
+    ]
+  },
+  /* ── L6 HARD ── */
+  {
+    id:5,emoji:'⚡',
+    en:'Hard — Timed!',bn:'কঠিন — সময়সীমা!',
+    descEn:'No labels. 90 second time limit!',descBn:'কোনো লেবেল নেই। ৯০ সেকেন্ড সময়সীমা!',
+    nameEn:'Connected Beast',nameBn:'কানেক্টেড বিস্ট',
+    diff:6,parts:['mb','cpu','ram','gpu','ssd','cooler','psu','monitor','keyboard','wifi'],
+    borderColor:'#EF4444',
+    showGhost:false,showLabel:false,showCategory:true,showSlotNum:false,
+    hasDecoys:true,decoyCount:3,decoyPool:['hdd','optical','speakers','mouse','casefan'],
+    timerSecs:90,hintAllowed:false,quizCount:2,
+    quizzes:[
+      {q_en:'WiFi card sends data using?',q_bn:'ওয়াইফাই কার্ড কী ব্যবহার করে ডেটা পাঠায়?',
+       opts:['Laser','Radio waves','Cables','Sound'],correct:1},
+      {q_en:'How many bits in 1 byte?',q_bn:'১ বাইটে কতটি বিট?',
+       opts:['4','16','8','2'],correct:2},
+    ]
+  },
+  /* ── L7 EXPERT ── */
+  {
+    id:6,emoji:'🎓',
+    en:'Expert — Blind!',bn:'বিশেষজ্ঞ — অন্ধকারে!',
+    descEn:'Slot numbers only. 75 sec timer!',descBn:'শুধু স্লট নম্বর। ৭৫ সেকেন্ড টাইমার!',
+    nameEn:'Expert Workshop',nameBn:'বিশেষজ্ঞ ওয়ার্কশপ',
+    diff:7,parts:['mb','cpu','ram','gpu','ssd','cooler','psu','monitor','keyboard','mouse','wifi','speakers'],
+    borderColor:'#7C3AED',
+    showGhost:false,showLabel:false,showCategory:false,showSlotNum:true,
+    hasDecoys:true,decoyCount:4,decoyPool:['hdd','optical','casefan','networkcard'],
+    timerSecs:75,hintAllowed:false,quizCount:2,
+    quizzes:[
+      {q_en:'What is PSU\'s job?',q_bn:'PSU কী কাজ করে?',
+       opts:['Store data','Display images','Convert power','Cool the CPU'],correct:2},
+      {q_en:'SSD is faster than HDD because it has?',q_bn:'SSD কেন HDD-এর চেয়ে দ্রুত?',
+       opts:['Bigger size','No moving parts','More fans','Heavier weight'],correct:1},
+    ]
+  },
+  /* ── L8 MASTER ── */
+  {
+    id:7,emoji:'🏆',
+    en:'PC Master!',bn:'পিসি মাস্টার!',
+    descEn:'All 13 parts. Slot numbers only. 60 sec!',descBn:'সব ১৩টি পার্ট। শুধু নম্বর। ৬০ সেকেন্ড!',
+    nameEn:'The Ultimate Machine',nameBn:'চূড়ান্ত মেশিন',
+    diff:8,parts:['mb','cpu','ram','gpu','ssd','hdd','cooler','psu','monitor','keyboard','mouse','wifi','speakers'],
+    borderColor:'#CA8A04',
+    showGhost:false,showLabel:false,showCategory:false,showSlotNum:true,
+    hasDecoys:true,decoyCount:3,decoyPool:['optical','casefan','networkcard'],
+    timerSecs:60,hintAllowed:false,quizCount:3,
+    quizzes:[
+      {q_en:'Which has NO moving parts?',q_bn:'কোনটিতে কোনো চলমান অংশ নেই?',
+       opts:['HDD','CPU Cooler','SSD','Case Fan'],correct:2},
+      {q_en:'GPU is mainly used for?',q_bn:'GPU মূলত কী জন্য ব্যবহৃত?',
+       opts:['Storing data','Processing graphics','Connecting internet','Supplying power'],correct:1},
+      {q_en:'What does the Motherboard do?',q_bn:'মাদারবোর্ড কী করে?',
+       opts:['Stores files','Powers the PC','Connects all parts','Displays output'],correct:2},
+    ]
+  },
+];
+
+/* ──────── SAVE / LOAD ──────── */
+var sv={unlocked:1,stars:{},scores:{}};
+(function(){
+  try{var d=JSON.parse(localStorage.getItem('bpcv3')||'{}');
+    if(d.unlocked)sv.unlocked=d.unlocked;
+    if(d.stars)sv.stars=d.stars;
+    if(d.scores)sv.scores=d.scores;
+  }catch(e){}
+})();
+function save(){try{localStorage.setItem('bpcv3',JSON.stringify(sv));}catch(e){}}
+
+/* ──────── GAME STATE ──────── */
+var curLv=0,score=0,errs=0,startTime=0;
+var placed={},totalSlots=0;
+var dragId=null,dragEl=null;
+var factTimer=null,hintTimer=null,timerInterval=null;
+var quizCb=null,_qAnswered=false;
+
+/* ──────── LANG ──────── */
+function setLang(l){
+  LANG=l;
+  document.getElementById('lbEN').classList.toggle('on',l==='en');
+  document.getElementById('lbBN').classList.toggle('on',l==='bn');
+  document.body.classList.toggle('bn',l==='bn');
+  refreshUI();
+}
+function refreshUI(){
+  G('navTitle').textContent=s('navTitle');
+  G('homeTitle').textContent=s('homeTitle');
+  G('homeSub').innerHTML=s('homeSub');
+  G('btnPlay').textContent=s('btnPlay');
+  G('btnLevels').textContent=s('btnLevels');
+  G('worldsTitle').textContent=s('worldsTitle');
+  G('htHead').textContent=s('htHead');
+  G('ht1').textContent=s('ht1');
+  G('ht2').textContent=s('ht2');
+  G('ht3').textContent=s('ht3');
+  G('ht4').textContent=s('ht4');
+  buildWorldsGrid();renderNavPips(-1);
+}
+function renderNavPips(activeLv){
+  var pips=document.querySelectorAll('#navPips .nav-pip');
+  pips.forEach(function(pip,i){
+    pip.classList.remove('done','cur');
+    if(sv.stars[i])pip.classList.add('done');
+    if(i===activeLv)pip.classList.add('cur');
+  });
+}
+
+/* ──────── SCREENS ──────── */
+function showSc(id){
+  ['scHome','scGame'].forEach(function(sc){
+    var el=document.getElementById(sc);
+    el.classList.add('off');el.classList.remove('sc-in');
+  });
+  var el=document.getElementById(id);
+  el.classList.remove('off');
+  requestAnimationFrame(function(){el.classList.add('sc-in');});
+}
+function goHome(){
+  stopTimer();closeQuiz();closeDone();showSc('scHome');refreshUI();
+}
+function quickPlay(){
+  var first=0;
+  for(var i=0;i<sv.unlocked&&i<LEVELS.length;i++){
+    if(!sv.stars[i]){first=i;break;}
+    first=i;
+  }
+  startLevel(first);
+}
+function retryLevel(){closeDone();startLevel(curLv);}
+
+/* ──────── WORLDS GRID ──────── */
+function buildWorldsGrid(){
+  var grid=G('worldsGrid');grid.innerHTML='';
+  var diffBg={1:'#D1FAE5',2:'#D1FAE5',3:'#FEF3C7',4:'#FEF3C7',5:'#FEE2E2',6:'#FEE2E2',7:'#EDE9FE',8:'#EDE9FE'};
+  var diffCol={1:'#065F46',2:'#15803D',3:'#92400E',4:'#B45309',5:'#991B1B',6:'#DC2626',7:'#4C1D95',8:'#7C3AED'};
+  LEVELS.forEach(function(lv,i){
+    var locked=i>=sv.unlocked,st=sv.stars[i]||0;
+    var d=document.createElement('div');
+    d.className='wcard'+(locked?' locked':'')+(st>0?' won':'');
+    d.style.borderColor=locked?'var(--ink)':lv.borderColor;
+    var diff=s('diff_'+lv.diff);
+    d.innerHTML=
+      '<div class="wc-ico">'+lv.emoji+'</div>'+
+      '<div class="wc-name">'+(LANG==='bn'?lv.bn:lv.en)+'</div>'+
+      '<span class="wc-stars">'+(st>0?'⭐'.repeat(st)+'☆'.repeat(3-st):'☆☆☆')+'</span>'+
+      '<div class="wc-diff" style="background:'+diffBg[lv.diff]+';color:'+diffCol[lv.diff]+'">'+diff+'</div>'+
+      '<div class="wc-parts">'+lv.parts.length+' parts'+(lv.timerSecs?(' · ⏱'+lv.timerSecs+'s'):'')+'</div>'+
+      (locked?'<div class="wc-lock">🔒</div>':'');
+    if(!locked)(function(idx){d.onclick=function(){startLevel(idx);};})(i);
+    grid.appendChild(d);
+  });
+  G('navStars').textContent=Object.values(sv.stars).reduce(function(a,b){return a+b;},0);
+}
+
+/* ════════════════════
+   START LEVEL
+════════════════════ */
+function startLevel(idx){
+  stopTimer();
+  curLv=idx;score=0;errs=0;placed={};dragId=null;dragEl=null;
+  startTime=Date.now();
+
+  var lv=LEVELS[idx];
+  totalSlots=lv.parts.length;
+
+  /* header */
+  G('gBadge').textContent=s('level')+' '+(idx+1);
+  G('gTitle').textContent=(LANG==='bn'?lv.bn:lv.en);
+  G('hScore').textContent='0';G('hAcc').textContent='100%';
+  G('progFill').style.width='0%';G('progLbl').textContent='0/'+totalSlots;
+  G('buildName').textContent=lv.emoji+' '+(LANG==='bn'?lv.nameBn:lv.nameEn);
+  G('buildTip').textContent='💡 '+s('buildTip');
+
+  /* difficulty ribbon */
+  var diffBg={1:'#D1FAE5',2:'#D1FAE5',3:'#FEF3C7',4:'#FEF3C7',5:'#FEE2E2',6:'#FEE2E2',7:'#EDE9FE',8:'#EDE9FE'};
+  var diffCol={1:'#065F46',2:'#15803D',3:'#92400E',4:'#B45309',5:'#991B1B',6:'#DC2626',7:'#4C1D95',8:'#7C3AED'};
+  var tag=G('diffTag');
+  tag.textContent=s('diff_'+lv.diff);
+  tag.style.background=diffBg[lv.diff];tag.style.color=diffCol[lv.diff];
+  /* hint text in ribbon */
+  var hints={
+    1:'Full labels shown',2:'Full labels shown',
+    3:'Ghost only — name hidden!',4:'Ghost only + decoy parts!',
+    5:'Category only — no ghost!',6:'Timed · Category only!',
+    7:'Slot numbers only! Timed!',8:'Master mode! Fully blind!',
+  };
+  var hintsBn={
+    1:'সম্পূর্ণ লেবেল দেখা যায়',2:'সম্পূর্ণ লেবেল দেখা যায়',
+    3:'শুধু ছায়া — নাম লুকানো!',4:'ছায়া আছে + ভুল পার্ট!',
+    5:'শুধু ক্যাটাগরি — ছায়া নেই!',6:'সময়সীমা · শুধু ক্যাটাগরি!',
+    7:'শুধু স্লট নম্বর! সময়সীমা!',8:'মাস্টার মোড! সম্পূর্ণ অন্ধকার!',
+  };
+  G('diffHint').textContent=LANG==='bn'?hintsBn[lv.diff]:hints[lv.diff];
+
+  /* timer pill */
+  var tp=G('timerPill');
+  if(lv.timerSecs>0){
+    tp.classList.remove('hidden','ok');tp.classList.add('ok');
+    tp.textContent='⏱ '+lv.timerSecs+'s';
+    startTimer(lv.timerSecs);
+  } else {
+    tp.classList.add('hidden');
+  }
+
+  buildPartsPanel(lv);
+  buildSlots(lv);
+  hideFact();hideHint();
+  G('buildArea').classList.remove('glowing');
+  renderNavPips(idx);
+  showSc('scGame');
+}
+
+/* ──────── TIMER ──────── */
+function startTimer(secs){
+  var remaining=secs;
+  var tp=G('timerPill');
+  timerInterval=setInterval(function(){
+    remaining--;
+    tp.textContent='⏱ '+remaining+'s';
+    if(remaining<=15){tp.classList.remove('ok');tp.classList.add('');}
+    if(remaining<=0){
+      stopTimer();
+      toast(s('timeout'),'t-ng');
+      setTimeout(function(){retryLevel();},1500);
+    }
+  },1000);
+}
+function stopTimer(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+}
+
+/* ──────── PARTS PANEL ──────── */
+function buildPartsPanel(lv){
+  var panel=G('partsPanel');
+  panel.innerHTML='<div class="pp-hdr" id="ppHdr">'+s('ppHdr')+'</div>';
+
+  /* build part ids: actual parts + decoys */
+  var partIds=lv.parts.slice();
+  if(lv.hasDecoys&&lv.decoyPool){
+    var pool=shuffle(lv.decoyPool.slice());
+    var n=lv.decoyCount||2;
+    for(var i=0;i<n&&i<pool.length;i++) partIds.push(pool[i]);
+  }
+  partIds=shuffle(partIds);
+
+  partIds.forEach(function(pid){
+    if(!PARTS[pid])return;
+    var pr=PARTS[pid];
+    var isDecoy=lv.parts.indexOf(pid)===-1;
+    var d=document.createElement('div');
+    d.className='part-card'+(isDecoy?' decoy':'');
+    d.id='pc-'+pid+(isDecoy?'-d':'');
+    d.draggable=true;
+    /* name always visible in panel */
+    d.innerHTML=
+      '<span class="pc-emoji">'+pr.emoji+'</span>'+
+      '<div class="pc-name">'+(LANG==='bn'?pr.bn:pr.en)+'</div>'+
+      '<span class="pc-tag" style="background:'+pr.tagBg+';color:'+pr.tagC+'">'+(LANG==='bn'?pr.tagBn:pr.tagEn)+'</span>';
+    var actualPid=isDecoy?pid+'__decoy':pid;
+    d.addEventListener('dragstart',function(e){onDragStart(actualPid,d,e);});
+    d.addEventListener('dragend',onDragEnd);
+    d.addEventListener('touchstart',function(e){onTouchStart(actualPid,d,e);},{passive:false});
+    panel.appendChild(d);
+  });
+}
+
+/* ──────── SLOTS ──────── */
+function buildSlots(lv){
+  var g=G('slotsGrid');g.innerHTML='';
+  /* 3 columns for 10+ part levels on desktop */
+  g.className='slots-grid'+(lv.parts.length>=10?' cols3':'');
+
+  lv.parts.forEach(function(pid,idx){
+    var pr=PARTS[pid];
+    var d=document.createElement('div');
+    d.className='slot';d.id='slot-'+pid;d.dataset.pid=pid;
+
+    var html='';
+    if(lv.showSlotNum) html+='<div class="slot-num">'+(idx+1)+'</div>';
+    if(lv.showGhost)   html+='<span class="slot-ghost">'+pr.emoji+'</span>';
+    if(lv.showLabel)   html+='<div class="slot-lbl">'+(LANG==='bn'?pr.bn:pr.en)+'</div>';
+    if(lv.showCategory&&!lv.showLabel)
+      html+='<div class="slot-sub" style="color:'+pr.tagC+';font-weight:900">'+(LANG==='bn'?pr.tagBn:pr.tagEn)+'</div>';
+    if(!lv.showGhost&&!lv.showLabel&&!lv.showCategory&&!lv.showSlotNum)
+      html+='<span class="slot-ghost" style="opacity:.08">❓</span>';
+    d.innerHTML=html;
+
+    d.addEventListener('dragover',function(e){e.preventDefault();d.classList.add('hover');});
+    d.addEventListener('dragleave',function(){d.classList.remove('hover');});
+    d.addEventListener('drop',function(e){e.preventDefault();d.classList.remove('hover');handleDrop(pid,d);});
+    g.appendChild(d);
+  });
+}
+
+/* ──────── DRAG MOUSE ──────── */
+function onDragStart(pid,el,e){
+  dragId=pid;dragEl=el;el.classList.add('dragging');
+  if(e.dataTransfer)e.dataTransfer.effectAllowed='move';
+}
+function onDragEnd(){
+  if(dragEl)dragEl.classList.remove('dragging');
+  dragId=null;dragEl=null;
+}
+
+/* ──────── DRAG TOUCH ──────── */
+var _tClone=null,_tPid=null,_tOrig=null;
+function onTouchStart(pid,el,e){
+  e.preventDefault();_tPid=pid;_tOrig=el;
+  var cl=el.cloneNode(true);
+  cl.style.cssText='position:fixed;z-index:9999;opacity:.88;transform:scale(1.1);pointer-events:none;width:'+el.offsetWidth+'px;border-radius:12px;';
+  document.body.appendChild(cl);_tClone=cl;
+  var t=e.touches[0];
+  cl.style.left=(t.clientX-el.offsetWidth/2)+'px';
+  cl.style.top=(t.clientY-el.offsetHeight/2)+'px';
+  el.classList.add('dragging');
+  document.addEventListener('touchmove',_onTMove,{passive:false});
+  document.addEventListener('touchend',_onTEnd,{passive:false});
+}
+function _onTMove(e){
+  e.preventDefault();if(!_tClone)return;
+  var t=e.touches[0];
+  _tClone.style.left=(t.clientX-_tClone.offsetWidth/2)+'px';
+  _tClone.style.top=(t.clientY-_tClone.offsetHeight/2)+'px';
+  document.querySelectorAll('.slot').forEach(function(s){s.classList.remove('hover');});
+  var under=document.elementFromPoint(t.clientX,t.clientY);
+  var sl=under&&(under.classList.contains('slot')?under:under.closest&&under.closest('.slot'));
+  if(sl)sl.classList.add('hover');
+}
+function _onTEnd(e){
+  e.preventDefault();
+  document.removeEventListener('touchmove',_onTMove);
+  document.removeEventListener('touchend',_onTEnd);
+  if(_tClone){document.body.removeChild(_tClone);_tClone=null;}
+  if(_tOrig)_tOrig.classList.remove('dragging');
+  var t=e.changedTouches[0];
+  document.querySelectorAll('.slot').forEach(function(sl){sl.classList.remove('hover');});
+  var under=document.elementFromPoint(t.clientX,t.clientY);
+  var sl=under&&(under.classList.contains('slot')?under:under.closest&&under.closest('.slot'));
+  if(sl&&_tPid){dragId=_tPid;handleDrop(sl.dataset.pid,sl);}
+  _tPid=null;_tOrig=null;dragId=null;dragEl=null;
+}
+
+/* ──────── DROP ──────── */
+function handleDrop(slotPid,slotEl){
+  if(!dragId)return;
+  var pid=dragId;dragId=null;
+  /* strip decoy marker */
+  var isDecoy=pid.indexOf('__decoy')!==-1;
+  var realPid=isDecoy?pid.replace('__decoy',''):pid;
+  var pEl=document.getElementById('pc-'+realPid+(isDecoy?'-d':''));
+
+  if(!slotEl||slotEl.classList.contains('filled'))return;
+
+  if(!isDecoy&&realPid===slotPid){
+    /* ✅ CORRECT */
+    var pr=PARTS[realPid];
+    slotEl.classList.add('filled','snap');
+    setTimeout(function(){slotEl.classList.remove('snap');},420);
+    slotEl.innerHTML=
+      '<span class="slot-check">✅</span>'+
+      '<span class="slot-placed-ico">'+pr.emoji+'</span>'+
+      '<div class="slot-placed-name">'+(LANG==='bn'?pr.bn:pr.en)+'</div>';
+    if(pEl)pEl.classList.add('placed');
+    placed[realPid]=true;
+    var pts=100+Math.max(0,50-errs*15);
+    score+=pts;
+    G('hScore').textContent=score;
+    updateAcc();updateProg();
+    spawnParticles(slotEl,['⭐','✨','💥','🎉','🔧']);
+    popScore(slotEl,'+'+pts);
+    showFact(realPid);hideHint();
+    if(Object.keys(placed).length===totalSlots){
+      setTimeout(onAllDone,1800);
+    }
+  } else {
+    /* ❌ WRONG */
+    slotEl.classList.add('shake');
+    setTimeout(function(){slotEl.classList.remove('shake');},420);
+    errs++;updateAcc();
+    popScore(slotEl,'-10','sp-ng');
+    toast(s('wrongSlot'),'t-ng');
+    var lv=LEVELS[curLv];
+    if(lv.hintAllowed)showHint(isDecoy?realPid:realPid);
+    else toast(s('wrongSlot'),'t-ng');
+  }
+}
+
+function updateAcc(){
+  var n=Object.keys(placed).length;
+  var a=(n+errs)>0?Math.round(n/(n+errs)*100):100;
+  G('hAcc').textContent=a+'%';
+}
+function updateProg(){
+  var n=Object.keys(placed).length;
+  G('progFill').style.width=Math.round(n/totalSlots*100)+'%';
+  G('progLbl').textContent=n+'/'+totalSlots;
+}
+
+/* ──────── HINT ──────── */
+function showHint(pid){
+  if(!PARTS[pid])return;
+  var pr=PARTS[pid];
+  var bar=G('hintBar');bar.classList.remove('hidden');
+  G('hintTxt').textContent=s('hint')+' '+(LANG==='bn'?pr.bn:pr.en)+' → '+(LANG==='bn'?pr.tagBn:pr.tagEn);
+  clearTimeout(hintTimer);
+  hintTimer=setTimeout(hideHint,3500);
+}
+function hideHint(){G('hintBar').classList.add('hidden');}
+
+/* ──────── FUN FACT ──────── */
+function showFact(pid){
+  var pr=PARTS[pid];if(!pr)return;
+  G('factIco').textContent=pr.emoji;
+  G('factBadge').textContent=s('funFact');
+  G('factBadge').style.background=pr.tagBg;G('factBadge').style.color=pr.tagC;
+  G('factTitle').textContent=LANG==='bn'?pr.bn:pr.en;
+  G('factText').innerHTML=LANG==='bn'?pr.factBn:pr.factEn;
+  G('factPopup').classList.remove('hidden');
+  clearTimeout(factTimer);factTimer=setTimeout(hideFact,5500);
+}
+function hideFact(){G('factPopup').classList.add('hidden');}
+
+/* ──────── LEVEL COMPLETE ──────── */
+function onAllDone(){
+  stopTimer();hideFact();
+  G('buildArea').classList.add('glowing');
+  var elapsed=Math.round((Date.now()-startTime)/1000);
+  var n=Object.keys(placed).length;
+  var acc=Math.round(n/(n+errs)*100);
+  var stars=acc>=95?3:acc>=75?2:1;
+
+  sv.stars[curLv]=Math.max(stars,sv.stars[curLv]||0);
+  sv.scores[curLv]=Math.max(score,sv.scores[curLv]||0);
+  if(curLv+1>sv.unlocked-1)sv.unlocked=Math.min(curLv+2,LEVELS.length);
+  save();
+  G('navStars').textContent=Object.values(sv.stars).reduce(function(a,b){return a+b;},0);
+  renderNavPips(curLv);
+
+  var lv=LEVELS[curLv];
+  /* run through quizCount quizzes sequentially */
+  var quizzes=shuffle(lv.quizzes.slice()).slice(0,lv.quizCount||1);
+  runQuizzes(quizzes,0,function(){
+    G('doneTrophy').textContent=stars===3?'🏆':stars===2?'🥈':'🥉';
+    G('doneTitle').textContent=s('levelDone');
+    G('doneSub').textContent=stars===3?s('perfect'):stars===2?s('great'):s('ok');
+    G('dScore').textContent=score;G('dScoreL').textContent=s('score');
+    G('dAcc').textContent=acc+'%';G('dAccL').textContent=s('accuracy');
+    G('dTime').textContent=elapsed+'s';G('dTimeL').textContent=s('time');
+    var starEls=document.querySelectorAll('.dstar');
+    starEls.forEach(function(st){st.classList.remove('lit');});
+    for(var i=0;i<stars;i++){
+      (function(ii){setTimeout(function(){starEls[ii].classList.add('lit');},380+ii*230);})(i);
+    }
+    var nb=G('dNext'),hb=G('dHome'),rb=G('dRetry');
+    hb.textContent=s('menu');rb.textContent=s('retry');
+    if(curLv+1<LEVELS.length){
+      nb.textContent=s('nextLevel');nb.style.display='';
+      nb.onclick=function(){closeDone();setTimeout(function(){startLevel(curLv+1);},180);};
+    } else {
+      nb.textContent=s('allDone');
+      nb.onclick=function(){closeDone();goHome();};
+    }
+    G('doneOv').classList.remove('hidden');confetti();
+  });
+}
+function runQuizzes(qs,idx,done){
+  if(idx>=qs.length){done();return;}
+  showQuiz(qs[idx],function(){runQuizzes(qs,idx+1,done);});
+}
+function closeDone(){G('doneOv').classList.add('hidden');}
+
+/* ──────── QUIZ ──────── */
+function showQuiz(q,cb){
+  quizCb=cb;_qAnswered=false;
+  G('qIco').textContent='🧠';G('qTitle').textContent=s('quizTitle');
+  G('qQ').textContent=LANG==='bn'?q.q_bn:q.q_en;
+  G('qFb').className='quiz-fb';G('qFb').textContent='';
+  G('qNext').style.display='none';G('qNext').textContent=s('continueTxt');
+  var opts=G('qOpts');opts.innerHTML='';
+  q.opts.forEach(function(opt,i){
+    var d=document.createElement('div');d.className='qopt';d.textContent=opt;
+    d.onclick=function(){
+      if(_qAnswered)return;_qAnswered=true;
+      opts.querySelectorAll('.qopt').forEach(function(b){b.setAttribute('disabled','1');b.style.cursor='default';});
+      if(i===q.correct){
+        d.classList.add('correct');
+        G('qFb').className='quiz-fb show ok';G('qFb').textContent=s('quizCorrect');
+        score+=200;G('hScore').textContent=score;confetti();
+      } else {
+        d.classList.add('wrong');
+        opts.querySelectorAll('.qopt')[q.correct].classList.add('correct');
+        G('qFb').className='quiz-fb show ng';G('qFb').textContent=s('quizWrong')+q.opts[q.correct];
+      }
+      G('qNext').style.display='inline-flex';
+    };
+    opts.appendChild(d);
+  });
+  G('quizOv').classList.remove('hidden');
+}
+function closeQuiz(){
+  G('quizOv').classList.add('hidden');
+  if(quizCb){var cb=quizCb;quizCb=null;cb();}
+}
+
+/* ──────── EFFECTS ──────── */
+function spawnParticles(ref,items){
+  var r=ref.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  items.forEach(function(em,i){
+    var p=document.createElement('div');p.className='particle';p.textContent=em;
+    p.style.cssText='left:'+(cx+rnd(-35,35))+'px;top:'+(cy+rnd(-25,25))+'px;font-size:18px;animation-delay:'+(i*.08)+'s;';
+    document.body.appendChild(p);
+    setTimeout(function(){p.parentNode&&p.parentNode.removeChild(p);},1100);
+  });
+}
+function popScore(ref,txt,cls){
+  var r=ref.getBoundingClientRect();
+  var p=document.createElement('div');
+  p.className='score-pop '+(cls||'sp-ok');p.textContent=txt;
+  p.style.cssText='left:'+(r.left+r.width/2-20)+'px;top:'+(r.top-4)+'px;';
+  document.body.appendChild(p);
+  setTimeout(function(){p.parentNode&&p.parentNode.removeChild(p);},800);
+}
+function toast(msg,cls){
+  var t=document.createElement('div');t.className='toast '+(cls||'t-ok');t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.parentNode&&t.parentNode.removeChild(t);},1100);
+}
+function confetti(){
+  var l=G('cLayer');l.innerHTML='';
+  var c=['#1D5CE5','#EA6C00','#15803D','#D97706','#BE185D','#7C3AED','#0E7490','#DC2626'];
+  for(var i=0;i<90;i++){
+    var e=document.createElement('div');e.className='cp';
+    var w=rnd(7,15),h=rnd(7,15);
+    e.style.cssText='left:'+rnd(0,100)+'vw;background:'+c[i%c.length]+';width:'+w+'px;height:'+h+'px;'+
+      'border-radius:'+(rnd(0,1)?'50%':'4px')+';animation-duration:'+rnd(1200,2400)+'ms;animation-delay:'+rnd(0,700)+'ms;';
+    l.appendChild(e);
+  }
+  setTimeout(function(){l.innerHTML='';},3100);
+}
+
+/* ──────── UTILS ──────── */
+function G(id){return document.getElementById(id);}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rnd(0,i),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ──────── BOOT ──────── */
+buildWorldsGrid();renderNavPips(-1);
+</script>
+</body>
+</html>

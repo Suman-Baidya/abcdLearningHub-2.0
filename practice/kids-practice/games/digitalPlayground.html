@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<title>🌈 Digital Playground</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#1A1A2E;
+  --p:#7C3AED;--pl:#EDE9FE;--pd:#5B21B6;
+  --g:#16A34A;--gl:#DCFCE7;--gd:#14532D;
+  --r:#EF4444;--rl:#FEE2E2;--rd:#991B1B;
+  --y:#FBBF24;--yl:#FFFBEB;
+  --b:#3B82F6;--bl:#EFF6FF;--bd:#1E40AF;
+  --o:#F97316;--ol:#FFF7ED;--od:#C2410C;
+  --t:#0891B2;--tl:#ECFEFF;--td:#0E7490;
+  --sky:#F5F3FF;
+  --sh:5px 5px 0 var(--ink);
+  --sh2:7px 7px 0 var(--ink);
+  --sh3:3px 3px 0 var(--ink);
+  --nav:64px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;}
+.bn,.bn *{font-family:'Hind Siliguri','Nunito',sans-serif!important;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(124,58,237,.15) 0%,transparent 40%),
+    radial-gradient(circle at 85% 80%,rgba(6,182,212,.12) 0%,transparent 40%),
+    linear-gradient(160deg,#F5F3FF 0%,#EDE9FE 40%,#E0F2FE 100%);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav);z-index:600;
+  background:#fff;border-bottom:4px solid var(--ink);box-shadow:0 4px 0 var(--ink);
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:0 12px;gap:8px;}
+.nav-back{text-decoration:none;color:var(--ink);font-weight:900;font-size:12px;
+  padding:7px 14px;border-radius:50px;border:2.5px solid var(--ink);
+  background:#fff;box-shadow:var(--sh3);transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.nav-back:hover{transform:translate(-2px,-2px);box-shadow:var(--sh);}
+.nav-center{display:flex;flex-direction:column;align-items:center;min-width:0;}
+.nav-title{font-family:'Fredoka One',cursive;font-size:clamp(14px,3.2vw,22px);
+  background:linear-gradient(135deg,#7C3AED,#EC4899,#F97316);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+.nav-sub{font-size:9px;font-weight:900;color:#aaa;letter-spacing:.6px;text-transform:uppercase;}
+.nav-right{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.hud-pill{display:flex;align-items:center;gap:4px;border:2.5px solid var(--ink);border-radius:50px;
+  padding:4px 11px;font-weight:900;font-size:13px;box-shadow:var(--sh3);}
+.coin-hud{background:var(--y);}
+.star-hud{background:#fff;}
+.lang-toggle{display:flex;border:2.5px solid var(--ink);border-radius:50px;overflow:hidden;box-shadow:var(--sh3);}
+.lb{padding:5px 12px;font-weight:900;font-size:11px;cursor:pointer;background:#fff;color:#888;border:none;transition:.15s;}
+.lb.on{background:var(--p);color:#fff;}
+
+/* SCREENS */
+.sc{position:fixed;top:var(--nav);left:0;right:0;bottom:0;z-index:10;overflow:hidden;}
+.sc.off{display:none!important;}
+.sc-in{animation:scIn .35s cubic-bezier(.2,.8,0,1.1) both;}
+@keyframes scIn{from{opacity:0;transform:scale(.94)translateY(16px)}to{opacity:1;transform:none}}
+
+/* floating stars */
+.deco-star{position:fixed;pointer-events:none;z-index:1;font-size:22px;opacity:.15;animation:decoFloat linear infinite;}
+@keyframes decoFloat{0%{transform:translateY(0)rotate(0)}100%{transform:translateY(-110vh)rotate(360deg)}}
+
+/* HOME */
+#scHome{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.home-wrap{max-width:880px;margin:0 auto;padding:16px 14px 40px;position:relative;z-index:2;}
+.hero{background:linear-gradient(135deg,#FFF7ED 0%,#FDF4FF 50%,#EFF6FF 100%);
+  border:4px solid var(--ink);border-radius:28px;padding:28px 24px 22px;box-shadow:var(--sh2);
+  text-align:center;position:relative;overflow:hidden;margin-bottom:20px;}
+.hero-bg1{position:absolute;right:-20px;top:-20px;font-size:100px;opacity:.06;pointer-events:none;}
+.hero-bg2{position:absolute;left:-20px;bottom:-20px;font-size:100px;opacity:.06;pointer-events:none;}
+.hero-chars{font-size:clamp(48px,10vw,68px);display:block;margin-bottom:10px;animation:heroWiggle 3s ease-in-out infinite;}
+@keyframes heroWiggle{0%,100%{transform:rotate(-3deg)scale(1)}50%{transform:rotate(3deg)scale(1.07)}}
+.hero-title{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,5.5vw,2.8rem);
+  background:linear-gradient(135deg,#7C3AED,#EC4899,#F97316);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;line-height:1.1;}
+.hero-sub{font-size:.92rem;font-weight:700;color:#555;margin-bottom:10px;line-height:1.7;
+  max-width:500px;margin-left:auto;margin-right:auto;}
+.hero-chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.hero-chip{padding:5px 14px;border:2.5px solid var(--ink);border-radius:50px;
+  font-size:12px;font-weight:900;box-shadow:var(--sh3);background:#fff;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+.sec-label{font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--ink);
+  margin:0 0 14px;display:flex;align-items:center;gap:10px;}
+.sec-label::before,.sec-label::after{content:'';flex:1;height:3px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,.2),transparent);border-radius:2px;}
+
+/* ZONE CARDS */
+.zones-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.zcard{border:3.5px solid var(--ink);border-radius:22px;padding:16px 10px 14px;
+  text-align:center;cursor:pointer;position:relative;overflow:hidden;box-shadow:var(--sh);transition:all .2s;}
+.zcard::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -10%,rgba(255,255,255,.55),transparent 60%);pointer-events:none;}
+.zcard:hover:not(.locked){transform:translate(-4px,-6px);box-shadow:9px 11px 0 var(--ink);}
+.zcard:active:not(.locked){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink);}
+.zcard.locked{opacity:.38;cursor:not-allowed;filter:grayscale(.6);}
+.zcard.zdone{outline:4px solid var(--g);outline-offset:2px;}
+.zc-badge{position:absolute;top:7px;left:8px;font-size:9px;font-weight:900;
+  background:rgba(26,26,46,.12);border-radius:50px;padding:2px 7px;}
+.zc-lock{position:absolute;top:7px;right:8px;font-size:13px;}
+.zc-done-badge{position:absolute;top:7px;right:8px;font-size:13px;}
+.zc-ico{font-size:clamp(32px,6.5vw,44px);display:block;margin:4px 0 8px;
+  animation:iconBob 2.2s ease-in-out infinite;animation-delay:calc(var(--di)*.3s);}
+@keyframes iconBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.zc-name{font-family:'Fredoka One',cursive;font-size:clamp(9px,2vw,12px);line-height:1.3;margin-bottom:6px;}
+.zc-prog{display:flex;gap:4px;justify-content:center;margin-bottom:5px;}
+.zc-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);background:#fff;transition:.3s;}
+.zc-dot.lit{background:var(--g);}
+.zc-stars{font-size:11px;letter-spacing:1px;}
+
+/* how box */
+.how-box{background:#fff;border:3.5px solid var(--ink);border-radius:22px;
+  padding:18px 20px;box-shadow:var(--sh);margin-bottom:8px;}
+.how-title{font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:12px;}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.how-step{display:flex;gap:10px;align-items:flex-start;
+  background:#F8F5FF;border:2px solid rgba(124,58,237,.15);border-radius:14px;padding:10px 12px;}
+.how-n{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:#fff;
+  box-shadow:2px 2px 0 rgba(0,0,0,.2);}
+.how-t{font-size:12px;font-weight:700;color:#333;line-height:1.5;}
+
+/* STAGE SELECT */
+#scStages{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.stage-wrap{max-width:680px;margin:0 auto;padding:14px 14px 32px;position:relative;z-index:2;}
+.back-row{margin-bottom:14px;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  font-weight:900;font-size:13px;padding:8px 18px;border-radius:50px;
+  border:2.5px solid var(--ink);background:#fff;box-shadow:var(--sh3);transition:.15s;}
+.back-btn:hover{transform:translate(-2px,-2px);box-shadow:var(--sh);}
+.zone-hero{border:4px solid var(--ink);border-radius:26px;padding:22px 22px 20px;
+  text-align:center;box-shadow:var(--sh2);margin-bottom:16px;position:relative;overflow:hidden;}
+.zone-hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -20%,rgba(255,255,255,.6),transparent 55%);pointer-events:none;}
+.zone-hero-icon{font-size:60px;display:block;margin-bottom:10px;animation:heroWiggle 2.5s ease-in-out infinite;}
+.zone-hero-title{font-family:'Fredoka One',cursive;font-size:1.9rem;margin-bottom:4px;}
+.zone-hero-desc{font-size:.88rem;font-weight:700;color:#555;max-width:420px;margin:0 auto 10px;line-height:1.6;}
+.zone-mechs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.zone-mech{padding:4px 12px;border-radius:50px;border:2px solid rgba(26,26,46,.2);
+  font-size:10px;font-weight:900;background:rgba(255,255,255,.8);}
+
+.stages-list{display:flex;flex-direction:column;gap:10px;}
+.stage-row{display:flex;align-items:center;gap:14px;background:#fff;border:3.5px solid var(--ink);
+  border-radius:22px;padding:14px 16px;box-shadow:var(--sh);cursor:pointer;transition:.18s;
+  border-left:7px solid transparent;position:relative;overflow:hidden;}
+.stage-row::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(255,255,255,.5),transparent 35%);pointer-events:none;}
+.stage-row:hover:not(.locked){transform:translate(-3px,-4px);box-shadow:var(--sh2);}
+.stage-row:active:not(.locked){transform:translate(2px,2px);box-shadow:var(--sh3);}
+.stage-row.locked{opacity:.4;cursor:not-allowed;}
+.stage-row.sdone{background:var(--gl);}
+.st-num{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-family:'Fredoka One',cursive;font-size:18px;color:#fff;
+  border:3px solid var(--ink);box-shadow:var(--sh3);}
+.st-ico{font-size:36px;flex-shrink:0;}
+.st-info{flex:1;min-width:0;}
+.st-name{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:3px;}
+.st-desc{font-size:11px;font-weight:700;color:#666;line-height:1.45;margin-bottom:6px;}
+.st-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.st-diff{padding:3px 10px;border-radius:50px;font-size:9px;font-weight:900;letter-spacing:.3px;}
+.st-timer{font-size:10px;font-weight:900;color:#999;}
+.st-mech{font-size:10px;font-weight:900;color:#777;background:#F3F4F6;padding:2px 8px;border-radius:50px;}
+.st-stars-row{font-size:14px;flex-shrink:0;letter-spacing:2px;}
+
+/* GAME SCREEN */
+#scGame{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.game-wrap{max-width:780px;margin:0 auto;padding:10px 12px 28px;
+  position:relative;z-index:2;display:flex;flex-direction:column;gap:10px;}
+
+.g-topbar{display:flex;align-items:center;gap:8px;background:#fff;
+  border:3px solid var(--ink);border-radius:50px;padding:8px 14px;box-shadow:var(--sh);}
+.g-zone-ico{font-size:24px;flex-shrink:0;}
+.g-title{flex:1;font-family:'Fredoka One',cursive;font-size:clamp(11px,2.6vw,17px);
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.g-hud{display:flex;gap:6px;flex-shrink:0;}
+.g-pill{display:flex;align-items:center;gap:4px;padding:4px 11px;border-radius:50px;
+  border:2px solid var(--ink);font-weight:900;font-size:12px;box-shadow:var(--sh3);white-space:nowrap;}
+.timer-ok{background:var(--yl);color:#92400E;border-color:var(--y);}
+.timer-urgent{background:var(--rl);color:var(--r);border-color:var(--r);animation:urgBeat .45s ease infinite;}
+@keyframes urgBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+.g-prog-track{height:18px;background:rgba(26,26,46,.08);border:2.5px solid var(--ink);
+  border-radius:50px;overflow:hidden;position:relative;}
+.g-prog-fill{height:100%;border-radius:50px;transition:width .55s cubic-bezier(.34,1.56,.64,1);position:relative;}
+.g-prog-fill::after{content:'';position:absolute;top:3px;left:5px;right:5px;height:6px;
+  background:rgba(255,255,255,.55);border-radius:50px;}
+.g-prog-lbl{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-size:10px;font-weight:900;color:rgba(26,26,46,.55);}
+.g-diff-row{display:flex;align-items:center;gap:8px;margin-top:4px;}
+.g-diff-tag{padding:3px 11px;border-radius:50px;font-size:9px;font-weight:900;
+  letter-spacing:.4px;border:1.5px solid rgba(26,26,46,.15);}
+.g-diff-hint{font-size:10px;font-weight:800;color:#777;}
+
+/* INSTRUCTION BANNER - the big clear "what to do" box */
+.instruct-banner{display:flex;align-items:center;gap:12px;border:3.5px solid var(--ink);
+  border-radius:20px;padding:12px 18px;box-shadow:var(--sh);
+  animation:bannerPop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes bannerPop{from{transform:scale(.88)translateY(8px)}to{transform:scale(1)translateY(0)}}
+.instruct-ico{font-size:32px;flex-shrink:0;animation:iconBob 1.5s ease-in-out infinite;}
+.instruct-body{flex:1;}
+.instruct-action{font-family:'Fredoka One',cursive;font-size:clamp(14px,3vw,20px);
+  line-height:1.2;margin-bottom:3px;}
+.instruct-sub{font-size:11.5px;font-weight:700;color:#555;line-height:1.45;}
+
+/* PLAY AREA */
+.play-area{background:#fff;border:4px solid var(--ink);border-radius:26px;
+  box-shadow:var(--sh2);display:flex;flex-direction:column;min-height:320px;
+  position:relative;overflow:hidden;}
+.play-top{padding:14px 18px 12px;border-bottom:3px solid rgba(26,26,46,.07);
+  display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.play-q-badge{font-family:'Fredoka One',cursive;font-size:11px;padding:4px 12px;
+  border-radius:50px;border:2px solid var(--ink);box-shadow:var(--sh3);flex-shrink:0;white-space:nowrap;}
+.play-q-text{flex:1;font-family:'Fredoka One',cursive;font-size:clamp(13px,2.8vw,19px);line-height:1.3;}
+.play-q-ico{font-size:30px;flex-shrink:0;animation:iconBob 1.8s ease-in-out infinite;}
+.skip-btn{font-family:'Fredoka One',cursive;font-size:12px;padding:5px 13px;border-radius:50px;
+  border:2.5px solid var(--ink);background:#FEF9C3;color:#92400E;cursor:pointer;
+  box-shadow:3px 3px 0 var(--ink);flex-shrink:0;white-space:nowrap;transition:transform .12s,box-shadow .12s;
+  display:flex;align-items:center;gap:5px;}
+.skip-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink);}
+.skip-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink);}
+.skip-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--ink);}
+.play-body{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:18px 16px;gap:14px;}
+
+/* MCQ */
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;max-width:440px;}
+.choice-btn{border:3.5px solid var(--ink);border-radius:20px;padding:16px 12px;
+  text-align:center;cursor:pointer;box-shadow:var(--sh);transition:all .16s;
+  position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.choice-btn::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -5%,rgba(255,255,255,.55),transparent 60%);pointer-events:none;}
+.choice-btn:hover:not(.hit):not(.wrong-ans){transform:translate(-3px,-4px);box-shadow:var(--sh2);}
+.choice-btn:active{transform:scale(.92);}
+.choice-btn.hit{border-color:var(--g)!important;background:var(--gl)!important;animation:btnSnap .45s cubic-bezier(.34,1.56,.64,1);}
+.choice-btn.wrong-ans{border-color:var(--r)!important;background:var(--rl)!important;animation:btnShake .35s ease;}
+@keyframes btnSnap{0%,100%{transform:scale(1)}45%{transform:scale(1.1)}}
+@keyframes btnShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.choice-ico{font-size:clamp(28px,6.5vw,44px);display:block;line-height:1;}
+.choice-lbl{font-family:'Fredoka One',cursive;font-size:clamp(11px,2.2vw,15px);line-height:1.3;word-break:break-word;}
+
+/* TRUE/FALSE */
+.tf-question-card{background:linear-gradient(135deg,#F5F3FF,#EFF6FF);border:3.5px solid var(--ink);
+  border-radius:20px;padding:20px 24px;text-align:center;box-shadow:var(--sh);width:100%;max-width:420px;}
+.tf-statement{font-family:'Fredoka One',cursive;font-size:clamp(1rem,3.5vw,1.5rem);line-height:1.4;margin-bottom:6px;}
+.tf-btns{display:flex;gap:14px;justify-content:center;}
+.tf-btn{min-width:130px;height:58px;border-radius:20px;border:3.5px solid var(--ink);
+  font-family:'Fredoka One',cursive;font-size:1.15rem;cursor:pointer;
+  box-shadow:var(--sh);transition:.16s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.tf-btn:hover{transform:translate(-3px,-4px);box-shadow:var(--sh2);}
+.tf-true{background:#D1FAE5;}
+.tf-false{background:#FEE2E2;}
+.tf-btn.hit{animation:btnSnap .45s cubic-bezier(.34,1.56,.64,1);}
+.tf-btn.wrong-ans{animation:btnShake .35s ease;}
+
+/* FILL IN BLANK */
+.blank-prompt{font-family:'Fredoka One',cursive;font-size:clamp(1rem,3.2vw,1.4rem);
+  text-align:center;line-height:2;background:#F5F3FF;border:3px solid var(--ink);
+  border-radius:20px;padding:16px 20px;width:100%;max-width:420px;box-shadow:var(--sh);}
+.blank-slot{display:inline-block;min-width:100px;border-bottom:4px solid var(--p);
+  padding:2px 8px;background:var(--pl);border-radius:8px 8px 0 0;color:var(--pd);vertical-align:middle;}
+.blank-opts{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;max-width:420px;}
+.blank-opt{padding:11px 20px;border:3px solid var(--ink);border-radius:50px;background:#fff;
+  font-family:'Fredoka One',cursive;font-size:clamp(12px,2.5vw,15px);cursor:pointer;box-shadow:var(--sh3);transition:.16s;}
+.blank-opt:hover:not(.used):not(.hit):not(.wrong-ans){transform:translate(-2px,-3px);box-shadow:var(--sh);}
+.blank-opt.used{opacity:.28;pointer-events:none;}
+.blank-opt.hit{border-color:var(--g)!important;background:var(--gl)!important;}
+.blank-opt.wrong-ans{border-color:var(--r)!important;background:var(--rl)!important;animation:btnShake .3s ease;}
+
+/* SORT */
+.sort-arena{width:100%;max-width:460px;display:flex;flex-direction:column;gap:8px;}
+.sort-step-hint{font-size:12px;font-weight:900;color:var(--pd);text-align:center;
+  padding:6px 14px;border-radius:50px;border:2px dashed var(--p);background:var(--pl);}
+.sort-tray{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px;
+  background:#F8F5FF;border:3px dashed rgba(124,58,237,.4);border-radius:20px;min-height:56px;}
+.sort-item{padding:9px 16px;border:3px solid var(--ink);border-radius:50px;background:#fff;
+  font-family:'Fredoka One',cursive;font-size:clamp(11px,2.4vw,14px);cursor:pointer;
+  box-shadow:var(--sh3);transition:all .16s;display:flex;align-items:center;gap:7px;}
+.sort-item:hover:not(.si-correct){transform:translate(-2px,-3px);box-shadow:var(--sh);}
+.sort-item.si-selected{outline:4px solid var(--p);outline-offset:2px;background:var(--pl);}
+.sort-item.si-correct{border-color:var(--g);background:var(--gl);opacity:.6;pointer-events:none;}
+.sort-item.si-wrong{border-color:var(--r);background:var(--rl);animation:btnShake .3s ease;}
+.sort-step2-hint{font-size:12px;font-weight:900;color:var(--od);text-align:center;
+  padding:5px;animation:arrowBounce .8s ease-in-out infinite;}
+@keyframes arrowBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.sort-bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sort-bin{border:3.5px solid var(--ink);border-radius:20px;padding:12px 10px;min-height:90px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  box-shadow:var(--sh);transition:.2s;cursor:pointer;}
+.sort-bin:hover{transform:translate(-2px,-3px);box-shadow:var(--sh2);}
+.sort-bin.sbin-active{border-color:var(--p);box-shadow:var(--sh2);transform:scale(1.03);}
+.sort-bin-top{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.sort-bin-ico{font-size:28px;}
+.sort-bin-label{font-family:'Fredoka One',cursive;font-size:clamp(10px,2.2vw,13px);text-align:center;}
+.sort-bin-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:4px;}
+.bin-chip{padding:3px 9px;border:2px solid rgba(26,26,46,.2);border-radius:50px;
+  font-size:10px;font-weight:900;background:rgba(255,255,255,.85);}
+
+/* SPOT DANGER */
+.danger-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:400px;}
+.danger-item{aspect-ratio:1;border:3px solid var(--ink);border-radius:20px;
+  background:#F8FAFF;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;cursor:pointer;box-shadow:var(--sh);transition:all .16s;padding:8px;
+  animation:bubbleIn .4s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--di)*.07s);}
+@keyframes bubbleIn{from{transform:scale(0)rotate(-25deg)}to{transform:scale(1)rotate(0)}}
+.danger-item:hover:not(.hit):not(.wrong-ans){transform:translate(-2px,-3px);box-shadow:var(--sh2);}
+.danger-item.hit{border-color:var(--g)!important;background:var(--gl)!important;animation:btnSnap .45s ease!important;}
+.danger-item.wrong-ans{border-color:var(--r)!important;background:var(--rl)!important;animation:btnShake .35s ease!important;}
+.di-ico{font-size:clamp(22px,5.5vw,34px);}
+.di-lbl{font-size:clamp(8px,1.7vw,10px);font-weight:900;text-align:center;line-height:1.3;}
+
+/* MATCH */
+.match-arena{width:100%;max-width:500px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;}
+.match-col-head{font-family:'Fredoka One',cursive;font-size:12px;text-align:center;
+  opacity:.5;margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase;}
+.match-items{display:flex;flex-direction:column;gap:7px;}
+.match-item{border:3px solid var(--ink);border-radius:14px;padding:11px 13px;
+  background:#fff;cursor:pointer;box-shadow:var(--sh3);transition:.16s;
+  font-family:'Fredoka One',cursive;font-size:clamp(11px,2.3vw,14px);line-height:1.3;
+  display:flex;align-items:center;gap:7px;}
+.match-item:hover:not(.matched):not(.selected){transform:translate(-2px,-2px);box-shadow:var(--sh);}
+.match-item.selected{border-color:var(--p);background:var(--pl);box-shadow:var(--sh);}
+.match-item.matched{border-color:var(--g);background:var(--gl);opacity:.65;pointer-events:none;}
+.match-item.wrong-tap{border-color:var(--r);background:var(--rl);animation:btnShake .3s ease;}
+
+/* PASSWORD RATE */
+.pw-wrap{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px;}
+.pw-screen{font-family:'Fredoka One',cursive;font-size:clamp(1.2rem,4vw,1.8rem);
+  letter-spacing:5px;text-align:center;background:#0F172A;color:#4ADE80;
+  border:3.5px solid var(--ink);border-radius:16px;padding:14px 18px;box-shadow:var(--sh);
+  position:relative;overflow:hidden;}
+.pw-screen::before{content:'● ● ●';position:absolute;top:5px;left:10px;font-size:8px;
+  color:#334155;letter-spacing:4px;}
+.pw-hint-text{font-size:12px;font-weight:700;color:#666;text-align:center;}
+.pw-meter{height:20px;background:rgba(26,26,46,.1);border:2.5px solid var(--ink);
+  border-radius:50px;overflow:hidden;position:relative;}
+.pw-meter-fill{height:100%;border-radius:50px;transition:width .5s,background .5s;}
+.pw-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.pw-btn{padding:10px 18px;border:3px solid var(--ink);border-radius:50px;background:#fff;
+  font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;box-shadow:var(--sh3);transition:.16s;}
+.pw-btn:hover:not(.hit):not(.wrong-ans){transform:translate(-2px,-2px);box-shadow:var(--sh);}
+.pw-btn.hit{border-color:var(--g)!important;background:var(--gl)!important;}
+.pw-btn.wrong-ans{border-color:var(--r)!important;background:var(--rl)!important;animation:btnShake .3s ease;}
+
+/* FEEDBACK */
+.feedback-flash{position:absolute;inset:0;z-index:50;display:flex;align-items:center;
+  justify-content:center;font-size:clamp(64px,15vw,90px);pointer-events:none;
+  animation:flashAnim .6s ease forwards;}
+@keyframes flashAnim{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1.3)}60%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.9)translateY(-24px)}}
+.feedback-flash.hidden{display:none;}
+
+/* RESULT */
+.result-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:20px 16px;animation:scIn .4s cubic-bezier(.2,.8,0,1.1);}
+.result-ico{font-size:72px;animation:trophySpin .75s cubic-bezier(.34,1.56,.64,1);}
+@keyframes trophySpin{from{transform:scale(0)rotate(-180deg)}to{transform:scale(1)rotate(0)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:1.8rem;text-align:center;}
+.result-sub{font-size:.9rem;font-weight:700;color:#555;text-align:center;line-height:1.7;}
+.result-stars{display:flex;gap:8px;font-size:42px;margin:4px 0;}
+.r-star{opacity:.15;filter:grayscale(1);transition:.35s;}
+.r-star.lit{opacity:1;filter:none;animation:starPop .55s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes starPop{from{transform:scale(0)rotate(-40deg)}to{transform:scale(1)rotate(0)}}
+.result-stats{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;}
+.r-stat{background:#fff;border:2.5px solid var(--ink);border-radius:14px;
+  padding:8px 14px;box-shadow:var(--sh3);text-align:center;}
+.r-stat-v{font-family:'Fredoka One',cursive;font-size:1.35rem;color:var(--p);}
+.r-stat-l{font-size:9px;font-weight:900;color:#aaa;text-transform:uppercase;letter-spacing:.5px;}
+.result-btns{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+
+/* EFFECTS */
+.score-pop{position:fixed;pointer-events:none;z-index:999;
+  font-family:'Fredoka One',cursive;font-size:1.5rem;animation:scoreFly .9s ease-out forwards;}
+@keyframes scoreFly{0%{opacity:1;transform:translateY(0)scale(1)}100%{opacity:0;transform:translateY(-80px)scale(1.25)}}
+.sp-ok{color:var(--g);}
+.sp-ng{color:var(--r);}
+.clayer{position:fixed;inset:0;pointer-events:none;z-index:997;overflow:hidden;}
+.cp{position:absolute;top:-20px;animation:cpfall linear forwards;}
+@keyframes cpfall{to{transform:translateY(115vh)rotate(1080deg);opacity:0;}}
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:1000;
+  padding:9px 22px;border-radius:50px;font-weight:900;font-size:13px;
+  border:3px solid var(--ink);box-shadow:var(--sh);white-space:nowrap;pointer-events:none;
+  animation:toastA 1.15s ease forwards;}
+.t-ok{background:#D1FAE5;color:var(--gd);}
+.t-ng{background:var(--rl);color:var(--rd);}
+@keyframes toastA{0%{opacity:0;transform:translateX(-50%)translateY(-16px)scale(.8)}
+  15%{opacity:1;transform:translateX(-50%)scale(1.06)}
+  75%{opacity:1}100%{opacity:0;transform:translateX(-50%)translateY(-12px)}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 24px;border-radius:50px;border:3px solid var(--ink);
+  font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;
+  transition:all .15s;box-shadow:var(--sh);text-decoration:none;white-space:nowrap;}
+.btn:hover{transform:translate(-2px,-3px);box-shadow:var(--sh2);}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+.b-play{background:var(--g);color:#fff;}
+.b-purple{background:var(--p);color:#fff;}
+.b-white{background:#fff;color:var(--ink);}
+.b-yellow{background:var(--y);color:var(--ink);}
+
+@media(max-width:600px){
+  .zones-grid{grid-template-columns:repeat(2,1fr);}
+  .how-grid{grid-template-columns:1fr;}
+  .choice-grid{max-width:340px;}
+  .match-arena{grid-template-columns:1fr;max-width:340px;}
+}
+@media(max-width:380px){
+  .zones-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-sub,.coin-hud{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="clayer" id="cLayer"></div>
+<div class="deco-star" style="left:5%;animation-duration:18s;animation-delay:0s;top:100%">⭐</div>
+<div class="deco-star" style="left:22%;animation-duration:24s;animation-delay:5s;top:100%">🌟</div>
+<div class="deco-star" style="left:45%;animation-duration:20s;animation-delay:2s;top:100%">✨</div>
+<div class="deco-star" style="left:68%;animation-duration:22s;animation-delay:8s;top:100%">⭐</div>
+<div class="deco-star" style="left:85%;animation-duration:19s;animation-delay:4s;top:100%">🌟</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-back" href="../index.html">← Hub</a>
+  <div class="nav-center">
+    <div class="nav-title">🌈 Digital Playground</div>
+    <div class="nav-sub">Everyday Computer Fun</div>
+  </div>
+  <div class="nav-right">
+    <div class="hud-pill coin-hud">🪙 <span id="coinCount">0</span></div>
+    <div class="hud-pill star-hud">⭐ <span id="starCount">0</span></div>
+    <div class="lang-toggle">
+      <button class="lb on" id="lbEN" onclick="setLang('en')">EN</button>
+      <button class="lb"    id="lbBN" onclick="setLang('bn')">বাং</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="sc sc-in" id="scHome">
+  <div class="home-wrap">
+    <div class="hero">
+      <span class="hero-bg1">🌈</span>
+      <span class="hero-bg2">🎮</span>
+      <span class="hero-chars">🌈💻🎮</span>
+      <div class="hero-title">Digital Playground!</div>
+      <div class="hero-sub">Puzzles &amp; challenges about everyday computer use.<br>
+        <strong>Pick a zone and start learning — the fun way!</strong></div>
+      <div class="hero-chips">
+        <span class="hero-chip">🔐 Passwords</span>
+        <span class="hero-chip">📁 Files</span>
+        <span class="hero-chip">🕵️ Fake Sites</span>
+        <span class="hero-chip">🚀 Apps</span>
+        <span class="hero-chip">🛡️ Safety</span>
+        <span class="hero-chip">🎯 Mega Quiz</span>
+      </div>
+      <div class="hero-btns">
+        <button class="btn b-play" onclick="quickStart()">▶ Play Now!</button>
+        <button class="btn b-white" onclick="G('zonesSection').scrollIntoView({behavior:'smooth'})">🗺️ Choose Zone</button>
+      </div>
+    </div>
+    <div class="sec-label" id="zonesSection">🗺️ Choose Your Zone</div>
+    <div class="zones-grid" id="zonesGrid"></div>
+    <div class="how-box">
+      <div class="how-title">📖 How to Play</div>
+      <div class="how-grid">
+        <div class="how-step"><div class="how-n" style="background:var(--p)">1</div><div class="how-t">👆 <strong>Tap a Zone</strong> to open it, then pick a Level to start</div></div>
+        <div class="how-step"><div class="how-n" style="background:var(--b)">2</div><div class="how-t">📋 <strong>Read the big banner</strong> — it tells you exactly what to do each round!</div></div>
+        <div class="how-step"><div class="how-n" style="background:var(--o)">3</div><div class="how-t">⏱️ <strong>Answer before time runs out</strong> — each correct answer earns points!</div></div>
+        <div class="how-step"><div class="how-n" style="background:var(--g)">4</div><div class="how-t">⭐ <strong>Earn 3 stars</strong> to unlock the next zone — can you beat them all?</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE SELECT -->
+<div class="sc off" id="scStages">
+  <div class="stage-wrap">
+    <div class="back-row">
+      <div class="back-btn" onclick="goHome()">← Back to Map</div>
+    </div>
+    <div class="zone-hero" id="zoneHero">
+      <span class="zone-hero-icon" id="zHeroIcon">🔐</span>
+      <div class="zone-hero-title" id="zHeroTitle">Password Zone</div>
+      <div class="zone-hero-desc" id="zHeroDesc">Learn to create super strong passwords!</div>
+      <div class="zone-mechs" id="zoneMechs"></div>
+    </div>
+    <div class="stages-list" id="stagesList"></div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div class="sc off" id="scGame">
+  <div class="game-wrap">
+    <div class="g-topbar">
+      <span class="g-zone-ico" id="gZoneIco">🔐</span>
+      <div class="g-title" id="gTitle">Password Zone · Level 1</div>
+      <div class="g-hud">
+        <div class="g-pill" id="scorePill" style="background:var(--pl);color:var(--pd);border-color:var(--p)">⚡ <span id="gScore">0</span></div>
+        <div class="g-pill timer-ok" id="timerPill">⏱ 30s</div>
+      </div>
+    </div>
+    <div>
+      <div class="g-prog-track">
+        <div class="g-prog-fill" id="gProgFill" style="width:0%"></div>
+        <div class="g-prog-lbl" id="gProgLbl">0 / 5</div>
+      </div>
+      <div class="g-diff-row">
+        <span class="g-diff-tag" id="diffTag">⭐ Easy</span>
+        <span class="g-diff-hint" id="diffHint"></span>
+      </div>
+    </div>
+    <!-- THE KEY FEATURE: big clear instruction banner -->
+    <div class="instruct-banner" id="instructBanner" style="background:#EDE9FE">
+      <span class="instruct-ico" id="instructIco">👆</span>
+      <div class="instruct-body">
+        <div class="instruct-action" id="instructAction">Tap the correct answer!</div>
+        <div class="instruct-sub" id="instructSub">Read the question, then choose the best option.</div>
+      </div>
+    </div>
+    <div class="play-area" id="playArea">
+      <div class="play-top" id="playTop">
+        <div class="play-q-badge" id="qBadge">Q 1 / 5</div>
+        <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ <span id="skipLbl">Skip</span></button>
+        <div class="play-q-text" id="qText">Question here</div>
+        <div class="play-q-ico" id="qIco">❓</div>
+      </div>
+      <div class="play-body" id="playBody"></div>
+      <div class="feedback-flash hidden" id="feedbackFlash">✅</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==============================================
+   DIGITAL PLAYGROUND  v2.0
+   6 Zones x 3 Levels | EN/বাং bilingual
+   All mechanics: MCQ · T/F · Fill-Blank ·
+     Sort-to-Bin · Spot-Danger · Match · PW-Rate
+============================================== */
+var LANG='en';
+var coins=0,totalStars=0;
+var progress={};
+var score=0,correct=0,curQ=0,totalQ=0,qData=[];
+var curZone=-1,curLevel=-1;
+var answered=false,gTimer=null,timeLeft=0;
+var selectedSortItem=null;
+var matchSel={left:null,right:null},matchDone=[];
+
+function G(id){return document.getElementById(id);}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function mkEl(tag,cls,text){var el=document.createElement(tag);el.className=cls;if(text!==undefined)el.textContent=text;return el;}
+
+function setLang(l){LANG=l;G('lbEN').classList.toggle('on',l==='en');G('lbBN').classList.toggle('on',l==='bn');document.body.classList.toggle('bn',l==='bn');buildZonesGrid();}
+
+/* ======== ZONES DATA ======== */
+/* helper: pick EN or BN string */
+function tx(en,bn){return(LANG==='bn'&&bn)?bn:en;}
+
+var ZONES=[
+  {icon:'🔐',name:'Password Zone',nameBN:'পাসওয়ার্ড জোন',
+   desc:'Learn what makes passwords strong and safe!',descBN:'শক্তিশালী পাসওয়ার্ড তৈরি শেখো!',
+   color:'var(--p)',colorL:'var(--pl)',colorD:'var(--pd)',
+   mechs:['Rate It','MCQ','Fill Blank'],
+   levels:[
+    {name:"Strong or Weak?",nameBN:'শক্তিশালী না দুর্বল?',ico:'🔑',diff:'Easy',time:40,
+     instruct:{ico:'🔑',
+       action:'Rate each password — how strong is it?',actionBN:'প্রতিটি পাসওয়ার্ড রেট করো — এটা কতটা শক্তিশালী?',
+       sub:'Look at the password on screen, read the hint, then tap the correct strength.',subBN:'স্ক্রিনে পাসওয়ার্ড দেখো, হিন্ট পড়ো, তারপর সঠিক শক্তি মাত্রায় ট্যাপ করো।'},
+     type:'pw_rate',
+     qs:[
+      {pw:'abc',strength:0,q:'How strong is this password?',qBN:'এই পাসওয়ার্ডটি কতটা শক্তিশালী?',hint:'💡 Only 3 letters — way too short!',hintBN:'💡 মাত্র ৩টি অক্ষর — অনেক ছোট!'},
+      {pw:'password',strength:0,q:'How strong is this password?',qBN:'এই পাসওয়ার্ডটি কতটা শক্তিশালী?',hint:'💡 "password" is the most common — very weak!',hintBN:'💡 "password" সবচেয়ে সাধারণ পাসওয়ার্ড — খুবই দুর্বল!'},
+      {pw:'Tiger99',strength:1,q:'How strong is this password?',qBN:'এই পাসওয়ার্ডটি কতটা শক্তিশালী?',hint:'💡 A word + 2 numbers — weak, hackers try this!',hintBN:'💡 একটি শব্দ + ২টি সংখ্যা — দুর্বল!'},
+      {pw:'Sun$h1ne!',strength:2,q:'How strong is this password?',qBN:'এই পাসওয়ার্ডটি কতটা শক্তিশালী?',hint:'💡 Mix of letters, number and symbol — good!',hintBN:'💡 অক্ষর, সংখ্যা ও চিহ্নের মিশ্রণ — ভালো!'},
+      {pw:'X#9mK!p2Lq',strength:3,q:'How strong is this password?',qBN:'এই পাসওয়ার্ডটি কতটা শক্তিশালী?',hint:'💡 Long, random, mixed — very strong! 💪',hintBN:'💡 লম্বা, এলোমেলো, মিশ্রিত — খুব শক্তিশালী! 💪'},
+     ]},
+    {name:"Password Rules",nameBN:'পাসওয়ার্ড নিয়ম',ico:'📜',diff:'Medium',time:35,
+     instruct:{ico:'👆',
+       action:'Tap the correct answer!',actionBN:'সঠিক উত্তরে ট্যাপ করো!',
+       sub:'Read the question carefully, then tap the BEST option.',subBN:'প্রশ্নটি মনোযোগ দিয়ে পড়ো, তারপর সেরা উত্তরে ট্যাপ করো।'},
+     type:'mc',
+     qs:[
+      {q:'What makes a password STRONGER?',qBN:'কোনটি পাসওয়ার্ডকে শক্তিশালী করে?',ico:'💪',ans:2,
+       opts:[{e:'📝',l:'Using your own name',lBN:'নিজের নাম ব্যবহার'},{e:'📅',l:'Your birthday',lBN:'জন্মদিন'},{e:'🔣',l:'Special symbols like @#!',lBN:'বিশেষ চিহ্ন যেমন @#!'},{e:'🐕',l:"Your pet's name",lBN:'পোষা প্রাণীর নাম'}]},
+      {q:'How long should a safe password be?',qBN:'নিরাপদ পাসওয়ার্ড কত লম্বা হওয়া উচিত?',ico:'📏',ans:3,
+       opts:[{e:'3️⃣',l:'3 characters',lBN:'৩টি অক্ষর'},{e:'5️⃣',l:'5 characters',lBN:'৫টি অক্ষর'},{e:'7️⃣',l:'7 characters',lBN:'৭টি অক্ষর'},{e:'🔟',l:'10+ characters',lBN:'১০+ অক্ষর'}]},
+      {q:'Which password looks the SAFEST?',qBN:'কোন পাসওয়ার্ডটি সবচেয়ে নিরাপদ?',ico:'🛡️',ans:1,
+       opts:[{e:'😊',l:'iloveyou',lBN:'iloveyou'},{e:'🔐',l:'T!ger#92xZ',lBN:'T!ger#92xZ'},{e:'🏠',l:'myhouse2024',lBN:'myhouse2024'},{e:'📱',l:'phone123',lBN:'phone123'}]},
+      {q:'NEVER share your password with...',qBN:'পাসওয়ার্ড কখনো দিও না...',ico:'🤫',ans:3,
+       opts:[{e:'👨‍👩‍👦',l:'Parents (emergency)',lBN:'বাবা-মা (জরুরি অবস্থায়)'},{e:'🏫',l:'Teacher (school)',lBN:'শিক্ষক (স্কুল)'},{e:'🆘',l:'Nobody ever',lBN:'কাউকেই না'},{e:'👫',l:'Friends at school',lBN:'স্কুলের বন্ধুদের'}]},
+      {q:'If someone sees your password, do this FIRST:',qBN:'কেউ পাসওয়ার্ড দেখলে প্রথমে কী করবে?',ico:'😱',ans:0,
+       opts:[{e:'🔄',l:'Change it straight away',lBN:'সঙ্গে সঙ্গে পরিবর্তন করো'},{e:'😴',l:'Do nothing',lBN:'কিছুই করো না'},{e:'😂',l:'Laugh about it',lBN:'হেসে নাও'},{e:'📢',l:'Tell everyone',lBN:'সবাইকে বলো'}]},
+     ]},
+    {name:"Password Tips",nameBN:'পাসওয়ার্ড টিপস',ico:'🏗️',diff:'Hard',time:30,
+     instruct:{ico:'✍️',
+       action:'Fill in the missing word!',actionBN:'শূন্যস্থান পূরণ করো!',
+       sub:'One word is missing. Tap the word that completes the sentence.',subBN:'একটি শব্দ বাদ আছে। সঠিক শব্দে ট্যাপ করো।'},
+     type:'fillin',
+     qs:[
+      {q:'A good password uses UPPER and ___ case letters.',qBN:'ভালো পাসওয়ার্ডে বড় ও ___ হাতের অক্ষর থাকে।',ans:'lower',ansBN:'ছোট',opts:['lower','blue','happy','fast'],optsBN:['ছোট','নীল','সুখী','দ্রুত'],ico:'🔡'},
+      {q:'Never use your ___ as a password!',qBN:'কখনো তোমার ___ পাসওয়ার্ড হিসেবে ব্যবহার করো না!',ans:'name',ansBN:'নাম',opts:['name','shoe','star','book'],optsBN:['নাম','জুতো','তারা','বই'],ico:'🚫'},
+      {q:'Use at least one ___ character like @, #, or !',qBN:'অন্তত একটি ___ অক্ষর যেমন @, #, বা ! ব্যবহার করো।',ans:'special',ansBN:'বিশেষ',opts:['special','short','blank','normal'],optsBN:['বিশেষ','ছোট','ফাঁকা','সাধারণ'],ico:'🔣'},
+      {q:'A password with 12+ characters is considered ___.',qBN:'১২+ অক্ষরের পাসওয়ার্ড ___ বলে বিবেচিত হয়।',ans:'strong',ansBN:'শক্তিশালী',opts:['strong','weak','tiny','old'],optsBN:['শক্তিশালী','দুর্বল','ছোট','পুরনো'],ico:'💪'},
+      {q:'Use a different password for each ___ you have.',qBN:'প্রতিটি ___ এর জন্য আলাদা পাসওয়ার্ড ব্যবহার করো।',ans:'account',ansBN:'অ্যাকাউন্ট',opts:['account','colour','food','day'],optsBN:['অ্যাকাউন্ট','রঙ','খাবার','দিন'],ico:'🔑'},
+     ]},
+   ]},
+
+  {icon:'📁',name:'Files & Folders',nameBN:'ফাইল ও ফোল্ডার',
+   desc:'Sort and organise digital files like a pro!',descBN:'ডিজিটাল ফাইল গোছাও ও সাজাও!',
+   color:'var(--b)',colorL:'var(--bl)',colorD:'var(--bd)',
+   mechs:['MCQ','Sort It','True/False'],
+   levels:[
+    {name:"What's in the File?",nameBN:'ফাইলে কী আছে?',ico:'🗂️',diff:'Easy',time:40,
+     instruct:{ico:'👆',
+       action:'Tap the correct answer!',actionBN:'সঠিক উত্তরে ট্যাপ করো!',
+       sub:'Look at each option, then tap the correct file type.',subBN:'প্রতিটি বিকল্প দেখো, তারপর সঠিক ফাইলের ধরনে ট্যাপ করো।'},
+     type:'mc',
+     qs:[
+      {q:'Which file stores a PHOTO?',qBN:'কোন ফাইলে ছবি থাকে?',ico:'🖼️',ans:0,
+       opts:[{e:'🖼️',l:'.jpg or .png',lBN:'.jpg বা .png'},{e:'📄',l:'.txt text file',lBN:'.txt টেক্সট ফাইল'},{e:'🎵',l:'.mp3 music',lBN:'.mp3 সংগীত'},{e:'📊',l:'.xlsx spreadsheet',lBN:'.xlsx স্প্রেডশিট'}]},
+      {q:'Which file stores MUSIC?',qBN:'কোন ফাইলে সংগীত থাকে?',ico:'🎵',ans:2,
+       opts:[{e:'📹',l:'.mp4 video',lBN:'.mp4 ভিডিও'},{e:'📄',l:'.doc document',lBN:'.doc ডকুমেন্ট'},{e:'🎵',l:'.mp3 audio',lBN:'.mp3 অডিও'},{e:'📦',l:'.zip archive',lBN:'.zip আর্কাইভ'}]},
+      {q:'Which file is a DOCUMENT?',qBN:'কোন ফাইলটি একটি ডকুমেন্ট?',ico:'📖',ans:1,
+       opts:[{e:'🖼️',l:'.png image',lBN:'.png ছবি'},{e:'📄',l:'.pdf document',lBN:'.pdf ডকুমেন্ট'},{e:'🎮',l:'.exe program',lBN:'.exe প্রোগ্রাম'},{e:'🎵',l:'.wav audio',lBN:'.wav অডিও'}]},
+      {q:'Which file stores NUMBERS in a table?',qBN:'কোন ফাইলে টেবিলে সংখ্যা থাকে?',ico:'📊',ans:3,
+       opts:[{e:'📄',l:'.txt text',lBN:'.txt টেক্সট'},{e:'🖼️',l:'.jpg photo',lBN:'.jpg ছবি'},{e:'🎵',l:'.mp3 music',lBN:'.mp3 সংগীত'},{e:'📊',l:'.xlsx spreadsheet',lBN:'.xlsx স্প্রেডশিট'}]},
+      {q:'Which file is a VIDEO?',qBN:'কোন ফাইলটি একটি ভিডিও?',ico:'📹',ans:0,
+       opts:[{e:'📹',l:'.mp4 video',lBN:'.mp4 ভিডিও'},{e:'📦',l:'.zip archive',lBN:'.zip আর্কাইভ'},{e:'📄',l:'.doc word file',lBN:'.doc ওয়ার্ড ফাইল'},{e:'🖼️',l:'.bmp image',lBN:'.bmp ছবি'}]},
+     ]},
+    {name:"Sort the Files!",nameBN:'ফাইল সাজাও!',ico:'📂',diff:'Medium',time:45,
+     instruct:{ico:'👆',
+       action:'Tap an item · then tap the right folder!',actionBN:'একটি আইটেমে ট্যাপ করো · তারপর সঠিক ফোল্ডারে ট্যাপ করো!',
+       sub:'Step 1: tap an item (turns purple). Step 2: tap the correct folder.',subBN:'ধাপ ১: আইটেমে ট্যাপ করো (বেগুনি হবে)। ধাপ ২: সঠিক ফোল্ডারে ট্যাপ করো।'},
+     type:'sort',
+     qs:[
+      {q:'Sort each file into the correct folder!',qBN:'প্রতিটি ফাইল সঠিক ফোল্ডারে রাখো!',ico:'📂',
+       items:[{e:'🎵',l:'song.mp3',bin:0},{e:'🖼️',l:'photo.jpg',bin:1},{e:'🎵',l:'music.wav',bin:0},{e:'🖼️',l:'selfie.png',bin:1}],
+       bins:[{e:'🎵',l:'Music Folder',lBN:'সংগীত ফোল্ডার',bg:'#EFF6FF'},{e:'🖼️',l:'Photos Folder',lBN:'ছবি ফোল্ডার',bg:'#FFF7ED'}]},
+      {q:'Which folder does each file belong in?',qBN:'কোন ফাইল কোন ফোল্ডারে যাবে?',ico:'📂',
+       items:[{e:'📹',l:'video.mp4',bin:0},{e:'📄',l:'essay.doc',bin:1},{e:'📹',l:'movie.avi',bin:0},{e:'📄',l:'report.pdf',bin:1}],
+       bins:[{e:'📹',l:'Videos',lBN:'ভিডিও',bg:'#FFF7ED'},{e:'📄',l:'Documents',lBN:'ডকুমেন্ট',bg:'#F0FDF4'}]},
+      {q:'Organise these school files!',qBN:'স্কুলের ফাইলগুলো সাজাও!',ico:'🏫',
+       items:[{e:'🔢',l:'maths.xlsx',bin:0},{e:'🎨',l:'art.png',bin:1},{e:'🔢',l:'data.csv',bin:0},{e:'🎨',l:'drawing.jpg',bin:1}],
+       bins:[{e:'🔢',l:'Maths',lBN:'গণিত',bg:'#EFF6FF'},{e:'🎨',l:'Art',lBN:'শিল্প',bg:'#FDF4FF'}]},
+      {q:'Sort these downloads!',qBN:'এই ডাউনলোডগুলো সাজাও!',ico:'⬇️',
+       items:[{e:'🎮',l:'game.exe',bin:0},{e:'📸',l:'holiday.png',bin:1},{e:'🎮',l:'app.exe',bin:0},{e:'📸',l:'birthday.jpg',bin:1}],
+       bins:[{e:'🎮',l:'Apps',lBN:'অ্যাপস',bg:'#ECFEFF'},{e:'📸',l:'Pictures',lBN:'ছবি',bg:'#FFF7ED'}]},
+      {q:'Last one — sort them right!',qBN:'শেষটা — সঠিকভাবে সাজাও!',ico:'📁',
+       items:[{e:'🎵',l:'podcast.mp3',bin:0},{e:'📄',l:'notes.txt',bin:1},{e:'🎵',l:'beats.wav',bin:0},{e:'📄',l:'story.doc',bin:1}],
+       bins:[{e:'🎵',l:'Audio',lBN:'অডিও',bg:'#EFF6FF'},{e:'📄',l:'Notes',lBN:'নোটস',bg:'#F0FDF4'}]},
+     ]},
+    {name:"File Facts",nameBN:'ফাইল তথ্য',ico:'❓',diff:'Hard',time:28,
+     instruct:{ico:'🤔',
+       action:'True or False?',actionBN:'সত্য না মিথ্যা?',
+       sub:'Tap TRUE ✅ if correct, or FALSE ❌ if wrong.',subBN:'সঠিক হলে TRUE ✅ ট্যাপ করো, ভুল হলে FALSE ❌ ট্যাপ করো।'},
+     type:'truefalse',
+     qs:[
+      {q:'You can put a folder inside another folder.',qBN:'একটি ফোল্ডারের ভেতরে আরেকটি ফোল্ডার রাখা যায়।',ans:true,ico:'📁'},
+      {q:'A .jpg file can contain music.',qBN:'.jpg ফাইলে সংগীত থাকতে পারে।',ans:false,ico:'🎵'},
+      {q:'Deleting a file moves it to the Recycle Bin first.',qBN:'ফাইল মুছলে প্রথমে রিসাইকেল বিনে যায়।',ans:true,ico:'🗑️'},
+      {q:'You can rename a file after saving it.',qBN:'সেভ করার পরে ফাইলের নাম পরিবর্তন করা যায়।',ans:true,ico:'✏️'},
+      {q:'A .exe file from an unknown email is safe to open.',qBN:'অপরিচিত ইমেইলের .exe ফাইল খোলা নিরাপদ।',ans:false,ico:'📧'},
+     ]},
+   ]},
+
+  {icon:'🕵️',name:'Fake Site Finder',nameBN:'নকল সাইট খোঁজো',
+   desc:'Spot scams and dangerous websites!',descBN:'স্ক্যাম ও নকল ওয়েবসাইট চেনো!',
+   color:'var(--r)',colorL:'var(--rl)',colorD:'var(--rd)',
+   mechs:['MCQ','Spot Danger','Fill Blank'],
+   levels:[
+    {name:"Real or Fake?",nameBN:'আসল না নকল?',ico:'🕵️',diff:'Easy',time:38,
+     instruct:{ico:'👆',
+       action:'Tap the safest or most correct answer!',actionBN:'সবচেয়ে নিরাপদ বা সঠিক উত্তরে ট্যাপ করো!',
+       sub:'Read each question about internet safety, then tap the best answer.',subBN:'ইন্টারনেট সুরক্ষা বিষয়ক প্রতিটি প্রশ্ন পড়ো, তারপর সেরা উত্তরে ট্যাপ করো।'},
+     type:'mc',
+     qs:[
+      {q:'Which URL is SAFE to visit?',qBN:'কোন URL ভিজিট করা নিরাপদ?',ico:'🔗',ans:0,
+       opts:[{e:'🔒',l:'https://www.google.com',lBN:'https://www.google.com'},{e:'⚠️',l:'http://g00gle.com',lBN:'http://g00gle.com'},{e:'🚫',l:'free-prizes-click.net',lBN:'free-prizes-click.net'},{e:'💀',l:'google.scam.ru',lBN:'google.scam.ru'}]},
+      {q:'"You WON £1000! Click now!" This is...',qBN:'"তুমি ১০০০ পাউন্ড জিতেছ! এখনই ক্লিক করো!" এটা...',ico:'📧',ans:1,
+       opts:[{e:'🎉',l:'Real — click it!',lBN:'আসল — ক্লিক করো!'},{e:'🚨',l:'A scam — delete it',lBN:'স্ক্যাম — মুছে দাও'},{e:'😴',l:'Just boring news',lBN:'শুধু বিরক্তিকর খবর'},{e:'📤',l:'Forward to friends',lBN:'বন্ধুদের পাঠাও'}]},
+      {q:'A safe website address starts with...',qBN:'নিরাপদ ওয়েবসাইটের ঠিকানা শুরু হয়...',ico:'🌐',ans:2,
+       opts:[{e:'❌',l:'http://',lBN:'http://'},{e:'⚠️',l:'www. (any site)',lBN:'www. (যেকোনো সাইট)'},{e:'✅',l:'https://',lBN:'https://'},{e:'💀',l:'.exe extension',lBN:'.exe এক্সটেনশন'}]},
+      {q:'The 🔒 padlock in your browser means...',qBN:'ব্রাউজারে 🔒 তালা মানে...',ico:'🔒',ans:0,
+       opts:[{e:'✅',l:'Connection is encrypted',lBN:'সংযোগ এনক্রিপ্টেড'},{e:'🔑',l:'You need a password',lBN:'পাসওয়ার্ড লাগবে'},{e:'🚫',l:'The site is blocked',lBN:'সাইটটি ব্লক'},{e:'💰',l:'The site costs money',lBN:'সাইটে টাকা লাগে'}]},
+      {q:'FREE games if you share your address. You...',qBN:'ঠিকানা দিলে বিনামূল্যে গেম। তুমি...',ico:'🎮',ans:3,
+       opts:[{e:'✍️',l:'Type it in',lBN:'টাইপ করো'},{e:'📞',l:'Call them first',lBN:'আগে ফোন করো'},{e:'💬',l:'Chat with support',lBN:'সাপোর্টে চ্যাট করো'},{e:'🚪',l:'Close the page',lBN:'পেজ বন্ধ করো'}]},
+     ]},
+    {name:"Spot the Danger!",nameBN:'বিপদ খোঁজো!',ico:'🔍',diff:'Medium',time:35,
+     instruct:{ico:'🕵️',
+       action:'Find the ONE dangerous item — tap it!',actionBN:'একটি বিপজ্জনক জিনিস খোঁজো — ট্যাপ করো!',
+       sub:'All items look similar, but ONE is dangerous. Spot it and tap it!',subBN:'সব আইটেম একইরকম দেখতে, কিন্তু একটি বিপজ্জনক। সেটি খুঁজে ট্যাপ করো!'},
+     type:'spot_danger',
+     qs:[
+      {q:'Tap the DANGEROUS email!',qBN:'বিপজ্জনক ইমেইলে ট্যাপ করো!',ico:'📧',
+       items:[{e:'📧',l:'Newsletter from school',lBN:'স্কুলের নিউজলেটার',safe:true},{e:'📧',l:'Receipt from Amazon',lBN:'অ্যামাজনের রসিদ',safe:true},{e:'🚨',l:'"Click to claim prize NOW!"',lBN:'"এখনই পুরস্কার নিতে ক্লিক করো!"',safe:false},{e:'📧',l:'Password reset you requested',lBN:'তুমি চাওয়া পাসওয়ার্ড রিসেট',safe:true},{e:'📧',l:'Bill from electricity co.',lBN:'বিদ্যুৎ কোম্পানির বিল',safe:true},{e:'📧',l:'Email from your teacher',lBN:'শিক্ষকের ইমেইল',safe:true}]},
+      {q:'Tap the FAKE website!',qBN:'নকল ওয়েবসাইটে ট্যাপ করো!',ico:'🌐',
+       items:[{e:'🌐',l:'bbc.co.uk',lBN:'bbc.co.uk',safe:true},{e:'🌐',l:'wikipedia.org',lBN:'wikipedia.org',safe:true},{e:'⚠️',l:'faceb00k-login.net',lBN:'faceb00k-login.net',safe:false},{e:'🌐',l:'youtube.com',lBN:'youtube.com',safe:true},{e:'🌐',l:'google.com',lBN:'google.com',safe:true},{e:'🌐',l:'nhs.uk',lBN:'nhs.uk',safe:true}]},
+      {q:'Tap the DANGEROUS download!',qBN:'বিপজ্জনক ডাউনলোডে ট্যাপ করো!',ico:'⬇️',
+       items:[{e:'📄',l:'homework.pdf',lBN:'homework.pdf',safe:true},{e:'🎵',l:'song.mp3',lBN:'song.mp3',safe:true},{e:'🖼️',l:'photo.jpg',lBN:'photo.jpg',safe:true},{e:'💀',l:'"free-antivirus.exe" from email',lBN:'ইমেইলের "free-antivirus.exe"',safe:false},{e:'📄',l:'notes.txt',lBN:'notes.txt',safe:true},{e:'📊',l:'spreadsheet.xlsx',lBN:'spreadsheet.xlsx',safe:true}]},
+      {q:'Tap the SCAM message!',qBN:'স্ক্যাম বার্তায় ট্যাপ করো!',ico:'💬',
+       items:[{e:'💬',l:'"Your bus pass is ready"',lBN:'"তোমার বাস পাস প্রস্তুত"',safe:true},{e:'🚨',l:'"Send £5 to get £500 back!"',lBN:'"৫ পাউন্ড পাঠাও ৫০০ পাবে!"',safe:false},{e:'💬',l:'"Library book due tomorrow"',lBN:'"লাইব্রেরির বই কাল ফেরত"',safe:true},{e:'💬',l:'"School lunch menu updated"',lBN:'"স্কুলের লাঞ্চ মেনু আপডেট"',safe:true},{e:'💬',l:'"Match result: 2–1"',lBN:'"ম্যাচ ফলাফল: ২-১"',safe:true},{e:'💬',l:'"Your parcel is on its way"',lBN:'"তোমার পার্সেল আসছে"',safe:true}]},
+      {q:'Tap the SUSPICIOUS link!',qBN:'সন্দেহজনক লিংকে ট্যাপ করো!',ico:'🔗',
+       items:[{e:'🔗',l:'bbc.com/news',lBN:'bbc.com/news',safe:true},{e:'🔗',l:'amazon.com/orders',lBN:'amazon.com/orders',safe:true},{e:'🔗',l:'nhs.uk/help',lBN:'nhs.uk/help',safe:true},{e:'⚠️',l:'am4z0n-deals-free.ru',lBN:'am4z0n-deals-free.ru',safe:false},{e:'🔗',l:'gov.uk/passport',lBN:'gov.uk/passport',safe:true},{e:'🔗',l:'youtube.com/watch',lBN:'youtube.com/watch',safe:true}]},
+     ]},
+    {name:"Stay Safe Online",nameBN:'অনলাইনে নিরাপদ থাকো',ico:'🛡️',diff:'Hard',time:28,
+     instruct:{ico:'✍️',
+       action:'Fill in the missing word!',actionBN:'শূন্যস্থান পূরণ করো!',
+       sub:'Each sentence is a safety tip. Tap the word that fits.',subBN:'প্রতিটি বাক্য একটি সেফটি টিপস। সঠিক শব্দে ট্যাপ করো।'},
+     type:'fillin',
+     qs:[
+      {q:'Never share your home ___ with anyone online.',qBN:'কখনো অনলাইনে কাউকে তোমার বাড়ির ___ দিও না।',ans:'address',ansBN:'ঠিকানা',opts:['address','pet','hobby','colour'],optsBN:['ঠিকানা','পোষা প্রাণী','শখ','রঙ'],ico:'🏠'},
+      {q:'If something scares you online, tell a ___ adult.',qBN:'অনলাইনে কিছু怖ভয় লাগলে একজন ___ বড়কে বলো।',ans:'trusted',ansBN:'বিশ্বস্ত',opts:['trusted','random','online','busy'],optsBN:['বিশ্বস্ত','এলোমেলো','অনলাইন','ব্যস্ত'],ico:'🤝'},
+      {q:'HTTPS is ___ than HTTP for browsing.',qBN:'ব্রাউজিংয়ের জন্য HTTPS, HTTP-র চেয়ে ___।',ans:'safer',ansBN:'নিরাপদ',opts:['safer','slower','older','bigger'],optsBN:['নিরাপদ','ধীর','পুরনো','বড়'],ico:'🔒'},
+      {q:'Being mean using technology is called ___ bullying.',qBN:'প্রযুক্তি ব্যবহার করে কাউকে কষ্ট দেওয়াকে ___ বুলিং বলে।',ans:'cyber',ansBN:'সাইবার',opts:['cyber','paper','music','cloud'],optsBN:['সাইবার','কাগজ','সংগীত','মেঘ'],ico:'💻'},
+      {q:'When you get a suspicious email, you should ___ it.',qBN:'সন্দেহজনক ইমেইল পেলে তুমি সেটি ___ করবে।',ans:'delete',ansBN:'মুছবে',opts:['delete','forward','print','reply'],optsBN:['মুছবে','ফরওয়ার্ড','প্রিন্ট','উত্তর'],ico:'🗑️'},
+     ]},
+   ]},
+
+  {icon:'🚀',name:'App Explorer',nameBN:'অ্যাপ এক্সপ্লোরার',
+   desc:'Match apps and software to what they do!',descBN:'অ্যাপ ও তার কাজ মিলিয়ে দাও!',
+   color:'var(--o)',colorL:'var(--ol)',colorD:'var(--od)',
+   mechs:['MCQ','Matching','Sort It'],
+   levels:[
+    {name:"What Does It Do?",nameBN:'এটা কী করে?',ico:'🎯',diff:'Easy',time:38,
+     instruct:{ico:'👆',
+       action:'Tap the correct app!',actionBN:'সঠিক অ্যাপে ট্যাপ করো!',
+       sub:'Read what the app does, then tap the answer that matches.',subBN:'অ্যাপটি কী করে পড়ো, তারপর সঠিক উত্তরে ট্যাপ করো।'},
+     type:'mc',
+     qs:[
+      {q:'Which app do you use to WRITE a letter?',qBN:'কোন অ্যাপ দিয়ে চিঠি লেখা যায়?',ico:'✍️',ans:1,
+       opts:[{e:'🎮',l:'A game app',lBN:'গেম অ্যাপ'},{e:'📝',l:'Word / Google Docs',lBN:'Word / Google Docs'},{e:'🎵',l:'Music player',lBN:'মিউজিক প্লেয়ার'},{e:'📷',l:'Camera app',lBN:'ক্যামেরা অ্যাপ'}]},
+      {q:'Which app shows MAPS and directions?',qBN:'কোন অ্যাপে মানচিত্র ও দিকনির্দেশনা দেখা যায়?',ico:'🗺️',ans:2,
+       opts:[{e:'📧',l:'Email app',lBN:'ইমেইল অ্যাপ'},{e:'🖼️',l:'Photo editor',lBN:'ফটো এডিটর'},{e:'🗺️',l:'Google Maps',lBN:'Google Maps'},{e:'🎵',l:'Spotify',lBN:'Spotify'}]},
+      {q:'Which app lets you VIDEO CALL someone?',qBN:'কোন অ্যাপ দিয়ে ভিডিও কল করা যায়?',ico:'📞',ans:0,
+       opts:[{e:'📹',l:'Zoom / FaceTime',lBN:'Zoom / FaceTime'},{e:'🎮',l:'Roblox',lBN:'Roblox'},{e:'📊',l:'Excel',lBN:'Excel'},{e:'🖨️',l:'Print manager',lBN:'প্রিন্ট ম্যানেজার'}]},
+      {q:'Which app lets you make a SLIDESHOW?',qBN:'কোন অ্যাপ দিয়ে স্লাইডশো বানানো যায়?',ico:'🖥️',ans:3,
+       opts:[{e:'🎵',l:'iTunes',lBN:'iTunes'},{e:'📷',l:'Camera app',lBN:'ক্যামেরা অ্যাপ'},{e:'📧',l:'Gmail',lBN:'Gmail'},{e:'📊',l:'PowerPoint / Slides',lBN:'PowerPoint / Slides'}]},
+      {q:'Which app helps you SEARCH the internet?',qBN:'কোন অ্যাপ দিয়ে ইন্টারনেট সার্চ করা যায়?',ico:'🌐',ans:1,
+       opts:[{e:'📱',l:'Calculator',lBN:'ক্যালকুলেটর'},{e:'🌐',l:'Chrome / Safari',lBN:'Chrome / Safari'},{e:'🎮',l:'Minecraft',lBN:'Minecraft'},{e:'📄',l:'Notepad',lBN:'নোটপ্যাড'}]},
+     ]},
+    {name:"App Match-Up",nameBN:'অ্যাপ মিলাও',ico:'🎯',diff:'Medium',time:35,
+     instruct:{ico:'🎯',
+       action:'Match each app to what it does!',actionBN:'প্রতিটি অ্যাপকে তার কাজের সাথে মিলাও!',
+       sub:'Step 1: tap a name on the LEFT. Step 2: tap its match on the RIGHT.',subBN:'ধাপ ১: বাম দিকে একটিতে ট্যাপ করো। ধাপ ২: ডান দিকে মিলটিতে ট্যাপ করো।'},
+     type:'match',
+     pairs:[
+      [{e:'📧',l:'Email app',lBN:'ইমেইল অ্যাপ'},{e:'✉️',l:'Send and receive messages',lBN:'বার্তা পাঠানো ও গ্রহণ'}],
+      [{e:'📊',l:'Spreadsheet',lBN:'স্প্রেডশিট'},{e:'🔢',l:'Organise numbers in tables',lBN:'টেবিলে সংখ্যা সাজানো'}],
+      [{e:'🎨',l:'Paint app',lBN:'পেইন্ট অ্যাপ'},{e:'✏️',l:'Draw and colour pictures',lBN:'ছবি আঁকা ও রঙ করা'}],
+      [{e:'📅',l:'Calendar app',lBN:'ক্যালেন্ডার অ্যাপ'},{e:'📆',l:'Keep track of dates',lBN:'তারিখ মনে রাখা'}],
+      [{e:'🗜️',l:'Zip / Archive',lBN:'জিপ / আর্কাইভ'},{e:'📦',l:'Compress files to save space',lBN:'ফাইল ছোট করে জায়গা বাঁচানো'}],
+     ],
+     qs:[0,1,2,3,4]},
+    {name:"Software or Hardware?",nameBN:'সফটওয়্যার না হার্ডওয়্যার?',ico:'🖥️',diff:'Hard',time:30,
+     instruct:{ico:'👆',
+       action:'Tap an item · then tap the right box!',actionBN:'একটি আইটেমে ট্যাপ করো · তারপর সঠিক বাক্সে ট্যাপ করো!',
+       sub:'SOFTWARE = install on computer. HARDWARE = physical things you touch.',subBN:'সফটওয়্যার = কম্পিউটারে ইনস্টল করা হয়। হার্ডওয়্যার = যা স্পর্শ করা যায়।'},
+     type:'sort',
+     qs:[
+      {q:'Software or hardware?',qBN:'সফটওয়্যার না হার্ডওয়্যার?',ico:'🖥️',
+       items:[{e:'🖱️',l:'Mouse',bin:1},{e:'📝',l:'Notepad app',bin:0},{e:'⌨️',l:'Keyboard',bin:1},{e:'🎮',l:'Video game app',bin:0}],
+       bins:[{e:'💿',l:'Software (install)',lBN:'সফটওয়্যার',bg:'#EFF6FF'},{e:'🔧',l:'Hardware (touch)',lBN:'হার্ডওয়্যার',bg:'#FFF7ED'}]},
+      {q:'Sort into Software or Hardware!',qBN:'সফটওয়্যার বা হার্ডওয়্যারে সাজাও!',ico:'💿',
+       items:[{e:'🖨️',l:'Printer',bin:1},{e:'🌐',l:'Web browser',bin:0},{e:'🖥️',l:'Monitor',bin:1},{e:'📧',l:'Email app',bin:0}],
+       bins:[{e:'💿',l:'Software',lBN:'সফটওয়্যার',bg:'#EFF6FF'},{e:'🔧',l:'Hardware',lBN:'হার্ডওয়্যার',bg:'#FFF7ED'}]},
+      {q:'Which group does each belong to?',qBN:'কোনটি কোন দলে?',ico:'🤔',
+       items:[{e:'📷',l:'Webcam',bin:1},{e:'🎵',l:'Spotify app',bin:0},{e:'🔊',l:'Speakers',bin:1},{e:'📊',l:'Excel app',bin:0}],
+       bins:[{e:'💿',l:'Software',lBN:'সফটওয়্যার',bg:'#EFF6FF'},{e:'🔧',l:'Hardware',lBN:'হার্ডওয়্যার',bg:'#FFF7ED'}]},
+      {q:'Keep going — sort correctly!',qBN:'চলতে থাকো — সঠিকভাবে সাজাও!',ico:'✅',
+       items:[{e:'💾',l:'Hard drive',bin:1},{e:'🗓️',l:'Calendar app',bin:0},{e:'🖥️',l:'Screen',bin:1},{e:'📝',l:'Word app',bin:0}],
+       bins:[{e:'💿',l:'Software',lBN:'সফটওয়্যার',bg:'#EFF6FF'},{e:'🔧',l:'Hardware',lBN:'হার্ডওয়্যার',bg:'#FFF7ED'}]},
+      {q:'Final round!',qBN:'শেষ রাউন্ড!',ico:'🏆',
+       items:[{e:'📱',l:'Tablet device',bin:1},{e:'🎨',l:'Paint app',bin:0},{e:'🖱️',l:'Mouse',bin:1},{e:'🔐',l:'Password manager',bin:0}],
+       bins:[{e:'💿',l:'Software',lBN:'সফটওয়্যার',bg:'#EFF6FF'},{e:'🔧',l:'Hardware',lBN:'হার্ডওয়্যার',bg:'#FFF7ED'}]},
+     ]},
+   ]},
+
+  {icon:'🛡️',name:'Safety Squad',nameBN:'সেফটি স্কোয়াড',
+   desc:'Be the hero of online and computer safety!',descBN:'কম্পিউটার সেফটি হিরো হও!',
+   color:'var(--g)',colorL:'var(--gl)',colorD:'var(--gd)',
+   mechs:['True/False','MCQ','Matching'],
+   levels:[
+    {name:"Safe or Not Safe?",nameBN:'নিরাপদ না বিপজ্জনক?',ico:'🤔',diff:'Easy',time:38,
+     instruct:{ico:'🤔',
+       action:'True or False — is this a safe habit?',actionBN:'সত্য না মিথ্যা — এটা কি নিরাপদ অভ্যাস?',
+       sub:'Tap TRUE ✅ for a safe habit, FALSE ❌ if it is risky.',subBN:'নিরাপদ অভ্যাস হলে TRUE ✅ ট্যাপ করো, ঝুঁকিপূর্ণ হলে FALSE ❌।'},
+     type:'truefalse',
+     qs:[
+      {q:'It is OK to use the same password for every website.',qBN:'প্রতিটি ওয়েবসাইটে একই পাসওয়ার্ড ব্যবহার করা ঠিক আছে।',ans:false,ico:'🔑'},
+      {q:'You should log out of shared computers when finished.',qBN:'শেষ হলে শেয়ার্ড কম্পিউটার থেকে লগ আউট করা উচিত।',ans:true,ico:'💻'},
+      {q:'It is fine to open email attachments from strangers.',qBN:'অপরিচিতদের ইমেইল অ্যাটাচমেন্ট খোলা ঠিক আছে।',ans:false,ico:'📧'},
+      {q:'Keeping software updated helps protect your computer.',qBN:'সফটওয়্যার আপডেট রাখলে কম্পিউটার সুরক্ষিত থাকে।',ans:true,ico:'🔄'},
+      {q:'You should share your school login with your best friend.',qBN:'স্কুলের লগইন সেরা বন্ধুকে দেওয়া উচিত।',ans:false,ico:'🏫'},
+     ]},
+    {name:"What Would You Do?",nameBN:'তুমি কী করবে?',ico:'💡',diff:'Medium',time:35,
+     instruct:{ico:'🧠',
+       action:'Pick the SMARTEST action!',actionBN:'সবচেয়ে বুদ্ধিমান কাজটি বেছে নাও!',
+       sub:'Read each situation, then tap what a safe person would do.',subBN:'প্রতিটি পরিস্থিতি পড়ো, তারপর নিরাপদ ব্যক্তি কী করবে সেটিতে ট্যাপ করো।'},
+     type:'mc',
+     qs:[
+      {q:'Your computer is very slow. Try this first:',qBN:'কম্পিউটার খুব ধীর। প্রথমে এটি করো:',ico:'🐌',ans:2,
+       opts:[{e:'🔨',l:'Hit it!',lBN:'আঘাত করো!'},{e:'💸',l:'Buy a new one',lBN:'নতুন কিনে নাও'},{e:'🔄',l:'Restart and close unused apps',lBN:'রিস্টার্ট দাও ও অব্যবহৃত অ্যাপ বন্ধ করো'},{e:'😭',l:'Give up',lBN:'হাল ছেড়ে দাও'}]},
+      {q:'You find a USB stick on the playground:',qBN:'মাঠে একটি USB স্টিক পেলে:',ico:'💾',ans:1,
+       opts:[{e:'🖥️',l:'Plug it in straight away',lBN:'সঙ্গে সঙ্গে লাগাও'},{e:'👨‍🏫',l:'Give it to a teacher',lBN:'শিক্ষককে দাও'},{e:'🎒',l:'Keep it in your bag',lBN:'ব্যাগে রেখে দাও'},{e:'🗑️',l:'Throw it away',lBN:'ফেলে দাও'}]},
+      {q:'"Virus found! Call NOW!" pop-up. You:',qBN:'"ভাইরাস পাওয়া গেছে! এখনই কল করো!" পপ-আপ। তুমি:',ico:'⚠️',ans:3,
+       opts:[{e:'📞',l:'Call the number',lBN:'নম্বরে কল করো'},{e:'💳',l:'Enter card details',lBN:'কার্ডের তথ্য দাও'},{e:'😨',l:'Panic and click it',lBN:'ভয় পেয়ে ক্লিক করো'},{e:'❌',l:'Close the browser tab',lBN:'ব্রাউজার ট্যাব বন্ধ করো'}]},
+      {q:'Someone online asks for your home address. You:',qBN:'অনলাইনে কেউ তোমার বাড়ির ঠিকানা চাইলে:',ico:'🏠',ans:2,
+       opts:[{e:'✍️',l:'Type it in',lBN:'টাইপ করো'},{e:'📸',l:'Send a photo',lBN:'ছবি পাঠাও'},{e:'🚫',l:'Refuse and tell an adult',lBN:'প্রত্যাখ্যান করো ও বড়কে বলো'},{e:'🤫',l:'Whisper it',lBN:'ফিসফিস করো'}]},
+      {q:'To protect against viruses, you should use:',qBN:'ভাইরাস থেকে রক্ষার জন্য ব্যবহার করো:',ico:'🦠',ans:0,
+       opts:[{e:'🛡️',l:'Antivirus software',lBN:'অ্যান্টিভাইরাস সফটওয়্যার'},{e:'🧹',l:'A feather duster',lBN:'ঝাড়ু'},{e:'💊',l:'Medicine',lBN:'ওষুধ'},{e:'🧲',l:'A magnet',lBN:'চুম্বক'}]},
+     ]},
+    {name:"Safety Expert",nameBN:'সেফটি বিশেষজ্ঞ',ico:'🏆',diff:'Hard',time:28,
+     instruct:{ico:'🎯',
+       action:'Match each safety tip to its reason!',actionBN:'প্রতিটি সেফটি টিপসকে তার কারণের সাথে মিলাও!',
+       sub:'Step 1: tap a tip on the LEFT. Step 2: tap the reason on the RIGHT.',subBN:'ধাপ ১: বাম দিকে একটিতে ট্যাপ করো। ধাপ ২: ডান দিকে কারণে ট্যাপ করো।'},
+     type:'match',
+     pairs:[
+      [{e:'🔑',l:'Use strong passwords',lBN:'শক্তিশালী পাসওয়ার্ড'},{e:'🛡️',l:'Stops hackers getting in',lBN:'হ্যাকার ঢুকতে পারে না'}],
+      [{e:'🔄',l:'Update your software',lBN:'সফটওয়্যার আপডেট করো'},{e:'🐛',l:'Fixes security bugs',lBN:'নিরাপত্তা বাগ ঠিক হয়'}],
+      [{e:'🔒',l:'Lock your screen',lBN:'স্ক্রিন লক করো'},{e:'👀',l:'Stops others seeing your work',lBN:'অন্যরা তোমার কাজ দেখতে পাবে না'}],
+      [{e:'💾',l:'Back up your files',lBN:'ফাইল ব্যাকআপ করো'},{e:'🗂️',l:'Keeps a copy if files are lost',lBN:'ফাইল হারিয়ে গেলে কপি থাকে'}],
+      [{e:'🚫',l:'Ignore spam email',lBN:'স্প্যাম ইমেইল উপেক্ষা করো'},{e:'🎣',l:'Avoids phishing attacks',lBN:'ফিশিং আক্রমণ এড়ানো যায়'}],
+     ],
+     qs:[0,1,2,3,4]},
+   ]},
+
+  {icon:'🎯',name:'Mega Challenge',nameBN:'মেগা চ্যালেঞ্জ',
+   desc:'Mix of ALL topics — are you a computer expert?',descBN:'সব বিষয় মিলিয়ে — তুমি কি বিশেষজ্ঞ?',
+   color:'var(--t)',colorL:'var(--tl)',colorD:'var(--td)',
+   mechs:['Mixed Types','Speed Round','Boss Level'],
+   levels:[
+    {name:"Quick Fire!",nameBN:'কুইক ফায়ার!',ico:'⚡',diff:'Medium',time:30,
+     instruct:{ico:'⚡',
+       action:'Quick — tap the right answer!',actionBN:'দ্রুত — সঠিক উত্তরে ট্যাপ করো!',
+       sub:'Fast questions from ALL zones. Think fast but carefully!',subBN:'সব জোন থেকে দ্রুত প্রশ্ন। দ্রুত ও সাবধানে ভাবো!'},
+     type:'mc',
+     qs:[
+      {q:'CPU stands for:',qBN:'CPU মানে হলো:',ico:'🧠',ans:0,
+       opts:[{e:'🧠',l:'Central Processing Unit',lBN:'সেন্ট্রাল প্রসেসিং ইউনিট'},{e:'💾',l:'Computer Power Unit',lBN:'কম্পিউটার পাওয়ার ইউনিট'},{e:'🖱️',l:'Control Panel Utility',lBN:'কন্ট্রোল প্যানেল ইউটিলিটি'},{e:'📺',l:'Colour Picture Unit',lBN:'কালার পিকচার ইউনিট'}]},
+      {q:'The "brain" of the computer is the:',qBN:'কম্পিউটারের "মস্তিষ্ক" হলো:',ico:'🖥️',ans:1,
+       opts:[{e:'🖥️',l:'Monitor',lBN:'মনিটর'},{e:'🧮',l:'CPU',lBN:'CPU'},{e:'💾',l:'Hard drive',lBN:'হার্ড ড্রাইভ'},{e:'🖱️',l:'Mouse',lBN:'মাউস'}]},
+      {q:'RAM stands for:',qBN:'RAM মানে হলো:',ico:'💾',ans:2,
+       opts:[{e:'💿',l:'Read And Memory',lBN:'রিড অ্যান্ড মেমোরি'},{e:'🔢',l:'Random Array Module',lBN:'র‍্যান্ডম অ্যারে মডিউল'},{e:'⚡',l:'Random Access Memory',lBN:'র‍্যান্ডম অ্যাক্সেস মেমোরি'},{e:'🖥️',l:'Read Access Mode',lBN:'রিড অ্যাক্সেস মোড'}]},
+      {q:'Which device lets you print on paper?',qBN:'কোন ডিভাইস দিয়ে কাগজে প্রিন্ট করা যায়?',ico:'🖨️',ans:3,
+       opts:[{e:'🖥️',l:'Monitor',lBN:'মনিটর'},{e:'🔊',l:'Speakers',lBN:'স্পিকার'},{e:'⌨️',l:'Keyboard',lBN:'কীবোর্ড'},{e:'🖨️',l:'Printer',lBN:'প্রিন্টার'}]},
+      {q:'The internet is best described as a:',qBN:'ইন্টারনেট সবচেয়ে ভালোভাবে বর্ণনা করা যায়:',ico:'🌐',ans:0,
+       opts:[{e:'🌐',l:'Global network of computers',lBN:'কম্পিউটারের বৈশ্বিক নেটওয়ার্ক'},{e:'📺',l:'Type of TV channel',lBN:'এক ধরনের টিভি চ্যানেল'},{e:'📰',l:'Very fast newspaper',lBN:'খুব দ্রুত সংবাদপত্র'},{e:'🏢',l:'Building with computers',lBN:'কম্পিউটারে ভরা ভবন'}]},
+     ]},
+    {name:"True/False Blitz!",nameBN:'সত্য/মিথ্যা ব্লিৎজ!',ico:'⚡',diff:'Hard',time:22,
+     instruct:{ico:'🏃',
+       action:'True or False — answer FAST!',actionBN:'সত্য না মিথ্যা — দ্রুত উত্তর দাও!',
+       sub:'Only 22 seconds! Tap TRUE ✅ or FALSE ❌ as fast as you can.',subBN:'মাত্র ২২ সেকেন্ড! যত দ্রুত পারো TRUE ✅ বা FALSE ❌ ট্যাপ করো।'},
+     type:'truefalse',
+     qs:[
+      {q:'A monitor is an INPUT device.',qBN:'মনিটর একটি ইনপুট ডিভাইস।',ans:false,ico:'🖥️'},
+      {q:'1 GB holds more data than 1 MB.',qBN:'১ GB-এ ১ MB-এর চেয়ে বেশি ডেটা থাকে।',ans:true,ico:'💾'},
+      {q:'Bluetooth connects devices wirelessly.',qBN:'ব্লুটুথ ডিভাইসগুলোকে তারবিহীনভাবে সংযুক্ত করে।',ans:true,ico:'📶'},
+      {q:'A keyboard is an OUTPUT device.',qBN:'কীবোর্ড একটি আউটপুট ডিভাইস।',ans:false,ico:'⌨️'},
+      {q:'Closing a browser tab turns off the internet.',qBN:'ব্রাউজার ট্যাব বন্ধ করলে ইন্টারনেট বন্ধ হয়।',ans:false,ico:'🌐'},
+     ]},
+    {name:"Ultimate Expert!",nameBN:'চূড়ান্ত বিশেষজ্ঞ!',ico:'👑',diff:'Boss',time:18,
+     instruct:{ico:'👑',
+       action:'Boss level — the hardest questions!',actionBN:'বস লেভেল — সবচেয়ে কঠিন প্রশ্ন!',
+       sub:'Only 18 seconds! Think carefully before tapping. 💪',subBN:'মাত্র ১৮ সেকেন্ড! ট্যাপ করার আগে ভালো করে ভাবো। 💪'},
+     type:'mc',
+     qs:[
+      {q:'Which stores the MOST data?',qBN:'কোনটিতে সবচেয়ে বেশি ডেটা থাকে?',ico:'💾',ans:3,
+       opts:[{e:'📀',l:'1 KB',lBN:'১ KB'},{e:'💿',l:'1 MB',lBN:'১ MB'},{e:'💾',l:'1 GB',lBN:'১ GB'},{e:'🖥️',l:'1 TB',lBN:'১ TB'}]},
+      {q:'Which is an OUTPUT device?',qBN:'কোনটি একটি আউটপুট ডিভাইস?',ico:'📤',ans:2,
+       opts:[{e:'⌨️',l:'Keyboard (input)',lBN:'কীবোর্ড (ইনপুট)'},{e:'🖱️',l:'Mouse (input)',lBN:'মাউস (ইনপুট)'},{e:'🔊',l:'Speakers (output)',lBN:'স্পিকার (আউটপুট)'},{e:'📷',l:'Webcam (input)',lBN:'ওয়েবক্যাম (ইনপুট)'}]},
+      {q:'URL stands for:',qBN:'URL মানে হলো:',ico:'🌐',ans:1,
+       opts:[{e:'🔗',l:'Universal Router Link',lBN:'ইউনিভার্সাল রাউটার লিংক'},{e:'🌍',l:'Uniform Resource Locator',lBN:'ইউনিফর্ম রিসোর্স লোকেটর'},{e:'💻',l:'User Reference List',lBN:'ইউজার রেফারেন্স লিস্ট'},{e:'🔐',l:'Unique Record Label',lBN:'ইউনিক রেকর্ড লেবেল'}]},
+      {q:'Best file format for a photo?',qBN:'ছবির জন্য সেরা ফাইল ফরম্যাট?',ico:'🖼️',ans:0,
+       opts:[{e:'🖼️',l:'.jpg — image',lBN:'.jpg — ছবি'},{e:'📄',l:'.txt — text',lBN:'.txt — টেক্সট'},{e:'🎵',l:'.mp3 — audio',lBN:'.mp3 — অডিও'},{e:'📊',l:'.xls — spreadsheet',lBN:'.xls — স্প্রেডশিট'}]},
+      {q:'Wi-Fi allows you to:',qBN:'Wi-Fi দিয়ে তুমি:',ico:'📶',ans:2,
+       opts:[{e:'🖨️',l:'Print documents faster',lBN:'দ্রুত প্রিন্ট করতে পারো'},{e:'💾',l:'Save files automatically',lBN:'স্বয়ংক্রিয়ভাবে ফাইল সেভ'},{e:'🌐',l:'Connect wirelessly to internet',lBN:'তারবিহীনভাবে ইন্টারনেটে সংযুক্ত হতে পারো'},{e:'⌨️',l:'Type on a keyboard',lBN:'কীবোর্ডে টাইপ করতে পারো'}]},
+     ]},
+   ]},
+];
+
+/* ======== HOME ======== */
+function buildZonesGrid(){
+  var grid=G('zonesGrid');grid.innerHTML='';
+  ZONES.forEach(function(z,zi){
+    var done=0;z.levels.forEach(function(_,li){if(progress[zi+'_'+li])done++;});
+    var locked=zi>0&&!progress[(zi-1)+'_2'];
+    var starSum=0;z.levels.forEach(function(_,li){starSum+=(progress[zi+'_'+li]||0);});
+    var dots='';for(var i=0;i<3;i++)dots+='<div class="zc-dot'+(i<done?' lit':'')+'"></div>';
+    var starStr='';for(var s=0;s<Math.min(starSum,9);s++)starStr+='⭐';
+    var card=document.createElement('div');
+    card.className='zcard'+(locked?' locked':'')+(done===3?' zdone':'');
+    card.style.cssText='background:'+z.colorL+';--di:'+zi;
+    card.innerHTML=
+      '<div class="zc-badge">Zone 0'+(zi+1)+'</div>'+
+      (locked?'<div class="zc-lock">🔒</div>':(done===3?'<div class="zc-done-badge">✅</div>':''))+
+      '<span class="zc-ico">'+z.icon+'</span>'+
+      '<div class="zc-name">'+tx(z.name,z.nameBN)+'</div>'+
+      '<div class="zc-prog">'+dots+'</div>'+
+      '<div class="zc-stars">'+(starStr||'☆☆☆')+'</div>';
+    if(!locked)card.onclick=(function(i){return function(){openZone(i);};})(zi);
+    grid.appendChild(card);
+  });
+}
+function quickStart(){
+  for(var zi=0;zi<ZONES.length;zi++){
+    for(var li=0;li<3;li++){
+      if(!progress[zi+'_'+li]&&!(zi>0&&!progress[(zi-1)+'_2'])){openZone(zi,li);return;}
+    }
+  }
+  openZone(0,0);
+}
+function goHome(){stopTimer();showScreen('scHome');buildZonesGrid();}
+
+/* ======== ZONE SELECT ======== */
+function openZone(zi,jumpLevel){
+  curZone=zi;var z=ZONES[zi];
+  G('zHeroIcon').textContent=z.icon;
+  G('zHeroTitle').textContent=tx(z.name,z.nameBN);
+  G('zHeroDesc').textContent=tx(z.desc,z.descBN);
+  G('zoneHero').style.cssText='background:linear-gradient(135deg,'+z.colorL+',#fff);border-color:'+z.color;
+  var mechsEl=G('zoneMechs');mechsEl.innerHTML='';
+  z.mechs.forEach(function(m){var el=mkEl('span','zone-mech',m);mechsEl.appendChild(el);});
+  var list=G('stagesList');list.innerHTML='';
+  var diffStyle={Easy:'background:var(--gl);color:var(--gd)',Medium:'background:var(--yl);color:#92400E',Hard:'background:var(--rl);color:var(--rd)',Boss:'background:var(--pl);color:var(--pd)'};
+  var diffLabel={Easy:tx('Easy','সহজ'),Medium:tx('Medium','মাঝারি'),Hard:tx('Hard','কঠিন'),Boss:tx('Boss','বস')};
+  var mechName={mc:tx('MCQ','এমসিকিউ'),truefalse:tx('True/False','সত্য/মিথ্যা'),fillin:tx('Fill Blank','পূরণ করো'),sort:tx('Sort It','সাজাও'),spot_danger:tx('Spot Danger','বিপদ খোঁজো'),match:tx('Matching','মিলাও'),pw_rate:tx('Rate It','মাত্রা দাও')};
+  z.levels.forEach(function(lv,li){
+    var earned=progress[zi+'_'+li]||0;
+    var locked=li>0&&!progress[zi+'_'+(li-1)];
+    var row=document.createElement('div');
+    row.className='stage-row'+(locked?' locked':'')+(earned?' sdone':'');
+    row.style.borderLeftColor=z.color;
+    var starsStr='';for(var i=0;i<3;i++)starsStr+=(i<earned?'⭐':'☆');
+    row.innerHTML=
+      '<div class="st-num" style="background:'+z.color+'">'+(li+1)+'</div>'+
+      '<div class="st-ico">'+lv.ico+'</div>'+
+      '<div class="st-info">'+
+        '<div class="st-name">'+tx(lv.name,lv.nameBN)+'</div>'+
+        '<div class="st-desc">'+tx(lv.instruct.sub,lv.instruct.subBN)+'</div>'+
+        '<div class="st-meta">'+
+          '<span class="st-diff" style="'+diffStyle[lv.diff]+'">'+diffLabel[lv.diff]+'</span>'+
+          '<span class="st-timer">⏱ '+lv.time+'s</span>'+
+          '<span class="st-mech">'+mechName[lv.type]+'</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="st-stars-row">'+starsStr+'</div>';
+    if(!locked)row.onclick=(function(l){return function(){startLevel(zi,l);};})(li);
+    list.appendChild(row);
+  });
+  showScreen('scStages');
+  if(jumpLevel!==undefined)startLevel(zi,jumpLevel);
+}
+
+/* ======== GAME ======== */
+function startLevel(zi,li){
+  curZone=zi;curLevel=li;curQ=0;score=0;correct=0;
+  answered=false;selectedSortItem=null;
+  matchSel={left:null,right:null};matchDone=[];
+  var z=ZONES[zi];var lv=z.levels[li];
+  G('gZoneIco').textContent=z.icon;
+  G('gTitle').textContent=tx(z.name,z.nameBN)+' · '+tx('Level','স্তর')+' '+(li+1);
+  G('gProgFill').style.background=z.color;
+  G('scorePill').style.cssText='background:'+z.colorL+';color:'+z.colorD+';border-color:'+z.color;
+  var diffCfg={Easy:'background:var(--gl);color:var(--gd)',Medium:'background:var(--yl);color:#92400E',Hard:'background:var(--rl);color:var(--rd)',Boss:'background:var(--pl);color:var(--pd)'};
+  G('diffTag').setAttribute('style',diffCfg[lv.diff]);
+  G('diffTag').textContent={Easy:tx('⭐ Easy','⭐ সহজ'),Medium:tx('⭐⭐ Medium','⭐⭐ মাঝারি'),Hard:tx('⭐⭐⭐ Hard','⭐⭐⭐ কঠিন'),Boss:tx('👑 Boss','👑 বস')}[lv.diff];
+  if(lv.type==='match'){qData=[lv];totalQ=lv.pairs.length;correct=0;}
+  else{qData=lv.qs.slice();totalQ=qData.length;}
+  showScreen('scGame');
+  showQ();
+}
+
+function showQ(){
+  var z=ZONES[curZone];var lv=ZONES[curZone].levels[curLevel];
+  answered=false;stopTimer();
+  if(lv.type!=='match'){
+    G('gProgFill').style.width=(curQ/totalQ*100)+'%';
+    G('gProgLbl').textContent=curQ+' / '+totalQ;
+    G('qBadge').textContent='Q '+(curQ+1)+' / '+totalQ;
+  } else {
+    G('gProgFill').style.width='0%';
+    G('gProgLbl').textContent='0 / '+totalQ;
+    G('qBadge').textContent=tx('Match all pairs!','সব জোড়া মিলাও!');
+  }
+  G('qBadge').style.cssText='background:'+z.colorL+';color:'+z.colorD+';border-color:'+z.colorD;
+  // skip button — hide on match, show for all others
+  var skipBtn=G('skipBtn');
+  if(lv.type==='match'){skipBtn.style.display='none';}
+  else{skipBtn.style.display='';skipBtn.disabled=false;G('skipLbl').textContent=tx('Skip','বাদ দাও');}
+  G('gScore').textContent=score;
+  G('feedbackFlash').className='feedback-flash hidden';
+  // instruction banner
+  var inst=lv.instruct;
+  G('instructBanner').style.cssText='background:'+z.colorL+';border-color:'+z.colorD;
+  G('instructIco').textContent=inst.ico;
+  G('instructAction').textContent=tx(inst.action,inst.actionBN);
+  G('instructSub').textContent=tx(inst.sub,inst.subBN);
+  G('instructBanner').style.display='';
+  G('playTop').style.display='';
+  var q=qData[curQ];
+  var renderFns={mc:renderMC,truefalse:renderTF,fillin:renderFillIn,sort:renderSort,
+    spot_danger:renderSpotDanger,match:renderMatch,pw_rate:renderPWRate};
+  if(renderFns[lv.type])renderFns[lv.type](q,z,lv);
+  startTimer(lv.time);
+}
+
+/* -- MCQ -- */
+function renderMC(q,z){
+  G('diffHint').textContent=tx('4 options — pick one','৪টি বিকল্প — একটি বেছে নাও');
+  G('qText').textContent=tx(q.q,q.qBN);G('qIco').textContent=q.ico||z.icon;
+  var body=G('playBody');body.innerHTML='';
+  var grid=mkEl('div','choice-grid');
+  var bgs=['#FFF7ED','#EFF6FF','#FDF4FF','#F0FDF4'];
+  q.opts.forEach(function(opt,idx){
+    var btn=mkEl('div','choice-btn');
+    btn.style.background=bgs[idx%4];
+    btn.innerHTML='<span class="choice-ico">'+opt.e+'</span><span class="choice-lbl">'+tx(opt.l,opt.lBN)+'</span>';
+    btn.onclick=function(){if(answered)return;checkMC(idx,q.ans,btn,grid,z);};
+    grid.appendChild(btn);
+  });
+  body.appendChild(grid);
+}
+function checkMC(idx,ans,btn,grid){
+  answered=true;
+  if(idx===ans){btn.classList.add('hit');flash('✅');addPop('+10',true);score+=10;correct++;showToast(tx('✅ Correct!','✅ সঠিক!'),true);}
+  else{btn.classList.add('wrong-ans');flash('❌');addPop('-5',false);score=Math.max(0,score-5);showToast(tx('❌ Wrong!','❌ ভুল!'),false);grid.querySelectorAll('.choice-btn')[ans].classList.add('hit');}
+  setTimeout(nextQ,1000);
+}
+
+/* -- TRUE/FALSE -- */
+function renderTF(q){
+  G('diffHint').textContent=tx('TRUE ✅ or FALSE ❌','সত্য ✅ না মিথ্যা ❌');
+  G('qText').textContent=tx('True or False?','সত্য না মিথ্যা?');G('qIco').textContent='🤔';
+  var body=G('playBody');body.innerHTML='';
+  var card=mkEl('div','tf-question-card');
+  card.innerHTML='<div class="tf-statement">'+q.ico+' '+tx(q.q,q.qBN)+'</div>';
+  body.appendChild(card);
+  var btns=mkEl('div','tf-btns');
+  var t=mkEl('div','tf-btn tf-true',tx('✅ TRUE','✅ সত্য'));
+  var f=mkEl('div','tf-btn tf-false',tx('❌ FALSE','❌ মিথ্যা'));
+  t.onclick=function(){if(answered)return;checkTF(true,q.ans,t,f);};
+  f.onclick=function(){if(answered)return;checkTF(false,q.ans,t,f);};
+  btns.appendChild(t);btns.appendChild(f);body.appendChild(btns);
+}
+function checkTF(val,ans,tBtn,fBtn){
+  answered=true;var ok=(val===ans);
+  if(ok){(val?tBtn:fBtn).classList.add('hit');flash('✅');addPop('+10',true);score+=10;correct++;showToast(tx('✅ Correct!','✅ সঠিক!'),true);}
+  else{(val?tBtn:fBtn).classList.add('wrong-ans');flash('❌');addPop('-5',false);score=Math.max(0,score-5);(ans?tBtn:fBtn).classList.add('hit');showToast(tx('❌ Wrong!','❌ ভুল!'),false);}
+  setTimeout(nextQ,1050);
+}
+
+/* -- FILL IN -- */
+function renderFillIn(q,z){
+  G('diffHint').textContent=tx('Choose the missing word','অনুপস্থিত শব্দ বেছে নাও');
+  G('qText').textContent=tx('Fill in the blank!','শূন্যস্থান পূরণ করো!');G('qIco').textContent=q.ico||'✍️';
+  var body=G('playBody');body.innerHTML='';
+  var prompt=mkEl('div','blank-prompt');
+  var qDisplay=tx(q.q,q.qBN);
+  prompt.innerHTML=qDisplay.replace('___','<span class="blank-slot" id="blankSlot">_____</span>');
+  body.appendChild(prompt);
+  // use Bengali opts if available, keep paired with correct ans
+  var isBN=(LANG==='bn'&&q.optsBN);
+  var displayOpts=isBN?q.optsBN:q.opts;
+  var correctAns=isBN?(q.ansBN||q.ans):q.ans;
+  var indices=q.opts.map(function(_,i){return i;});
+  shuffle(indices);
+  var row=mkEl('div','blank-opts');
+  indices.forEach(function(i){
+    var word=displayOpts[i];
+    var btn=mkEl('div','blank-opt',word);
+    btn.onclick=function(){if(answered)return;checkFillIn(word,correctAns,btn,z);};
+    row.appendChild(btn);
+  });
+  body.appendChild(row);
+}
+function checkFillIn(val,ans,btn,z){
+  answered=true;
+  var slot=G('blankSlot');slot.textContent=val;
+  if(val===ans){btn.classList.add('hit');slot.style.color=z.colorD;flash('✅');addPop('+10',true);score+=10;correct++;showToast(tx('✅ Correct!','✅ সঠিক!'),true);}
+  else{btn.classList.add('wrong-ans');slot.style.color='var(--r)';flash('❌');addPop('-5',false);score=Math.max(0,score-5);
+    G('playBody').querySelectorAll('.blank-opt').forEach(function(b){if(b.textContent===ans)b.classList.add('hit');});
+    showToast(tx('❌ Wrong!','❌ ভুল!'),false);}
+  setTimeout(nextQ,1100);
+}
+
+/* -- SORT -- */
+function renderSort(q,z){
+  G('diffHint').textContent=tx('Tap item → tap folder','আইটেম ট্যাপ → ফোল্ডার ট্যাপ');
+  G('qText').textContent=tx(q.q,q.qBN);G('qIco').textContent=q.ico||z.icon;
+  selectedSortItem=null;
+  var items=shuffle(q.items.slice());
+  var body=G('playBody');body.innerHTML='';
+  var arena=mkEl('div','sort-arena');
+  var h1=mkEl('div','sort-step-hint',tx('👆 Step 1: Tap an item to select it','👆 ধাপ ১: একটি আইটেমে ট্যাপ করে সিলেক্ট করো'));
+  arena.appendChild(h1);
+  var tray=mkEl('div','sort-tray');tray.id='sortTray';
+  items.forEach(function(item){
+    var el=mkEl('div','sort-item');
+    el.innerHTML='<span>'+item.e+'</span><span>'+item.l+'</span>';
+    el.dataset.bin=item.bin;
+    el.onclick=function(){selectSortItem(el);};
+    tray.appendChild(el);
+  });
+  arena.appendChild(tray);
+  var h2=mkEl('div','sort-step2-hint',tx('👇 Step 2: Tap the correct folder below ↓','👇 ধাপ ২: নিচের সঠিক ফোল্ডারে ট্যাপ করো ↓'));
+  arena.appendChild(h2);
+  var binsDiv=mkEl('div','sort-bins');
+  q.bins.forEach(function(bin,bi){
+    var binEl=mkEl('div','sort-bin');
+    binEl.style.background=bin.bg||z.colorL;
+    var binLabel=tx(bin.l,bin.lBN);
+    binEl.innerHTML='<div class="sort-bin-top"><div class="sort-bin-ico">'+bin.e+'</div><div class="sort-bin-label">'+binLabel+'</div></div><div class="sort-bin-items" id="binItems'+bi+'"></div>';
+    binEl.onclick=function(){dropInBin(bi,z,q);};
+    binsDiv.appendChild(binEl);
+  });
+  arena.appendChild(binsDiv);
+  body.appendChild(arena);
+}
+function selectSortItem(el){
+  if(el.classList.contains('si-correct'))return;
+  G('sortTray').querySelectorAll('.sort-item').forEach(function(it){it.classList.remove('si-selected');});
+  selectedSortItem=el;el.classList.add('si-selected');
+  document.querySelectorAll('.sort-bin').forEach(function(b){b.classList.add('sbin-active');});
+}
+function dropInBin(bi,z,q){
+  if(!selectedSortItem)return;
+  document.querySelectorAll('.sort-bin').forEach(function(b){b.classList.remove('sbin-active');});
+  var correctBin=parseInt(selectedSortItem.dataset.bin);
+  if(bi===correctBin){
+    selectedSortItem.classList.remove('si-selected');selectedSortItem.classList.add('si-correct');
+    var chip=mkEl('span','bin-chip',selectedSortItem.querySelector('span:last-child').textContent);
+    G('binItems'+bi).appendChild(chip);
+    selectedSortItem=null;addPop('+5',true);score+=5;correct++;showToast(tx('✅ Correct!','✅ সঠিক!'),true);
+    if(G('sortTray').querySelectorAll('.sort-item:not(.si-correct)').length===0)setTimeout(nextQ,500);
+  } else {
+    selectedSortItem.classList.add('si-wrong');selectedSortItem.classList.remove('si-selected');
+    addPop('-3',false);score=Math.max(0,score-3);showToast(tx('❌ Wrong folder!','❌ ভুল ফোল্ডার!'),false);
+    var tmp=selectedSortItem;setTimeout(function(){tmp&&tmp.classList.remove('si-wrong');},400);
+    selectedSortItem=null;
+  }
+}
+
+/* -- SPOT DANGER -- */
+function renderSpotDanger(q,z){
+  G('diffHint').textContent=tx('Find the dangerous one!','বিপজ্জনকটি খোঁজো!');
+  G('qText').textContent=tx(q.q,q.qBN);G('qIco').textContent=q.ico||'🔍';
+  var body=G('playBody');body.innerHTML='';
+  var grid=mkEl('div','danger-grid');
+  q.items.forEach(function(item,idx){
+    var el=mkEl('div','danger-item');el.style.setProperty('--di',idx);
+    el.innerHTML='<span class="di-ico">'+item.e+'</span><span class="di-lbl">'+tx(item.l,item.lBN)+'</span>';
+    el.onclick=function(){if(answered)return;checkDanger(item.safe,el,grid,q);};
+    grid.appendChild(el);
+  });
+  body.appendChild(grid);
+}
+function checkDanger(safe,el,grid,q){
+  answered=true;
+  if(!safe){el.classList.add('hit');flash('✅');addPop('+10',true);score+=10;correct++;showToast(tx('✅ Found it!','✅ পেয়েছ!'),true);}
+  else{el.classList.add('wrong-ans');flash('❌');addPop('-5',false);score=Math.max(0,score-5);showToast(tx('❌ That one is safe!','❌ এটি নিরাপদ!'),false);
+    grid.querySelectorAll('.danger-item').forEach(function(di,idx){if(q.items[idx]&&!q.items[idx].safe)di.classList.add('hit');});}
+  setTimeout(nextQ,1150);
+}
+
+/* -- MATCH -- */
+function renderMatch(z,lv){
+  G('diffHint').textContent=tx('Left item → right match','বাম → ডান মিলাও');
+  G('qText').textContent=tx('Match each item to its pair!','প্রতিটি জিনিস তার জোড়ার সাথে মিলাও!');G('qIco').textContent='🎯';
+  matchSel={left:null,right:null};matchDone=[];
+  var pairs=lv.pairs;
+  var rightOrder=pairs.map(function(_,i){return i;});shuffle(rightOrder);
+  var body=G('playBody');body.innerHTML='';
+  var arena=mkEl('div','match-arena');
+  var leftDiv=document.createElement('div');
+  leftDiv.innerHTML='<div class="match-col-head">'+tx('👉 Tap First','👉 প্রথমে ট্যাপ করো')+'</div><div class="match-items" id="matchLeft"></div>';
+  var rightDiv=document.createElement('div');
+  rightDiv.innerHTML='<div class="match-col-head">'+tx('Then Match 👈','তারপর মিলাও 👈')+'</div><div class="match-items" id="matchRight"></div>';
+  arena.appendChild(leftDiv);arena.appendChild(rightDiv);body.appendChild(arena);
+  pairs.forEach(function(pair,pi){
+    var el=mkEl('div','match-item');el.dataset.pair=pi;
+    el.innerHTML=pair[0].e+' '+tx(pair[0].l,pair[0].lBN);
+    el.onclick=function(){tapMatch('left',pi,el);};
+    G('matchLeft').appendChild(el);
+  });
+  rightOrder.forEach(function(ri){
+    var pair=pairs[ri];
+    var el=mkEl('div','match-item');el.dataset.pair=ri;
+    el.innerHTML=pair[1].e+' <span style="font-size:11px;font-weight:700;color:#555">'+tx(pair[1].l,pair[1].lBN)+'</span>';
+    el.onclick=function(){tapMatch('right',ri,el);};
+    G('matchRight').appendChild(el);
+  });
+}
+function tapMatch(side,pi,el){
+  if(el.classList.contains('matched'))return;
+  if(side==='left'){
+    G('matchLeft').querySelectorAll('.match-item').forEach(function(m){m.classList.remove('selected');});
+    el.classList.add('selected');matchSel.left=pi;
+  } else {
+    if(matchSel.left===null){el.classList.add('wrong-tap');setTimeout(function(){el.classList.remove('wrong-tap');},350);return;}
+    matchSel.right=pi;
+    if(matchSel.left===matchSel.right){
+      document.querySelectorAll('.match-item').forEach(function(m){if(parseInt(m.dataset.pair)===matchSel.left){m.classList.remove('selected');m.classList.add('matched');}});
+      matchDone.push(matchSel.left);addPop('+10',true);score+=10;correct++;showToast(tx('✅ Match!','✅ মিলেছে!'),true);
+      matchSel={left:null,right:null};
+      G('gProgFill').style.width=(matchDone.length/totalQ*100)+'%';
+      G('gProgLbl').textContent=matchDone.length+' / '+totalQ;
+      if(matchDone.length===ZONES[curZone].levels[curLevel].pairs.length)setTimeout(endLevel,700);
+    } else {
+      el.classList.add('wrong-tap');G('matchLeft').querySelectorAll('.match-item.selected').forEach(function(m){m.classList.add('wrong-tap');});
+      addPop('-5',false);score=Math.max(0,score-5);showToast(tx('❌ No match!','❌ মেলেনি!'),false);
+      setTimeout(function(){document.querySelectorAll('.match-item').forEach(function(m){m.classList.remove('wrong-tap','selected');});},420);
+      matchSel={left:null,right:null};
+    }
+  }
+}
+
+/* -- PASSWORD RATE -- */
+var PW_LABELS_EN=['🔴 Very Weak','🟠 Weak','🟡 OK (could be stronger)','🟢 Strong!'];
+var PW_LABELS_BN=['🔴 খুব দুর্বল','🟠 দুর্বল','🟡 ঠিক আছে (আরও ভালো হতে পারে)','🟢 শক্তিশালী!'];
+var PW_COLORS=['#EF4444','#F97316','#EAB308','#22C55E'];
+var PW_WIDTHS=['25%','50%','75%','100%'];
+function renderPWRate(q){
+  G('diffHint').textContent=tx('Rate the password strength','পাসওয়ার্ডের শক্তি মাত্রা দাও');
+  G('qText').textContent=tx(q.q,q.qBN);G('qIco').textContent='🔐';
+  var body=G('playBody');body.innerHTML='';
+  var wrap=mkEl('div','pw-wrap');
+  var screen=mkEl('div','pw-screen',q.pw);
+  var meter=mkEl('div','pw-meter');
+  var fill=mkEl('div','pw-meter-fill');fill.style.width=PW_WIDTHS[q.strength];fill.style.background=PW_COLORS[q.strength];
+  meter.appendChild(fill);
+  var hint=mkEl('div','pw-hint-text',tx(q.hint,q.hintBN));
+  var btns=mkEl('div','pw-btns');
+  var labels=LANG==='bn'?PW_LABELS_BN:PW_LABELS_EN;
+  labels.forEach(function(lbl,si){
+    var btn=mkEl('div','pw-btn',lbl);
+    btn.onclick=function(){if(answered)return;checkPWRate(si,q.strength,btn);};
+    btns.appendChild(btn);
+  });
+  wrap.appendChild(screen);wrap.appendChild(meter);wrap.appendChild(hint);wrap.appendChild(btns);
+  body.appendChild(wrap);
+}
+function checkPWRate(val,ans,btn){
+  answered=true;
+  if(val===ans){btn.classList.add('hit');flash('✅');addPop('+10',true);score+=10;correct++;showToast(tx('✅ Correct!','✅ সঠিক!'),true);}
+  else{btn.classList.add('wrong-ans');flash('❌');addPop('-5',false);score=Math.max(0,score-5);G('playBody').querySelectorAll('.pw-btn')[ans].classList.add('hit');showToast(tx('❌ Wrong!','❌ ভুল!'),false);}
+  setTimeout(nextQ,1050);
+}
+
+/* ======== TIMER ======== */
+function startTimer(secs){
+  timeLeft=secs;updateTimerUI();
+  gTimer=setInterval(function(){timeLeft--;updateTimerUI();if(timeLeft<=0){clearInterval(gTimer);gTimer=null;timeOut();}},1000);
+}
+function stopTimer(){if(gTimer){clearInterval(gTimer);gTimer=null;}}
+function updateTimerUI(){G('timerPill').textContent='⏱ '+timeLeft+'s';G('timerPill').className='g-pill '+(timeLeft<=7?'timer-urgent':'timer-ok');}
+function timeOut(){flash('⏱');showToast(tx("⏱ Time's up!",'⏱ সময় শেষ!'),false);answered=true;setTimeout(nextQ,900);}
+/* ======== SKIP ======== */
+function skipQuestion(){
+  if(answered)return;
+  var btn=G('skipBtn');btn.disabled=true;
+  answered=true;
+  flash('⏭');
+  addPop(tx('-3 skip','-৩ বাদ'),false);
+  score=Math.max(0,score-3);
+  G('gScore').textContent=score;
+  showToast(tx('⏭ Skipped! -3 pts','⏭ বাদ দিলে! -৩ পয়েন্ট'),false);
+  // highlight correct answer before moving on
+  var lv=ZONES[curZone].levels[curLevel];
+  var q=qData[curQ];
+  if(lv.type==='mc'||lv.type==='pw_rate'){
+    var btns=G('playBody').querySelectorAll('.choice-btn,.pw-btn');
+    var ansIdx=(lv.type==='mc')?q.ans:q.strength;
+    if(btns[ansIdx])btns[ansIdx].classList.add('hit');
+  } else if(lv.type==='truefalse'){
+    var tfBtns=G('playBody').querySelectorAll('.tf-btn');
+    if(tfBtns.length===2){(q.ans?tfBtns[0]:tfBtns[1]).classList.add('hit');}
+  } else if(lv.type==='fillin'){
+    var isBN=(LANG==='bn'&&q.optsBN);
+    var correctAns=isBN?(q.ansBN||q.ans):q.ans;
+    G('playBody').querySelectorAll('.blank-opt').forEach(function(b){if(b.textContent===correctAns)b.classList.add('hit');});
+  } else if(lv.type==='spot_danger'){
+    G('playBody').querySelectorAll('.danger-item').forEach(function(di,idx){if(q.items[idx]&&!q.items[idx].safe)di.classList.add('hit');});
+  }
+  setTimeout(nextQ,900);
+}
+
+function nextQ(){if(curQ+1>=totalQ){endLevel();return;}curQ++;showQ();}
+
+/* ======== END LEVEL ======== */
+function endLevel(){
+  stopTimer();
+  var pct=correct/totalQ;
+  var starsEarned=pct>=0.9?3:pct>=0.6?2:1;
+  var key=curZone+'_'+curLevel;
+  if(!progress[key]||starsEarned>progress[key])progress[key]=starsEarned;
+  totalStars+=starsEarned;coins+=score;
+  G('starCount').textContent=totalStars;G('coinCount').textContent=coins;
+  G('gProgFill').style.width='100%';G('gProgLbl').textContent=totalQ+' / '+totalQ;
+  confetti();
+  G('instructBanner').style.display='none';G('playTop').style.display='none';
+  var body=G('playBody');body.innerHTML='';G('feedbackFlash').className='feedback-flash hidden';
+  var msgs=[
+    tx('🎉 Amazing! Perfect score!','🎉 অসাধারণ! পারফেক্ট স্কোর!'),
+    tx('🌟 Great job! Well done!','🌟 চমৎকার! বেশ ভালো করেছ!'),
+    tx('💪 Good effort! Try again!','💪 ভালো চেষ্টা! আবার চেষ্টা করো!')
+  ];
+  var canNext=curLevel<2;
+  var res=mkEl('div','result-wrap');
+  res.innerHTML=
+    '<div class="result-ico">'+(starsEarned===3?'🏆':starsEarned===2?'🌟':'💪')+'</div>'+
+    '<div class="result-title">'+(starsEarned===3?msgs[0]:starsEarned===2?msgs[1]:msgs[2])+'</div>'+
+    '<div class="result-sub">'+correct+' / '+totalQ+' '+tx('correct','সঠিক')+' · '+score+' '+tx('points earned','পয়েন্ট')+'</div>'+
+    '<div class="result-stars">'+[1,2,3].map(function(i){return '<span class="r-star'+(i<=starsEarned?' lit':'')+'" style="animation-delay:'+(i*.18)+'s">⭐</span>';}).join('')+'</div>'+
+    '<div class="result-stats">'+
+      '<div class="r-stat"><div class="r-stat-v">'+score+'</div><div class="r-stat-l">'+tx('Points','পয়েন্ট')+'</div></div>'+
+      '<div class="r-stat"><div class="r-stat-v">'+correct+'/'+totalQ+'</div><div class="r-stat-l">'+tx('Correct','সঠিক')+'</div></div>'+
+      '<div class="r-stat"><div class="r-stat-v">'+starsEarned+'⭐</div><div class="r-stat-l">'+tx('Stars','তারা')+'</div></div>'+
+    '</div>'+
+    '<div class="result-btns">'+
+      (canNext?'<button class="btn b-play" onclick="startLevel('+curZone+','+(curLevel+1)+')">'+tx('Next Level →','পরের স্তর →')+'</button>':'')+
+      '<button class="btn b-white" onclick="openZone('+curZone+')">🗺️ '+tx('Zone Map','জোন ম্যাপ')+'</button>'+
+      '<button class="btn b-purple" onclick="startLevel('+curZone+','+curLevel+')">🔄 '+tx('Retry','আবার চেষ্টা')+'</button>'+
+    '</div>';
+  body.appendChild(res);
+}
+
+/* ======== EFFECTS ======== */
+function flash(ico){var el=G('feedbackFlash');el.textContent=ico;el.className='feedback-flash';void el.offsetWidth;}
+function addPop(txt,ok){var el=mkEl('div','score-pop '+(ok?'sp-ok':'sp-ng'),txt);el.style.cssText='left:'+(20+Math.random()*60)+'%;top:52%;';document.body.appendChild(el);setTimeout(function(){el.remove();},950);}
+function showToast(msg,ok){var el=mkEl('div','toast '+(ok?'t-ok':'t-ng'),msg);document.body.appendChild(el);setTimeout(function(){el.remove();},1250);}
+function confetti(){
+  var layer=G('cLayer');var pool=['⭐','🌈','🎉','✨','🎊','💜','💙','🧡','💛','🎈'];
+  for(var i=0;i<22;i++){(function(n){setTimeout(function(){
+    var p=mkEl('div','cp',pool[Math.floor(Math.random()*pool.length)]);
+    p.style.cssText='left:'+Math.random()*100+'%;font-size:'+(14+Math.random()*16)+'px;animation-duration:'+(1.1+Math.random()*.9)+'s;';
+    layer.appendChild(p);setTimeout(function(){p.remove();},2300);
+  },n*65);})(i);}
+}
+function showScreen(id){
+  ['scHome','scStages','scGame'].forEach(function(s){
+    var el=G(s);if(!el)return;
+    var on=(s===id);el.classList.toggle('off',!on);
+    if(on){el.classList.remove('sc-in');void el.offsetWidth;el.classList.add('sc-in');}
+  });
+}
+
+/* ======== INIT ======== */
+buildZonesGrid();
+</script>
+</body>
+</html>

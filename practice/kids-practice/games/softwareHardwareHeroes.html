@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>🛡️ Software vs Hardware Heroes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@700;800;900&family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#FFFBF0;
+  --sw:#7C3AED;   --swL:#EDE9FE;  --swD:#4C1D95;  --swG:rgba(124,58,237,.22);
+  --hw:#059669;   --hwL:#D1FAE5;  --hwD:#064E3B;  --hwG:rgba(5,150,105,.22);
+  --ink:#1A1A2E;
+  --gold:#F59E0B; --goldL:#FEF3C3;
+  --red:#EF4444;  --green:#10B981;
+  --paper:#FFF8E7;
+  --r:18px; --r2:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100%;overflow-x:hidden;}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  /* halftone dot pattern */
+  background-image:radial-gradient(circle,rgba(124,58,237,.06) 1px,transparent 1px),
+                   radial-gradient(circle,rgba(5,150,105,.04) 1px,transparent 1px);
+  background-size:28px 28px,44px 44px;
+  background-position:0 0,14px 14px;
+}
+.bn,.bn *{font-family:'Hind Siliguri','Nunito',sans-serif!important;}
+
+/* ── SCREENS ── */
+.sc{display:none;}.sc.on{display:block;}
+
+/* ── NAV ── */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  background:var(--ink);
+  border-bottom:4px solid var(--gold);
+  position:sticky;top:0;z-index:100;
+}
+.nav-back{
+  text-decoration:none;color:#fff;font-weight:900;font-size:12px;
+  padding:6px 14px;border-radius:50px;
+  border:2px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.1);
+  transition:all .2s;font-family:'Bangers',cursive;letter-spacing:.5px;
+}
+.nav-back:hover{background:rgba(255,255,255,.2);}
+.nav-title{
+  font-family:'Bangers',cursive;font-size:clamp(14px,3.2vw,20px);
+  letter-spacing:1px;color:#fff;
+  text-shadow:2px 2px 0 var(--gold);
+}
+.lang-toggle{display:flex;border:2px solid rgba(255,255,255,.3);border-radius:50px;overflow:hidden;}
+.lb{font-family:'Bangers',cursive;font-size:13px;padding:5px 13px;cursor:pointer;
+  background:transparent;border:none;color:rgba(255,255,255,.6);letter-spacing:.5px;}
+.lb.on{background:var(--gold);color:var(--ink);}
+
+/* ══ HOME ══ */
+.home-wrap{max-width:500px;margin:0 auto;padding:20px 14px 36px;}
+
+/* hero banner — comic panel style */
+.hero{
+  position:relative;text-align:center;
+  padding:28px 20px 24px;margin-bottom:18px;
+  border-radius:24px;overflow:hidden;
+  background:var(--ink);
+  border:4px solid var(--ink);
+  box-shadow:8px 8px 0 var(--gold);
+}
+.hero-halftone{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(245,158,11,.15) 1.5px,transparent 1.5px);
+  background-size:18px 18px;
+}
+.hero-burst{
+  position:absolute;inset:-30px;pointer-events:none;
+  background:conic-gradient(from 0deg,transparent 0deg 20deg,rgba(245,158,11,.06) 20deg 25deg,transparent 25deg 45deg,rgba(124,58,237,.06) 45deg 50deg,transparent 50deg 70deg,rgba(5,150,105,.07) 70deg 75deg,transparent 75deg 90deg,rgba(245,158,11,.06) 90deg 95deg,transparent 95deg 115deg,rgba(124,58,237,.06) 115deg 120deg,transparent 120deg 140deg,rgba(5,150,105,.06) 140deg 145deg,transparent 145deg 180deg,rgba(245,158,11,.06) 180deg 185deg,transparent 185deg 205deg,rgba(124,58,237,.07) 205deg 210deg,transparent 210deg 230deg,rgba(5,150,105,.06) 230deg 235deg,transparent 235deg 255deg,rgba(245,158,11,.06) 255deg 260deg,transparent 260deg 280deg,rgba(124,58,237,.06) 280deg 285deg,transparent 285deg 305deg,rgba(5,150,105,.07) 305deg 310deg,transparent 310deg 330deg,rgba(245,158,11,.06) 330deg 335deg,transparent 335deg 360deg);
+  animation:burstSpin 20s linear infinite;
+}
+@keyframes burstSpin{to{transform:rotate(360deg);}}
+
+.hero-tag{
+  display:inline-block;padding:4px 16px;border-radius:50px;
+  font-family:'Bangers',cursive;font-size:12px;letter-spacing:1px;
+  background:var(--gold);color:var(--ink);
+  border:2px solid rgba(255,255,255,.4);margin-bottom:12px;
+  position:relative;z-index:1;
+}
+.hero-ico{
+  font-size:76px;display:block;margin-bottom:4px;position:relative;z-index:1;
+  animation:shieldBounce 2.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 0 transparent);
+}
+@keyframes shieldBounce{
+  0%,100%{transform:translateY(0) scale(1) rotate(-4deg);}
+  50%{transform:translateY(-12px) scale(1.08) rotate(4deg);}
+}
+.hero-title{
+  font-family:'Bangers',cursive;
+  font-size:clamp(2rem,8vw,3.2rem);
+  letter-spacing:2px;line-height:.95;
+  color:#fff;position:relative;z-index:1;
+  text-shadow:4px 4px 0 var(--gold),-1px -1px 0 rgba(0,0,0,.3);
+  margin-bottom:8px;
+}
+.hero-sub{
+  font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);position:relative;z-index:1;margin-bottom:8px;
+}
+.hero-desc{
+  font-size:13px;font-weight:700;line-height:1.55;
+  color:rgba(255,255,255,.8);position:relative;z-index:1;max-width:340px;margin:0 auto;
+}
+
+/* HERO TEAM BATTLE */
+.battle-zone{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:10px;
+  align-items:stretch;margin-bottom:16px;
+}
+.team-hero{
+  border-radius:20px;padding:16px 12px;text-align:center;
+  border:3.5px solid var(--ink);position:relative;overflow:hidden;
+}
+.team-hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,currentColor 1px,transparent 1px);
+  background-size:12px 12px;opacity:.06;
+}
+.th-sw{background:var(--swL);box-shadow:5px 5px 0 var(--ink);}
+.th-hw{background:var(--hwL);box-shadow:5px 5px 0 var(--ink);}
+.th-ico{font-size:32px;margin-bottom:8px;}
+.th-name{
+  font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px;
+  margin-bottom:6px;
+}
+.th-sw .th-name{color:var(--swD);}
+.th-hw .th-name{color:var(--hwD);}
+.th-hp{display:flex;gap:3px;justify-content:center;margin-bottom:6px;flex-wrap:wrap;}
+.hp-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);}
+.th-sw .hp-dot{background:var(--sw);}
+.th-hw .hp-dot{background:var(--hw);}
+.th-ex{font-size:10.5px;font-weight:800;color:#555;line-height:1.6;}
+.vs-burst{
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.vs-inner{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--ink);border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bangers',cursive;font-size:1.5rem;
+  color:var(--gold);letter-spacing:1px;
+  box-shadow:3px 3px 0 var(--gold);
+  animation:vsSpin .8s ease-in-out infinite alternate;
+}
+@keyframes vsSpin{from{transform:rotate(-5deg) scale(1);}to{transform:rotate(5deg) scale(1.08);}}
+
+/* HOW TO */
+.howto{
+  background:var(--paper);border:3px solid var(--ink);border-radius:18px;
+  padding:16px;margin-bottom:16px;box-shadow:4px 4px 0 var(--ink);
+}
+.howto-title{
+  font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:1px;
+  color:var(--ink);margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.hs{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;font-weight:700;color:#444;}
+.hs-n{
+  min-width:22px;height:22px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bangers',cursive;font-size:11px;
+  background:var(--ink);color:var(--gold);border:1.5px solid var(--gold);
+}
+
+/* DIFFICULTY */
+.sec-label{font-family:'Bangers',cursive;font-size:1rem;letter-spacing:1px;
+  color:var(--ink);text-align:center;margin-bottom:8px;}
+.diff-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.diff-btn{
+  padding:12px 6px;border-radius:14px;cursor:pointer;text-align:center;
+  font-family:'Bangers',cursive;font-size:15px;letter-spacing:.5px;
+  background:var(--paper);border:3px solid var(--ink);
+  color:var(--ink);transition:all .15s;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.diff-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink);}
+.diff-btn.selected{transform:translate(-2px,-2px);}
+.diff-btn.selected.easy{background:#D1FAE5;box-shadow:5px 5px 0 var(--hw);}
+.diff-btn.selected.med{background:var(--goldL);box-shadow:5px 5px 0 var(--gold);}
+.diff-btn.selected.hard{background:#FEE2E2;box-shadow:5px 5px 0 var(--red);}
+.diff-sub{font-size:10px;font-weight:800;color:#666;margin-top:2px;font-family:'Nunito',sans-serif;}
+
+/* PLAY BUTTON */
+.play-btn{
+  width:100%;padding:18px;border-radius:18px;
+  font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:2px;
+  cursor:pointer;border:3.5px solid var(--ink);
+  background:linear-gradient(135deg,var(--sw),var(--hw));
+  color:#fff;
+  box-shadow:6px 6px 0 var(--ink);
+  transition:all .15s;
+  text-shadow:2px 2px 0 rgba(0,0,0,.3);
+  position:relative;overflow:hidden;
+}
+.play-btn::before{
+  content:'POW!';position:absolute;font-family:'Bangers',cursive;
+  font-size:4rem;color:rgba(255,255,255,.06);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  letter-spacing:4px;pointer-events:none;
+}
+.play-btn:hover{transform:translate(-3px,-4px);box-shadow:9px 10px 0 var(--ink);}
+.play-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink);}
+
+/* ══ GAME SCREEN ══ */
+.game-wrap{max-width:520px;margin:0 auto;padding:12px 12px 28px;
+  display:flex;flex-direction:column;gap:10px;}
+
+/* HUD */
+.hud{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;}
+.hud-score{
+  font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:.5px;
+  background:var(--ink);color:var(--gold);
+  border-radius:50px;padding:7px 16px;
+  border:2.5px solid var(--gold);
+  box-shadow:3px 3px 0 var(--gold);
+  display:flex;align-items:center;gap:5px;
+}
+.score-ico{filter:drop-shadow(0 0 4px var(--gold));}
+.score-pop{animation:sPop .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes sPop{0%,100%{transform:scale(1);}50%{transform:scale(1.7) rotate(-6deg);}}
+
+/* CIRCULAR TIMER */
+.timer-wrap{position:relative;width:58px;height:58px;margin:0 auto;}
+.timer-ring{width:58px;height:58px;}
+.tr-bg{fill:none;stroke:#e5e7eb;stroke-width:5;}
+.tr-fill{fill:none;stroke-width:5;stroke-linecap:round;
+  transform-origin:center;transform:rotate(-90deg);
+  transition:stroke-dashoffset .9s linear,stroke .3s;}
+.timer-num{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Bangers',cursive;font-size:1.2rem;color:var(--ink);
+}
+.timer-urgent .timer-num{color:var(--red);animation:urg .5s ease-in-out infinite;}
+@keyframes urg{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.3);}}
+
+/* LIVES */
+.hud-lives{
+  display:flex;gap:4px;
+  background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:50px;padding:7px 13px;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.life{font-size:16px;transition:all .4s;}
+.life.lost{opacity:.15;transform:scale(.5);}
+
+/* COMBO */
+.combo-row{
+  background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;
+  padding:8px 14px;display:flex;align-items:center;gap:10px;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.combo-lbl{font-family:'Bangers',cursive;font-size:12px;letter-spacing:.5px;white-space:nowrap;}
+.combo-track{flex:1;height:9px;background:#e5e7eb;border-radius:99px;border:1.5px solid var(--ink);overflow:hidden;}
+.combo-fill{height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--gold),var(--red));
+  transition:width .35s cubic-bezier(.34,1.56,.64,1);}
+.combo-mult{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:.5px;
+  color:var(--red);white-space:nowrap;min-width:30px;text-align:right;}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:8px;}
+.prog-track{flex:1;height:12px;background:#e5e7eb;border-radius:99px;
+  border:2px solid var(--ink);overflow:hidden;}
+.prog-fill{height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--sw),var(--hw));
+  transition:width .45s cubic-bezier(.34,1.56,.64,1);}
+.prog-lbl{font-family:'Bangers',cursive;font-size:11px;letter-spacing:.5px;white-space:nowrap;}
+
+/* DEVICE CARD — comic panel */
+.device-card{
+  background:var(--paper);border:4px solid var(--ink);border-radius:22px;
+  padding:22px 16px 18px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);
+  transition:box-shadow .2s,transform .2s;
+}
+.card-bg-dots{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(0,0,0,.04) 1px,transparent 1px);
+  background-size:14px 14px;
+}
+.card-sw{border-color:var(--sw)!important;box-shadow:6px 6px 0 var(--sw)!important;}
+.card-hw{border-color:var(--hw)!important;box-shadow:6px 6px 0 var(--hw)!important;}
+.card-correct{animation:cardPOW .5s cubic-bezier(.34,1.56,.64,1);}
+.card-wrong{animation:cardBAM .4s ease;}
+@keyframes cardPOW{0%{transform:scale(1);}35%{transform:scale(1.06) rotate(.8deg);}70%{transform:scale(.98);}100%{transform:scale(1);}}
+@keyframes cardBAM{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-10px);}40%,80%{transform:translateX(10px);}}
+
+/* splash word */
+.splash-word{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  font-family:'Bangers',cursive;font-size:2.5rem;letter-spacing:3px;
+  text-transform:uppercase;pointer-events:none;
+  opacity:0;transition:opacity .1s;
+  text-shadow:3px 3px 0 var(--ink);z-index:5;
+}
+.splash-word.show{opacity:1;animation:splashPop .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes splashPop{0%{transform:translateX(-50%) scale(.3) rotate(-10deg);opacity:0;}
+  50%{opacity:1;transform:translateX(-50%) scale(1.2) rotate(3deg);}
+  100%{transform:translateX(-50%) scale(1) rotate(0);opacity:1;}}
+.splash-word.correct{color:var(--green);}
+.splash-word.wrong{color:var(--red);}
+
+.dev-counter{
+  position:absolute;top:10px;right:14px;
+  font-family:'Bangers',cursive;font-size:11px;letter-spacing:.5px;
+  background:var(--goldL);color:var(--ink);
+  border:2px solid var(--ink);border-radius:50px;padding:2px 10px;
+}
+.dev-ico{
+  font-size:82px;display:block;margin-bottom:6px;
+  animation:devBob 2.6s ease-in-out infinite;
+  filter:drop-shadow(3px 3px 0 rgba(0,0,0,.15));
+}
+@keyframes devBob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+.dev-name{
+  font-family:'Bangers',cursive;
+  font-size:clamp(1.5rem,6vw,2.1rem);
+  letter-spacing:1px;margin-bottom:6px;
+}
+.dev-type-tag{
+  display:inline-block;padding:3px 14px;border-radius:50px;
+  font-family:'Bangers',cursive;font-size:11px;letter-spacing:1px;
+  border:2px solid var(--ink);margin-bottom:8px;opacity:0;
+  transition:opacity .3s;
+}
+.dev-type-tag.revealed{opacity:1;}
+.dev-hint{
+  font-size:12px;font-weight:700;color:#555;min-height:16px;
+  line-height:1.5;padding:6px 12px;border-radius:8px;
+  background:rgba(0,0,0,.04);border:1.5px dashed rgba(0,0,0,.1);
+}
+
+/* TEAM BUTTONS */
+.team-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.team-btn{
+  padding:0;border:none;border-radius:20px;cursor:pointer;
+  position:relative;overflow:hidden;background:transparent;
+  transition:transform .15s;
+}
+.team-btn:active{transform:scale(.96);}
+.tbi{
+  padding:18px 10px 14px;border-radius:18px;border:3.5px solid var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  position:relative;z-index:1;transition:all .2s;
+}
+.sw-btn .tbi{background:var(--swL);box-shadow:5px 5px 0 var(--ink);}
+.hw-btn .tbi{background:var(--hwL);box-shadow:5px 5px 0 var(--ink);}
+.team-btn:hover .tbi{transform:translate(-3px,-4px);}
+.sw-btn:hover .tbi{box-shadow:8px 8px 0 var(--sw);}
+.hw-btn:hover .tbi{box-shadow:8px 8px 0 var(--hw);}
+.tbtn-ico{font-size:28px;}
+.tbtn-label{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:1px;}
+.sw-btn .tbtn-label{color:var(--swD);}
+.hw-btn .tbtn-label{color:var(--hwD);}
+.tbtn-sub{font-size:10px;font-weight:800;opacity:.5;text-transform:uppercase;letter-spacing:.5px;}
+/* answer states */
+.sw-btn.btn-correct .tbi{background:rgba(124,58,237,.2);border-color:var(--sw);box-shadow:5px 5px 0 var(--sw);}
+.hw-btn.btn-correct .tbi{background:rgba(5,150,105,.2);border-color:var(--hw);box-shadow:5px 5px 0 var(--hw);}
+.team-btn.btn-wrong .tbi{background:#FEE2E2;border-color:var(--red);box-shadow:5px 5px 0 var(--red);}
+
+/* FEEDBACK FLASH */
+.feedback{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:72px;pointer-events:none;z-index:300;opacity:0;}
+.feedback.show{animation:feedPop .65s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes feedPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-20deg);}
+  35%{opacity:1;transform:translate(-50%,-65%) scale(1.4) rotate(5deg);}
+  65%{opacity:1;transform:translate(-50%,-68%) scale(1.15);}
+  100%{opacity:0;transform:translate(-50%,-90%) scale(.9);}}
+
+/* TOASTS */
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  font-family:'Bangers',cursive;font-size:15px;letter-spacing:1px;
+  padding:10px 24px;border-radius:50px;border:2.5px solid var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+  z-index:400;animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;
+}
+@keyframes toastIn{from{transform:translateX(-50%) translateY(16px);opacity:0;}to{transform:translateX(-50%) translateY(0);opacity:1;}}
+.toast.ok{background:#D1FAE5;color:var(--hwD);}
+.toast.ng{background:#FEE2E2;color:#991B1B;}
+.toast.combo{background:var(--goldL);color:#92400E;}
+
+/* SCORE FLOAT */
+.sfloat{position:fixed;pointer-events:none;z-index:350;
+  font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:1px;
+  animation:sfUp .9s ease forwards;}
+@keyframes sfUp{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-70px) scale(1.5);}}
+
+/* STREAK BANNER */
+.streak-banner{
+  position:fixed;top:72px;left:50%;transform:translateX(-50%);
+  font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;
+  padding:10px 30px;border-radius:50px;border:3px solid var(--ink);
+  background:var(--goldL);color:var(--ink);
+  box-shadow:4px 4px 0 var(--ink);
+  z-index:500;pointer-events:none;
+  animation:bannerIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes bannerIn{from{transform:translateX(-50%) translateY(-20px) scale(.7);opacity:0;}
+  to{transform:translateX(-50%) translateY(0) scale(1);opacity:1;}}
+
+/* ══ RESULT SCREEN ══ */
+.result-wrap{max-width:500px;margin:0 auto;padding:20px 14px 36px;}
+.result-card{
+  background:var(--ink);border-radius:28px;
+  padding:32px 20px 24px;text-align:center;
+  border:4px solid var(--ink);
+  box-shadow:8px 8px 0 var(--gold);
+  position:relative;overflow:hidden;
+}
+.result-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(245,158,11,.08) 1.5px,transparent 1.5px);
+  background-size:20px 20px;
+}
+.result-trophy{font-size:80px;display:block;
+  filter:drop-shadow(4px 4px 0 var(--gold));
+  animation:trophyIn 1s cubic-bezier(.34,1.56,.64,1);
+  margin-bottom:8px;position:relative;z-index:1;}
+@keyframes trophyIn{0%{transform:scale(.3) rotate(-30deg);opacity:0;}70%{transform:scale(1.15) rotate(5deg);}100%{transform:scale(1);opacity:1;}}
+.result-title{
+  font-family:'Bangers',cursive;font-size:clamp(1.6rem,6vw,2.5rem);
+  letter-spacing:2px;margin-bottom:4px;
+  color:#fff;position:relative;z-index:1;
+  text-shadow:3px 3px 0 var(--gold);
+}
+.result-sub{font-size:12.5px;font-weight:800;color:rgba(255,255,255,.6);
+  margin-bottom:18px;position:relative;z-index:1;letter-spacing:1px;text-transform:uppercase;}
+.result-stars{display:flex;justify-content:center;gap:10px;margin-bottom:18px;position:relative;z-index:1;}
+.r-star{font-size:34px;opacity:.15;transform:scale(.5);}
+.r-star.lit{opacity:1;transform:scale(1);
+  filter:drop-shadow(2px 2px 0 var(--ink)) drop-shadow(0 0 10px var(--gold));
+  animation:starIn .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes starIn{0%{transform:scale(.3) rotate(-40deg);}70%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1);}}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-bottom:20px;position:relative;z-index:1;}
+.r-stat{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.12);
+  border-radius:14px;padding:12px 8px;}
+.r-stat-v{font-family:'Bangers',cursive;font-size:1.6rem;color:var(--gold);letter-spacing:.5px;}
+.r-stat-l{font-size:10px;font-weight:800;color:rgba(255,255,255,.5);margin-top:2px;
+  letter-spacing:1px;text-transform:uppercase;}
+.result-btns{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1;}
+.rbtn{padding:14px;border-radius:14px;cursor:pointer;border:3px solid;
+  font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px;transition:all .15s;}
+.rbtn:hover{transform:translate(-2px,-3px);}
+.rbtn-play{background:linear-gradient(135deg,var(--sw),var(--hw));color:#fff;border-color:var(--gold);
+  box-shadow:4px 4px 0 var(--gold);text-shadow:1px 1px 0 rgba(0,0,0,.3);}
+.rbtn-play:hover{box-shadow:6px 6px 0 var(--gold);}
+.rbtn-home{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2);
+  box-shadow:none;}
+
+/* CONFETTI */
+#cLayer{position:fixed;inset:0;pointer-events:none;z-index:600;overflow:hidden;}
+.cp{position:absolute;top:-30px;animation:cFall linear forwards;}
+@keyframes cFall{to{transform:translateY(110vh) rotate(900deg);opacity:0;}}
+
+/* BG FLOATERS */
+.floater{position:fixed;pointer-events:none;z-index:0;animation:floatUp linear infinite;opacity:0;}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) rotate(0);opacity:0;}
+  8%{opacity:.07;}92%{opacity:.07;}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}
+}
+
+@media(max-width:380px){
+  .team-btns{gap:8px;}.dev-ico{font-size:62px;}.tbtn-label{font-size:1.1rem;}.hud{gap:5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- BG FLOATING EMOJIS -->
+<div class="floater" style="left:4%;animation-duration:22s;font-size:28px;animation-delay:-3s">🖥️</div>
+<div class="floater" style="left:82%;animation-duration:26s;font-size:24px;animation-delay:-10s">⌨️</div>
+<div class="floater" style="left:52%;animation-duration:18s;font-size:30px;animation-delay:-6s">🛡️</div>
+<div class="floater" style="left:70%;animation-duration:30s;font-size:22px;animation-delay:-16s">💿</div>
+<div class="floater" style="left:20%;animation-duration:24s;font-size:26px;animation-delay:-19s">🖨️</div>
+<div class="floater" style="left:38%;animation-duration:20s;font-size:24px;animation-delay:-8s">🎮</div>
+
+<div id="cLayer"></div>
+<div class="feedback" id="feedEl">✅</div>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <a href="../index.html" class="nav-back">&#8592; Back</a>
+  <span class="nav-title" id="navTitle">🛡️ Software vs Hardware Heroes</span>
+  <div class="lang-toggle">
+    <button class="lb on" id="lbEN" onclick="setLang('en')">EN</button>
+    <button class="lb" id="lbBN" onclick="setLang('bn')">বাং</button>
+  </div>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="sc on" id="scHome">
+<div class="home-wrap">
+
+  <div class="hero">
+    <div class="hero-halftone"></div>
+    <div class="hero-burst"></div>
+    <span class="hero-tag" id="heroTag">⚔️ Software &amp; Hardware</span>
+    <span class="hero-ico">🛡️</span>
+    <h1 class="hero-title" id="heroTitle">Software vs<br>Hardware<br>Heroes!</h1>
+    <p class="hero-sub" id="heroSub">Know the Difference • Epic Battle!</p>
+    <p class="hero-desc" id="heroDesc">An epic battle game where students match software and hardware items to their correct team. Learn the key difference through action!</p>
+  </div>
+
+  <div class="battle-zone">
+    <div class="team-hero th-sw">
+      <div class="th-ico">💜</div>
+      <div class="th-name" id="swTeamName">SOFTWARE</div>
+      <div class="th-hp">
+        <span class="hp-dot"></span><span class="hp-dot"></span><span class="hp-dot"></span>
+        <span class="hp-dot"></span><span class="hp-dot"></span>
+      </div>
+      <div class="th-ex" id="swExamples">Windows · Games<br>Browser · Antivirus</div>
+    </div>
+    <div class="vs-burst">
+      <div class="vs-inner">VS</div>
+    </div>
+    <div class="team-hero th-hw">
+      <div class="th-ico">💚</div>
+      <div class="th-name" id="hwTeamName">HARDWARE</div>
+      <div class="th-hp">
+        <span class="hp-dot"></span><span class="hp-dot"></span><span class="hp-dot"></span>
+        <span class="hp-dot"></span><span class="hp-dot"></span>
+      </div>
+      <div class="th-ex" id="hwExamples">Monitor · CPU<br>Keyboard · RAM</div>
+    </div>
+  </div>
+
+  <div class="howto">
+    <div class="howto-title">🎯 <span id="howTitle">Mission Briefing</span></div>
+    <div class="howto-grid">
+      <div class="hs"><div class="hs-n">1</div><span id="step1">An item appears — identify it!</span></div>
+      <div class="hs"><div class="hs-n">2</div><span id="step2">Tap SOFTWARE or HARDWARE fast!</span></div>
+      <div class="hs"><div class="hs-n">3</div><span id="step3">Build combos to multiply points</span></div>
+      <div class="hs"><div class="hs-n">4</div><span id="step4">3 lives — protect them, hero!</span></div>
+    </div>
+  </div>
+
+  <div class="sec-label" id="diffLabel">Choose Difficulty Level:</div>
+  <div class="diff-row">
+    <div class="diff-btn easy selected" onclick="selectDiff('easy',this)">
+      🌱<br><span id="easyLabel">Recruit</span>
+      <div class="diff-sub" id="easyDesc">40s · Hints</div>
+    </div>
+    <div class="diff-btn med" onclick="selectDiff('med',this)">
+      ⚔️<br><span id="medLabel">Warrior</span>
+      <div class="diff-sub" id="medDesc">28s · No hints</div>
+    </div>
+    <div class="diff-btn hard" onclick="selectDiff('hard',this)">
+      💀<br><span id="hardLabel">Legend</span>
+      <div class="diff-sub" id="hardDesc">18s · Speed!</div>
+    </div>
+  </div>
+
+  <button class="play-btn" onclick="startGame()" id="playBtn">
+    ⚔️ <span id="playBtnLabel">Begin the Battle!</span>
+  </button>
+
+</div>
+</div>
+
+<!-- ══════════ GAME ══════════ -->
+<div class="sc" id="scGame">
+<div class="game-wrap">
+
+  <div class="hud">
+    <div class="hud-score">
+      <span class="score-ico">⚡</span>
+      <span id="scoreVal">0</span>
+    </div>
+    <div class="timer-wrap" id="timerWrap">
+      <svg class="timer-ring" viewBox="0 0 58 58">
+        <circle class="tr-bg" cx="29" cy="29" r="23"/>
+        <circle class="tr-fill" id="timerRing" cx="29" cy="29" r="23"
+          stroke="var(--sw)" stroke-dasharray="144.5" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-num" id="timerNum">40</div>
+    </div>
+    <div class="hud-lives">
+      <span class="life" id="l0">❤️</span>
+      <span class="life" id="l1">❤️</span>
+      <span class="life" id="l2">❤️</span>
+    </div>
+  </div>
+
+  <div class="combo-row">
+    <span class="combo-lbl" id="comboLabel">🔥 Combo</span>
+    <div class="combo-track"><div class="combo-fill" id="comboFill" style="width:0%"></div></div>
+    <span class="combo-mult" id="comboMult">x1</span>
+  </div>
+
+  <div class="prog-row">
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <span class="prog-lbl" id="progLbl">0 / 12</span>
+  </div>
+
+  <div class="device-card" id="deviceCard">
+    <div class="card-bg-dots"></div>
+    <div class="splash-word" id="splashWord">POW!</div>
+    <div class="dev-counter" id="devCounter">1 / 12</div>
+    <span class="dev-ico" id="devIco">🖥️</span>
+    <div class="dev-name" id="devName">Monitor</div>
+    <div class="dev-hint" id="devHint">A physical screen you can touch</div>
+  </div>
+
+  <div class="team-btns">
+    <button class="team-btn sw-btn" id="swBtn" onclick="answer('software')">
+      <div class="tbi">
+        <span class="tbtn-ico">💜</span>
+        <span class="tbtn-label" id="swBtnLabel">SOFTWARE</span>
+        <span class="tbtn-sub" id="swBtnSub">install &amp; run</span>
+      </div>
+    </button>
+    <button class="team-btn hw-btn" id="hwBtn" onclick="answer('hardware')">
+      <div class="tbi">
+        <span class="tbtn-ico">💚</span>
+        <span class="tbtn-label" id="hwBtnLabel">HARDWARE</span>
+        <span class="tbtn-sub" id="hwBtnSub">touch &amp; feel</span>
+      </div>
+    </button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ RESULT ══════════ -->
+<div class="sc" id="scResult">
+<div class="result-wrap">
+  <div class="result-card">
+    <span class="result-trophy" id="resultTrophy">🏆</span>
+    <div class="result-title" id="resultTitle">Mission Complete!</div>
+    <div class="result-sub" id="resultSub">You're a true hero!</div>
+    <div class="result-stars">
+      <span class="r-star" id="rs0">⭐</span>
+      <span class="r-star" id="rs1">⭐</span>
+      <span class="r-star" id="rs2">⭐</span>
+    </div>
+    <div class="result-stats">
+      <div class="r-stat"><div class="r-stat-v" id="rScore">0</div><div class="r-stat-l" id="rScoreLbl">Score</div></div>
+      <div class="r-stat"><div class="r-stat-v" id="rCorrect">0/12</div><div class="r-stat-l" id="rCorrectLbl">Correct</div></div>
+      <div class="r-stat"><div class="r-stat-v" id="rCombo">x1</div><div class="r-stat-l" id="rComboLbl">Best Combo</div></div>
+    </div>
+    <div class="result-btns">
+      <button class="rbtn rbtn-play" onclick="startGame()" id="retryBtn">⚔️ Play Again!</button>
+      <button class="rbtn rbtn-home" onclick="showScreen('scHome')" id="homeBtn">🏠 Main Menu</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ============================================================
+   SOFTWARE vs HARDWARE HEROES
+   Bilingual EN / Bengali · comic-book arcade design
+   ============================================================ */
+
+var LANG='en';
+var UI={
+  heroTitle:{en:'Software vs<br>Hardware<br>Heroes!',bn:'সফটওয়্যার বনাম<br>হার্ডওয়্যার<br>হিরোজ!'},
+  heroSub:{en:'Know the Difference • Epic Battle!',bn:'পার্থক্য জানো • মহাযুদ্ধ!'},
+  heroDesc:{en:'An epic battle game where students match software and hardware items to their correct team. Learn the key difference through action!',bn:'একটি মহাযুদ্ধ গেম যেখানে সফটওয়্যার ও হার্ডওয়্যার আইটেমকে সঠিক দলে সাজাও। অ্যাকশনের মাধ্যমে মূল পার্থক্য শেখো!'},
+  swTeamName:{en:'SOFTWARE',bn:'সফটওয়্যার'},
+  hwTeamName:{en:'HARDWARE',bn:'হার্ডওয়্যার'},
+  swExamples:{en:'Windows · Games\nBrowser · Antivirus',bn:'উইন্ডোজ · গেমস\nব্রাউজার · অ্যান্টিভাইরাস'},
+  hwExamples:{en:'Monitor · CPU\nKeyboard · RAM',bn:'মনিটর · সিপিইউ\nকীবোর্ড · র‍্যাম'},
+  howTitle:{en:'Mission Briefing',bn:'মিশন ব্রিফিং'},
+  step1:{en:'An item appears — identify it!',bn:'একটি আইটেম আসে — চিনে নাও!'},
+  step2:{en:'Tap SOFTWARE or HARDWARE fast!',bn:'দ্রুত সফটওয়্যার বা হার্ডওয়্যার ট্যাপ করো!'},
+  step3:{en:'Build combos to multiply points',bn:'কম্বো বানিয়ে পয়েন্ট বাড়াও'},
+  step4:{en:'3 lives — protect them, hero!',bn:'৩টি জীবন — রক্ষা করো, বীর!'},
+  diffLabel:{en:'Choose Difficulty Level:',bn:'কঠিনতার স্তর বেছে নাও:'},
+  easyLabel:{en:'Recruit',bn:'নতুন'},
+  medLabel:{en:'Warrior',bn:'যোদ্ধা'},
+  hardLabel:{en:'Legend',bn:'কিংবদন্তি'},
+  easyDesc:{en:'40s · Hints',bn:'৪০ সে · হিন্ট'},
+  medDesc:{en:'28s · No hints',bn:'২৮ সে · হিন্ট নেই'},
+  hardDesc:{en:'18s · Speed!',bn:'১৮ সে · স্পিড!'},
+  playBtnLabel:{en:'Begin the Battle!',bn:'যুদ্ধ শুরু করো!'},
+  swBtnLabel:{en:'SOFTWARE',bn:'সফটওয়্যার'},
+  hwBtnLabel:{en:'HARDWARE',bn:'হার্ডওয়্যার'},
+  swBtnSub:{en:'install & run',bn:'ইনস্টল ও চালাও'},
+  hwBtnSub:{en:'touch & feel',bn:'স্পর্শ করা যায়'},
+  comboLabel:{en:'🔥 Combo',bn:'🔥 কম্বো'},
+  retryBtn:{en:'⚔️ Play Again!',bn:'⚔️ আবার খেলো!'},
+  homeBtn:{en:'🏠 Main Menu',bn:'🏠 মেনু'},
+  rScoreLbl:{en:'SCORE',bn:'স্কোর'},
+  rCorrectLbl:{en:'CORRECT',bn:'সঠিক'},
+  rComboLbl:{en:'BEST COMBO',bn:'সেরা কম্বো'},
+};
+function t(k){return(LANG==='bn'&&UI[k])?UI[k].bn:UI[k]?UI[k].en:k;}
+function tD(d,f){return LANG==='bn'?d[f+'BN']:d[f];}
+function setLang(l){
+  LANG=l;
+  document.body.classList.toggle('bn',l==='bn');
+  document.getElementById('lbEN').classList.toggle('on',l==='en');
+  document.getElementById('lbBN').classList.toggle('on',l==='bn');
+  applyUI();
+}
+function applyUI(){
+  ['heroTitle','heroSub','heroDesc','swTeamName','hwTeamName','swExamples','hwExamples',
+   'howTitle','step1','step2','step3','step4','diffLabel','easyLabel','medLabel','hardLabel',
+   'easyDesc','medDesc','hardDesc','playBtnLabel','swBtnLabel','hwBtnLabel','swBtnSub','hwBtnSub',
+   'comboLabel','retryBtn','homeBtn','rScoreLbl','rCorrectLbl','rComboLbl'].forEach(function(k){
+    var el=document.getElementById(k);if(!el)return;
+    if(k==='heroTitle')el.innerHTML=t(k);else el.textContent=t(k);
+  });
+}
+
+/* ── ITEMS ── */
+var ITEMS=[
+  /* SOFTWARE */
+  {ico:'🪟',name:'Windows OS',nameBN:'উইন্ডোজ ওএস',type:'software',hint:'Operating system you install on a computer',hintBN:'কম্পিউটারে ইনস্টল করা অপারেটিং সিস্টেম'},
+  {ico:'🌐',name:'Web Browser',nameBN:'ওয়েব ব্রাউজার',type:'software',hint:'Program you use to visit websites',hintBN:'ওয়েবসাইট দেখার প্রোগ্রাম'},
+  {ico:'🎮',name:'Video Game',nameBN:'ভিডিও গেম',type:'software',hint:'A program installed to play on your computer',hintBN:'কম্পিউটারে খেলার জন্য ইনস্টল করা প্রোগ্রাম'},
+  {ico:'🛡️',name:'Antivirus',nameBN:'অ্যান্টিভাইরাস',type:'software',hint:'Program that protects your computer from viruses',hintBN:'ভাইরাস থেকে কম্পিউটার রক্ষার প্রোগ্রাম'},
+  {ico:'📝',name:'Word Processor',nameBN:'ওয়ার্ড প্রসেসর',type:'software',hint:'App for writing documents — like MS Word',hintBN:'নথি লেখার অ্যাপ — যেমন এমএস ওয়ার্ড'},
+  {ico:'📊',name:'Spreadsheet App',nameBN:'স্প্রেডশিট অ্যাপ',type:'software',hint:'App for creating tables and calculating numbers',hintBN:'টেবিল তৈরি ও সংখ্যা গণনার অ্যাপ'},
+  {ico:'🎵',name:'Music Player',nameBN:'মিউজিক প্লেয়ার',type:'software',hint:'Software you install to play audio files',hintBN:'অডিও ফাইল চালানোর সফটওয়্যার'},
+  {ico:'🎨',name:'Paint App',nameBN:'পেইন্ট অ্যাপ',type:'software',hint:'Software for drawing and editing images',hintBN:'ছবি আঁকা ও সম্পাদনার সফটওয়্যার'},
+  {ico:'📧',name:'Email App',nameBN:'ইমেইল অ্যাপ',type:'software',hint:'Program you use to send and receive emails',hintBN:'ইমেইল পাঠানো ও গ্রহণের প্রোগ্রাম'},
+  /* HARDWARE */
+  {ico:'🖥️',name:'Monitor',nameBN:'মনিটর',type:'hardware',hint:'The physical screen you look at',hintBN:'যে পর্দায় তুমি দেখো — স্পর্শ করা যায়'},
+  {ico:'🧠',name:'CPU',nameBN:'সিপিইউ',type:'hardware',hint:'The brain chip inside a computer — you can hold it',hintBN:'কম্পিউটারের মস্তিষ্ক চিপ — ধরা যায়'},
+  {ico:'⌨️',name:'Keyboard',nameBN:'কীবোর্ড',type:'hardware',hint:'Physical device with keys you press to type',hintBN:'টাইপ করার জন্য কী সহ ভৌত ডিভাইস'},
+  {ico:'🖱️',name:'Mouse',nameBN:'মাউস',type:'hardware',hint:'Physical device you click and move on a desk',hintBN:'ডেস্কে নাড়ানো ও ক্লিক করার ভৌত ডিভাইস'},
+  {ico:'💾',name:'Hard Drive',nameBN:'হার্ড ড্রাইভ',type:'hardware',hint:'Physical disk that stores all your files',hintBN:'ফাইল সংরক্ষণের ভৌত ডিস্ক'},
+  {ico:'🖨️',name:'Printer',nameBN:'প্রিন্টার',type:'hardware',hint:'Physical machine that prints onto paper',hintBN:'কাগজে ছাপানোর ভৌত যন্ত্র'},
+  {ico:'🔊',name:'Speakers',nameBN:'স্পিকার',type:'hardware',hint:'Physical boxes that produce sound',hintBN:'শব্দ তৈরির ভৌত বাক্স'},
+  {ico:'📡',name:'RAM Chip',nameBN:'র‍্যাম চিপ',type:'hardware',hint:'Physical memory chip you slot into a motherboard',hintBN:'মাদারবোর্ডে লাগানো ভৌত মেমরি চিপ'},
+  {ico:'💿',name:'DVD Drive',nameBN:'ডিভিডি ড্রাইভ',type:'hardware',hint:'Physical slot that reads discs in a computer',hintBN:'কম্পিউটারে ডিস্ক পড়ার ভৌত স্লট'},
+];
+
+/* ── STATE ── */
+var DIFF='easy',DIFF_TIME={easy:40,med:28,hard:18},DIFF_COUNT={easy:12,med:15,hard:18};
+var SHOW_HINTS={easy:true,med:false,hard:false};
+var score=0,lives=3,curIdx=0,answered=false,combo=0,bestCombo=0,totalQ=12,correct=0;
+var timeLeft=40,timerMax=40,gTimer=null,queue=[],CIRC=144.5;
+
+function showScreen(id){document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('on');});document.getElementById(id).classList.add('on');}
+function selectDiff(d,el){DIFF=d;document.querySelectorAll('.diff-btn').forEach(function(b){b.classList.remove('selected');});el.classList.add('selected');}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function buildQueue(n){
+  var sw=ITEMS.filter(function(d){return d.type==='software';});
+  var hw=ITEMS.filter(function(d){return d.type==='hardware';});
+  var h=Math.floor(n/2);
+  return shuffle(shuffle(sw).slice(0,h).concat(shuffle(hw).slice(0,n-h)));
+}
+
+function startGame(){
+  score=0;lives=3;curIdx=0;answered=false;combo=0;bestCombo=0;correct=0;
+  totalQ=DIFF_COUNT[DIFF];timerMax=DIFF_TIME[DIFF];timeLeft=timerMax;
+  queue=buildQueue(totalQ);
+  document.getElementById('scoreVal').textContent='0';
+  for(var i=0;i<3;i++)document.getElementById('l'+i).classList.remove('lost');
+  updateCombo();updateProgress();showScreen('scGame');showDevice();startTimer();
+}
+
+function showDevice(){
+  if(curIdx>=queue.length){endGame();return;}
+  answered=false;var d=queue[curIdx];
+  var card=document.getElementById('deviceCard');
+  card.className='device-card';
+  var splash=document.getElementById('splashWord');
+  splash.className='splash-word';splash.textContent='';
+  document.getElementById('devIco').textContent=d.ico;
+  document.getElementById('devName').textContent=tD(d,'name');
+  document.getElementById('devHint').textContent=SHOW_HINTS[DIFF]?tD(d,'hint'):'';
+  document.getElementById('devCounter').textContent=(curIdx+1)+' / '+totalQ;
+  card.style.opacity='0';card.style.transform='translateY(20px) scale(.94)';
+  setTimeout(function(){
+    card.style.transition='opacity .28s,transform .32s cubic-bezier(.34,1.3,.64,1)';
+    card.style.opacity='1';card.style.transform='';
+    setTimeout(function(){card.style.transition='';},380);
+  },20);
+  var sb=document.getElementById('swBtn'),hb=document.getElementById('hwBtn');
+  sb.className='team-btn sw-btn';hb.className='team-btn hw-btn';
+  sb.disabled=false;hb.disabled=false;
+}
+
+var SPLASH_CORRECT=['POW!','ZAP!','BAM!','YES!','ACE!','BOOM!'];
+var SPLASH_WRONG=['NOPE!','OOPS!','MISS!','BAD!'];
+
+function answer(choice){
+  if(answered)return;answered=true;stopTimer();
+  var d=queue[curIdx],ok=(choice===d.type);
+  var sb=document.getElementById('swBtn'),hb=document.getElementById('hwBtn');
+  var card=document.getElementById('deviceCard');
+  sb.disabled=true;hb.disabled=true;
+  card.classList.add(d.type==='software'?'card-sw':'card-hw');
+
+  var splash=document.getElementById('splashWord');
+  if(ok){
+    combo++;if(combo>bestCombo)bestCombo=combo;correct++;
+    var mult=getMult(),pts=10*mult;score+=pts;
+    document.getElementById('scoreVal').textContent=score;
+    document.getElementById('scoreVal').classList.add('score-pop');
+    setTimeout(function(){document.getElementById('scoreVal').classList.remove('score-pop');},350);
+    (choice==='software'?sb:hb).classList.add('btn-correct');
+    card.classList.add('card-correct');
+    splash.textContent=SPLASH_CORRECT[Math.floor(Math.random()*SPLASH_CORRECT.length)];
+    splash.className='splash-word correct show';
+    flash('✅');floatScore('+'+pts,true);
+    if(combo>=5)showToast('🔥 '+(LANG==='bn'?'অসাধারণ! x'+mult+'!':'LEGENDARY! x'+mult),'combo');
+    else if(combo>=3)showToast('⚡ '+(LANG==='bn'?'কম্বো x'+mult:'Combo x'+mult),'combo');
+    else showToast(LANG==='bn'?'✅ সঠিক!':'✅ Correct!','ok');
+    if(combo===3||combo===5||combo===7||combo===10)showStreak();
+  } else {
+    combo=0;lives--;
+    (d.type==='software'?sb:hb).classList.add('btn-correct');
+    (choice==='software'?sb:hb).classList.add('btn-wrong');
+    card.classList.add('card-wrong');
+    splash.textContent=SPLASH_WRONG[Math.floor(Math.random()*SPLASH_WRONG.length)];
+    splash.className='splash-word wrong show';
+    flash('❌');floatScore('✗',false);
+    showToast(LANG==='bn'?'❌ '+(d.type==='software'?'সফটওয়্যার':'হার্ডওয়্যার')+' ছিল!':'❌ It\'s '+d.type.toUpperCase()+'!','ng');
+    updateLives();if(lives<=0){setTimeout(endGame,750);return;}
+  }
+  updateCombo();updateProgress();curIdx++;
+  setTimeout(function(){if(curIdx>=queue.length){endGame();return;}showDevice();startTimer();},950);
+}
+
+function startTimer(){
+  timeLeft=timerMax;updateTimerUI();
+  gTimer=setInterval(function(){timeLeft--;updateTimerUI();if(timeLeft<=0){clearInterval(gTimer);gTimer=null;onTimeout();}},1000);
+}
+function stopTimer(){if(gTimer){clearInterval(gTimer);gTimer=null;}}
+function updateTimerUI(){
+  document.getElementById('timerNum').textContent=timeLeft;
+  var pct=timeLeft/timerMax,offset=CIRC*(1-pct);
+  var ring=document.getElementById('timerRing');
+  ring.style.strokeDashoffset=offset;
+  ring.style.stroke=pct>0.5?'var(--sw)':pct>0.25?'var(--gold)':'var(--red)';
+  document.getElementById('timerWrap').classList.toggle('timer-urgent',pct<=0.25);
+}
+function onTimeout(){
+  if(answered)return;answered=true;combo=0;lives--;
+  flash('⏱');
+  var splash=document.getElementById('splashWord');
+  splash.textContent='TIME!';splash.className='splash-word wrong show';
+  showToast(LANG==='bn'?'⏱ সময় শেষ!':'⏱ Time\'s up!','ng');
+  updateLives();updateCombo();if(lives<=0){setTimeout(endGame,700);return;}
+  var d=queue[curIdx];
+  (d.type==='software'?document.getElementById('swBtn'):document.getElementById('hwBtn')).classList.add('btn-correct');
+  curIdx++;
+  setTimeout(function(){if(curIdx>=queue.length){endGame();return;}showDevice();startTimer();},950);
+}
+
+function getMult(){return combo>=10?4:combo>=7?3:combo>=4?2:1;}
+function updateCombo(){
+  var mult=getMult();
+  document.getElementById('comboFill').style.width=Math.min(combo/10,1)*100+'%';
+  document.getElementById('comboMult').textContent='x'+mult;
+  document.getElementById('comboLabel').textContent=combo>0?'🔥 '+combo+(LANG==='bn'?' কম্বো':' Combo'):'🔥 '+(LANG==='bn'?'কম্বো':'Combo');
+}
+function updateProgress(){document.getElementById('progFill').style.width=Math.min(curIdx/totalQ,1)*100+'%';document.getElementById('progLbl').textContent=curIdx+' / '+totalQ;}
+function updateLives(){for(var i=0;i<3;i++)if(i>=lives)document.getElementById('l'+i).classList.add('lost');}
+
+function showStreak(){
+  var msgs={en:['','','','3️⃣ TRIPLE!','','5️⃣ FIVE! 🔥','','7️⃣ SEVEN!! ⚔️','','','🔟 TEN! LEGEND!! 👑'],
+            bn:['','','','৩ ট্রিপল!','','৫ পাঁচ! 🔥','','৭ সাত!! ⚔️','','','১০ কিংবদন্তি!! 👑']};
+  var arr=LANG==='bn'?msgs.bn:msgs.en,msg=arr[combo]||('🔥 '+combo+'x!');
+  var el=document.createElement('div');el.className='streak-banner';el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(function(){
+    el.style.transition='opacity .4s,transform .4s';
+    el.style.opacity='0';el.style.transform='translateX(-50%) translateY(-12px)';
+    setTimeout(function(){el.remove();},400);
+  },1600);
+}
+
+function flash(ico){var el=document.getElementById('feedEl');el.textContent=ico;el.className='feedback';void el.offsetWidth;el.className='feedback show';}
+function floatScore(txt,ok){
+  var el=document.createElement('div');el.className='sfloat';
+  el.style.cssText='color:'+(ok?'var(--hw)':'var(--red)')+';left:'+(28+Math.random()*44)+'%;top:58%;text-shadow:1px 1px 0 var(--ink);';
+  el.textContent=txt;document.body.appendChild(el);
+  setTimeout(function(){el.remove();},950);
+}
+function showToast(msg,type){
+  var el=document.createElement('div');el.className='toast '+type;el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(function(){el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(function(){el.remove();},300);},1100);
+}
+
+function endGame(){
+  stopTimer();var pct=correct/totalQ,stars=pct>=0.9?3:pct>=0.6?2:1;
+  if(stars>=2)doConfetti();showScreen('scResult');
+  var trophies=['💪','🌟','🏆'];
+  var titles={en:['Keep Training, Recruit!','Well Done, Warrior!','LEGENDARY HERO!'],bn:['অনুশীলন জারি রাখো!','বেশ ভালো, যোদ্ধা!','কিংবদন্তি বীর!']};
+  var subs={en:['Try again to level up!','Your skills are growing!','You sorted them all — flawless!'],bn:['লেভেল আপের জন্য আবার চেষ্টা করো!','তোমার দক্ষতা বাড়ছে!','সব সঠিকভাবে সাজিয়েছ — নিখুঁত!']};
+  document.getElementById('resultTrophy').textContent=trophies[stars-1];
+  document.getElementById('resultTitle').textContent=(LANG==='bn'?titles.bn:titles.en)[stars-1];
+  document.getElementById('resultSub').textContent=(LANG==='bn'?subs.bn:subs.en)[stars-1];
+  document.getElementById('rScore').textContent=score;
+  document.getElementById('rCorrect').textContent=correct+'/'+totalQ;
+  document.getElementById('rCombo').textContent='x'+bestCombo;
+  for(var i=0;i<3;i++){
+    document.getElementById('rs'+i).classList.remove('lit');
+    if(i<stars)(function(idx){setTimeout(function(){document.getElementById('rs'+idx).classList.add('lit');},400+idx*220);})(i);
+  }
+  ['retryBtn','homeBtn','rScoreLbl','rCorrectLbl','rComboLbl'].forEach(function(k){var el=document.getElementById(k);if(el)el.textContent=t(k);});
+}
+
+function doConfetti(){
+  var layer=document.getElementById('cLayer');
+  var pool=['⭐','💜','💚','🎉','✨','⚔️','🛡️','👑','💛','🔥'];
+  for(var i=0;i<35;i++){(function(n){setTimeout(function(){
+    var p=document.createElement('div');p.className='cp';
+    p.textContent=pool[Math.floor(Math.random()*pool.length)];
+    p.style.cssText='left:'+(Math.random()*100)+'%;font-size:'+(14+Math.random()*16)+'px;animation-duration:'+(2.5+Math.random()*2)+'s;';
+    layer.appendChild(p);setTimeout(function(){p.remove();},5000);
+  },n*70);})(i);}
+}
+
+applyUI();
+</script>
+</body>
+</html>
